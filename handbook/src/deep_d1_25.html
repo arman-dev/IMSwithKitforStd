@@ -1,0 +1,24 @@
+<section class="slide">
+  <div class="head"><span class="badge">প্রমাণ</span>
+    <div><h2>কোন টেস্ট কোন ডেটাবেজ-নিয়ম প্রমাণ করে</h2>
+      <div class="sub">১০৩টি টেস্ট · এর মধ্যে ডেটা-নিয়মের প্রমাণ ১৪টি</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:44%">টেস্টের নাম (আসল)</th><th style="width:30%">যে নিয়ম প্রমাণ করে</th><th style="width:26%">স্তর</th></tr>
+      <tr><td><code>test_only_one_term_can_be_active</code></td><td><code>uniq_active_term_per_workspace</code></td><td>ডেটাবেজ</td></tr>
+      <tr><td><code>test_saving_twice_does_not_duplicate</code></td><td><code>uniq_attendance_student_class_subject_date</code></td><td>ডেটাবেজ</td></tr>
+      <tr><td><code>test_domain_cannot_be_stolen_by_a_second_institution</code></td><td><code>unique_custom_domain</code></td><td>ডেটাবেজ</td></tr>
+      <tr><td><code>test_absent_student_cannot_have_a_mark</code></td><td>Mark — অনুপস্থিত + নম্বর একসাথে নয়</td><td><code>clean()</code></td></tr>
+      <tr><td><code>test_mark_above_full_marks_is_rejected</code></td><td>Mark — পূর্ণমানের সীমা</td><td><code>clean()</code></td></tr>
+      <tr><td><code>test_overlapping_bands_are_rejected</code></td><td>GradeBand — ওভারল্যাপ নয়</td><td><code>clean()</code></td></tr>
+      <tr><td><code>test_unenrolled_student_cannot_be_marked</code></td><td>AttendanceRecord ↔ Enrollment</td><td><code>clean()</code> + কোয়েরি</td></tr>
+      <tr><td><code>test_future_date_is_rejected</code></td><td>ভবিষ্যতের হাজিরা নয়</td><td><code>clean()</code></td></tr>
+      <tr><td><code>test_invoice_numbers_are_sequential</code></td><td>ইনভয়েস নম্বরের ধারা</td><td>এক-থ্রেডে মাত্র</td></tr>
+      <tr><td><code>test_used_seats_come_from_real_rows</code></td><td>আসন গোনা হয় সারি থেকে, কাউন্টার থেকে নয়</td><td>কোয়েরি</td></tr>
+    </table>
+    <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      শেষ সারিটি মনে রাখুন: <code>test_invoice_numbers_are_sequential</code> ধারাবাহিকতা প্রমাণ করে, কিন্তু <b>সমান্তরালতায়</b> ভাঙে কি না তা পরীক্ষা করে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> টেস্টের নাম পড়ে বলুন — ভালো টেস্টের নামই ডকুমেন্টেশন। "কোন নিয়মটি সত্যিই প্রমাণিত, আর কোনটি নিছক অনুমান" — এই প্রশ্নটি শিক্ষার্থীদের নিজের প্রজেক্টে করতে দিন।
+</section>

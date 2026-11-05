@@ -1,0 +1,182 @@
+<section class="chapter">
+<div class="ch-head">
+  <div class="ch-num">১</div>
+  <div class="ch-title">
+    <h2>শূন্য থেকে শুরু: কী বানাচ্ছি আর কার জন্য</h2>
+    <div class="ch-meta">প্র্যাকটিক্যাল ১ · অধ্যায় ১ / ৪০</div>
+  </div>
+</div>
+<div class="chips">
+  <span class="chip2">১.১ প্রজেক্ট চিহ্নিত করা</span>
+  <span class="chip2">১.২ তালিকা থেকে বাছাই</span>
+  <span class="chip2 alt2">সময়: ২ সেশন</span>
+</div>
+
+<!-- STEP 0 -->
+<h3 class="step"><span class="n">০</span><span class="t">এক নজরে<small>এই অধ্যায় শেষে আপনি পারবেন — পাঁচ ভূমিকা আলাদা করতে, আর প্রমাণসহ দেখাতে</small></span></h3>
+
+<div class="diagram">
+<svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg">
+ <defs><linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+   <stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+ <!-- layer 1 -->
+ <rect x="10" y="8" width="680" height="52" rx="9" fill="#eef2ff" stroke="#c7d2fe"/>
+ <rect x="10" y="8" width="8" height="52" rx="4" fill="url(#band)"/>
+ <text x="30" y="30" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#312e81">পাবলিক সাইট</text>
+ <text x="30" y="48" font-family="sans-serif" font-size="11" fill="#475569">দাম দেখানো → সাইনআপ → ১৪ দিনের ফ্রি ট্রায়াল &nbsp;·&nbsp; এটি মার্কেটিং</text>
+ <text x="620" y="42" font-family="sans-serif" font-size="10" fill="#6366f1">লগইনের আগে</text>
+ <!-- layer 2 -->
+ <rect x="10" y="68" width="680" height="52" rx="9" fill="#f5f3ff" stroke="#ddd6fe"/>
+ <rect x="10" y="68" width="8" height="52" rx="4" fill="#7c3aed"/>
+ <text x="30" y="90" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#4c1d95">কাজের সফটওয়্যার</text>
+ <text x="30" y="108" font-family="sans-serif" font-size="11" fill="#475569">উপস্থিতি · পাঠ · হোমওয়ার্ক · পরীক্ষা · রিপোর্ট কার্ড &nbsp;·&nbsp; এটি আসল পণ্য</text>
+ <text x="612" y="102" font-family="sans-serif" font-size="10" fill="#7c3aed">লগইনের পরে</text>
+ <!-- layer 3 -->
+ <rect x="10" y="128" width="680" height="52" rx="9" fill="#ecfdf5" stroke="#a7f3d0"/>
+ <rect x="10" y="128" width="8" height="52" rx="4" fill="#059669"/>
+ <text x="30" y="150" font-family="sans-serif" font-size="12.5" font-weight="700" fill="#065f46">অপারেটর প্যানেল — /platform/</text>
+ <text x="30" y="168" font-family="sans-serif" font-size="11" fill="#475569">গ্রাহক প্রতিষ্ঠান · প্ল্যান · ইনভয়েস &nbsp;·&nbsp; এটি আপনার ব্যবসা</text>
+ <text x="616" y="162" font-family="sans-serif" font-size="10" fill="#059669">শুধু আপনার</text>
+</svg>
+<div class="dcap">একটি সিস্টেম, তিনটি স্তর — প্রতিটির ব্যবহারকারী আলাদা</div>
+</div>
+
+<!-- STEP 1 -->
+<h3 class="step"><span class="n">১</span><span class="t">সমস্যাটা কী<small>খাতা, হাতের হিসাব, আর কে নম্বর বদলাল তার প্রমাণ নেই</small></span></h3>
+
+<div class="cards">
+  <div class="card"><div class="ic">📕</div><b>তথ্য হারায়</b><p>খাতা ভিজলে এক বছরের উপস্থিতি শেষ।</p></div>
+  <div class="card"><div class="ic">⏳</div><b>রিপোর্টে সময়</b><p>"গত মাসে কোন ক্লাস খারাপ?" — উত্তর দিতে কয়েক ঘণ্টা।</p></div>
+  <div class="card"><div class="ic">🕵️</div><b>দায় থাকে না</b><p>কে নম্বর বদলাল, কখন বদলাল — রেকর্ড নেই।</p></div>
+  <div class="card"><div class="ic">🏫</div><b>এক স্কুল নয়, অনেক</b><p>প্রতিটি স্কুলের আলাদা কপি মানে ২০টি ডেটাবেস, ২০টি ব্যাকআপ।</p></div>
+</div>
+
+<div class="note box"><span class="lab">এখানেই প্রথম সিদ্ধান্ত</span>
+"একটি স্কুলের সফটওয়্যার" নয় — <b>একটি সাবস্ক্রিপশন-প্ল্যাটফর্ম</b>। ব্যবহারকারী = শিক্ষক-শিক্ষার্থী। গ্রাহক = প্রতিষ্ঠান।
+</div>
+
+<!-- STEP 2 -->
+<h3 class="step"><span class="n">২</span><span class="t">ধারণা: পাঁচটি ভূমিকা, পাঁচটি পর্দা<small>প্রতিটি ভূমিকা শুধু নিজের অংশটুকুই দেখে — মেনুতেও, সার্ভারেও</small></span></h3>
+
+<div class="roles">
+  <div class="role"><div class="top"><div class="dot" style="background:#4f46e5">অ্যা</div><div class="nm">প্রতিষ্ঠান অ্যাডমিন</div></div>
+    <p class="yes">ক্লাস-বিষয়, শিক্ষক যোগ, ভর্তি, ফল প্রকাশ, ব্র্যান্ডিং, সাবস্ক্রিপশন নবায়ন</p>
+    <p class="no">অন্য প্রতিষ্ঠানের তথ্য</p></div>
+  <div class="role"><div class="top"><div class="dot" style="background:#7c3aed">কো</div><div class="nm">কোঅর্ডিনেটর</div></div>
+    <p class="yes">একটি বিভাগ বা ক্লাসের তদারকি — উপস্থিতি ও নম্বর দেখা</p>
+    <p class="no">নিজের স্কোপের বাইরে যাওয়া</p></div>
+  <div class="role"><div class="top"><div class="dot" style="background:#0891b2">শি</div><div class="nm">শিক্ষক</div></div>
+    <p class="yes">উপস্থিতি, পাঠ পরিকল্পনা, হোমওয়ার্ক, নম্বর তোলা</p>
+    <p class="no">ফল প্রকাশ, বিলিং, অন্য ক্লাসের নম্বর</p></div>
+  <div class="role"><div class="top"><div class="dot" style="background:#059669">ছা</div><div class="nm">শিক্ষার্থী</div></div>
+    <p class="yes">হোমওয়ার্ক জমা, নিজের ফল ও উপস্থিতি</p>
+    <p class="no">অন্য কারো ফল, নম্বর বদলানো</p></div>
+  <div class="role" style="flex:1 1 100%"><div class="top"><div class="dot" style="background:#d97706">প্ল্যা</div><div class="nm">প্ল্যাটফর্ম অ্যাডমিন (শুধু আপনি)</div></div>
+    <p class="yes">গ্রাহক প্রতিষ্ঠান, প্ল্যান, ট্রায়াল, ইনভয়েস — পুরো ব্যবসা</p>
+    <p class="no">কোনো প্রতিষ্ঠানের ভেতরের পড়াশোনার তথ্য</p></div>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 700 176" xmlns="http://www.w3.org/2000/svg">
+ <rect x="8" y="10" width="300" height="150" rx="10" fill="#f8faff" stroke="#c7d2fe"/>
+ <text x="24" y="34" font-family="sans-serif" font-size="12" font-weight="700" fill="#312e81">Workspace A — Sunrise Model School</text>
+ <rect x="24" y="46" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="32" y="60" font-family="sans-serif" font-size="9.5" fill="#3730a3">শিক্ষার্থী · উপস্থিতি · নম্বর</text>
+ <rect x="24" y="72" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="32" y="86" font-family="sans-serif" font-size="9.5" fill="#3730a3">ক্লাস · বিষয় · পরীক্ষা</text>
+ <rect x="24" y="98" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="32" y="112" font-family="sans-serif" font-size="9.5" fill="#3730a3">সাবস্ক্রিপশন · ইনভয়েস</text>
+
+ <rect x="392" y="10" width="300" height="150" rx="10" fill="#f8faff" stroke="#c7d2fe"/>
+ <text x="408" y="34" font-family="sans-serif" font-size="12" font-weight="700" fill="#312e81">Workspace B — Springfield Coaching</text>
+ <rect x="408" y="46" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="416" y="60" font-family="sans-serif" font-size="9.5" fill="#3730a3">শিক্ষার্থী · উপস্থিতি · নম্বর</text>
+ <rect x="408" y="72" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="416" y="86" font-family="sans-serif" font-size="9.5" fill="#3730a3">ক্লাস · বিষয় · পরীক্ষা</text>
+ <rect x="408" y="98" width="268" height="20" rx="4" fill="#e0e7ff"/><text x="416" y="112" font-family="sans-serif" font-size="9.5" fill="#3730a3">সাবস্ক্রিপশন · ইনভয়েন্ট</text>
+
+ <!-- divider -->
+ <line x1="350" y1="20" x2="350" y2="150" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 4"/>
+ <circle cx="350" cy="86" r="26" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+ <text x="350" y="82" font-family="sans-serif" font-size="10" font-weight="700" fill="#b91c1c" text-anchor="middle">B-এর</text>
+ <text x="350" y="96" font-family="sans-serif" font-size="10" font-weight="700" fill="#b91c1c" text-anchor="middle">আইডি দিয়ে</text>
+ <text x="350" y="132" font-family="sans-serif" font-size="11" font-weight="700" fill="#b91c1c" text-anchor="middle">→ ৪০৪</text>
+ <text x="350" y="166" font-family="sans-serif" font-size="9" fill="#64748b" text-anchor="middle">"পাওয়া যায়নি" — "নিষেধ" নয়</text>
+</svg>
+<div class="dcap">প্রতিটি প্রতিষ্ঠান একটি আলাদা Workspace — এর বাইরের কোনো আইডি দিলে ৪০৪</div>
+</div>
+
+<!-- STEP 3 -->
+<h3 class="step"><span class="n">৩</span><span class="t">লাইভ ডেমো: পাঁচ ভূমিকা নিজে হয়ে দেখুন<small>কোড পড়া লাগবে না — শুধু চোখে দেখুন কি বদলায়</small></span></h3>
+
+<ol class="cmds">
+<li><b>প্রজেক্ট ফোল্ডারে যান</b><pre>cd ~/Projects/"Web Development Project"/ims</pre></li>
+<li><b>এক কমান্ডে চালু করুন</b><pre>bash run.sh</pre>প্রথমবার ১–৩ মিনিট (প্যাকেজ নামে), শেষে লগইনের ঠিকানা দেখাবে।</li>
+<li><b>অ্যাডমিন হয়ে ঢুকুন</b><pre>admin@ims.local  /  DemoPass!2026</pre>মেনু গুনে খাতায় লিখুন।</li>
+<li><b>শিক্ষক হয়ে ঢুকুন</b> — আলাদা ব্রাউজারে <code>teacher@ims.local</code><br>মেনু কমে গেছে: বিলিং নেই, ব্র্যান্ডিং নেই।</li>
+<li><b>শিক্ষার্থী হয়ে ঢুকুন</b> — <code>student@ims.local</code><br>মাত্র তিনটি মেনু: হোমওয়ার্ক, ফলাফল, উপস্থিতি।</li>
+<li><b>একটি সীমা যাচাই করুন</b> — শিক্ষক হয়ে এই ঠিকানায় হাতে যান
+<pre>http://127.0.0.1:8000/w/sunrise-model-school/billing/invoices/</pre>
+<b>৪০৩ পর্দা আসবে</b> — কারণ মেনুতে লিংক না থাকা কোনো নিরাপত্তা নয়; সার্ভারেও আটকাতে হয়।</li>
+</ol>
+
+<div class="two">
+  <figure><img src="file:///home/user/ims/docs/screenshots/roles/dashboard_admin.png" alt="অ্যাডমিন ড্যাশবোর্ড">
+    <figcaption>অ্যাডমিন — বিলিং ও ব্র্যান্ডিং মেনু আছে</figcaption></figure>
+  <figure><img src="file:///home/user/ims/docs/screenshots/roles/dashboard_student.png" alt="শিক্ষার্থী ড্যাশবোর্ড">
+    <figcaption>শিক্ষার্থী — একই সিস্টেম, মাত্র তিনটি মেনু</figcaption></figure>
+</div>
+
+<!-- STEP 4 -->
+<h3 class="step"><span class="n">৪</span><span class="t">প্রমাণ: মুখে নয়, স্ক্রিপ্টে<small>৫৫ পেজ × ৪ ভূমিকা = ২২০টি স্বয়ংক্রিয় যাচাই</small></span></h3>
+
+<pre>python smoke_test.py --base http://127.0.0.1:8000
+
+  ORG_ADMIN     55/55 as expected
+  COORDINATOR   55/55 as expected
+  TEACHER       55/55 as expected
+  STUDENT       55/55 as expected
+PASS: 0 mismatched expectations</pre>
+
+<table>
+<thead><tr><th style="width:46mm">দাবি</th><th>প্রমাণ কোথায়</th></tr></thead>
+<tbody>
+<tr><td>ভূমিকা আলাদা</td><td><code>smoke_test.py</code> · ২২০ যাচাই · <code>apps/core/navigation.py</code></td></tr>
+<tr><td>এক প্রতিষ্ঠান আরেকটাকে দেখে না</td><td><code>apps/core/scoping.py</code> · অন্য আইডিতে ৪০৪</td></tr>
+<tr><td>অনুমতি পর্দায় ও সার্ভারে একই নিয়মে</td><td><code>apps/core/permissions.py</code> · <code>workspace_view</code></td></tr>
+<tr><td>সিস্টেম সত্যিই চলে</td><td>১০৩ টেস্ট · <code>bash run.sh</code></td></tr>
+</tbody>
+</table>
+
+<!-- STEP 5 -->
+<h3 class="step"><span class="n">৫</span><span class="t">এখানে সবাই আটকায়<small>উপসর্গ → কারণ → সমাধান</small></span></h3>
+
+<div class="cards">
+  <div class="card" style="border-color:#fecaca;background:#fef2f2"><b style="color:#b91c1c">command not found</b>
+    <p><b>কারণ:</b> শুধু <code>bash</code> লিখে এন্টার — নতুন শেল খুলেছে।<br><b>সমাধান:</b> <code>exit</code> দিয়ে বেরিয়ে <code>bash run.sh</code>।</p></div>
+  <div class="card" style="border-color:#fecaca;background:#fef2f2"><b style="color:#b91c1c">লগইন হচ্ছে না</b>
+    <p><b>কারণ:</b> পুরোনো ঠিকানা <code>@tms.local</code>।<br><b>সমাধান:</b> <code>admin@ims.local</code>, দরকারে <code>bash run.sh --reset</code>।</p></div>
+  <div class="card" style="border-color:#fecaca;background:#fef2f2"><b style="color:#b91c1c">Port 8000 busy</b>
+    <p><b>কারণ:</b> আগের সার্ভার বন্ধ হয়নি।<br><b>সমাধান:</b> <code>bash run.sh 8001</code>।</p></div>
+</div>
+
+<!-- STEP 6 -->
+<h3 class="step"><span class="n">৬</span><span class="t">তুমি যা জমা দেবে<small>এক পাতার পরিচিতি — পাঁচটি বাক্য, প্রতিটি সর্বোচ্চ ২৫ শব্দ</small></span></h3>
+
+<table>
+<thead><tr><th style="width:10mm">#</th><th>বাক্যটি</th><th style="width:34mm">যা দেখে নম্বর</th></tr></thead>
+<tbody>
+<tr><td class="num">১</td><td>আমার সিস্টেমটি কী, এক বাক্যে</td><td rowspan="5" style="font-size:8.4pt">
+<b>০–৪০%</b> — ভূমিকা বা কাজ অস্পষ্ট, ৫ম বাক্য নেই<br><br>
+<b>৫০–৭০%</b> — পাঁচটিই আছে, "যা করবে না" সাধারণ<br><br>
+<b>৮০–১০০%</b> — ৫ম বাক্য নির্দিষ্ট ও যুক্তিসহ</td></tr>
+<tr><td class="num">২</td><td>কোন সমস্যার সমাধান, সমস্যাটি কার</td></tr>
+<tr><td class="num">৩</td><td>কত ধরনের ব্যবহারকারী, প্রতিটির এক লাইন দায়িত্ব</td></tr>
+<tr><td class="num">৪</td><td>প্রতিটি ব্যবহারকারীর তিনটি প্রধান কাজ</td></tr>
+<tr><td class="num">৫</td><td><b>একটি জিনিস যা আমার সিস্টেম করবে না</b></td></tr>
+</tbody>
+</table>
+
+<div class="warn box"><span class="lab">শিক্ষকের নোট</span>
+৫ম বাক্যটিই সবচেয়ে বেশি নম্বর বহন করে — কারণ শিক্ষার্থীদের সবচেয়ে বড় অভ্যাসগত ভুল হলো স্কোপ শুধু বাড়ানো, কখনো কমানো নয়।
+</div>
+
+<div class="box note"><span class="lab">পরের অধ্যায়ে</span>
+ধারণা অনেক, কোনটা বাছব? — ১২টি প্রজেক্ট, পাঁচটি মাপকাঠি, একটি স্কোর টেবিল।
+</div>
+</section>

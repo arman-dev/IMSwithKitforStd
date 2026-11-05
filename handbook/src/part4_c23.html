@@ -1,0 +1,541 @@
+<!-- ===================== CLASS 23 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৪ · কোডিং · ক্লাস ২৩ / ৩৭ · পর্বের শেষ ক্লাস</div>
+  <h1>মাস শেষে<br>টাকার হিসাব</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৮ · টপিক ৮.১ (সাবস্ক্রিপশন ও বিলিং)<br>১৮টি বিলিং রুট · ৩৬টি টেস্ট · ২টি middleware · ৫টি সাবস্ক্রিপশন অবস্থা</div>
+  <div class="pill">is_writable · Invoice · read-only গেট</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>প্রতিষ্ঠান টাকা না দিলে ডেটা মুছে ফেলবেন?</h2>
+      <div class="sub">হাত তুলুন: হ্যাঁ / না / ৩০ দিন পর</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:24pt;line-height:1.6">
+      উত্তর: <span class="hl">কিছুই মুছবে না</span> — শুধু লেখা বন্ধ, পড়া খোলা।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      স্কুলের ছাত্র-নম্বর-হাজিরা কারও বিল বাকির জিম্মায় নয়। এই একটি নৈতিক সিদ্ধান্ত থেকেই জন্মেছে
+      <code>is_writable</code>, read-only গেট, আর "ডেটা নিরাপদ, শুধু নবায়ন করুন" বার্তা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "আপনার প্রোডাক্টের সবচেয়ে মানবিক কোডটি সাধারণত বিলিং ফাইলে থাকে।" এটা ক্লাসের সুর।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2><code>Plan</code> — একটি দাম, একটি সারি</h2>
+      <div class="sub">১৩টি ফিল্ড; সিড করা ৩টি প্ল্যান: starter · growth · campus</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">class Plan(models.Model):
+    class Interval(models.TextChoices):
+        MONTHLY = "MONTHLY", "Monthly"
+        YEARLY = "YEARLY", "Yearly"
+
+    code = models.SlugField(max_length=40, unique=True)
+    name = models.CharField(max_length=80)
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                validators=[MinValueValidator(Decimal("0"))])
+    interval = models.CharField(choices=Interval.choices)
+    currency = models.CharField(max_length=3, default="BDT")
+    max_students = models.PositiveIntegerField(null=True, blank=True)
+    max_staff = models.PositiveIntegerField(null=True, blank=True)
+    features = models.TextField(help_text="One feature per line.")
+    trial_days = models.PositiveSmallIntegerField(default=14)
+    is_public / is_active / sort_order
+
+    def feature_list(self):
+        return [l.strip() for l in self.features.splitlines() if l.strip()]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>null=True</code> মানে অসীম</b>
+            <p style="font-size:9.6pt"><code>max_students=None</code> → "Unlimited students" (স্কুল প্ল্যান)।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">টেক্সটে ফিচার</b>
+            <p style="font-size:9.6pt">প্রতি লাইনে একটি — নতুন ফিচার যোগে মাইগ্রেশন লাগে না, শুধু লেখা বদলায়।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>is_active</code> বনাম <code>is_public</code></b>
+            <p style="font-size:9.6pt">পুরোনো গ্রাহক <code>is_active</code>-এ চলবে; নতুন বিক্রি বন্ধ হয় <code>is_public=False</code>-এ।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11pt">দাম <code>Decimal</code></b>
+            <p style="font-size:9.6pt">৳১৫০০.০০ — float নয়; ইনভয়েস আর রিপোর্টে একই সংখ্যা।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "প্ল্যান বদলালে পুরোনো গ্রাহকের দাম বদলে যাবে" — <code>Subscription</code>-এ <code>plan</code> FK রাখা হয়েছে, দাম কপি নয়; কিন্তু ইনভয়েসে দাম কপি হয় (পরে দেখা যাবে কেন)।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2><code>Subscription</code> — প্রতিষ্ঠানপ্রতি একটি</h2>
+      <div class="sub"><code>OneToOneField(Workspace)</code> · ৫টি অবস্থা · <code>seats_override</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.42">class Subscription(models.Model):
+    class Status(models.TextChoices):
+        TRIAL = "TRIAL", "Trial"
+        ACTIVE = "ACTIVE", "Active"
+        PAST_DUE = "PAST_DUE", "Payment overdue (read-only)"
+        SUSPENDED = "SUSPENDED", "Suspended by platform"
+        CANCELLED = "CANCELLED", "Cancelled"
+
+    workspace = models.OneToOneField(Workspace,
+        on_delete=models.CASCADE, related_name="subscription")
+    plan = models.ForeignKey(Plan, on_delete=models.PROTECT)
+    status = models.CharField(choices=Status.choices,
+                              default=Status.TRIAL)
+    trial_ends_on / current_period_start / current_period_end
+    seats_override = models.PositiveIntegerField(null=True, blank=True)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:32%">সিদ্ধান্ত</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td><code>OneToOne</code></td><td>এক প্রতিষ্ঠানের দুই সাবস্ক্রিপশন মানে দ্বিগুণ বিল — অসম্ভব করে দেয় DB</td></tr>
+            <tr><td><code>plan</code>-এ <code>PROTECT</code></td><td>চালু গ্রাহকের প্ল্যান মুছে ফেলা যাবে না</td></tr>
+            <tr><td><code>seats_override</code></td><td>"৩০০ সিটের প্ল্যানে ৪০০" — দরকষাকষির জায়গা কোডে</td></tr>
+            <tr><td>পার্সোনাল ওয়ার্কস্পেস</td><td>কোনো সাবস্ক্রিপশনই নেই — <code>sub is None → writable</code></td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          ব্যক্তিগত শিক্ষকের ওয়ার্কস্পেস কখনো গেটে আটকায় না — এটাও একটি টেস্টে লেখা (<code>test_personal_workspace_is_never_gated</code>)।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "সাবস্ক্রিপশন কে বানায় — প্রতিষ্ঠান নাকি প্ল্যাটফর্ম?" উত্তর: <code>start_trial()</code>/<code>provision_institution()</code> — ব্যবহারকারী নিজে নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>একটি property, পাঁচটি অবস্থা</h2>
+      <div class="sub"><code>is_writable</code> — পুরো প্রোডাক্টের সবচেয়ে দামি ১০ লাইন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 210" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="20" y="20" width="170" height="52" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="105" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#312e81">TRIAL</text>
+          <text x="105" y="58" text-anchor="middle" font-size="7.8" fill="#4338ca">১৪ দিন · লেখা চলে</text>
+
+          <rect x="270" y="20" width="170" height="52" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+          <text x="355" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#115e59">ACTIVE</text>
+          <text x="355" y="58" text-anchor="middle" font-size="7.8" fill="#0f766e">লেখা চলে</text>
+
+          <rect x="520" y="20" width="200" height="52" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+          <text x="620" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#7c2d12">PAST_DUE / মেয়াদ শেষ</text>
+          <text x="620" y="58" text-anchor="middle" font-size="7.8" fill="#b45309">পড়া চলে · লেখা বন্ধ</text>
+
+          <rect x="770" y="20" width="200" height="52" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.5"/>
+          <text x="870" y="42" text-anchor="middle" font-size="10" font-weight="700" fill="#7f1d1d">SUSPENDED / CANCELLED</text>
+          <text x="870" y="58" text-anchor="middle" font-size="7.8" fill="#b91c1c">পড়া চলে · লেখা বন্ধ</text>
+
+          <g stroke="#94a3b8" stroke-width="1.3" fill="none">
+            <path d="M192,46 L266,46" marker-end="url(#a23)"/>
+            <path d="M442,46 L516,46" marker-end="url(#a23)"/>
+            <path d="M722,46 L766,46" marker-end="url(#a23)"/>
+          </g>
+          <text x="229" y="40" text-anchor="middle" font-size="7" fill="#475569">activate()</text>
+          <text x="479" y="40" text-anchor="middle" font-size="7" fill="#475569">মেয়াদ</text>
+          <text x="744" y="40" text-anchor="middle" font-size="7" fill="#475569">suspend()</text>
+
+          <rect x="20" y="110" width="950" height="82" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+          <text x="36" y="131" font-size="10.6" font-weight="700" fill="#0f172a">নিয়ম (কোডের ক্রমেই):</text>
+          <text x="36" y="150" font-size="10.4" fill="#334155">১. PAST_DUE · SUSPENDED · CANCELLED → False (সবসময়)</text>
+          <text x="36" y="167" font-size="10.4" fill="#334155">২. TRIAL → trial_ends_on খালি বা আজকের সমান/পরে হলে True</text>
+          <text x="36" y="184" font-size="10.4" fill="#334155">৩. ACTIVE → current_period_end একই নিয়ম · ৪. বাকি সব → False</text>
+          <text x="620" y="150" font-size="9.5" fill="#dc2626">মেয়াদোত্তীর্ণ trial = PAST_DUE-এর মতো:</text>
+          <text x="620" y="167" font-size="9.5" fill="#dc2626">ডেটা হারায় না, শুধু লেখা বন্ধ।</text>
+          <text x="620" y="184" font-size="9.2" fill="#64748b">একটি property · সব ভিউ ও ব্যানার একই সত্য মানে</text>
+          <defs><marker id="a23" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:4.5mm;font-size:10.8pt;padding:2.8mm 4.2mm">
+      তারিখ আসে <code>timezone.localdate()</code> থেকে — সার্ভার UTC-তে থাকলেও স্কুলের "আজ" ঢাকার তারিখ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে জিজ্ঞেস করুন: "TRIAL যার trial_ends_on=None — লেখা চালু না বন্ধ?" কোড বলে চালু (নিরাপদ দিক), কারণ <code>is None</code> চেক স্পষ্ট লেখা আছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>একটি তারিখ, চারটি প্রশ্ন</h2>
+      <div class="sub"><code>ends_on</code> · <code>days_left</code> · <code>state_label</code> · <code>seat_percent</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45">@property
+def ends_on(self):
+    return (self.trial_ends_on if self.status == self.Status.TRIAL
+            else self.current_period_end)
+
+@property
+def days_left(self):
+    end = self.ends_on
+    return None if end is None else (end - timezone.localdate()).days
+
+@property
+def state_label(self):
+    if self.is_writable:
+        return "Trial" if self.status == self.Status.TRIAL else "Active"
+    return ("Expired" if self.status in (self.Status.TRIAL, self.Status.ACTIVE)
+            else self.get_status_display())</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:40%">প্রশ্ন</th><th>কোথায় উত্তর</th></tr></thead>
+          <tbody>
+            <tr><td>"কবে শেষ?"</td><td>ব্যানার · ইনভয়েসের period_end</td></tr>
+            <tr><td>"কত দিন বাকি?"</td><td><code>days_left</code> → "N দিন বাকি"</td></tr>
+            <tr><td>"কী অবস্থা?"</td><td><code>state_label</code> — ব্যবহারকারীর ভাষায়</td></tr>
+            <tr><td>"সিট কতটা ভরা?"</td><td><code>seat_percent</code> → ৯০% হলে সতর্কতা</td></tr>
+          </tbody>
+        </table>
+        <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          <code>state_label</code>-এ "Expired" কৃত্রিম শব্দ — DB-তে নেই। ব্যবহারকারীকে "PAST_DUE" দেখানো যায় না, তাই অনুবাদ স্তর।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "স্টেটাস কোড নয়, বাক্য দেখান।" <code>TRIAL</code> বনাম "ট্রায়াল চলছে, ৯ দিন বাকি" — ব্যবহারকারীর ভাষা আলাদা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>গেট — লেখা আটকায়, পড়া নয়</h2>
+      <div class="sub"><code>SubscriptionGateMiddleware</code> — সব ভিউয়ের আগে একবার</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:7.8pt;line-height:1.4">ALLOW_PREFIXES = ("/accounts/", "/renew/", "/platform/",
+                  "/static/", "/media/", "/admin/", "/healthz",
+                  "/workspaces/")
+SAFE_METHODS = ("GET", "HEAD", "OPTIONS", "TRACE")
+
+def __call__(self, request):
+    if request.method in SAFE_METHODS:
+        return self.get_response(request)
+    workspace = self._workspace_in_url(request) or request.workspace
+    if workspace is None or request.path.startswith(ALLOW_PREFIXES):
+        return self.get_response(request)
+    if is_writable(workspace):
+        return self.get_response(request)
+    # ORG_ADMIN → নবায়ন পর্দা; বাকিরা → হোম + বার্তা
+    if membership.role == Roles.ORG_ADMIN:
+        return redirect(reverse("billing:renew", kwargs={"slug": ...}) + "?blocked=1")
+    messages.warning(request, "This institution's subscription has ended … "
+                              "Ask your institution administrator to renew it — "
+                              "your work is not lost.")
+    return redirect(f"/w/{workspace.slug}/")</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন middleware</b>
+            <p style="font-size:9.4pt">ভিউ-তে লিখলে ৫৭টি ডেকোরেটরের সাথে আরেকটি জিনিস মনে রাখতে হতো।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">GET কেন ছাড়</b>
+            <p style="font-size:9.4pt">রিপোর্ট, হোমওয়ার্ক, মার্কশিট — সব পড়া যায়; ডেটা তাদেরই।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দুই ধরনের বার্তা</b>
+            <p style="font-size:9.4pt">অ্যাডমিন নবায়ন পর্দায় (তিনিই ঠিক করতে পারেন), শিক্ষক হোমে — বিলিং তথ্য ফাঁস নয়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:10.6pt">বাস্তব বাগ</b>
+            <p style="font-size:9.4pt">প্রথমে <code>request.workspace</code> (সেশন) দেখা হতো — এক শিক্ষক ব্যক্তিগত ওয়ার্কস্পেসে থাকা অবস্থায় মেয়াদোত্তীর্ণ স্কুলে POST করতে পারতেন। সমাধান: URL-এর slug।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাগটা বোর্ডে আঁকুন: এক ব্যবহারকারী, দুই প্রতিষ্ঠান, সেশন একটায়, URL অন্যটায়। "নিরাপত্তার নিয়ম সবসময় URL-কে বিশ্বাস করবে, সেশনকে নয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>গেটের সীমা — কী ছাড় পায়, কেন</h2>
+      <div class="sub">ভুল ছাড় মানে ব্যবহারকারী আটকে যান; ভুল বন্ধ মানে গেট অর্থহীন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:28%">পথ</th><th style="width:20%">অবস্থা</th><th>কারণ</th></tr></thead>
+      <tbody>
+        <tr><td><code>/accounts/</code></td><td>সবসময় খোলা</td><td>লগইন/লগআউট/পাসওয়ার্ড — নাহলে বেরোনোর পথই নেই</td></tr>
+        <tr><td><code>/renew/</code></td><td>সবসময় খোলা</td><td>সমস্যার সমাধান করতে হবে, বন্ধ করলে চিরকাল আটকে</td></tr>
+        <tr><td><code>/platform/</code></td><td>সবসময় খোলা</td><td>প্ল্যাটফর্ম অ্যাডমিন তিনিই বিল ঠিক করেন</td></tr>
+        <tr><td><code>/media/</code> · <code>/static/</code></td><td>সবসময় খোলা</td><td>ছবি/CSS বন্ধ হলে পর্দাই ভাঙে</td></tr>
+        <tr><td><code>/w/&lt;slug&gt;/…</code></td><td>লেখা বন্ধ</td><td>আসল গেট — উপস্থিতি, নম্বর, হোমওয়ার্ক</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call bad" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>সুপারইউজার বাইপাস নেই</b> — স্কুলের অ্যাডমিনও যদি প্ল্যাটফর্ম অ্যাডমিন হন, তিনিও মেয়াদ শেষে ওই স্কুলে লিখতে পারবেন না।
+      </div></div>
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        কনসোলের কাজ চলে <code>/platform/</code> ছাড়ে — তাই গেট নিজের পায়ে কুড়াল মারে না।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "ছাড়ের তালিকায় <code>/api/</code> থাকলে কী হবে?" — ভবিষ্যতে API যোগ করলে এই তালিকা আবার ভাবতে হবে; এটাই middleware-এর ঝুঁকি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2><code>activate()</code> — টাকা, তারিখ, ইনভয়েস</h2>
+      <div class="sub">এক ফাংশন, তিনটি লেখা, সবই <code>transaction.atomic</code>-এ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">@transaction.atomic
+def activate(workspace, plan, *, days=None, amount=None,
+             method=Invoice.Method.BKASH, reference="", actor=None):
+    sub = ensure_subscription(workspace)
+    today = timezone.localdate()
+    start = today
+    if (sub.current_period_end and sub.current_period_end > today
+            and sub.plan_id == plan.pk):
+        start = sub.current_period_end      # আগেভাগে নবায়ন: দিন হারায় না
+    end = start + timedelta(days=days) if days else period_end(start, plan)
+
+    sub.plan, sub.status = plan, Subscription.Status.ACTIVE
+    sub.current_period_start, sub.current_period_end = start, end
+    sub.save()
+
+    return Invoice.objects.create(
+        workspace=workspace, subscription=sub, plan=plan,
+        period_start=start, period_end=end,
+        amount=amount if amount is not None else plan.price,
+        status=Invoice.Status.PAID, method=method,
+        reference=reference[:80], paid_on=today, recorded_by=actor)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">আগেভাগে নবায়ন</b>
+            <p style="font-size:9.4pt">১৫ দিন বাকি থাকলে নতুন মেয়াদ শুরু হয় পুরোনোর শেষ থেকে — <code>test_early_renewal_extends_instead_of_resetting</code>।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ইনভয়েস = প্রমাণ</b>
+            <p style="font-size:9.4pt"><code>status=PAID</code>, <code>paid_on</code>, <code>recorded_by</code> — কে, কখন, কত, কীভাবে।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দাম কপি হয়</b>
+            <p style="font-size:9.4pt">প্ল্যানের দাম পরে বাড়লেও পুরোনো ইনভয়েস বদলায় না — আর্থিক নথি অপরিবর্তনীয়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">atomic কেন</b>
+            <p style="font-size:9.4pt">সাবস্ক্রিপশন ACTIVE হলো কিন্তু ইনভয়েস লেখা ব্যর্থ — এমন অর্ধেক অবস্থা কখনো নয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "প্রমাণ ছাড়া টাকা নেওয়া বন্ধ করুন" — ইনভয়েস সংখ্যা, তারিখ আর রেফারেন্স তিনটিই থাকতে হবে; নাহলে পরে অভিযোগ মেটানো যায় না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>ইনভয়েস নম্বর — ক্রম, এবং একটুখানি ঝুঁকি</h2>
+      <div class="sub"><code>IMS-2026-0001</code> · <code>_next_number()</code> · <code>unique=True</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.42">def save(self, *args, **kwargs):
+    if not self.number:
+        self.number = self._next_number()
+    super().save(*args, **kwargs)
+
+@staticmethod
+def _next_number() -> str:
+    year = timezone.localdate().year
+    prefix = f"{settings.INVOICE_PREFIX}-{year}-"
+    last = (Invoice.objects.filter(number__startswith=prefix)
+            .order_by("-number").values_list("number", flat=True).first())
+    n = int(last.split("-")[-1]) + 1 if last else 1
+    return f"{prefix}{n:04d}"</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:38%">নীতি</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td>বছর prefix-এ</td><td>প্রতি বছর ০০০১ থেকে — হিসাবরক্ষকের প্রত্যাশা</td></tr>
+            <tr><td><code>:04d</code></td><td>সাজালে সংখ্যাগত ক্রম ঠিক থাকে (<code>-0009</code> &lt; <code>-0010</code>)</td></tr>
+            <tr><td><code>unique=True</code></td><td>ডুপ্লিকেট নম্বর DB-ই আটকায়</td></tr>
+            <tr><td>শুধু খালি হলে তৈরি</td><td>সম্পাদনায় নম্বর বদলায় না</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          <b>ঝুঁকি:</b> দুইজন একসাথে ইনভয়েস বানালে দুজনেই একই "পরের নম্বর" পড়তে পারেন → একজন <code>IntegrityError</code> পান। সমাধান: <code>select_for_update()</code> বা ফাঁদে পড়ে রিট্রাই।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.2mm 3.6mm">
+          এখন ঝুঁকিটা ছোট কারণ ইনভয়েস বানান শুধু দুটি জায়গায় — তবু জানা থাকা দরকার।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দুটি টার্মিনাল খুলে একসাথে দুটি ইনভয়েস বানানোর চেষ্টা করুন — কখনো একটি ব্যর্থ হবে। "DB constraint হলো শেষ রক্ষা, প্রথম নয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>সিট সীমা — সিদ্ধান্ত কোথায় নেওয়া হয়</h2>
+      <div class="sub"><code>seat_block_reason()</code> → ৪র্থ ছাত্র যোগ করলে সার্ভারই না বলে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">def seat_block_reason(workspace) -> str | None:
+    sub = subscription_for(workspace)
+    if sub is None:
+        return None                 # ব্যক্তিগত ওয়ার্কস্পেস
+    allowed = sub.seats_allowed     # seats_override or plan.max_students
+    if allowed is None:
+        return None                 # অসীম
+    if sub.used_students() >= allowed:
+        return (f"Your plan allows {allowed} active students. "
+                f"Upgrade to add more.")
+    return None
+
+# ভিউতে (ছাত্র যোগের আগেই)
+reason = seat_block_reason(request.workspace)
+if reason:
+    messages.error(request, reason)
+    return redirect("students:list", slug=slug)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:40%">নিয়ম</th><th>প্রমাণ / কারণ</th></tr></thead>
+          <tbody>
+            <tr><td>গণনা আসল সারি থেকে</td><td><code>StudentProfile.objects.filter(status=ACTIVE).count()</code></td></tr>
+            <tr><td>নিষ্ক্রিয় ছাত্র গোনায় নয়</td><td>পাশ করা ছাত্র সিট ছেড়ে দেয়</td></tr>
+            <tr><td><code>seats_override</code> আগে</td><td>চুক্তি প্ল্যানের চেয়ে বড় হতে পারে</td></tr>
+            <tr><td>UI নয়, সার্ভার</td><td><code>test_server_refuses_the_third_student</code></td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          বার্তাটি কর্মের সাথে জোড়া: "Upgrade to add more" — শুধু "সীমা শেষ" নয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভে সীমা ছুঁইয়ে দেখান: তৃতীয় ছাত্র যোগ করতে গেলে ভদ্র বার্তা; URL দিয়ে চেষ্টা করলেও একই। "নিয়ম UI-তে নয়, সার্ভারে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>কাস্টম ডোমেইন — প্রতিষ্ঠানের নিজের ঠিকানা</h2>
+      <div class="sub"><code>CustomDomainMiddleware</code> · শুধু <code>domain_verified=True</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.4">class CustomDomainMiddleware:
+    def __call__(self, request):
+        request.domain_workspace = None
+        host = request.get_host().split(":")[0].lower()
+        branding = (WorkspaceBranding.objects
+                    .select_related("workspace")
+                    .filter(custom_domain__iexact=host,
+                            domain_verified=True,
+                            workspace__is_active=True)
+                    .first())
+        if branding is not None:
+            request.domain_workspace = branding.workspace
+            request.branding = branding
+            if host not in settings.ALLOWED_HOSTS:
+                settings.ALLOWED_HOSTS = list(settings.ALLOWED_HOSTS) + [host]
+        response = self.get_response(request)
+        patch_vary_headers(response, ["Host"])   # ক্যাশ আলাদা রাখে
+        return response</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ALLOWED_HOSTS কেন বদলায়</b>
+            <p style="font-size:9.4pt">প্রোডাকশনে <code>*</code> নিষিদ্ধ — তাই যাচাই করা ডোমেইন রানটাইমে যোগ হয়, শুধু সেইগুলো।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">চুরি করা যায় না</b>
+            <p style="font-size:9.4pt"><code>test_domain_cannot_be_stolen_by_a_second_institution</code> — এক ডোমেইন এক প্রতিষ্ঠানের।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">যাচাই ছাড়া কিছু নয়</b>
+            <p style="font-size:9.4pt"><code>domain_verified=False</code> হলে উপেক্ষিত — <code>test_unverified_domain_is_ignored</code>।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:10.6pt">Vary: Host</b>
+            <p style="font-size:9.4pt">নাহলে CDN এক স্কুলের লগইন পর্দা আরেক স্কুলকে দেখাতে পারে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাস্তবে ডোমেইন যাচাই DNS TXT রেকর্ড দিয়ে হয় — কোডে শুধু <code>domain_verified</code> ফ্ল্যাগ; প্রক্রিয়াটা প্ল্যাটফর্ম অ্যাডমিনের হাতে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>প্ল্যাটফর্ম কনসোল — টেন্যান্সির বাইরে</h2>
+      <div class="sub">১৮টি রুট · শুধু সুপারইউজার · URL-এ কোনো <code>slug</code> নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8pt;line-height:1.42">/platform/                        dashboard
+/platform/institutions/           তালিকা
+/platform/institutions/new/       নতুন প্রতিষ্ঠান
+/platform/institutions/&lt;pk&gt;/      বিস্তারিত
+/platform/institutions/&lt;pk&gt;/activate/   পেমেন্ট + সক্রিয়
+/platform/institutions/&lt;pk&gt;/toggle/     সক্রিয়/নিষ্ক্রিয়
+/platform/institutions/&lt;pk&gt;/&lt;action&gt;/   suspend · past_due · …
+/platform/plans/                  প্ল্যান তালিকা + নতুন
+/platform/invoices/               ইনভয়েস
+/platform/signups/                সাইনআপ অনুরোধ</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:36%">নিয়ম</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td>URL-এ slug নেই</td><td>এটি কোনো প্রতিষ্ঠানের ভেতরের পর্দা নয়</td></tr>
+            <tr><td><code>is_platform_admin</code></td><td><code>is_staff or is_superuser</code> — একটাই চেক</td></tr>
+            <tr><td>প্রতিষ্ঠান তৈরি</td><td><code>provision_institution()</code> — ওয়ার্কস্পেস + অ্যাডমিন + ট্রায়াল, একসাথে</td></tr>
+            <tr><td>সাইনআপ অনুরোধ</td><td>ব্যর্থ হলেও অনুরোধ রাখা হয় (<code>SignupRequest</code>)</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.6mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+          কনসোলে ভুল ক্লিক মানে ৪০০ স্কুলের বিল — তাই প্রতিটি কাজ <code>AuditLog</code>-এ লেখা হয় এবং কোনো ডিলিট বাটন নেই।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডেমোতে <code>admin@ims.local</code> দিয়ে কনসোল দেখান: এক নতুন প্রতিষ্ঠান তৈরি করে ট্রায়াল শুরু করুন — পুরো প্রবাহ ৬০ সেকেন্ডে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>টাকা না দিলে ডেটা মুছবে না</b></td><td><code>is_writable</code> · read-only · ৩৬টি টেস্ট</td></tr>
+        <tr><td><b>একটি property, সব পর্দায় একই সত্য</b></td><td><code>ends_on</code> · <code>days_left</code> · <code>state_label</code></td></tr>
+        <tr><td><b>গেট middleware-এ, ভিউয়ে নয়</b></td><td><code>SubscriptionGateMiddleware</code> · <code>ALLOW_PREFIXES</code></td></tr>
+        <tr><td><b>URL-এর স্কোপ, সেশনের নয়</b></td><td><code>_workspace_in_url()</code> — বাস্তব বাগের সমাধান</td></tr>
+        <tr><td><b>টাকা আর নথি একসাথে</b></td><td><code>activate()</code> · <code>transaction.atomic</code></td></tr>
+        <tr><td><b>নম্বর অপরিবর্তনীয়</b></td><td><code>IMS-2026-0001</code> · <code>unique</code> · <code>PROTECT</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম সারিটা আবার জোর দিন: "বিলিং কোড লেখার সময় আপনি ঠিক করেন আপনার প্রোডাক্ট কেমন মানুষ।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পর্ব ৪ সমাপ্তি</span>
+    <div><h2>আট ক্লাসে যা তৈরি হলো</h2>
+      <div class="sub">১৫২ স্লাইড · ৩১টি মডেল · ৮৫টি রুট · ১০৩টি টেস্ট</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:8.8pt">
+      <thead><tr><th style="width:24%">ক্লাস</th><th style="width:34%">মূল ধারণা</th><th>দখল</th></tr></thead>
+      <tbody>
+        <tr><td>১৬ · মডেল লেখা</td><td>২৩২ ফিল্ড · <code>clean()</code> · constraint</td><td>ডেটার আকৃতি</td></tr>
+        <tr><td>১৭ · ভিউ ও URL</td><td><code>@workspace_view</code> · ৪০৩/৪০৪ · PRG</td><td>অনুরোধের পথ</td></tr>
+        <tr><td>১৮ · ফর্ম</td><td>হোয়াইটলিস্ট · স্কোপড queryset · <code>add_error</code></td><td>ভুল ইনপুট</td></tr>
+        <tr><td>১৯ · টেমপ্লেট</td><td>৪টি শেল · partial · হোয়াইট-লেবেল</td><td>পর্দা</td></tr>
+        <tr><td>২০ · অথেন্টিকেশন</td><td>কাস্টম User · সেশন · রিসেট</td><td>পরিচয়</td></tr>
+        <tr><td>২১ · ফাইল আপলোড</td><td><code>upload_to</code> · <code>clean()</code> · <code>FileResponse</code></td><td>বাইনারি ডেটা</td></tr>
+        <tr><td>২২ · রিপোর্ট</td><td><code>Decimal</code> · CSV BOM · মার্কশিট PDF</td><td>সিদ্ধান্ত</td></tr>
+        <tr><td>২৩ · বিলিং</td><td><code>is_writable</code> · গেট · ইনভয়েস</td><td>টাকার নিয়ম</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.6mm;font-size:10.6pt;padding:2.8mm 4.2mm">
+      একই সুর আটবার: <b>নিয়ম সার্ভারে, প্রমাণ টেস্টে, বার্তা ব্যবহারকারীর ভাষায়</b> — এটাই পর্ব ৪-এর সারমর্ম।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই টেবিলটা ছাত্রদের ডায়েরিতে লিখিয়ে নিন — পর্ব ৫ (টেস্টিং) শুরু হওয়ার আগে নিজেদের কোডে এই আটটি জায়গা খুঁজে দেখতে বলুন।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৪</div>
+  <h2>পর্ব ৫ শুরু — "যা পরীক্ষা করা হয়নি, তা নেই"</h2>
+  <p>টেস্টিং: <code>TestCase</code> · <code>setUpTestData</code> · <code>force_login</code> · অনুমতির টেস্ট · টেস্ট পিরামিড · ১০৩টি টেস্ট থেকে শেখা</p>
+</section>

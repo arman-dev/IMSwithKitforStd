@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">অডিট</span>
+    <div><h2>২৩ ধরনের কাজ লিপিবদ্ধ — আর একটি নীরব ফাঁদ</h2>
+      <div class="sub"><code>audit.log()</code> কখনো রিকোয়েস্ট ভাঙে না — কিন্তু তাই কিছু চুপচাপ হারায়ও যায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:7.9pt;line-height:1.4;padding:2.8mm 3.4mm">def log(request, action, obj=None, ...):
+    try:
+        return AuditLog.objects.create(
+            workspace=..., actor=request.user,
+            action=action, before=..., after=...,
+            ip_address=request.META["REMOTE_ADDR"])
+    except Exception:      # noqa: BLE001
+        return None        # অডিট কখনো ভাঙবে না</pre>
+        <div class="call bad" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>দাম:</b> লগ লেখা ব্যর্থ হলে কেউ জানে না — ডেটাবেজ ভরে গেলে, বা কলাম লম্বা হলে, ইতিহাস নীরবে ফাঁকা থেকে যায়।
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">লিপিবদ্ধ কাজ (নমুনা)</th><th style="width:48%">কোন অ্যাপ</th></tr>
+          <tr><td><code>attendance.save</code> · <code>attendance.correct</code></td><td>হাজিরা</td></tr>
+          <tr><td><code>assessments.publish</code> · <code>.unpublish</code> · <code>.marks.save</code></td><td>মূল্যায়ন</td></tr>
+          <tr><td><code>students.enrol</code> · <code>.status</code> · <code>.enrolment.end</code></td><td>ছাত্র</td></tr>
+          <tr><td><code>homework.submit</code> · <code>.review</code> · <code>.create</code></td><td>পাঠ</td></tr>
+          <tr><td><code>settings.attendance.update</code></td><td>নীতি</td></tr>
+        </table>
+        <div style="font-size:9.5pt;color:#334155;margin-top:1.8mm">মোট ২৩টি action নাম · <code>before</code>/<code>after</code> ৩০০ অক্ষরে কাটা · দেখার অধিকার কেবল <code>OWNERS</code>।</div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+      <b>যা লিপিবদ্ধ হয় না:</b> লগইন/লগআউট · ব্যর্থ লগইন চেষ্টা · পাসওয়ার্ড বদল · সেটিং ছাড়া অন্যান্য পঠন। অর্থাৎ "কে দেখল" প্রশ্নের উত্তর নেই — কেবল "কে বদলাল"।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দুটি বাক্য তুলনা করুন: "লগ লেখা কখনো কাজ থামাবে না" বনাম "লগ লেখা ব্যর্থ হলে কেউ জানবে না"। দুটোই সত্য — এবং একটির দাম অন্যটি।
+</section>

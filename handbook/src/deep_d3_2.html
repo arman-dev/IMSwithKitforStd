@@ -1,0 +1,28 @@
+<section class="slide">
+  <div class="head"><span class="badge">মানচিত্র</span>
+    <div><h2>নিরাপত্তা মানে তিনটি প্রশ্ন</h2>
+      <div class="sub">প্রতিটি রিকোয়েস্টে তিনটি, আর প্রতিটির উত্তর দেওয়ার আলাদা জায়গা</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft" style="padding:4.2mm 4.6mm">
+        <b style="font-size:13pt">১. কে?</b>
+        <p style="font-size:10.4pt">লগইন হয়েছে? অ্যাকাউন্ট সক্রিয়? পাসওয়ার্ড সঠিক?<br><b>উত্তরদাতা:</b> Django-র Auth মিডলওয়্যার + নিজের User মডেল</p>
+        <p style="font-size:10pt;color:#4f46e5"><b>ব্যর্থ হলে:</b> লগইন পাতায় রিডাইরেক্ট</p>
+      </div>
+      <div class="card soft" style="padding:4.2mm 4.6mm">
+        <b style="font-size:13pt">২. কোন স্কুল?</b>
+        <p style="font-size:10.4pt">এই ইউজার এই workspace-এর সদস্য? স্কুলটি সক্রিয়?<br><b>উত্তরদাতা:</b> <code>workspace_view</code> ডেকোরেটর</p>
+        <p style="font-size:10pt;color:#4f46e5"><b>ব্যর্থ হলে:</b> <b>404</b> — স্কুলটির অস্তিত্বই স্বীকার নয়</p>
+      </div>
+      <div class="card soft" style="padding:4.2mm 4.6mm">
+        <b style="font-size:13pt">৩. কী করতে পারে?</b>
+        <p style="font-size:10.4pt">ভূমিকা অনুমোদিত? ক্লাস/ছাত্র তার পরিধিতে?<br><b>উত্তরদাতা:</b> role set + <code>scoping.py</code></p>
+        <p style="font-size:10pt;color:#4f46e5"><b>ব্যর্থ হলে:</b> <b>403</b> বা খালি তালিকা</p>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:4.4mm;font-size:10.6pt;padding:2.8mm 4.2mm">
+      তিনটি প্রশ্নের উত্তর <b>তিন জায়গায়</b> — এটাই নকশা। এক জায়গায় গুঁজে দিলে একটি ফাঁক সব কিছু ফাঁকা করে দিত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই তিনটি প্রশ্ন বোর্ডে লিখুন এবং সারাক্ষণ ফিরে আসুন। শিক্ষার্থীরা প্রায়ই দ্বিতীয়টি ভুলে যায় — আর মাল্টি-টেন্যান্ট অ্যাপের সবচেয়ে বিপজ্জনক বাগ ঠিক সেখানেই হয়।
+</section>

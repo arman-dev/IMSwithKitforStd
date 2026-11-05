@@ -1,0 +1,19 @@
+<section class="slide">
+  <div class="head"><span class="badge">নজর</span>
+    <div><h2>মনিটরিং নেই — কিন্তু কী দেখতে হতো</h2>
+      <div class="sub">পাঁচটি সংকেত, যার একটিও আজ দেখা যায় না</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:26%">সংকেত</th><th style="width:32%">কী বলত</th><th style="width:42%">আজ কী আছে</th></tr>
+      <tr><td><b>জীবিত আছে?</b></td><td>প্রতি ৩০ সেকেন্ডে ২০০</td><td><code>/healthz</code> নেই — গেটে অনুমতি আছে, ঠিকানা নেই</td></tr>
+      <tr><td><b>এরর হার</b></td><td>৫০০-এর সংখ্যা হঠাৎ বাড়লে সতর্কতা</td><td>Sentry নেই; <code>gunicorn</code> error log কেউ পড়ে না</td></tr>
+      <tr><td><b>ধীরতা</b></td><td>p95 রেসপন্স সময়</td><td>কোনো মাপ নেই — "ধীর লাগছে" কেবল অনুভব</td></tr>
+      <tr><td><b>ডেটাবেজ</b></td><td>সংযোগ সংখ্যা, বড় কোয়েরি</td><td><code>CONN_MAX_AGE=60</code> সেট, কিন্তু নজর নেই</td></tr>
+      <tr><td><b>ব্যবসায়িক</b></td><td>দৈনিক কত স্কুল সক্রিয়</td><td><code>billing_report</code> হাতে চালাতে হয়</td></tr>
+    </table>
+    <div class="call warn" style="margin-top:3mm;font-size:10pt;padding:2.6mm 4mm">
+      <b>পরিণতি:</b> সমস্যা জানা যায় ব্যবহারকারীর ফোনে। ডেমো-প্রজেক্টে গ্রহণযোগ্য; আসল স্কুলে নয় — কারণ প্রথম জানার অধিকার গ্রাহকের নয়, অপারেটরের।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "গ্রাহক আগে জানবে, না আপনি?" — এই একটি প্রশ্নই মনিটরিংয়ের পুরো যুক্তি। প্রথম সংকেতটি (healthz) এক ঘণ্টার কাজ।
+</section>

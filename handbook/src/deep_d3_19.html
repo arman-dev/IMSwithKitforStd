@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">প্ল্যাটফর্ম</span>
+    <div><h2>প্ল্যাটফর্ম কনসোল — একটাই নিয়ম: <code>is_superuser</code></h2>
+      <div class="sub">১৮টি ভিউ, ১৮টি ডেকোরেটর, শূন্য ব্যতিক্রম</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.1pt;line-height:1.5;padding:3mm 3.6mm">def platform_admin_required(view):
+    @wraps(view)
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied(
+                "The platform console is for the "
+                "system administrator only.")
+        return view(request, *args, **kwargs)
+    return _wrapped</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">সিদ্ধান্ত</th><th style="width:56%">কারণ</th></tr>
+          <tr><td>workspace-র ভূমিকা নয়</td><td>প্ল্যাটফর্ম মালিক কোনো স্কুলের সদস্য নন — সদস্যতা দিয়ে ঢোকা যায় না</td></tr>
+          <tr><td>কনসোল স্কুলের বাইরে</td><td><code>/platform/</code> — No workspace pill, no billing banner</td></tr>
+          <tr><td>সুপারইউজারও স্কুলের ডেটা পড়েন না</td><td><code>workspace_view</code>-তে ব্যতিক্রম নেই — প্ল্যাটফর্ম অ্যাডমিন অন্য স্কুলের ছাত্র-তালিকা খুলতে পারেন না</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>দুই ক্ষমতা আলাদা:</b> প্ল্যাটফর্ম মালিক স্কুল তৈরি/বন্ধ করতে পারেন, প্ল্যান বদলাতে পারেন — কিন্তু সেই স্কুলের হাজিরা বা নম্বর দেখার ক্ষমতা তাঁর নেই। এটি ইচ্ছাকৃত নকশা, দুর্ঘটনা নয়।
+    </div>
+    <div class="call warn" style="margin-top:2.2mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+      <b>প্রমাণ:</b> <code>test_only_the_platform_admin_can_open_the_console</code> — সাধারণ অ্যাডমিন ৪০৩ পান।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "সুপারইউজার সব পারেন" — এই ধারণাটি এখানে ভাঙুন। প্রশ্ন করুন: "সাপোর্ট দিতে গিয়ে ছাত্রের নম্বর দেখা কি ঠিক?" উত্তর: না — প্রয়োজনে সম্মতি নিয়ে, লিপিবদ্ধভাবে, আলাদা প্রক্রিয়ায়।
+</section>

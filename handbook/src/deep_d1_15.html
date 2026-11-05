@@ -1,0 +1,39 @@
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম ৪</span>
+    <div><h2>এনরোলমেন্ট: ইতিহাস মুছি না, নিষ্ক্রিয় করি</h2>
+      <div class="sub">শর্তসাপেক্ষ unique-এর সবচেয়ে দরকারি ব্যবহার</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.08">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3.2mm 3.8mm">class Enrollment(TimeStamped):
+    student = FK(StudentProfile, CASCADE)
+    class_group = FK(ClassGroup, CASCADE)
+    is_active = models.BooleanField(default=True)
+    ended_on = models.DateField(null=True, blank=True)
+    end_reason = CharField(max_length=200)
+
+    class Meta:
+        constraints = [UniqueConstraint(
+            fields=["student", "class_group"],
+            condition=Q(is_active=True),
+            name="uniq_active_enrollment_student_class")]</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">ঘটনা</th><th style="width:66%">ডেটায় যা ঘটে</th></tr>
+          <tr><td>ক্লাস বদল</td><td>পুরনো সারি: <code>is_active=False</code> + <code>ended_on</code> + <code>end_reason</code>; নতুন সারি তৈরি</td></tr>
+          <tr><td>একই ক্লাসে ফেরা</td><td>নতুন সারি — পুরনোটি ইতিহাসে থেকে যায়</td></tr>
+          <tr><td>ভুল করে দুইবার active</td><td>ডেটাবেজ নিজেই আটকায়, ভিউ নয়</td></tr>
+          <tr><td>হাজিরা নেওয়া</td><td><code>clean()</code> দেখে ছাত্র সত্যিই এই ক্লাসে active কি না</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          একই প্যাটার্ন তিন জায়গায়: সক্রিয় <b>সেশন</b>, সক্রিয় <b>গ্রেড স্কেল</b>, সক্রিয় <b>ভূমিকা</b>।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>দাম:</b> এক ছাত্র পরপর দুই বার একই ক্লাসে ভর্তি হলে ডেটা ঠিকই থাকে, কিন্তু <code>ended_on</code> ছাড়া পুরনো সারি নিষ্ক্রিয় করার সুযোগ নেই — ভিউতে অবশ্যই <code>ended_on</code> সেট করতে হয়, নাহলে ইতিহাসে ফাঁক থেকে যায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাস্তব প্রশ্ন করুন: "ছাত্র ক্লাস বদলাল, রিপোর্ট কার্ডে পুরনো ক্লাসের নম্বর কোথায় থাকবে?" উত্তর — পুরনো এনরোলমেন্ট সারিতে, কারণ নম্বর কখনো সরানো হয় না।
+</section>

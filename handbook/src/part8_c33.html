@@ -1,0 +1,456 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৮ · ক্লাস ৩৩</div>
+  <h1>দস্তাবেজ — কে পড়বে, কী কাজে</h1>
+  <p class="sub">ব্যবহারবিধি · নতুনদের পথ · প্রমাণের দস্তাবেজ · স্ক্রিনশট · বাংলায় লেখা</p>
+  <div class="pill">IMS · ক্লাস ৩৩ · স্লাইড ১–১৫</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>আপনার README এখনো ভুল বলছে</h2>
+      <div class="sub">আসল উদাহরণ, কল্পনা নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.5"># README.md — আজ যা লেখা আছে
+
+## What exists right now — Slice 1
+
+| Students, academics, attendance,
+| lessons, assessments, reports, audit
+|                    | **not built yet** |
+
+# বাস্তবে: ১১টি অ্যাপ, ১০৩ টেস্ট,
+# ৫৫ পাতা, ৭৭ স্ক্রিনশট — সব চলছে</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">এটাই ডকুমেন্ট-ড্রিফট</b>
+            <p style="font-size:9.2pt">কোড এগিয়েছে, দস্তাবেজ দাঁড়িয়ে আছে। মিথ্যা বলা নয় — <b>ভুলে যাওয়া</b>।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন ভয়ঙ্কর</b>
+            <p style="font-size:9.2pt">নতুন ডেভেলপার প্রথমেই README পড়ে — ভুল তথ্য পেলে হয় অপ্রয়োজনীয় কাজ করে, নয়তো ভরসা হারায়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">প্রতিকার</b>
+            <p style="font-size:9.2pt">সংখ্যা হাতে না লিখে <b>স্ক্রিপ্টে</b> তৈরি করা — এই ক্লাসের শেষ অংশে সেটাই দেখব।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাস শুরুর এই আঘাতটাই দরকারি: "আপনার নিজের প্রজেক্টেও এমন লাইন আছে।" README-র এই অংশটি প্রজেক্টে সত্যিই আছে — শিক্ষার্থীদের দেখিয়ে দিন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মানচিত্র</span>
+    <div><h2>চার পাঠক, চার রকম দস্তাবেজ</h2>
+      <div class="sub">একটি দস্তাবেজ সবাইয়ের জন্য নয়</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 168" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a33" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="8" y="10" width="300" height="50" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="158" y="30" text-anchor="middle" font-size="11.6" font-weight="700" fill="#312e81">প্রতিষ্ঠান অ্যাডমিন / শিক্ষক</text>
+        <text x="158" y="48" text-anchor="middle" font-size="9.4" fill="#3730a3">"কীভাবে মার্কস দেব?"</text>
+
+        <rect x="8" y="70" width="300" height="50" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="158" y="90" text-anchor="middle" font-size="11.6" font-weight="700" fill="#155e75">নতুন ডেভেলপার</text>
+        <text x="158" y="108" text-anchor="middle" font-size="9.4" fill="#0e7490">"চালাব কীভাবে?"</text>
+
+        <rect x="8" y="130" width="300" height="34" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="158" y="152" text-anchor="middle" font-size="11.2" font-weight="700" fill="#166534">অপারেটর · আপনি ছয় মাস পর</text>
+
+        <rect x="640" y="10" width="352" height="46" rx="8" fill="#faf5ff" stroke="#9333ea" stroke-width="2"/>
+        <text x="816" y="29" text-anchor="middle" font-size="11.2" font-weight="700" fill="#6b21a8">USER_MANUAL · ২০৩ লাইন · ৮ অধ্যায়</text>
+        <text x="816" y="46" text-anchor="middle" font-size="9" fill="#7e22ce">ভূমিকা ধরে ধরে, স্ক্রিনশটসহ</text>
+
+        <rect x="640" y="65" width="352" height="46" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="816" y="84" text-anchor="middle" font-size="11.2" font-weight="700" fill="#92400e">START_HERE · BUILD_STATUS</text>
+        <text x="816" y="101" text-anchor="middle" font-size="9" fill="#b45309">২১১ + ১৭০ লাইন · দুই পথ + প্রমাণ</text>
+
+        <rect x="640" y="120" width="352" height="44" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="816" y="139" text-anchor="middle" font-size="11.2" font-weight="700" fill="#166534">DEPLOYMENT · LAUNCH_PLAYBOOK</text>
+        <text x="816" y="156" text-anchor="middle" font-size="9" fill="#15803d">১২২ + ১৩৬ লাইন</text>
+
+        <line x1="310" y1="35" x2="634" y2="33" stroke="#4338ca" stroke-width="2" marker-end="url(#a33)"/>
+        <line x1="310" y1="95" x2="634" y2="88" stroke="#4338ca" stroke-width="2" marker-end="url(#a33)"/>
+        <line x1="310" y1="145" x2="634" y2="142" stroke="#4338ca" stroke-width="2" marker-end="url(#a33)"/>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:2.4mm;font-size:10.2pt;padding:2.6mm 4mm">
+      একটি দস্তাবেজে সব লেখার চেষ্টা করলে প্রত্যেকে অপ্রয়োজনীয় অংশ পড়ে থেমে যায় — আর কেউ পুরোটা পড়ে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "আপনার প্রজেক্টের দস্তাবেজ কে পড়ে?" উত্তর না মিললে দস্তাবেজটি সাজসজ্জা, প্রয়োজন নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">তালিকা</span>
+    <div><h2>ছয়টি ফাইল, ৯০০ লাইন</h2>
+      <div class="sub">প্রতিটির একটি নির্দিষ্ট কাজ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:30%">ফাইল</th><th style="width:10%">লাইন</th><th style="width:24%">পাঠক</th><th>প্রশ্ন যার উত্তর দেয়</th></tr></thead>
+      <tbody>
+        <tr><td><code>README.md</code></td><td>৫৮</td><td>সবাই</td><td>এটি কী, কী দিয়ে বানানো — <b>এখন বাসি</b></td></tr>
+        <tr><td><code>START_HERE.md</code></td><td>২১১</td><td>নতুন ডেভেলপার</td><td>নিজের মেশিনে চালাব কীভাবে</td></tr>
+        <tr><td><code>USER_MANUAL.md</code></td><td>২০৩</td><td>প্রতিষ্ঠান / শিক্ষক</td><td>কোন পর্দায় কী করব</td></tr>
+        <tr><td><code>BUILD_STATUS.md</code></td><td>১৭০</td><td>আপনি ও গ্রাহক</td><td>কী তৈরি, কী বাকি, কোন প্রমাণে</td></tr>
+        <tr><td><code>LAUNCH_PLAYBOOK.md</code></td><td>১৩৬</td><td>আপনি (অনবোর্ডিং)</td><td>স্কুল আনব কীভাবে, টাকা কীভাবে নেব</td></tr>
+        <tr><td><code>DEPLOYMENT.md</code></td><td>১২২</td><td>অপারেটর</td><td>সার্ভারে তুলব কীভাবে</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      ছয়টি ফাইলই মূল (Markdown) — একই লেখা HTML/PDF-এও যায় (<code>docs/manual/user-manual-bn.html</code>, <code>docs/IMS_User_Manual_BN.pdf</code>)। এক উৎস, অনেক রূপ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> টেবিলের শেষ কলামটাই মূল — প্রতিটি ফাইলের <b>একটি প্রশ্ন</b> থাকা দরকার। প্রশ্ন না থাকলে ফাইলটি বাড়ে, কাজে লাগে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ব্যবহারবিধি</span>
+    <div><h2>ভূমিকা ধরে সাজানো ম্যানুয়াল</h2>
+      <div class="sub">আটটি অংশ — শুরুতে "কে কী পাবে"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:16%">অংশ</th><th>বিষয়</th></tr></thead>
+          <tbody>
+            <tr><td>১–২</td><td>শুরু করার আগে · লগইন, পাসওয়ার্ড, ওয়ার্কস্পেস</td></tr>
+            <tr><td>অধ্যায় ১</td><td>প্রতিষ্ঠান অ্যাডমিন</td></tr>
+            <tr><td>অধ্যায় ২</td><td>কোঅর্ডিনেটর (স্কোপ)</td></tr>
+            <tr><td>অধ্যায় ৩</td><td>শিক্ষক</td></tr>
+            <tr><td>অধ্যায় ৪</td><td>শিক্ষার্থী</td></tr>
+            <tr><td>অধ্যায় ৫</td><td>প্লাটফর্ম অ্যাডমিন</td></tr>
+            <tr><td>অধ্যায় ৬</td><td>সাবস্ক্রিপশন, ট্রায়াল, পেমেন্ট</td></tr>
+            <tr><td>৭–৮</td><td>সমস্যা ও সমাধান · পরিশিষ্ট</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 44%">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কেন ভূমিকা দিয়ে</b>
+            <p style="font-size:9.2pt">শিক্ষক "প্রতিষ্ঠান তৈরি" অংশ পড়তে চান না। ভূমিকা-ভিত্তিক ভাগ = কম পড়া, দ্রুত উত্তর।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">শেষে সমস্যা-সমাধান</b>
+            <p style="font-size:9.2pt">"লগইন হচ্ছে না", "মার্কস সংরক্ষণ হচ্ছে না" — বাস্তব প্রশ্ন দিয়ে শুরু, ব্যাখ্যা পরে।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">ফাঁক</b>
+            <p style="font-size:9.2pt">ম্যানুয়ালের সঙ্গে স্ক্রিনশটের মিল হাতে রাখা হয় — UI বদলালে পুরোনো ছবি থেকে যায়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে ম্যানুয়ালের একটি অধ্যায় খুলে দেখান — তারপর জিজ্ঞেস করুন: "এটি পড়ে একজন শিক্ষক সত্যিই কাজ করতে পারবেন?"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম</span>
+    <div><h2>ব্যবহারবিধি লেখার পাঁচ নিয়ম</h2>
+      <div class="sub">লেখা ভালো না হলে ব্যবহারকারী ফোন করবে — সেটাই আসল খরচ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:28%">নিয়ম</th><th style="width:32%">খারাপ</th><th>ভালো</th></tr></thead>
+      <tbody>
+        <tr><td>এক ধাপে একটি কাজ</td><td>"মার্কস দিন এবং প্রকাশ করুন এবং রিপোর্ট দেখুন"</td><td>তিনটি আলাদা ধাপ, তিনটি ছবি</td></tr>
+        <tr><td>পর্দার নাম হুবহু</td><td>"সেটিংসে যান"</td><td>"Classes &amp; subjects → New class"</td></tr>
+        <tr><td>ফলাফল আগে বলুন</td><td>"ফর্ম পূরণ করুন"</td><td>"ফর্ম পূরণ করলে ক্লাস তালিকায় দেখা যাবে"</td></tr>
+        <tr><td>ভুল হলে কী হবে</td><td>কিছুই না</td><td>"অনুপস্থিত ছাত্রে নম্বর দিলে সংরক্ষণ হবে না"</td></tr>
+        <tr><td>স্ক্রিনশট সত্যি হতে হবে</td><td>পুরোনো ছবি</td><td>চলমান অ্যাপ থেকে তোলা (<code>shoot.py</code>)</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      পরীক্ষা: কাউকে শুধু ম্যানুয়াল দিয়ে কাজটি করতে দিন — আটকে গেলে সেই জায়গাটাই আবার লিখতে হবে। (এটাই bus-factor পরীক্ষা, ক্লাস ৩২-এর।)
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের জোড়ায় ভাগ করে একটি অধ্যায় লিখিয়ে অন্য জনকে দিয়ে চালিয়ে দেখান — সবচেয়ে দ্রুত শেখার উপায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">স্ক্রিনশট</span>
+    <div><h2>৭৭টি ছবি, একটি স্ক্রিপ্ট</h2>
+      <div class="sub">হাতে তোলা ছবি পুরোনো হয় — স্ক্রিপ্টের ছবি নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.46"># docs/shoot.py — চলমান অ্যাপ থেকে ছবি
+BASE = "http://127.0.0.1:8000"
+DESKTOP = {"width": 1440, "height": 980}
+MOBILE  = {"width": 390,  "height": 844}
+
+def login(page, email):        # আসল লগইন
+    page.fill("#id_username", email)
+    page.fill("#id_password", PASSWORD)
+    page.click("button[type=submit]")
+
+def shot(page, name):          # নেটওয়ার্ক শান্ত হলে ছবি
+    page.wait_for_load_state("networkidle")
+    page.screenshot(path=f"{OUT}/{name}")</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:46%">ফোল্ডার</th><th>সংখ্যা</th></tr></thead>
+          <tbody>
+            <tr><td><code>screenshots/</code> (মূল)</td><td>৫৩</td></tr>
+            <tr><td><code>screenshots/saas/</code></td><td>১৩</td></tr>
+            <tr><td><code>screenshots/roles/</code></td><td>৯</td></tr>
+            <tr><td><code>screenshots/manual/</code></td><td>৫</td></tr>
+            <tr><td><b>মোট</b></td><td><b>৭৭ PNG</b></td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.4pt;padding:2.4mm 3.6mm">
+          নামকরণ: <code>30_attendance_take.png</code> — ক্রম + পর্দার নাম; খোঁজা সহজ, অধ্যায়ের ক্রমও মেলে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>shoot.py</code> চালাতে সার্ভার ও ডেমো ডেটা দরকার — ক্লাসের আগে <code>bash run.sh --reset</code> করে রাখুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রমাণ</span>
+    <div><h2>পরিকল্পনা বনাম প্রমাণ</h2>
+      <div class="sub">৫৭ ফিচার · ৫৪টির ছবি-প্রমাণ · দুই আলাদা ফাইল</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.46"># docs/build_status.py — প্রমাণের মানচিত্র
+BUILT = {
+    "F-01": "01_login.png",
+    "F-02": "02_register.png",
+    "F-05": "07_profile.png",
+    "F-08": "05_switch_workspace.png",
+    "F-09": "08_create_institution.png",
+    "F-13": "10_org_admin_dashboard.png",
+    "F-16": "04_teacher_dashboard.png",
+    ...
+}
+
+# ডকুমেন্টেশনে লেখা আছে:
+# "Kept separate from catalogue_data.py on purpose:
+#  the catalogue is the plan, this file is the evidence."</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দুই ফাইল, দুই প্রশ্ন</b>
+            <p style="font-size:9.2pt"><code>catalogue_data.py</code> (৩১ KB) — কী হওয়ার কথা (৫৭ ফিচার)।<br><code>build_status.py</code> — কোনটির ছবি-প্রমাণ আছে (৫৪টি)।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন আলাদা</b>
+            <p style="font-size:9.2pt">"ছবি তালিকা আবার তৈরি করলে ফিচার-স্পেসিফিকেশন নষ্ট হবে না" — ডিজাইনের সিদ্ধান্ত, কোডেই লেখা।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ফল</b>
+            <p style="font-size:9.2pt">দাবি করা আর প্রমাণ করা <b>একই জায়গায়</b> থাকে — তাই ফাঁক লুকায় না, গোনা যায়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এটি এই কোর্সের মূল দর্শন: "দাবি + প্রমাণ"। শিক্ষার্থীকে বলুন নিজের প্রজেক্টে F-নম্বরের বদলে নিজের ফিচার-নাম দিয়ে এমন একটি মানচিত্র বানাতে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">দস্তাবেজও কোড</span>
+    <div><h2>পাঁচটি জেনারেটর স্ক্রিপ্ট</h2>
+      <div class="sub">হাতে লেখা সংখ্যা বাসি হয় — চালানো সংখ্যা নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:34%">স্ক্রিপ্ট</th><th style="width:12%">আকার</th><th>কী তৈরি করে</th></tr></thead>
+      <tbody>
+        <tr><td><code>docs/catalogue_data.py</code></td><td>৩১ KB</td><td>ফিচার-ক্যাটালগের উপাদান (৫৭টি)</td></tr>
+        <tr><td><code>docs/gen_feature_catalogue.py</code></td><td>৩৪ KB</td><td>ক্যাটালগ PDF (স্ক্রিনশটসহ)</td></tr>
+        <tr><td><code>docs/gen_proof_pdf.py</code></td><td>১৯ KB</td><td><code>Build_Proof.pdf</code> — প্রমাণের নথি</td></tr>
+        <tr><td><code>docs/gen_roadmap.py</code></td><td>২৮ KB</td><td>ক্লাস-রোডম্যাপ নথি</td></tr>
+        <tr><td><code>docs/build_status.py</code></td><td>৩.৩ KB</td><td>ফিচার → স্ক্রিনশট মানচিত্র</td></tr>
+        <tr><td><code>docs/shoot.py</code></td><td>৬.২ KB</td><td>৭৭টি স্ক্রিনশট (ডেস্কটপ + মোবাইল)</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.2mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সঠিক ক্রম:</b> <code>run.sh</code> → <code>shoot.py</code> (ছবি) → <code>gen_*</code> (নথি) — ছবি ছাড়া নথি তৈরি হলে ফাঁকা পাতা।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ফাঁক:</b> এই ছয়টি চালানোর এক-কমান্ড স্ক্রিপ্ট (<code>rebuild_docs.sh</code>) এখনো নেই — কেউ একটা ভুলে যায়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে <code>python docs/build_status.py</code> চালিয়ে দেখান — সংখ্যা নিজে থেকে হালনাগাদ হচ্ছে কি না। এই একটি মুহূর্ত অনেকের ধারণা বদলায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নতুনদের পথ</span>
+    <div><h2><code>START_HERE</code> — দুই পথ, এক গন্তব্য</h2>
+      <div class="sub">২১১ লাইন, যাতে প্রথম দিনে কেউ আটকে না থাকে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">পথ A — SQLite (প্রস্তাবিত প্রথমবার)</b>
+            <p style="font-size:9.4pt">শুধু Python লাগে · <code>bash run.sh</code> · একটি ফাইল ডেটাবেস · ৩ মিনিটে চলা শুরু</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">পথ B — PostgreSQL (আসল ভঙ্গি)</b>
+            <p style="font-size:9.4pt">ডেটাবেস সার্ভার + <code>.env</code> · প্রোডাকশনের মতো · ডেভেলপার যেটা শিখবে সেটাই সার্ভারে</p></div>
+          <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">যা দুই পথেই আছে</b>
+            <p style="font-size:9.4pt">ভার্চুয়াল এনভায়রনমেন্ট · <code>pip install -r requirements.txt</code> · <code>seed_demo</code> · চারটি লগইন</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 44%">
+        <pre style="font-size:8.2pt;line-height:1.48"># পথ A — তিন কমান্ড
+bash run.sh
+#  http://127.0.0.1:8000/
+
+# পথ B
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env      # মান বসান
+python manage.py migrate
+python manage.py seed_demo
+python manage.py runserver</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দুই পথ রাখার কারণ: প্রথমবার যেটা সহজ, সেটাই শেখার পথ; পরে আসল ভঙ্গি। একটাই পথ রাখলে নতুনদের অর্ধেক আটকে যাবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সংখ্যার খাতা</span>
+    <div><h2><code>BUILD_STATUS</code> — সংখ্যা ও প্রমাণ</h2>
+      <div class="sub">প্রতিটি সংখ্যার পাশে কমান্ড, প্রতিটি দাবির পাশে টেস্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.46">## Verified numbers
+python manage.py test     ->  90 tests, 90 OK
+python smoke_test.py      ->  55 pages x 4 roles
+manage.py check --deploy  ->  no issues
+
+## Remaining work (not faked, not skipped)
+1. Invitation workflow
+2. Platform console
+4. Backup &amp; restore console
+5. Security attack suite</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">এটি বাসি হয়ে গেছে</b>
+            <p style="font-size:9.2pt">এখন ৯০ নয়, <b>১০৩ টেস্ট</b> — সংখ্যাটি লেখার সময়ের সত্যি, আজকের নয়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">হালনাগাদের নিয়ম</b>
+            <p style="font-size:9.2pt">প্রতিটি রিলিজে তিনটি সংখ্যা আবার চালান: <code>test</code> · <code>smoke_test</code> · <code>check --deploy</code>।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দর্শন</b>
+            <p style="font-size:9.2pt">"not faked, not skipped" — যা হয়নি, তাও লেখা। এটাই দস্তাবেজকে বিশ্বাসযোগ্য করে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি ভালো ও খারাপ দুই দিকই দেখায়: প্রমাণ-খাতার ধারণা সঠিক, কিন্তু হালনাগাদ না হলে সেটিও মিথ্যা বলতে শুরু করে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সততা</span>
+    <div><h2>সৎ ভাষায় লেখা</h2>
+      <div class="sub">যা নেই তা লেখাই দস্তাবেজের সবচেয়ে দামি অংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:40%">প্রজেক্টে যা লেখা আছে</th><th>মানে</th></tr></thead>
+      <tbody>
+        <tr><td>"Remaining work (<b>not faked, not skipped</b>)"</td><td>ফাঁক লুকানো হয়নি, বাদও দেওয়া হয়নি</td></tr>
+        <tr><td>"It has <b>not</b> yet been deployed to a public host"</td><td>রিহার্সাল হয়েছে, ডিপ্লয় হয়নি — পার্থক্য স্পষ্ট</td></tr>
+        <tr><td>"<b>Demo data removed</b> — DemoPass!2026 gone"</td><td>চেকলিস্টে দায়িত্ব, অনুমান নয়</td></tr>
+        <tr><td>"A backup you have never restored is not a backup"</td><td>নীতি এক বাক্যে, মনে রাখার মতো</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যা লিখবেন না:</b> "সব কাজ করছে" · "শীঘ্রই আসছে" · যাচাই না করা সংখ্যা
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যা লিখবেন:</b> "কাজ করছে (টেস্ট ১০৩, আজ ২০২৬-১১-০৫)" · "আসছে: কবে, কীভাবে বোঝা যাবে"
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সৎ দস্তাবেজের সবচেয়ে বড় লাভ: গ্রাহক একবার ভুল তথ্য পেলে আর কিছুতেই ভরসা করে না। "না" বলা বিশ্বাসযোগ্যতা বাড়ায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ভাষা</span>
+    <div><h2>বাংলায় টেকনিক্যাল লেখা</h2>
+      <div class="sub">শব্দ বাংলা, পরিভাষা ইংরেজি — মিশ্রণ নিয়ম মেনে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:40%">যা অনুবাদ করবেন না</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td><code>migrate</code> · <code>commit</code> · <code>deploy</code></td><td>টার্মিনালে যেটা লেখে, দস্তাবেজেও সেটাই</td></tr>
+            <tr><td><code>middleware</code> · <code>queryset</code></td><td>বাংলা করলে খুঁজে পাওয়া যায় না</td></tr>
+            <tr><td>পর্দার নাম (ইংরেজি)</td><td>ব্যবহারকারী পর্দায় ইংরেজিই দেখেন</td></tr>
+          </tbody>
+        </table>
+        <div class="card soft" style="margin-top:2.8mm;padding:2.8mm 3.6mm"><b style="font-size:10.6pt">যা বাংলায় লিখবেন</b>
+          <p style="font-size:9.4pt">ব্যাখ্যা, কারণ, সতর্কতা, ধাপের ক্রিয়া — "সংরক্ষণ করুন", "যাচাই করুন", "ফেরান"। এগুলো পড়ার গতি বাড়ায়।</p></div>
+      </div>
+      <div style="flex:0 0 44%">
+        <pre style="font-size:8.2pt;line-height:1.48"># ভালো মিশ্রণ
+"মার্কস সংরক্ষণ করতে <b>Save</b> চাপুন।
+অনুপস্থিত ছাত্রে নম্বর দিলে ফর্ম
+গ্রহণ করবে না।"
+
+# খারাপ
+"মার্কসংরক্ষণকার্যসম্পাদনসূচক বোতাম"
+
+# আরও খারাপ
+"Click the save button to persist
+the marks record in the database"</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীরা দুই চরমে যায় — পুরো ইংরেজি, বা কঠিন বাংলা। মাঝের পথটাই ব্যবহারিক; একটি প্যারাগ্রাফ একসাথে লিখে দেখান।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — একটি পাতা লিখুন</h2>
+      <div class="sub">চারটি কাজ, সবই ব্যবহারযোগ্য</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. একটি কাজের পাতা</b>
+            <p style="font-size:9.8pt">"উপস্থিতি নেওয়া" — ৫ ধাপ, পর্দার নাম হুবহু, স্ক্রিনশটের জায়গা চিহ্নিত।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. প্রশ্ন-উত্তর পাঁচটি</b>
+            <p style="font-size:9.8pt">"লগইন হচ্ছে না" ধরনের বাস্তব সমস্যা, সংক্ষিপ্ত সমাধান।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. সত্যি সংখ্যা</b>
+            <p style="font-size:9.8pt">নিজের প্রজেক্টে <code>test</code> চালিয়ে সংখ্যা লিখুন — সাথে তারিখ।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. প্রমাণ-মানচিত্র</b>
+            <p style="font-size:9.8pt">পাঁচটি ফিচার → কোন স্ক্রিনশট প্রমাণ করে (ছোট ডিকশনারি)।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>দস্তাবেজ কে পড়বে?</li>
+          <li class="g">সংখ্যা হাতে লিখলে কী হয়?</li>
+          <li>কেন পরিকল্পনা ও প্রমাণ আলাদা ফাইল?</li>
+          <li class="r">টেকনিক্যাল শব্দ অনুবাদ করলে?</li>
+          <li class="g">যা নেই তা লেখা কেন দরকার?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চারটি কাজের ফল জমা নিন — পরের ক্লাসে সেগুলোই আরও পরিষ্কার করা হবে (পর্ব ৮-এর দ্বিতীয় ক্লাস)।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">দস্তাবেজের প্রথম ক্লাসের সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:54%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>প্রতি পাঠকের জন্য আলাদা দস্তাবেজ</b></td><td>২১১ · ২০৩ · ১৭০ · ১৩৬ · ১২২ · ৫৮ লাইন</td></tr>
+        <tr><td><b>এক ধাপে একটি কাজ, পর্দার নাম হুবহু</b></td><td>USER_MANUAL-এর ৮ অধ্যায়</td></tr>
+        <tr><td><b>ছবি স্ক্রিপ্টে, হাতে নয়</b></td><td><code>shoot.py</code> · ৭৭ PNG</td></tr>
+        <tr><td><b>পরিকল্পনা ও প্রমাণ আলাদা রাখুন</b></td><td>৫৭ ফিচার · ৫৪ ছবি-প্রমাণ</td></tr>
+        <tr><td><b>সংখ্যা জেনারেট করুন, লিখবেন না</b></td><td><code>docs/gen_*.py</code> পাঁচটি</td></tr>
+        <tr><td><b>যা নেই তা লিখুন</b></td><td>"not faked, not skipped"</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      পরের ক্লাসে: ডেভেলপার-দস্তাবেজ — কোডের ভেতরের ব্যাখ্যা, চেঞ্জলগ, এবং "কেন এভাবে" লেখার কৌশল।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষে একটি কাজ দিন: "আপনার README-এর বাসি লাইনটি আজই ঠিক করুন" — ছোট, কিন্তু বদল দেখা যায়।
+</section>

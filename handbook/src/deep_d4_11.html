@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">ব্যাকআপ</span>
+    <div><h2><code>backup.sh</code> — ৬টি কার্যকর লাইন</h2>
+      <div class="sub"><code>pg_dump -Fc</code> · media tar · ১৪ দিন · <code>set -euo pipefail</code></div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:8pt;line-height:1.5;padding:3mm 3.4mm">set -euo pipefail
+STAMP=$(date +%Y%m%d-%H%M%S)
+DEST="${BACKUP_DIR:-./backups}"
+mkdir -p "$DEST"
+pg_dump -Fc -f "$DEST/ims-$STAMP.dump"
+tar -czf "$DEST/media-$STAMP.tar.gz" media/ || true
+find "$DEST" -name '*.dump' -mtime +14 -delete</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:38%">সিদ্ধান্ত</th><th style="width:62%">কারণ</th></tr>
+          <tr><td>ডেটাবেজ + media আলাদা</td><td>লোগো/ম্যাটেরিয়াল ডাম্পে থাকে না</td></tr>
+          <tr><td><code>-Fc</code> ফরম্যাট</td><td>টেবিল ধরে ধরে ফেরানো যায়</td></tr>
+          <tr><td>১৪ দিন</td><td>দুই সপ্তাহের মধ্যে ভুল ধরা পড়ে</td></tr>
+          <tr><td><code>set -euo pipefail</code></td><td>মাঝপথে ব্যর্থ = ব্যাকআপ নেই, আধা-ব্যাকআপ নয়</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>সীমা:</b> ডিফল্ট গন্তব্য <code>./backups</code> — অর্থাৎ সার্ভারের ভেতরেই। সার্ভার হারালে ব্যাকআপও যায়। অফসাইট কপি নেই, এনক্রিপশন নেই, WAL/PITR নেই।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      <b>আরও একটি:</b> <code>pg_dump</code> চালানোর অনুমতি ও ডাটাবেজ-নাম কোথাও লেখা নেই — স্ক্রিপ্ট ধরে নেয় আপনি ওই মেশিনে PostgreSQL-এর সুপারইউজার। বাস্তবে এটি প্রথমেই আটকে যায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ব্যাকআপ আছে" বাক্যটি কখনো প্রমাণ নয়। যা প্রমাণ: একটি ফাইল, একটি তারিখ, একটি আকার — আর একটি সফল রিস্টোর।
+</section>

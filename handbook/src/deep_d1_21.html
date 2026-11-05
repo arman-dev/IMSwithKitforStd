@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ২</span>
+    <div><h2>অনুপস্থিত আর শূন্য নম্বর — ডেটায় আলাদা, তাই আলাদা ফল</h2>
+      <div class="sub">assessments.Mark · ৮ কলাম · (exam, student) unique</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.3pt;line-height:1.55;padding:3.2mm 3.8mm">obtained = DecimalField(max_digits=6, decimal_places=2,
+                       null=True, blank=True)
+is_absent = models.BooleanField(default=False)
+
+def clean(self):
+    if self.is_absent and self.obtained is not None:
+        raise ValidationError(...)     # দুটোই সত্য নয়
+    if self.obtained > self.exam.full_marks:
+        raise ValidationError(...)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:32%">অবস্থা</th><th style="width:30%">ডেটা</th><th style="width:38%">রিপোর্টে</th></tr>
+          <tr><td>উপস্থিত, ০ পেয়েছে</td><td><code>obtained=0</code>, <code>is_absent=False</code></td><td>গড়ে ০ ধরা হয়, ফেল</td></tr>
+          <tr><td>অনুপস্থিত</td><td><code>obtained=NULL</code>, <code>is_absent=True</code></td><td>গড় থেকে বাদ, আলাদা গণনা</td></tr>
+          <tr><td>নম্বর এখনো তোলা হয়নি</td><td><code>NULL</code>, <code>is_absent=False</code></td><td>গড় থেকে বাদ</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          যদি অনুপস্থিতকে ০ লিখতাম, ক্লাসের গড় আর পাশের হার দুটোই মিথ্যা হতো — আর কেউ ধরতে পারত না।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>গণনার নিয়ম এক জায়গায়:</b> <code>build_result_sheet(exam)</code> — শুধু পড়ে, লেখে না। তাই হাজিরা-রিপোর্ট আর রেজাল্ট-শিট একই ফাংশন ডাকে, দুটি আলাদা হিসাব হয় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটিই "NULL-এর অর্থ" শেখানোর সেরা জায়গা। তিন ধরনের অনিশ্চয়তা দেখান: অজানা (NULL), শূন্য (০), প্রযোজ্য নয় (অনুপস্থিত) — তিনটিই আলাদা।
+</section>

@@ -1,0 +1,499 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৬ · ক্লাস ৩০</div>
+  <h1>Go-live — চালু করার দিন</h1>
+  <p class="sub">DNS · TLS · অনবোর্ডিং · ডেমো ডেটা সরানো · প্রথম ৪৮ ঘণ্টা · রোলব্যাক সিদ্ধান্ত</p>
+  <div class="pill">IMS · ক্লাস ৩০ · স্লাইড ৩৯–৫৬</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>চালু করার দিন সবচেয়ে বেশি ভুল হয়</h2>
+      <div class="sub">পাঁচটি বাস্তব ঝুঁকি — প্রতিটির প্রতিকার আগেই জানা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:34%">ঝুঁকি</th><th style="width:30%">লক্ষণ</th><th>প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td>DNS এখনো ছড়ায়নি</td><td>"সাইট খুলছে না", অথচ সার্ভার ঠিক</td><td>চালু করার আগেই রেকর্ড দিন (TTL ছোট করুন)</td></tr>
+        <tr><td><code>ALLOWED_HOSTS</code> পুরোনো</td><td>হঠাৎ <b>400 Bad Request</b></td><td>ডোমেইন + <code>CSRF_TRUSTED_ORIGINS</code> আগেই বসান</td></tr>
+        <tr><td>ডেমো ডেটা রয়ে গেছে</td><td>কেউ <code>admin@ims.local</code> দিয়ে ঢুকে পড়ে</td><td>যাওয়ার আগে মুছুন — চেকলিস্টে আছে</td></tr>
+        <tr><td>ইমেইল কাজ করছে না</td><td>পাসওয়ার্ড রিসেট "পাঠানো হয়েছে" কিন্তু আসে না</td><td>একবার নিজে "Forgot password" চালান</td></tr>
+        <tr><td>TLS নেই, HSTS চালু</td><td>সাইট <b>খুলবেই না</b></td><td>TLS আগে, HSTS পরে</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      নিয়ম: <b>প্রতিটি ঝুঁকির একটি যাচাইয়ের কমান্ড থাকবে</b> — "দেখে নিয়েছি" নয়, "আউটপুট নিয়েছি"।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পাঁচটি ঝুঁকির মধ্যে চারটিই কনফিগারেশন, কোড নয়। শিক্ষার্থীদের বলুন: "Go-live-এর ৮০% কাজ আগের সপ্তাহের প্রস্তুতি।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">কাউন্টডাউন</span>
+    <div><h2>D-14 থেকে D-0</h2>
+      <div class="sub">আগেই করুন, যাতে শেষ দিনে কেবল দেখাশোনা করতে হয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:12%">দিন</th><th style="width:42%">কাজ</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>D-14</td><td>আসল আয়োজক বেছে নিন · ডোমেইন কেনা · TLS</td><td>https খোলে</td></tr>
+        <tr><td>D-10</td><td>প্রোডাকশন সেটিংস ও <code>.env</code> ভরা</td><td><code>check --deploy</code> → no issues</td></tr>
+        <tr><td>D-7</td><td>প্রথম প্রতিষ্ঠানের ডেটা তৈরি (year→term→class→subject)</td><td>স্ক্রিনশট</td></tr>
+        <tr><td>D-5</td><td>ডেমো ডেটা সরানো · আসল অ্যাডমিন অ্যাকাউন্ট</td><td>পুরোনো লগইন ব্যর্থ</td></tr>
+        <tr><td>D-3</td><td>রিস্টোর ড্রিল — scratch ডিবিতে</td><td>সারি-সংখ্যা মিলেছে</td></tr>
+        <tr><td>D-1</td><td>ব্যাকআপ · ধোঁয়া পরীক্ষা · ব্যবহারকারীদের জানানো</td><td>চেকলিস্টে টিক</td></tr>
+        <tr><td>D-0</td><td>শুধু মনিটরিং — নতুন কিছু বদলাবেন না</td><td>লগ ও ৫০০-রেট</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      D-0-তে নতুন কিছু বদলানো <b>নিষিদ্ধ</b> — পরিবর্তন আর পর্যবেক্ষণ একসাথে করলে কোনটি সমস্যা বানাল, বোঝা যায় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে কাউন্টডাউনটি বোর্ডে লিখুন এবং প্রত্যেককে নিজের প্রজেক্টের জন্য তারিখ বসিয়ে নিতে বলুন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">DNS</span>
+    <div><h2>কাস্টম ডোমেইন — তিন স্তর</h2>
+      <div class="sub">DNS · যাচাই · রানটাইমে হোস্ট গ্রহণ</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 132" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a30" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="8" y="30" width="216" height="74" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="116" y="54" text-anchor="middle" font-size="12.2" font-weight="700" fill="#312e81">স্কুলের DNS</text>
+        <text x="116" y="74" text-anchor="middle" font-size="9.8" fill="#3730a3">CNAME app.school.edu</text>
+        <text x="116" y="92" text-anchor="middle" font-size="9.4" fill="#64748b">→ আপনার অ্যাপ হোস্ট</text>
+
+        <rect x="258" y="30" width="216" height="74" rx="9" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="366" y="54" text-anchor="middle" font-size="12.2" font-weight="700" fill="#155e75">যাচাই</text>
+        <text x="366" y="74" text-anchor="middle" font-size="9.8" fill="#0e7490">domain_verified = True</text>
+        <text x="366" y="92" text-anchor="middle" font-size="9.4" fill="#64748b">প্লাটফর্ম অ্যাডমিন টিক দেন</text>
+
+        <rect x="508" y="30" width="238" height="74" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="627" y="54" text-anchor="middle" font-size="12.2" font-weight="700" fill="#166534">CustomDomainMiddleware</text>
+        <text x="627" y="74" text-anchor="middle" font-size="9.8" fill="#15803d">ALLOWED_HOSTS-এ হোস্ট যোগ</text>
+        <text x="627" y="92" text-anchor="middle" font-size="9.4" fill="#64748b">Vary: Host</text>
+
+        <rect x="780" y="30" width="212" height="74" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="886" y="54" text-anchor="middle" font-size="12.2" font-weight="700" fill="#92400e">স্কুলের লগইন পাতা</text>
+        <text x="886" y="74" text-anchor="middle" font-size="9.8" fill="#b45309">নিজের লোগো ও রং</text>
+        <text x="886" y="92" text-anchor="middle" font-size="9.4" fill="#64748b">TLS আয়োজকের কাজ</text>
+
+        <line x1="226" y1="67" x2="252" y2="67" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a30)"/>
+        <line x1="476" y1="67" x2="502" y2="67" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a30)"/>
+        <line x1="748" y1="67" x2="774" y2="67" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a30)"/>
+        <text x="500" y="124" text-anchor="middle" font-size="9.8" fill="#b91c1c">যাচাই না হলে ডোমেইন উপেক্ষিত — ডিফল্ট ব্র্যান্ডই থাকে</text>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:2.4mm">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.2mm">
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">তিনটি টেস্টই প্রমাণ</b>
+            <p style="font-size:9pt"><code>test_verified_domain_shows_that_institution_on_the_login_page</code> · <code>test_unverified_domain_is_ignored</code> · <code>test_domain_cannot_be_stolen_by_a_second_institution</code></p></div>
+          <div class="card soft" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">এক ডোমেইন, এক স্কুল</b>
+            <p style="font-size:9pt">ডেটাবেসে <code>UniqueConstraint</code> — দ্বিতীয়বার লেখা যায় না।</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 42%">
+        <pre style="font-size:8pt;line-height:1.42">if branding is not None:
+    request.domain_workspace = branding.workspace
+    if host not in settings.ALLOWED_HOSTS:
+        settings.ALLOWED_HOSTS = (
+            list(settings.ALLOWED_HOSTS) + [host])</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "TLS কে দেয়?" উত্তর: আয়োজক — এই অ্যাপ সার্টিফিকেট বানায় না; অ্যাপ শুধু হোস্ট গ্রহণ করে। "ডোমেইন দখল" টেস্টটির কথা বলুন: একটি ভুল রেকর্ড অন্য স্কুলের ব্র্যান্ড দেখাতে পারবে না।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">কমান্ড</span>
+    <div><h2><code>sync_domains</code> — অনুমান বন্ধ করে</h2>
+      <div class="sub">আজ সত্যি চালানো: এখনো কোনো কাস্টম ডোমেইন নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.5">$ python manage.py sync_domains
+No institution has a custom domain yet.
+
+# ডোমেইন যোগ হলে যা ছাপে:
+  app.school.edu    Sunrise Model School   verified
+  old.school.edu    Sunrise Model School   PENDING
+
+DNS records the school must create:
+  CNAME  app.school.edu  ->  <your app host>
+
+Environment on the server:
+  ALLOWED_HOSTS=<your app host>,app.school.edu
+  CSRF_TRUSTED_ORIGINS=https://<host>,https://app.school.edu</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন একটি কমান্ড</b>
+            <p style="font-size:9.2pt">DNS রেকর্ড আর দুইটি তালিকা হাতে লিখতে গিয়ে ভুল হয় — কমান্ড নকল করার মতো আউটপুট দেয়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">PENDING মানে কী</b>
+            <p style="font-size:9.2pt">যাচাই হয়নি — এই ডোমেইন আপাতত ব্র্যান্ড পাবে না, <code>ALLOWED_HOSTS</code>-এও যাবে না।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">একটি ফাঁক</b>
+            <p style="font-size:9.2pt"><code>ALLOW_PREFIXES</code>-এ <code>/healthz</code> আছে, কিন্তু এমন কোনো URL এখনো নেই — uptime মনিটরের জন্য দরকার।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ফাঁকটি সৎভাবে দেখান: "নীতির তালিকায় আছে, বাস্তবে নেই — এভাবেই ডকুমেন্টেশন আর কোডের দূরত্ব তৈরি হয়।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">TLS</span>
+    <div><h2>সার্টিফিকেট কার কাজ</h2>
+      <div class="sub">অ্যাপ নয় — আয়োজক বা প্রক্সি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:26%">স্তর</th><th style="width:34%">দায়িত্ব</th><th>IMS-এ কী আছে</th></tr></thead>
+      <tbody>
+        <tr><td>DNS</td><td>CNAME/A রেকর্ড</td><td>স্কুল করে · <code>sync_domains</code> যাচাইয়ে সাহায্য করে</td></tr>
+        <tr><td>TLS সার্টিফিকেট</td><td>আয়োজক (Render/Fly/Caddy) বা nginx + certbot</td><td>অ্যাপে নেই — ইচ্ছাকৃত</td></tr>
+        <tr><td>রিডাইরেক্ট ও HSTS</td><td>Django</td><td><code>SECURE_SSL_REDIRECT</code> · <code>SECURE_HSTS_SECONDS</code></td></tr>
+        <tr><td>প্রক্সি হেডার</td><td>nginx → অ্যাপ</td><td><code>SECURE_PROXY_SSL_HEADER</code></td></tr>
+        <tr><td>কুকি সুরক্ষা</td><td>Django</td><td><code>Secure</code> · <code>HttpOnly</code> · <code>SameSite=Lax</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ক্রম:</b> DNS → TLS কাজ করছে → তারপর HSTS। উল্টো করলে সাইট বন্ধ হয়ে যাবে, ফেরানো কঠিন।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যাচাই:</b> <code>curl -sI https://…/accounts/login/</code> — <code>strict-transport-security</code> আর <code>x-frame-options</code> দেখা যায় কি না।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "সার্টিফিকেট মেয়াদ শেষ" সবচেয়ে সাধারণ আউটেজ — আয়োজক স্বয়ংক্রিয় নবায়ন করে কি না, প্রথম দিনেই দেখে রাখুন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনবোর্ডিং</span>
+    <div><h2>একটি স্কুল, ২০ মিনিটে</h2>
+      <div class="sub">LAUNCH_PLAYBOOK §4 — ছয় ধাপ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:8%">#</th><th style="width:32%">ধাপ</th><th>কোথায় / কীভাবে</th></tr></thead>
+      <tbody>
+        <tr><td>১</td><td>অ্যাকাউন্ট</td><td>নিজে সাইন আপ, বা প্লাটফর্ম কনসোল → নতুন প্রতিষ্ঠান (প্ল্যান, অ্যাডমিন ইমেইল, অস্থায়ী পাসওয়ার্ড)</td></tr>
+        <tr><td>২</td><td>ব্র্যান্ডিং</td><td>লোগো · রং · tagline · support ইমেইল · লগইন বার্তা</td></tr>
+        <tr><td>৩</td><td>কাঠামো</td><td>শিক্ষাবর্ষ → টার্ম → বিভাগ → ক্লাস → বিষয় → শিক্ষক-অ্যাসাইনমেন্ট</td></tr>
+        <tr><td>৪</td><td>মানুষ</td><td>শিক্ষক (Teacher), কোঅর্ডিনেটর (স্কোপ সারি) — তার বেশি কিছু নয়</td></tr>
+        <tr><td>৫</td><td>ছাত্র</td><td>UI দিয়ে যোগ করুন — CSV আমদানি এখনো তৈরি হয়নি</td></tr>
+        <tr><td>৬</td><td>রিভার্সাল</td><td>একটি রিপোর্ট কার্ড একসাথে দেখুন — <b>এটাই তারা কিনেছে</b></td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      ৬ নম্বর ধাপ বাদ দিলে ইনভয়েসের পরে "এটা তো আমরা চাইনি" শোনার ঝুঁকি — রিপোর্ট কার্ডই আসল পণ্য।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে ২০ মিনিটের অনবোর্ডিংটি লাইভ করুন — শিক্ষার্থীরা দেখবে কাঠামো আগে, মানুষ পরে; উল্টো করলে স্কোপ ভাঙে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সেটআপ</span>
+    <div><h2>ব্র্যান্ডিং, স্কোপ ও সিট সীমা</h2>
+      <div class="sub">তিনটি জিনিস যা প্রথম দিনেই ঠিক হতে হবে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">ব্র্যান্ডিং</b>
+            <p style="font-size:9.4pt"><code>display_name</code> · <code>tagline</code> · <code>logo</code> · <code>primary_color</code> · <code>login_message</code> · <code>support_email</code> · <code>support_phone</code></p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কোঅর্ডিনেটর স্কোপ</b>
+            <p style="font-size:9.4pt">প্রতি বিভাগ বা ক্লাসে একটি সারি — "<code>CoordinatorScope</code>"। না দিলে সে কিছুই দেখে না, যা ভুল নয় — নিরাপদ।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">সিট সীমা</b>
+            <p style="font-size:9.4pt">ইনভয়েস নয় — <b>আসল ছাত্র সারি</b> গুনে প্ল্যান-সীমা প্রয়োগ হয়, সার্ভারে।</p></div>
+          <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কে কী বদলাতে পারে</b>
+            <p style="font-size:9.4pt">ডোমেইন ও প্ল্যান: কেবল প্লাটফর্ম অ্যাডমিন। নিজের ব্র্যান্ডিং ও লোক: প্রতিষ্ঠান অ্যাডমিন।</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 40%">
+        <div class="call" style="font-size:9.8pt;padding:2.6mm 3.8mm">
+          <b>কেন ডোমেইন owner-only:</b> একটি ভুল ডোমেইন অন্য প্রতিষ্ঠানের লগইন পাতায় ভুল ব্র্যান্ড দেখাবে — লিক, যদিও ডেটা নয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সিট সীমা প্রসঙ্গে বলুন: "বিলিং সত্য বলছে কি না, তা ডেটাবেস গুনেই ঠিক হয় — কাগজ নয়।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পরিচ্ছন্নতা</span>
+    <div><h2>ডেমো ডেটা সরানো — বিপদের এক নম্বর জায়গা</h2>
+      <div class="sub"><code>seed_demo</code> সবার জানা পাসওয়ার্ড বানায়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.46"># যা সত্যিই বিপজ্জনক
+admin@ims.local        # সুপারইউজার + প্রতিষ্ঠান অ্যাডমিন
+DemoPass!2026          # প্রতিটি ডেমো অ্যাকাউন্টের পাসওয়ার্ড
+sunrise-model-school   # ডেমোর প্রতিষ্ঠান
+
+# সরানোর ধাপ (নিজের দায়িত্বে, আগে ব্যাকআপ)
+python manage.py shell
+>>> from apps.accounts.models import User
+>>> User.objects.filter(email__endswith="@ims.local").delete()
+>>> User.objects.filter(is_superuser=True,
+...     email="admin@ims.local").delete()
+
+# আসল অ্যাডমিন
+python manage.py createsuperuser --settings=config.settings.prod</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">যাচাই</b>
+            <p style="font-size:9.2pt">পুরোনো লগইন চেষ্টা করুন — ব্যর্থ হওয়া <b>উত্তর</b>, অনুমান নয়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">ডেমো ডেটা মুছলে কী ভাঙে</b>
+            <p style="font-size:9.2pt">আসল কাঠামো (বর্ষ, ক্লাস, বিষয়) নিজে বানাতে হবে — তাই আগে দেখে নিন কোনটি ডেমো, কোনটি আসল।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">প্রথম দিনের সবচেয়ে বড় ভুল</b>
+            <p style="font-size:9.2pt">"পরে সরাব" — পরে আর কেউ মনে রাখে না। চেকলিস্টে এটি থাকার কারণই এই।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>delete()</code> চালানোর আগে অবশ্যই ব্যাকআপ — ক্লাসেই এই শৃঙ্খলা অভ্যাস করান। আরও নিরাপদ: purging না করে নতুন প্রোডাকশন ডেটাবেসে শুধু আসল প্রতিষ্ঠানটি রাখা।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ইমেইল</span>
+    <div><h2>পাসওয়ার্ড রিসেট — একবার নিজে চালান</h2>
+      <div class="sub">সবচেয়ে বেশি আসা সাপোর্ট টিকেট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.46"># dev / sqlite: কনসোলে ছাপে
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+# prod: SMTP (Brevo / Mailgun / Gmail app password)
+EMAIL_HOST=smtp-relay.brevo.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=…
+EMAIL_HOST_PASSWORD=…
+DEFAULT_FROM_EMAIL=IMS <no-reply@your-domain>
+
+# যাচাই: /accounts/password-reset/ খুলে নিজের
+# ইমেইল দিন, লিংকটি মেইলে আসা চাই</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কনসোল ব্যাকএন্ডে প্রোডাকশনে</b>
+            <p style="font-size:9.2pt">মেইল কোথাও যায় না — শুধু সার্ভারের লগে ছাপে। ব্যবহারকারী চিরকাল অপেক্ষা করবে।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">SPF/DKIM</b>
+            <p style="font-size:9.2pt">সেবা প্রদানকারীর ডোমেইন যাচাই না করলে মেইল স্প্যামে যাবে — "লিংক আসেনি" এররটি এখানেই।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">নীরবতা নিয়ম</b>
+            <p style="font-size:9.2pt">অ্যাকাউন্ট আছে কি নেই — উত্তর একই। তবু ব্যবহারকারী ভাবেন "মেইল এল না"; তাই সাপোর্ট স্ক্রিপ্টে এটি আগেই বলুন।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">টোকেনের গোপনীয়তা</b>
+            <p style="font-size:9.2pt"><code>SECRET_KEY</code> বদলালে পুরোনো রিসেট লিংক অচল — নিরাপত্তার দাম, জানিয়ে রাখুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে কনসোল ব্যাকএন্ডে রিসেট চালিয়ে টার্মিনালে লিংক দেখান — তারপর বলুন, প্রোডাকশনে ঠিক এই লিংকটাই মেইলে যাবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">D-0</span>
+    <div><h2>Go-live দিনের রানবুক</h2>
+      <div class="sub">H-2 থেকে H+2 — যা করবেন, যে ক্রমে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:10%">সময়</th><th style="width:44%">কাজ</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>H-2</td><td>ব্যাকআপ নিন · <code>migrate</code> চলেছে কি না দেখুন</td><td>dump ফাইলের আকার</td></tr>
+        <tr><td>H-1</td><td><code>tests</code> + <code>smoke_test</code> + <code>check --deploy</code></td><td>তিনটি আউটপুট</td></tr>
+        <tr><td>H-0</td><td>রিলিজ · লগইন · একটি রিপোর্ট কার্ড · একটি CSV</td><td>স্ক্রিনশট</td></tr>
+        <tr><td>H+0.5</td><td>লগে <code>ERROR</code> আছে কি না</td><td>গোনা সংখ্যা</td></tr>
+        <tr><td>H+1</td><td>প্রথম ব্যবহারকারীকে ফোন/সরাসরি সাহায্য</td><td>একটি সমাধান হওয়া সমস্যা</td></tr>
+        <tr><td>H+2</td><td>ব্যাকআপ আবার · বাণিজ্যিক রিপোর্ট</td><td><code>billing_report</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      রানবুকে <b>"নতুন কিছু বদলাবেন না"</b> লাইনটি রাখুন — আজকের কাজ পর্যবেক্ষণ, উন্নয়ন নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ছকটি প্রিন্ট করে দেওয়ার মতো — শিক্ষার্থীরা নিজের প্রকল্পের go-live-এ ব্যবহার করবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">৪৮ ঘণ্টা</span>
+    <div><h2>প্রথম দুই দিনে কী দেখবেন</h2>
+      <div class="sub">সংখ্যা, গুজব নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:28%">সংকেত</th><th style="width:32%">স্বাভাবিক</th><th>উদ্বেগের</th></tr></thead>
+      <tbody>
+        <tr><td>৫০০ এরর</td><td>০ (এক-দুই হলে দেখে নিন)</td><td>প্রতি ঘণ্টায় একাধিক</td></tr>
+        <tr><td>৪০৩</td><td>প্রথম দিনে কিছু — নতুন ভূমিকা শিখছে</td><td>একই ব্যবহারকারীর জন্য বারবার</td></tr>
+        <tr><td>লগইন ব্যর্থতা</td><td>প্রথম ঘণ্টায় কয়েকটি (পাসওয়ার্ড ভুল)</td><td>একটি অ্যাকাউন্টে কয়েকবার — লকআউট নেই</td></tr>
+        <tr><td>ধীর পাতা</td><td>বড় রিপোর্ট ধীর</td><td>ড্যাশবোর্ডও ধীর</td></tr>
+        <tr><td>সাপোর্ট কল</td><td>"কীভাবে…" ধরনের</td><td>"আমার ডেটা ভুল" ধরনের</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      যেকোনো "ডেটা ভুল" কল = সাথে সাথে <b>অডিট ট্রেইল</b> খুলুন — কার, কখন, <code>before</code>/<code>after</code>। এটি IMS-এর সবচেয়ে দামি সরঞ্জাম।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "সাপোর্ট কলের ধরনই বলে দেয় সাইট স্বাস্থ্যকর কি না — 'কীভাবে' ভালো, 'ভুল দেখাচ্ছে' খারাপ।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত</span>
+    <div><h2>কখন রোলব্যাক করবেন</h2>
+      <div class="sub">তিনটি ট্রিগার — আগেই ঠিক করে রাখুন</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card bad" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">১. ডেটা লিখতে বাধা</b>
+        <p style="font-size:10.4pt">শিক্ষক মার্কস/উপস্থিতি সংরক্ষণ করতে পারছেন না — এটি ব্যবসার ক্ষতি, এক ঘণ্টাও চলবে না।</p></div>
+      <div class="card warn" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">২. নিয়ম ভাঙছে</b>
+        <p style="font-size:10.4pt">এক ভূমিকা অন্যের ডেটা দেখছে — নিরাপত্তা ঘটনা; ফেরানোই সঠিক উত্তর, "পরে ঠিক করব" নয়।</p></div>
+      <div class="card" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">৩. ৫০০ ছড়িয়ে পড়ছে</b>
+        <p style="font-size:10.4pt">একই এরর অনেক ব্যবহারকারীর কাছে — আগের রিলিজে ফিরে লগ পড়া শুরু করুন।</p></div>
+    </div>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>নয়:</b> "কেউ অভিযোগ করেছে" বা "পর্দায় রং অন্য রকম" — এগুলো রিলিজ বন্ধ করার কারণ নয়, তালিকা করার।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>আগে:</b> রোলব্যাকের আগেও ব্যাকআপ — নতুন রিলিজে লেখা ডেটা ফেরার একমাত্র পথ।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সিদ্ধান্ত আগে নেওয়ার কারণ: সংকটের মুহূর্তে সবাই চাপে থাকে, তখন নতুন নীতি ঠিক করা যায় না।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সাপোর্ট</span>
+    <div><h2>ব্যবহারকারীকে কী বলবেন</h2>
+      <div class="sub">সৎ, সংক্ষিপ্ত, নির্দিষ্ট — তিনটি নিয়ম</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:44%">যা বলবেন না</th><th>যা বলবেন</th></tr></thead>
+          <tbody>
+            <tr><td>"সার্ভারে সমস্যা হচ্ছে"</td><td>"মার্কস সংরক্ষণ এখন কাজ করছে না — ২০ মিনিটে জানাচ্ছি"</td></tr>
+            <tr><td>"আপনার ব্রাউজারে সমস্যা"</td><td>"আমরা দেখছি; আপনি কোন পর্দায় ছিলেন?"</td></tr>
+            <tr><td>"ডেটা হারাবে না" (না জেনে)</td><td>"ডেটা অটুট আছে কি না ৫ মিনিটে নিশ্চিত করছি"</td></tr>
+            <tr><td>"শীঘ্রই ঠিক হবে"</td><td>"আগামী ৩০ মিনিটে আপডেট দেব"</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          ভরসা একবারে ভাঙে, একবারে তৈরি হয় না — প্রতিটি সৎ আপডেট জমা হয়।
+        </div>
+      </div>
+      <div style="flex:0 0 44%">
+        <pre style="font-size:8.2pt;line-height:1.46">সাপোর্ট টিকেটের ছক
+
+১. কে / কোন প্রতিষ্ঠান
+২. কোন পর্দা + URL
+৩. কখন (ঘড়ির সময়)
+৪. কী আশা করেছিলেন
+৫. কী ঘটেছে
+৬. স্ক্রিনশট
+৭. জরুরি? (ডেটা বন্ধ / নিয়ম ভাঙা)
+
+→ ২ ও ৩ নম্বর দিয়েই লগে খোঁজা শুরু</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে দুটি উদাহরণ লিখুন — একটি ভালো টিকেট, একটি খারাপ ("সাইট কাজ করছে না") — পার্থক্য নিজেরাই বলবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">এরপর</span>
+    <div><h2>প্রথম সপ্তাহের পরের তালিকা</h2>
+      <div class="sub">যা বাকি, তা লেখা আছে — লুকোনো নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:46%">কাজ</th><th>কেন এখন</th></tr></thead>
+          <tbody>
+            <tr><td>uptime মনিটর + <code>/healthz</code></td><td>নীরব ডাউনটাইম ধরার একমাত্র উপায়</td></tr>
+            <tr><td>লগ-অ্যালার্ট (৫০০ হলে ইমেইল)</td><td>ব্যবহারকারীর আগে জানুন</td></tr>
+            <tr><td>CI: প্রতিটি পুশে <code>test</code></td><td>হাতে চালানো ভুলে যায়</td></tr>
+            <tr><td>রেট লিমিট (লগইনে)</td><td>এখন কোনো থ্রটল নেই</td></tr>
+            <tr><td>CSV আমদানি</td><td>অনবোর্ডিংয়ের সবচেয়ে ধীর ধাপ</td></tr>
+            <tr><td>ব্যাকআপ কনসোল</td><td>এখন শুধু <code>ops/</code> স্ক্রিপ্ট</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 42%">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">BUILD_STATUS-এ লেখা বাকি কাজ</b>
+            <p style="font-size:9.2pt">invitation workflow · platform console · backup &amp; restore console · security attack suite</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">নিয়ম</b>
+            <p style="font-size:9.2pt">প্রতিটি নতুন কাজের সঙ্গে একটি টেস্ট — নইলে তালিকা আরও লম্বা হবে, আস্থা বাড়বে না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "সফটওয়্যার কখনো শেষ হয় না — শুধু দায়িত্ব বদলায়" এই বাক্য দিয়ে পর্ব ৭-এর দিকে নিয়ে যান।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — নিজের go-live রানবুক লিখুন</h2>
+      <div class="sub">দলবদ্ধ কাজ, তারপর ভাগাভাগি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. D-14 → D-0 ছক</b>
+            <p style="font-size:9.8pt">নিজের প্রকল্পের জন্য তারিখ বসান — কোনটি আজই করা যায়?</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. রোলব্যাক ট্রিগার</b>
+            <p style="font-size:9.8pt">তিনটি ট্রিগার নিজের ভাষায় লিখুন — সংখ্যা দিয়ে।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. ডেমো ডেটা তালিকা</b>
+            <p style="font-size:9.8pt">কোন অ্যাকাউন্ট, কোন প্রতিষ্ঠান, কোন ফাইল — লিখে ফেলুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. সাপোর্ট ছক</b>
+            <p style="font-size:9.8pt">৭ প্রশ্নের টিকেট ছকটি নিজের টুলে বসান (ইশিখন/ইমেইল/শীট)।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>D-0-তে কেন কিছু বদলাবেন না?</li>
+          <li class="g">TLS আগে না HSTS আগে?</li>
+          <li>ডেমো ডেটা রয়ে গেলে কী হয়?</li>
+          <li class="r">"আমার ডেটা ভুল" — প্রথম কী দেখবেন?</li>
+          <li class="g">রোলব্যাকের আগে কী নেবেন?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের উত্তর: অডিট ট্রেইল — কার, কখন, before/after। এটি মুখস্থ করিয়ে দিন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পর্ব ৬ সমাপ্তি</span>
+    <div><h2>তিন ক্লাসে যা শেখা হলো</h2>
+      <div class="sub">৫৬ স্লাইড · ৩ ক্লাস · ৯টি যাচাইযোগ্য প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">ক্লাস</th><th style="width:38%">মূল ধারণা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>২৮ · সার্ভারে তোলা</td><td>prod সেটিংস · চলক · Gunicorn · WhiteNoise</td><td><code>check --deploy</code> → no issues · দুই <code>RuntimeError</code></td></tr>
+        <tr><td>২৯ · চালু রাখা</td><td>লগ · অডিট · ব্যাকআপ/রিস্টোর</td><td><code>billing_report</code> (MRR ৳6,500) · <code>AuditLog</code> ০ সারি</td></tr>
+        <tr><td>৩০ · Go-live</td><td>DNS · TLS · অনবোর্ডিং · ৪৮ ঘণ্টা</td><td><code>sync_domains</code> · ৩টি ডোমেইন টেস্ট · ডেমো-মুক্তি</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সৎ ফাঁক:</b> <code>/healthz</code> নেই · uptime/Sentry নেই · CI নেই · রেট লিমিট নেই · ৫০০ পাতার "reference number" অপূর্ণ
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        পর্ব ৭-এ এই ফাঁকগুলোই <b>রক্ষণাবেক্ষণের দায়িত্ব</b> হয়ে ফিরবে — কোড বাড়লে ঝুঁকি বাড়ে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন তিনটি ফাঁক বেছে নিয়ে লেখার জন্য — পরের পর্বের আলোচনা সেখান থেকেই শুরু হবে।
+</section>
+
+<section class="slide divider">
+  <div class="n">৩১</div>
+  <h2>পর্ব ৭ — রক্ষণাবেক্ষণ</h2>
+  <p>কোড বাড়ানো · রিফ্যাক্টর · ডেপেন্ডেন্সি আপডেট · ডেটা বৃদ্ধি · টিম ও হাতবদল</p>
+</section>

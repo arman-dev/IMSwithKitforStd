@@ -1,0 +1,432 @@
+<!-- ===================== CLASS 3 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ১ · কনসেপ্ট · ক্লাস ৩ / ৩৭</div>
+  <h1>এটা কি সত্যিই<br>সম্ভব?</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ২ · টপিক ২.১ (ফিজিবিলিটি স্টাডি)<br>চারটি দিক: প্রযুক্তি · পরিচালনা · অর্থ · সময়</div>
+  <div class="pill">৯,৩২২ লাইন Python · ২ দিন · ভাঙার বিন্দু ২ গ্রাহক</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>ফিজিবিলিটি মানে "পারব কি না" — এটা ভুল ধারণা</h2>
+      <div class="sub">হাত তুলুন: আপনার প্রজেক্ট "সম্ভব" — কীসের ভিত্তিতে বলছেন?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:28pt;line-height:1.6">
+      "পারব" একটা <span class="hl">অনুভূতি</span>।<br>
+      ফিজিবিলিটি একটা <b>হিসাব</b> — চারটি আলাদা খাতায়।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      চারটির যেকোনো একটিতে লাল বাতি জ্বললে প্রজেক্টটা মরে — বাকি তিনটি সবুজ হলেও।
+      আজ প্রতিটি খাতায় <b>আসল সংখ্যা</b> বসাব, নিজের অনুমান নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "সবই পারব" বললে জিজ্ঞেস করুন — "মাসে সার্ভার খরচ কত পড়বে? কে দেবে?" উত্তর না এলে বলুন: "তাহলে এটা এখনো ফিজিবিলিটি নয়, ইচ্ছা।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>চারটি খাতা — প্রতিটির নিজস্ব প্রশ্ন</h2>
+      <div class="sub">প্রতিটি খাতায় একটি প্রশ্ন, একটি প্রমাণ, একটি লাল বাতির শর্ত</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 250" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="13">
+          <rect x="0" y="0" width="485" height="115" rx="12" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="22" y="30" font-size="15" font-weight="700" fill="#312e81">⚙️ প্রযুক্তি</text>
+          <text x="22" y="56" fill="#334155">প্রশ্ন: এই কাজটা করার মতো উপকরণ আছে?</text>
+          <text x="22" y="78" fill="#334155">প্রমাণ: <tspan fill="#4f46e5" font-weight="700">Django 6.1.2 · Python 3.13 · ৬টি প্যাকেজ</tspan></text>
+          <text x="22" y="100" fill="#b91c1c">লাল বাতি: যে কাজটা লাইব্রেরি ছাড়া করতে হবে</text>
+
+          <rect x="515" y="0" width="485" height="115" rx="12" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="537" y="30" font-size="15" font-weight="700" fill="#065f46">🔧 পরিচালনা</text>
+          <text x="537" y="56" fill="#334155">প্রশ্ন: চালু রাখবে কে, কীভাবে?</text>
+          <text x="537" y="78" fill="#334155">প্রমাণ: <tspan fill="#059669" font-weight="700">deploy_check.sh · ৩টি settings · ২ worker</tspan></text>
+          <text x="537" y="100" fill="#b91c1c">লাল বাতি: "শুধু আমার ল্যাপটপে চলে"</text>
+
+          <rect x="0" y="135" width="485" height="115" rx="12" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="22" y="165" font-size="15" font-weight="700" fill="#78350f">💰 অর্থ</text>
+          <text x="22" y="191" fill="#334155">প্রশ্ন: খরচ কত, আয় কত, কোথায় ভাঙবে?</text>
+          <text x="22" y="213" fill="#334155">প্রমাণ: <tspan fill="#d97706" font-weight="700">৳২,১০০/মাস খরচ · ভাঙার বিন্দু ২ গ্রাহক</tspan></text>
+          <text x="22" y="235" fill="#b91c1c">লাল বাতি: খরচের হিসাবই নেই</text>
+
+          <rect x="515" y="135" width="485" height="115" rx="12" fill="#fef2f2" stroke="#f87171"/>
+          <text x="537" y="165" font-size="15" font-weight="700" fill="#7f1d1d">⏳ সময়</text>
+          <text x="537" y="191" fill="#334155">প্রশ্ন: কার কত সময় লাগবে?</text>
+          <text x="537" y="213" fill="#334155">প্রমাণ: <tspan fill="#dc2626" font-weight="700">২ কর্মদিবস · ২০টি কমিট · ১০৩ টেস্ট</tspan></text>
+          <text x="537" y="235" fill="#b91c1c">লাল বাতি: শেষ ২ সপ্তাহে সব পেন্ডিং</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:13pt;padding:4mm 5mm">
+      আজকের ক্লাসে চারটি খাতার প্রতিটিতে <b>আসল সংখ্যা</b> বসাব — প্রজেক্টের ফাইল থেকে তোলা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে চারটি বাক্স আঁকুন, প্রতি বাক্সে একটি প্রশ্ন লিখুন। ছাত্রদের বলুন নিজের প্রজেক্টের জন্য একই চারটি বাক্স খাতায় আঁকতে — ক্লাস ৪-এর কনসেপ্ট পেপারে এটাই যাবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ১</span>
+    <div><h2>প্রযুক্তি — আটটি নাম, ছয়টি আসলে ব্যবহৃত</h2>
+      <div class="sub">প্রজেক্টের <code>requirements.txt</code> হুবহু — তারিখ ও ভার্সনসহ</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <thead><tr><th style="width:26%">উপকরণ</th><th style="width:14%">ভার্সন</th><th>কী কাজে</th><th style="width:26%">না থাকলে কী হতো</th></tr></thead>
+      <tbody>
+        <tr><td><b>Python</b></td><td class="num">৩.১৩</td><td>ভাষা — সব কোড এর ওপর দাঁড়িয়ে</td><td>—</td></tr>
+        <tr><td><b>Django</b></td><td class="num">৬.১.২</td><td>লগইন, পারমিশন, ORM, ফর্ম, অ্যাডমিন</td><td>নিজে লিখতে হতো ~২,০০০ লাইন</td></tr>
+        <tr><td><b>psycopg</b></td><td class="num">৩.৩.৬</td><td>PostgreSQL-এর সাথে কথা বলা</td><td>sqlite-এ ৮০০ সিট আটকাবে না</td></tr>
+        <tr><td><b>python-dotenv</b></td><td class="num">১.২.৪</td><td>গোপন তথ্য <code>.env</code> ফাইলে রাখা</td><td>পাসওয়ার্ড কোডে ঢুকে যেত</td></tr>
+        <tr><td><b>Pillow</b></td><td class="num">১২.৩.০</td><td>লোগো/প্রতিষ্ঠানের ব্র্যান্ডিং ছবি</td><td>লোগো আপলোড ভাঙত</td></tr>
+        <tr><td><b>openpyxl</b></td><td class="num">৩.১.৫</td><td>Excel (.xlsx) এক্সপোর্ট</td><td>CSV-তে বাংলা ভাঙত</td></tr>
+        <tr><td><b>reportlab</b></td><td class="num">৫.১.০</td><td>মার্কশিট PDF</td><td>ব্রাউজারের প্রিন্ট ভরসা করতে হতো</td></tr>
+        <tr><td><b>gunicorn</b></td><td class="num">শুধু prod</td><td>আসল সার্ভারে চালানোর জন্য</td><td>dev server দিয়ে prod নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      নিয়ম: <b>প্রতিটি প্যাকেজের জন্য এক লাইনে লিখতে হবে "না থাকলে কী হতো"</b>। যে প্যাকেজের উত্তর দিতে পারেন না — সেটা বাদ দিন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ভার্সন পিন করা কেন — জিজ্ঞেস করুন। উত্তর: "আজ যা চলছে, ৬ মাস পরে আবার ঠিক তাই চলবে।" পিন না করলে যেকোনো একটা আপডেট সব ভেঙে দেয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ১</span>
+    <div><h2>চারটি বিকল্প, একটা বাছাই — কেন Django</h2>
+      <div class="sub">প্রযুক্তি বাছাই = স্বাদ নয়, প্রয়োজন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:22%">বিকল্প</th><th>লগইন ও ভূমিকা</th><th>ডেটাবেস</th><th>ডেটা জটিলতা</th><th>ডাকুমেন্টেশন</th><th style="width:9%">মোট /৮</th><th style="width:14%">সিদ্ধান্ত</th></tr></thead>
+      <tbody>
+        <tr style="background:#eef2ff"><td><b>Django</b></td><td>বিল্ট-ইন (২)</td><td>ORM + মাইগ্রেশন (২)</td><td>৩১ টেবিল সহজে (২)</td><td>অসাধারণ (২)</td><td class="num"><b>৮</b></td><td style="color:#059669"><b>✓ বাছা হলো</b></td></tr>
+        <tr><td>Flask</td><td>নিজে লিখতে হবে (০)</td><td>SQLAlchemy যোগ (১)</td><td>সম্ভব, কিন্তু কাঠামো নেই (১)</td><td>ভালো (২)</td><td class="num">৪</td><td style="color:#94a3b8">○ বাদ</td></tr>
+        <tr><td>Node + Express</td><td>নিজে (০)</td><td>Prisma/Sequelize (১)</td><td>সম্ভব (২)</td><td>ভালো (২)</td><td class="num">৫</td><td style="color:#94a3b8">○ ভাষা বদলাতে হতো</td></tr>
+        <tr><td>PHP (Laravel)</td><td>আছে (২)</td><td>Eloquent (২)</td><td>সম্ভব (২)</td><td>ভালো (২)</td><td class="num">৮</td><td style="color:#b45309">◐ সমান, কিন্তু কোর্স Python</td></tr>
+        <tr><td>No-code (Airtable ইত্যাদি)</td><td>আছে (২)</td><td>সীমিত (১)</td><td>সীমিত — কোড নেই (০)</td><td>সহজ (২)</td><td class="num">৫</td><td style="color:#dc2626">✕ শেখার উদ্দেশ্যই ভাঙে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:5mm;gap:5mm">
+      <div class="call" style="font-size:12.5pt;padding:4mm 5mm">
+        <b>শিক্ষকের সিদ্ধান্তের কারণ:</b> কোর্স Python-ভিত্তিক, আর Django-তে <b>পারমিশন আর ভূমিকা</b> নিজে বানাতে হয় না — শিখতে হয়।
+      </div>
+      <div class="call warn" style="font-size:12.5pt;padding:4mm 5mm">
+        <b>সতর্কতা:</b> Laravel-ও ৮ পেয়েছে। "সেরা প্রযুক্তি" বলে কিছু নেই — যেটা <b>শেখানো হচ্ছে</b> আর যেটা <b>আপনি জানেন</b>, সেটাই সেরা।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্র "রিঅ্যাক্ট + Node" বললে বাধা দেবেন না, কিন্তু প্রশ্ন করুন: "লগইন, ভূমিকা, অডিট লগ — এই তিনটে কে লিখবে? কত দিনে?"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ১ · প্রমাণ</span>
+    <div><h2>স্কেলের হিসাব — ৮০০ সিট মানে কত লাইন ডেটা</h2>
+      <div class="sub">এখানেই sqlite আর PostgreSQL-এর পার্থক্য তৈরি হয়</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><div class="ic">👥</div><b style="font-size:15pt">৩০০ শিক্ষার্থী</b>
+        <p>শিক্ষকদের আটেনড্যান্স দৈনিক একবার<br><b>→ বছরে ৬০,০০০ সারি</b></p></div>
+      <div class="card soft"><div class="ic">📚</div><b style="font-size:15pt">দিনে ৬ পিরিয়ড</b>
+        <p>প্রতি পিরিয়ডে আলাদা হাজিরা<br><b>→ বছরে ৩,৬০,০০০ সারি</b></p></div>
+      <div class="card soft"><div class="ic">🏫</div><b style="font-size:15pt">২০ প্রতিষ্ঠান</b>
+        <p>একই সার্ভারে ২০টি স্কুল<br><b>→ বছরে ৭২ লাখ সারি</b></p></div>
+    </div>
+    <table class="tight" style="margin-top:6mm">
+      <thead><tr><th>প্রশ্ন</th><th style="width:30%">sqlite</th><th style="width:34%">PostgreSQL</th></tr></thead>
+      <tbody>
+        <tr><td>একসাথে কয়জন লিখতে পারে?</td><td>প্রায় একজন (লেখার সময় লক)</td><td>অনেকজন, সারি-পর্যায়ে লক</td></tr>
+        <tr><td>৭২ লাখ সারিতে রিপোর্ট</td><td>ধীরে, ইনডেক্স সীমিত</td><td>ইনডেক্স + partial index + EXPLAIN</td></tr>
+        <tr><td>নিরাপত্তা / ব্যবহারকারী আলাদা করা</td><td>ফাইল অনুমতি</td><td>রোল, গ্রান্ট, স্কিমা</td></tr>
+        <tr><td>ব্যাকআপ</td><td>ফাইল কপি</td><td>pg_dump, PITR</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      প্রজেক্টে তাই <b>তিনটি settings</b>: <code>dev</code> (sqlite, দ্রুত শুরু) · <code>sqlite</code> (এক-ক্লিকে ডেমো) · <code>prod</code> (PostgreSQL + gunicorn)।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সংখ্যাগুলো বোর্ডে ধীরে ধীরে গুণ করুন — ৩০০ × ২০০ = ৬০,০০০। ছাত্ররা তখনই বুঝবে "আমার ছোট ডেটা" বলে কিছু নেই; সেমিস্টার শেষে ডেটা বড় হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ২</span>
+    <div><h2>পরিচালনা — "আমার ল্যাপটপে চলে" যথেষ্ট নয়</h2>
+      <div class="sub">প্রমাণ: <code>docs/deploy_check.sh</code> — প্রোডাকশনের মহড়া</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.1">
+<pre style="font-size:9.8pt;line-height:1.6">$ bash docs/deploy_check.sh
+-&gt; collectstatic
+-&gt; gunicorn on :8010 (DEBUG=False)
+   --workers 2
+-&gt; checks
+  login page            200
+  static css            200
+  unknown page (404)    404
+  workspace page anon   302
+-&gt; security headers
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: same-origin
+-&gt; done (server stopped)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:13pt">চারটি সংখ্যা যাচাই হলো</b>
+          <p style="font-size:11.5pt;line-height:1.7">
+            <b>200</b> — পর্দা খুলছে<br>
+            <b>200</b> — CSS লোড হচ্ছে (না হলে সাদা পাতা)<br>
+            <b>404</b> — ভুল ঠিকানায় ভদ্র উত্তর<br>
+            <b>302</b> — অচেনা লোক প্রতিষ্ঠানের ভেতরে ঢুকতে পারছে না
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:12pt;padding:4mm 5mm">
+          প্রোডাকশনে <code>DEBUG=True</code> থাকলে ভুল হলেই সোর্স কোড, পাসওয়ার্ড, টেবিলের নাম — সব browser-এ দেখা যায়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩০২ কেন ৪০৪ নয় — এটাই আজকের সবচেয়ে দামি প্রশ্ন। উত্তর: "ঢুকতে দিই না" আর "কিছু নেই" আলাদা কথা। ৩০২ মানে "আগে লগইন করুন"।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ৩</span>
+    <div><h2>অর্থ — মাসিক খরচের সৎ হিসাব</h2>
+      <div class="sub">বাংলাদেশের বাজারদরে, ২০২৬ · সংখ্যাগুলো অনুমান, পদ্ধতিটা আসল</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <thead><tr><th style="width:32%">খরচের খাত</th><th style="width:20%">মাসিক</th><th>ব্যাখ্যা</th></tr></thead>
+      <tbody>
+        <tr><td>VPS (২ GB RAM, ২ vCPU)</td><td class="num">৳১,৮০০</td><td>৳২২,০০০/বছর — Django + PostgreSQL একসাথে</td></tr>
+        <tr><td>ডোমেইন + SSL</td><td class="num">৳১০০</td><td>SSL বিনামূল্যে (Let's Encrypt), ডোমেইন ৳১,২০০/বছর</td></tr>
+        <tr><td>ব্যাকআপ স্টোরেজ</td><td class="num">৳২০০</td><td>প্রতিদিনের dump, ৩০ দিন রাখা</td></tr>
+        <tr><td>ইমেইল (SMTP)</td><td class="num">৳০</td><td>ফ্রি টিয়ার দিয়ে শুরু</td></tr>
+        <tr style="background:#fffbeb"><td><b>মোট নির্দিষ্ট খরচ</b></td><td class="num"><b>৳২,১০০</b></td><td>গ্রাহক শূন্য হলেও কাটবে</td></tr>
+        <tr><td>পেমেন্ট গেটওয়ে ফি</td><td class="num">২.৫%</td><td>প্রতি লেনদেনে — নির্দিষ্ট খরচ নয়</td></tr>
+        <tr><td>সাপোর্ট (প্রতি গ্রাহক)</td><td class="num">৳২৫০</td><td>মাসে ২–৩টি ফোন/মেসেজের সমতুল্য</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      যে খরচটা সবাই ভুলে যায়: <b>সাপোর্ট</b>। সফটওয়্যার বিক্রি একবার, ফোন আসে প্রতি সপ্তাহে। এই লাইনটা না লিখলে হিসাব সবসময় মিথ্যা দেখায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> নিজের শহরের আসল দাম জিজ্ঞেস করুন — কেউ জানলে বোর্ডে লিখুন। সংখ্যা বদলালে সমস্যা নেই, পদ্ধতি বদলালে সমস্যা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ৩ · হিসাব</span>
+    <div><h2>ভাঙার বিন্দু — কতজন গ্রাহকে খরচ উঠে যায়</h2>
+      <div class="sub">প্রতি গ্রাহক থেকে হাতে কত থাকে, তারপর ভাগ</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 235" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <!-- starter row -->
+        <text x="0" y="26" font-size="14" font-weight="700" fill="#0f172a">Starter — ৳১,৫০০/মাস</text>
+        <rect x="0" y="38" width="180" height="34" rx="7" fill="#eef2ff" stroke="#818cf8"/>
+        <text x="90" y="60" text-anchor="middle" font-size="12.5" fill="#312e81">আয় ১,৫০০</text>
+        <rect x="200" y="38" width="60" height="34" rx="7" fill="#fef2f2" stroke="#f87171"/>
+        <text x="230" y="60" text-anchor="middle" font-size="11.5" fill="#991b1b">−৩৭</text>
+        <text x="272" y="60" font-size="11" fill="#64748b">গেটওয়ে ২.৫%</text>
+        <rect x="380" y="38" width="90" height="34" rx="7" fill="#fef2f2" stroke="#f87171"/>
+        <text x="425" y="60" text-anchor="middle" font-size="11.5" fill="#991b1b">−২৫০</text>
+        <text x="480" y="60" font-size="11" fill="#64748b">সাপোর্ট</text>
+        <rect x="565" y="38" width="170" height="34" rx="7" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+        <text x="650" y="60" text-anchor="middle" font-size="12.5" font-weight="700" fill="#065f46">হাতে থাকে ১,২১৩</text>
+        <text x="760" y="60" font-size="12" fill="#065f46">→ ২ জনে খরচ উঠে যায়</text>
+
+        <!-- growth row -->
+        <text x="0" y="110" font-size="14" font-weight="700" fill="#0f172a">Growth — ৳৩,৫০০/মাস</text>
+        <rect x="0" y="122" width="180" height="34" rx="7" fill="#eef2ff" stroke="#818cf8"/>
+        <text x="90" y="144" text-anchor="middle" font-size="12.5" fill="#312e81">আয় ৩,৫০০</text>
+        <rect x="200" y="122" width="72" height="34" rx="7" fill="#fef2f2" stroke="#f87171"/>
+        <text x="236" y="144" text-anchor="middle" font-size="11.5" fill="#991b1b">−৮৮</text>
+        <rect x="380" y="122" width="90" height="34" rx="7" fill="#fef2f2" stroke="#f87171"/>
+        <text x="425" y="144" text-anchor="middle" font-size="11.5" fill="#991b1b">−৪০০</text>
+        <text x="480" y="144" font-size="11" fill="#64748b">সাপোর্ট</text>
+        <rect x="565" y="122" width="170" height="34" rx="7" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+        <text x="650" y="144" text-anchor="middle" font-size="12.5" font-weight="700" fill="#065f46">হাতে থাকে ৩,০১২</text>
+        <text x="760" y="144" font-size="12" fill="#065f46">→ ১ জনেই খরচ উঠে যায়</text>
+
+        <line x1="0" y1="178" x2="1000" y2="178" stroke="#e2e8f0"/>
+        <text x="0" y="202" font-size="12.5" fill="#334155">নির্দিষ্ট খরচ ৳২,১০০/মাস ÷ প্রতি গ্রাহকের নিট আয় = ভাঙার বিন্দু</text>
+        <text x="0" y="224" font-size="12.5" font-weight="700" fill="#1e1b4b">Starter: ২,১০০ ÷ ১,২১৩ = ১.৭ → ২ জন · Growth: ২,১০০ ÷ ৩,০১২ = ০.৭ → ১ জন</text>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:12.5pt;padding:4mm 5mm">
+      এই একটি হিসাবই বলে দেয়: প্রজেক্টটা <b>টিকতে ২ জন গ্রাহক লাগবে</b>। "লাখ লাখ ব্যবহারকারী" নয় — মাত্র দুইজন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের নিজের প্রজেক্টে এই ভাগটা করাতে হবে। যাদের উত্তর "কোনো খরচ নেই" আসবে, তাদের বলুন — ডোমেইন, হোস্টিং, ব্যাকআপ, নিজের সময়: অন্তত একটি আছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ৩ · প্রমাণ</span>
+    <div><h2>দামগুলো কোথা থেকে — তিনটি প্ল্যান, আসল কোড থেকে</h2>
+      <div class="sub"><code>apps/billing/management/commands/seed_plans.py</code></div></div></div>
+  <div class="body">
+    <table class="tight">
+      <thead><tr><th>প্ল্যান</th><th>দাম</th><th>শিক্ষার্থী সীমা</th><th>স্টাফ সীমা</th><th>কার জন্য</th></tr></thead>
+      <tbody>
+        <tr><td><b>Starter</b></td><td class="num">৳১,৫০০/মাস</td><td class="num">৩০০</td><td class="num">২৫</td><td>এক ক্যাম্পাস, ছোট স্কুল</td></tr>
+        <tr><td><b>Growth</b></td><td class="num">৳৩,৫০০/মাস</td><td class="num">৮০০</td><td class="num">সীমা নেই</td><td>বড় স্কুল, অনেক শিক্ষক</td></tr>
+        <tr><td><b>Campus</b></td><td class="num">৳৬,৫০০/মাস</td><td class="num">সীমা নেই</td><td class="num">সীমা নেই</td><td>মাল্টি-ব্রাঞ্চ + নিজের ডোমেইন</td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:6mm;gap:4mm">
+      <div class="card soft"><b style="font-size:13pt">সীমাটা আসে কোথা থেকে?</b>
+        <p>সীমা কোডে <code>max_students</code> ফিল্ডে থাকে — <code>null</code> মানে সীমা নেই। তাই নতুন প্ল্যান যোগ করতে <b>কোড বদলাতে হয় না</b>, শুধু ডেটা।</p></div>
+      <div class="card soft"><b style="font-size:13pt">কেন ৩০০, ৮০০, ∞?</b>
+        <p>প্রতিটি সীমা একটা <b>সিদ্ধান্তের বেড়া</b>: ৩০০-এর নিচে একজন অ্যাডমিন হাতে সামলাতে পারে; ৮০০ ছাড়ালে আলাদা কোঅর্ডিনেটর দরকার হয়।</p></div>
+      <div class="card" style="border-color:#d97706;background:#fffbeb"><b style="font-size:13pt;color:#78350f">ভুলটা কী ছিল</b>
+        <p style="color:#78350f">সাবস্ক্রিপশন <b>ব্যক্তির</b> নামে বাঁধা ছিল। প্রতিষ্ঠানের সিট কে ব্যবহার করছে — সেই প্রশ্নের উত্তরই ছিল না।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন — "৩০০ সিটের স্কুল ৩০১-তম ছাত্র ভর্তি করলে কী হবে?" সঠিক উত্তর: সিস্টেম আটকাবে, আর সেই আটকানোটা কোম্পানির আয় — এটা নিষ্ঠুর শোনালেও এটাই ব্যবসার নিয়ম, তাই সীমাটা কোডে নয়, প্ল্যানে থাকে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ৪ · প্রমাণ</span>
+    <div><h2>সময় — আসল টাইমলাইন, অনুমান নয়</h2>
+      <div class="sub">২০টি কমিট, ২ কর্মদিবস · <code>git log</code> থেকে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- day 1 -->
+        <rect x="0" y="10" width="462" height="105" rx="12" fill="#eef2ff" stroke="#818cf8"/>
+        <text x="20" y="36" font-size="14" font-weight="700" fill="#312e81">দিন ১ — ২৯ অক্টোবর, সকাল</text>
+        <text x="20" y="60" font-size="12" fill="#334155">০৬:২১ স্লাইস ১ · ০৬:২৪ CSRF ফিক্স · ০৬:২৮ স্ক্রিনশট</text>
+        <text x="20" y="80" font-size="12" fill="#334155">০৬:৩৬ ৫৭ ফিচারের ক্যাটালগ · ০৬:৫২ স্লাইস ২–৫</text>
+        <text x="20" y="100" font-size="12" fill="#334155">০৭:০৮ প্যাকেজিং · ০৮:১০ UI সংশোধন</text>
+        <text x="392" y="104" font-size="12" font-weight="700" fill="#4f46e5">৯ কমিট</text>
+
+        <!-- gap -->
+        <line x1="466" y1="62" x2="534" y2="62" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="500" y="52" text-anchor="middle" font-size="10.5" fill="#94a3b8">৬ দিন</text>
+
+        <!-- day 2 -->
+        <rect x="538" y="10" width="462" height="105" rx="12" fill="#ecfdf5" stroke="#34d399"/>
+        <text x="558" y="36" font-size="14" font-weight="700" fill="#065f46">দিন ২ — ৪ নভেম্বর, দুপুর</text>
+        <text x="558" y="60" font-size="12" fill="#334155">১৩:২৩ প্রোডাকশন হার্ডেনিং · ১৩:৩৯ কমার্শিয়াল লেয়ার</text>
+        <text x="558" y="80" font-size="12" fill="#334155">১৪:০৪ বিলিং বাগ ফিক্স · ১৫:০২ workspace ফিক্স</text>
+        <text x="558" y="100" font-size="12" fill="#334155">১৫:৪০–১৭:১২ রিনেম ও ডকুমেন্টেশন</text>
+        <text x="948" y="104" font-size="12" font-weight="700" fill="#059669">১১ কমিট</text>
+
+        <!-- stats -->
+        <rect x="0" y="135" width="315" height="90" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="157" y="168" text-anchor="middle" font-size="26" font-weight="700" fill="#1e1b4b">৯,৩২২</text>
+        <text x="157" y="192" text-anchor="middle" font-size="12" fill="#475569">লাইন Python</text>
+        <text x="157" y="212" text-anchor="middle" font-size="11" fill="#64748b">(মাইগ্রেশন বাদ দিয়ে)</text>
+
+        <rect x="335" y="135" width="315" height="90" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="492" y="168" text-anchor="middle" font-size="26" font-weight="700" fill="#1e1b4b">৩,২৬৫</text>
+        <text x="492" y="192" text-anchor="middle" font-size="12" fill="#475569">লাইন HTML (৭৫ টেমপ্লেট)</text>
+        <text x="492" y="212" text-anchor="middle" font-size="11" fill="#64748b">স্ক্রিনশট প্রমাণসহ</text>
+
+        <rect x="670" y="135" width="330" height="90" rx="10" fill="#fffbeb" stroke="#fbbf24"/>
+        <text x="835" y="168" text-anchor="middle" font-size="26" font-weight="700" fill="#78350f">×৪ – ×৬</text>
+        <text x="835" y="192" text-anchor="middle" font-size="12" fill="#78350f">ছাত্রের জন্য গুণক</text>
+        <text x="835" y="212" text-anchor="middle" font-size="11" fill="#92400e">৪–৬ সপ্তাহের সমান কাজ</text>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই "×৪–×৬" গুণকটাই সবচেয়ে দরকারি কথা। অভিজ্ঞ ডেভেলপারের ২ দিন = ছাত্রের ৮–১২ দিন, আর তার সাথে পড়া, পরীক্ষা, অন্য বিষয়। তাই ১২ সপ্তাহকে ফাঁকা ধরে নয়, ৬ সপ্তাহ ধরে প্ল্যান করতে হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খাতা ৪ · পদ্ধতি</span>
+    <div><h2>সময়ের হিসাব করার তিনটি ধাপ</h2>
+      <div class="sub">যে হিসাব "আশা" দিয়ে হয়, সেটা হিসাব নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:10pt">
+      <thead><tr><th style="width:6%">#</th><th style="width:26%">ধাপ</th><th>কীভাবে</th><th style="width:26%">IMS-এ প্রয়োগ</th></tr></thead>
+      <tbody>
+        <tr><td class="num">১</td><td><b>ভাগ করো</b></td><td>প্রতিটি ফিচারকে ক্ষুদ্রতম "চলমান" টুকরোয় ভাঙো</td><td>৫৭ ফিচার → ৫টি স্লাইস, প্রতিটি নিজে নিজে চলে</td></tr>
+        <tr><td class="num">২</td><td><b>গুণ করো</b></td><td>সবচেয়ে ধীর দিনের গতিতে হিসাব করো, সেরা দিনে নয়</td><td>স্লাইস ২–৫: ৪ ঘণ্টার কাজ, ধরা হয়েছিল ১ দিন</td></tr>
+        <tr><td class="num">৩</td><td><b>বাদ দাও ৪০%</b></td><td>যা বাদ দিলেও সিস্টেম চলে — সেটা MVP নয়</td><td>আমন্ত্রণ, ব্যাকআপ, PDF এক্সপোর্ট → v1.1</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:6mm;gap:5mm">
+      <div class="call bad" style="font-size:12.5pt;padding:4mm 5mm">
+        <b>ভুল হিসাব:</b> "৫৭ ফিচার ÷ ১২ সপ্তাহ = সপ্তাহে ৫টি" — কাগজে সুন্দর, বাস্তবে অসম্ভব, কারণ ফিচারগুলো সমান নয়।
+      </div>
+      <div class="call" style="font-size:12.5pt;padding:4mm 5mm">
+        <b>ঠিক হিসাব:</b> স্লাইসে ভাগ করো, প্রতিটির জন্য <b>প্রমাণ</b> ঠিক করো (টেস্ট সবুজ + স্ক্রিনশট), তারপর যোগ করো।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "৪০% বাদ দাও" নিয়মটা ছাত্ররা প্রথমে মানতে চায় না। বলুন — "যে ফিচারটা বাদ দিলে তুমি কষ্ট পাচ্ছ, সেটাই সবচেয়ে ভালো প্রার্থী। কারণ তুমি এটা ভালোবাসছ, ব্যবহারকারী চায়নি।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত</span>
+    <div><h2>তিনটি বাতি — কখন এগোবেন, কখন থামবেন</h2>
+      <div class="sub">ফিজিবিলিটির ফলাফল তিন রঙের বেশি হয় না</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card" style="border-color:#059669;background:#ecfdf5"><div class="ic">🟢</div>
+        <b style="color:#065f46;font-size:15pt">এগিয়ে যান</b>
+        <p style="color:#065f46">চার খাতার চারটিতেই সংখ্যা আছে, প্রমাণ আছে, আর MVP এক সপ্তাহে দাঁড়ায়।</p>
+        <p style="margin-top:3mm;color:#065f46"><b>IMS: খাতা ৪টিই সবুজ</b></p></div>
+
+      <div class="card" style="border-color:#d97706;background:#fffbeb"><div class="ic">🟡</div>
+        <b style="color:#78350f;font-size:15pt">ছোট করে এগোন</b>
+        <p style="color:#78350f">একটি খাতায় সংখ্যা নেই বা সন্দেহ আছে — স্কোপ কাটুন, তারপর এগোন।</p>
+        <p style="margin-top:3mm;color:#78350f"><b>উদাহরণ: পেমেন্ট গেটওয়ে বাদ, ম্যানুয়াল বিলিং</b></p></div>
+
+      <div class="card" style="border-color:#dc2626;background:#fef2f2"><div class="ic">🔴</div>
+        <b style="color:#7f1d1d;font-size:15pt">থামুন</b>
+        <p style="color:#7f1d1d">দুই বা তার বেশি খাতায় সংখ্যা নেই — অর্থাৎ এখনো প্রজেক্টটা সংজ্ঞায়িতই হয়নি।</p>
+        <p style="margin-top:3mm;color:#7f1d1d"><b>চিহ্ন: "ডেটা পরে ভাবব"</b></p></div>
+    </div>
+    <div class="call warn" style="margin-top:8mm;font-size:14pt">
+      সবচেয়ে বিপজ্জনক অবস্থা <b>হলুদ</b> — কারণ তখন সবাই এগোতে চায়, আর কেউ স্কোপ কাটতে চায় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> হলুদ অবস্থায় স্কোপ কাটার সিদ্ধান্তটা একা নেবেন না — ছাত্রকে নিজে বলতে দিন "কোনটা বাদ দেব"। নিজের মুখে বলা কাটছাঁট সে আর ফিরিয়ে আনবে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>চারটি প্রশ্ন — নিজের প্রজেক্টের খাতা মিলিয়ে</h2>
+      <div class="sub">প্রতিটির উত্তর একটি সংখ্যা দিয়ে শেষ করতে হবে</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;gap:6mm">
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>১.</b> আপনার প্রজেক্টে বছরে কত সারি ডেটা জমবে? সংখ্যাটা লিখুন — sqlite কি পারবে?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>২.</b> মাসিক নির্দিষ্ট খরচ কত? প্রতি গ্রাহকের নিট আয় কত? ভাঙার বিন্দু কতজন?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>৩.</b> আপনার সিস্টেম "অন্য কারও সার্ভারে" চালু করতে কী কী লাগবে — তিনটি জিনিস বলুন।</p></div>
+    <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2"><p style="font-size:14pt;color:#7f1d1d">
+      <b>৪.</b> কোন খাতায় আপনার হাতের কাছে <i>কোনো সংখ্যাই</i> নেই? ওই খাতাটাই আপনার প্রজেক্টের আসল ঝুঁকি।</p></div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৪ নম্বরের উত্তর দিয়ে ক্লাস ৪ শুরু করবেন — ওখান থেকেই ঝুঁকির তালিকা বের হয়, আর ঝুঁকির তালিকা থেকেই কনসেপ্ট পেপারের ৬টি অংশ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারসংক্ষেপ</span>
+    <div><h2>আজকের পাঁচটি শিক্ষা</h2>
+      <div class="sub">প্রতিটি দাবির পাশে তার প্রমাণ</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:52%">শিক্ষা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>ফিজিবিলিটি = চারটি খাতার হিসাব</b>, অনুভূতি নয়</td>
+          <td>প্রযুক্তি · পরিচালনা · অর্থ · সময় — প্রতিটির একটি সংখ্যা</td></tr>
+        <tr><td><b>প্রযুক্তি বাছাই প্রয়োজন দিয়ে হয়</b>, স্বাদ দিয়ে নয়</td>
+          <td>Django ৮/৮ · Flask ৪/৮ · Laravel ৮/৮ কিন্তু কোর্স Python</td></tr>
+        <tr><td><b>ছোট ডেটাও এক বছরে বড় হয়</b></td>
+          <td>৩০০ শিক্ষার্থী × ৬ পিরিয়ড × ২০০ দিন = ৩,৬০,০০০ সারি</td></tr>
+        <tr><td><b>ভাঙার বিন্দু মাত্র দুইজন গ্রাহক</b></td>
+          <td>৳২,১০০ নির্দিষ্ট খরচ ÷ ৳১,২১৩ নিট = ১.৭ → ২ জন</td></tr>
+        <tr><td><b>অভিজ্ঞ ডেভেলপারের সময় ×৪–×৬</b></td>
+          <td>২০ কমিট · ২ কর্মদিবস · ৯,৩২২ লাইন Python</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পাঁচটি লাইনেই একটি সংখ্যা আছে — এটাই এই ক্লাসের শর্ত। ছাত্ররা নিজের প্রজেক্টের চারটি সংখ্যা (ডেটা সারি · মাসিক খরচ · ভাঙার বিন্দু · ব্যবধানের গুণক) খাতায় লিখে রাখবে; ক্লাস ৪-এ সেগুলোই কনসেপ্ট পেপারে যাবে।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">০৪</div>
+  <h2>পরের ক্লাস — "কী কী ভুল হতে পারে?"</h2>
+  <p>ঝুঁকির তালিকা, আগাম সংকেত, আর কনসেপ্ট পেপারের ছয়টি অংশ</p>
+</section>

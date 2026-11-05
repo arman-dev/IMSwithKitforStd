@@ -1,0 +1,22 @@
+<section class="slide">
+  <div class="head"><span class="badge">সীমানা</span>
+    <div><h2><code>workspace</code> কলাম — ২৩ টেবিলে আছে, ৮-এ নেই, কারণ লেখা আছে</h2>
+      <div class="sub">একটি ডেটাবেজে বহু বিদ্যালয়; দেয়ালটা কোথায়</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:24%">শ্রেণি</th><th style="width:12%">সংখ্যা</th><th style="width:30%">কোনগুলো</th><th style="width:34%">কেন</th></tr>
+      <tr><td><b>নিজের <code>workspace</code> কলাম আছে</b></td><td class="num">২৩</td><td>ClassGroup · Exam · AttendanceRecord · Homework · Invoice …</td><td>প্রতিটি লিস্ট-কোয়েরি এক লাইনেই সীমা টানে</td></tr>
+      <tr><td><b>মূল/গ্লোবাল টেবিল</b></td><td class="num">৩</td><td><code>Workspace</code> · <code>User</code> · <code>Plan</code></td><td>এরা নিজেরাই সীমানার বাইরে — এক ইউজার বহু বিদ্যালয়ে</td></tr>
+      <tr><td><b>প্যারেন্ট দিয়ে সীমানা</b></td><td class="num">৫</td><td><code>Chapter</code> → Syllabus · <code>Topic</code> → Chapter · <code>Submission</code> → Homework · <code>Mark</code> → Exam · <code>GradeBand</code> → GradeScale</td><td>কলাম যোগ করলে দুই জায়গায় সত্য থাকত, একদিন মিলত না</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.5mm;gap:5mm">
+      <div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <b>দাম:</b> এই পাঁচটি টেবিলে <code>filter(workspace=…)</code> লেখা যায় না — <code>filter(exam__workspace=…)</code> লিখতে হয়। ভুল করলে কোয়েরি চলে, কিন্তু অন্য বিদ্যালয়ের ডেটাও আসতে পারে।
+      </div>
+      <div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <b>প্রতিরোধ:</b> ভিউ কখনো সরাসরি ফিল্টার লেখে না — <code>apps/core/scoping.py</code>-র হেল্পার ডাকে, যেখানে সীমাটা একবার লেখা।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানেই বলুন — "মাল্টি-টেন্যান্ট" শব্দটা জাদু নয়। এটি কেবল একটি কলাম আর একটি অভ্যাস: প্রতিটি কোয়েরিতে ওই কলামের শর্ত। অভ্যাস ভাঙলে ডেটা মিশে যায়, আর মিশে গেলে ফেরানো প্রায় অসম্ভব।
+</section>

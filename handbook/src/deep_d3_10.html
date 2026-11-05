@@ -1,0 +1,43 @@
+<section class="slide">
+  <div class="head"><span class="badge">৩২ টেস্ট</span>
+    <div><h2>প্রতিটি স্তরের প্রমাণ — নাম ধরে</h2>
+      <div class="sub">১০৩টি টেস্টের মধ্যে ৩২টি সরাসরি নিরাপত্তার (৩১%)</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.6mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">স্তর ১–২ (১০টি)</th><th style="width:48%">প্রমাণ করে</th></tr>
+          <tr><td><code>anonymous_visitor_is_sent_to_login</code></td><td>লগইন ছাড়া কিছু নয়</td></tr>
+          <tr><td><code>dashboard_requires_login</code></td><td>টাইপ করা URL-ও নয়</td></tr>
+          <tr><td><code>deactivated_user_cannot_log_in</code></td><td>অ্যাকাউন্ট বন্ধ = ঢোকা বন্ধ</td></tr>
+          <tr><td><code>wrong_password_fails</code></td><td>ভুল পাসওয়ার্ড পরিষ্কার ব্যর্থ</td></tr>
+          <tr><td><code>non_member_gets_404_not_403</code></td><td>স্কুলের অস্তিত্ব ফাঁস নয়</td></tr>
+          <tr><td><code>inactive_membership_sees_nothing</code></td><td>সদস্যতা বাতিল = দেখা বন্ধ</td></tr>
+          <tr><td><code>verified_domain_shows_that_institution…</code></td><td>ডোমেইন → সঠিক স্কুল</td></tr>
+          <tr><td><code>unverified_domain_is_ignored</code></td><td>যাচাই না হলে উপেক্ষা</td></tr>
+          <tr><td><code>domain_cannot_be_stolen_by_second…</code></td><td>ডোমেইন দখল অসম্ভব</td></tr>
+          <tr><td><code>only_the_platform_admin_can_open_console</code></td><td>প্ল্যাটফর্ম আলাদা</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">স্তর ৩–৪ (২২টি)</th><th style="width:48%">প্রমাণ করে</th></tr>
+          <tr><td><code>teacher_cannot_open_administration…</code></td><td>URL টাইপেও নয়</td></tr>
+          <tr><td><code>student_cannot_open_teaching_pages</code></td><td>ভূমিকা = দেয়াল</td></tr>
+          <tr><td><code>coordinator_cannot_open_owner_only_pages</code></td><td>দেখা ≠ বদলানো</td></tr>
+          <tr><td><code>each_role_is_offered_only_its_own_links</code></td><td>মেনুও মিথ্যা বলে না</td></tr>
+          <tr><td><code>teacher_sees_only_assigned_classes</code></td><td>পরিধি কার্যকর</td></tr>
+          <tr><td><code>coordinator_sees_only_their_scope</code></td><td>ডেটা-ভিত্তিক পরিধি</td></tr>
+          <tr><td><code>student_sees_only_own_record</code></td><td>নিজের বাইরে নয়</td></tr>
+          <tr><td><code>student_cannot_see_another_students_marksheet</code></td><td>IDOR বন্ধ</td></tr>
+          <tr><td><code>results_are_invisible_until_published</code></td><td>প্রকাশ-নিয়ন্ত্রণ</td></tr>
+          <tr><td><code>publishing_is_audited</code> · <code>correction_requires_a_reason…</code></td><td>প্রতিটি বদল লিপিবদ্ধ</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      বাকি ৭১টি টেস্ট কার্যকারিতা যাচাই করে (হাজিরা সেভ হয়, নম্বর যোগ হয়) — নিরাপত্তার প্রমাণ নয়। দুই ধরনই দরকার।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই দুই কলাম একসাথে পড়ুন — এটাই "নিরাপত্তা ডকুমেন্টে লেখা থাকে না, টেস্টে থাকে" এর প্রমাণ। শিক্ষার্থীদের নিজের প্রজেক্টে এমন একটি তালিকা বানাতে দিন।
+</section>

@@ -1,0 +1,462 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৭ · ক্লাস ৩২</div>
+  <h1>এক বছর পরের IMS</h1>
+  <p class="sub">রোডম্যাপ · সিদ্ধান্তের নথি · দল ও রিলিজ · ফিচার বনাম ঋণ · কখন নতুন করে লিখবেন না</p>
+  <div class="pill">IMS · ক্লাস ৩২ · স্লাইড ১৮–৩৪</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>৩৬৫ দিনে চারটি জিনিস বদলায়</h2>
+      <div class="sub">আর প্রতিটির জন্য আলাদা প্রস্তুতি দরকার</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:20%">কী বদলায়</th><th style="width:36%">কেমন দেখায়</th><th>প্রস্তুতি</th></tr></thead>
+      <tbody>
+        <tr><td>ব্যবহারকারী</td><td>৪ জন → ৪০ জন; কেউ প্রশিক্ষণ নিয়ে আসে, কেউ নয়</td><td>ব্যবহারবিধি ও সহায়তা (USER_MANUAL)</td></tr>
+        <tr><td>ডেটা</td><td>২০০ উপস্থিতি → ১,৬০,০০০ সারি</td><td>ইনডেক্স, ব্যাকআপ, আর্কাইভ</td></tr>
+        <tr><td>কোড</td><td>৫,৪৮০ → সম্ভবত ৮,০০০ লাইন</td><td>টেস্টের অনুপাত ধরে রাখা</td></tr>
+        <tr><td>মানুষ</td><td>আপনি একা → একজন সহকারী, বা কেউ নেই</td><td>দস্তাবেজ ও সিদ্ধান্তের নথি</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      চারটির মধ্যে <b>শুধু কোড</b> নিজে থেকে ঠিক থাকে না বাকি তিনটি পরিকল্পনা ছাড়া এলোমেলো হয় — আর সেটাই এক বছর পরের আসল ঝুঁকি
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "এক বছর পর আপনার প্রজেক্টে সবচেয়ে বড় সমস্যা কী হবে?" উত্তর প্রায় সবসময় ডেটা বা মানুষ, কোড নয়
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রোডম্যাপ</span>
+    <div><h2>১২ মাসের তিনটি ধাপ</h2>
+      <div class="sub">প্রতিটি ধাপের সঙ্গে একটি যাচাইযোগ্য লক্ষ্য</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:16%">সময়</th><th style="width:40%">কাজ</th><th>লক্ষ্য / প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>মাস ১–৩</td><td>মূল ব্যবহার শক্ত করা: মার্কস এন্ট্রি, উপস্থিতি, রিপোর্ট কার্ড</td><td>প্রতিদিন ব্যবহার, ৫০০ = ০</td></tr>
+        <tr><td>মাস ১–৩</td><td>ইনভাইট ও CSV আমদানি (অনবোর্ডিংয়ের ধীর ধাপ)</td><td>একটি স্কুল ২০ মিনিটে ওঠে</td></tr>
+        <tr><td>মাস ৪–৬</td><td>মনিটরিং, CI, রেট লিমিট, ব্যাকআপ কনসোল</td><td>অ্যালার্ট আসে, রিস্টোর ড্রিল পাস</td></tr>
+        <tr><td>মাস ৪–৬</td><td>academics-এর টেস্ট (১:০.০৯ → ১:০.৩)</td><td>টেস্ট সংখ্যা বাড়ে, বাগ কমে</td></tr>
+        <tr><td>মাস ৭–১২</td><td>নতুন ফিচার (শিক্ষক-উপস্থিতি, এসএমএস, পেমেন্ট গেটওয়ে)</td><td>গ্রাহক-অনুরোধের তালিকা থেকে</td></tr>
+        <tr><td>সারা বছর</td><td>প্রতি রিলিজে দস্তাবেজ হালনাগাদ</td><td>BUILD_STATUS সংখ্যা সত্যি</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      নিয়ম: রোডম্যাপে <b>তারিখের চেয়ে ক্রম বেশি গুরুত্বপূর্ণ</b> — প্রথম তিন মাসের কাজ শেষ না করে চতুর্থ মাসের ফিচারে যাবেন না
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> BUILD_STATUS-এর "Remaining work" তালিকাটি এই রোডম্যাপের বীজ — ক্লাসে দুটিকে পাশাপাশি রেখে দেখান
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ADR</span>
+    <div><h2>সিদ্ধান্তের নথি — কেন এভাবে</h2>
+      <div class="sub">কোড বলে "কী", ADR বলে "কেন"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.46"># ADR-004: সাবস্ক্রিপশন গেট middleware-এ
+
+## প্রসঙ্গ
+মেয়াদ শেষ হলে কিছুই লেখা যাবে না, কিন্তু পড়া
+আর এক্সপোর্ট চালু থাকবে ২০+ ভিউ
+
+## সিদ্ধান্ত
+প্রতি ভিউয়ে নয় — এক middleware-এ
+SAFE_METHODS বাদ, ALLOW_PREFIXES ছাড়
+
+## বিকল্প যা বাদ গেল
+ভিউ ডেকোরেটর: ২০ জায়গায় একই কোড, একটায়
+ভুল হলে ফাঁক
+
+## পরিণতি
+নতুন ভিউ স্বয়ংক্রিয়ভাবে সুরক্ষিত; কিন্তু
+ব্লক হলে ডিবাগ করা কঠিনতর</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.2mm">
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">IMS-এর চারটি আসল সিদ্ধান্ত</b>
+            <p style="font-size:9pt">modular monolith (মাইক্রোসার্ভিস নয়) · কাস্টম User (email লগইন) · বিলিং অ্যাপের ভেতরে · AI/বাহ্যিক সেবা নেই</p></div>
+          <div class="card soft" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">গঠন</b>
+            <p style="font-size:9pt">প্রসঙ্গ → সিদ্ধান্ত → বাদ পড়া বিকল্প → পরিণতি চারটি শিরোনাম, এক পাতা</p></div>
+          <div class="card bad" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">এখনো নেই</b>
+            <p style="font-size:9pt">IMS-এ আলাদা <code>docs/adr/</code> ফোল্ডার নেই — চার নম্বর তথ্যটি কোড-মন্তব্য ও ক্লাসে ছড়িয়ে আছে</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "ছয় মাস পর কেউ জিজ্ঞেস করবে 'কেন middleware, ভিউ ডেকোরেটর নয়?' — ADR সেই উত্তর" ছাত্রদের একটি ADR লিখিয়ে নিন
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">কোথায় কী লেখে</span>
+    <div><h2>চার জায়গা, চার দায়িত্ব</h2>
+      <div class="sub">একই তথ্য দুই জায়গায় লিখলে একদিন অমিল হবে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">জায়গা</th><th style="width:34%">কী থাকে</th><th>কে পড়ে</th></tr></thead>
+      <tbody>
+        <tr><td>কমিট বার্তা</td><td>এই পরিবর্তনটি কী ও কেন</td><td>কোড-ইতিহাস খুঁড়তে যাওয়া কেউ</td></tr>
+        <tr><td>ADR</td><td>বড় সিদ্ধান্ত ও বাদ পড়া বিকল্প</td><td>নতুন টিম-সদস্য</td></tr>
+        <tr><td><code>BUILD_STATUS.md</code></td><td>কী তৈরি, কী বাকি, কোন প্রমাণে</td><td>গ্রাহক, আপনি নিজে, নতুন ডেভেলপার</td></tr>
+        <tr><td>ইনলাইন মন্তব্য</td><td>অদ্ভুত কোডের <b>কারণ</b> (কী নয়)</td><td>পাশের লাইন পড়তে যাওয়া কেউ</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ভালো মন্তব্য:</b> "সেশন ওয়ার্কস্পেস আর URL আলাদা হতে পারে — তাই slug থেকে পড়ি" (কেন)
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>খারাপ মন্তব্য:</b> "ওয়ার্কস্পেস নিন" — কোডেই তো দেখা যাচ্ছে মন্তব্য যা বলে তা নয়, যা বলে না তা লিখুন
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি প্রায়ই শিক্ষার্থীদের ধারণা বদলায়: "কোড নিজেই দস্তাবেজ" — আধা-সত্য; কোড "কী" বলে, "কেন" নয়
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">দল</span>
+    <div><h2>একজন থেকে তিনজন</h2>
+      <div class="sub">ভূমিকা আলাদা করুন, নিয়ম লিখিত রাখুন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:30%">ভূমিকা</th><th>দায়িত্ব</th></tr></thead>
+          <tbody>
+            <tr><td>রক্ষক (maintainer)</td><td>মার্জ, রিলিজ, মাইগ্রেশন — একজনের হাতে</td></tr>
+            <tr><td>নির্মাতা</td><td>ফিচার + টেস্ট একসাথে</td></tr>
+            <tr><td>সহায়তা (support)</td><td>টিকেট, ব্যবহারকারীর প্রশ্ন, ডেটা সংশোধন</td></tr>
+            <tr><td>গ্রাহক-সফলতা</td><td>অনবোর্ডিং, বিলিং, প্রশিক্ষণ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 46%">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">তিনটি অলঙ্ঘনীয় নিয়ম</b>
+            <p style="font-size:9.2pt">১. টেস্ট ছাড়া মার্জ নয়<br>২. মাইগ্রেশন রিভিউ ছাড়া ডিপ্লয় নয়<br>৩. রিলিজের আগে ব্যাকআপ</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">বাস্তব ঝুঁকি</b>
+            <p style="font-size:9.2pt">সব সিদ্ধান্ত একজনের মাথায় = <b>bus factor ১</b>; ছুটি বা অসুস্থতাতেই প্রকল্প থেমে যায়</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      দল ছোট হলে নিয়ম আরও লিখিত হতে হয় — মুখে বলা নিয়ম কেবল উপস্থিত থাকা মানুষদের কাজে লাগে
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে "bus factor" ধারণাটি ব্যাখ্যা করুন: "আপনি অসুস্থ হলে কত দিন প্রকল্প চলবে?"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রিলিজ</span>
+    <div><h2>সংস্করণ, ট্যাগ ও পরিবর্তন-তালিকা</h2>
+      <div class="sub">যাতে "কোন সংস্করণে কী ছিল" প্রশ্নের উত্তর থাকে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 48%">
+        <pre style="font-size:8.2pt;line-height:1.46"># সংস্করণ: MAJOR.MINOR.PATCH
+1.4.0   নতুন ফিচার (ইনভাইট)
+1.4.1   বাগ ঠিক
+2.0.0   ভাঙা পরিবর্তন (URL বদল)
+
+# ট্যাগ ও নোট
+git tag -a v1.4.0 -m "Invitations + CSV import"
+git push --tags
+
+CHANGELOG.md
+## 1.4.0 — 2026-12-01
++ invitation workflow (F-10..12)
+* academics tests 52 -> 90
+! migration: students 0004</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কেন MAJOR লাগে</b>
+            <p style="font-size:9.2pt">গ্রাহক বলবেন "আপনাদের ২.০-তে URL বদলেছে" — তখন উত্তর প্রস্তুত</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">মাইগ্রেশন উল্লেখ করুন</b>
+            <p style="font-size:9.2pt">রিলিজ নোটে মাইগ্রেশন না লিখলে কেউ ব্যাকআপ নেয় না</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">আজকের বাস্তব</b>
+            <p style="font-size:9.2pt">IMS-এ ১৯টি কমিট আছে, কিন্তু কোনো git tag বা CHANGELOG নেই — যোগ করা প্রথম কাজগুলোর একটি</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন প্রতিটি রিলিজে তিনটি জিনিস লিখতে: তারিখ, কী বদলাল, কোন মাইগ্রেশন
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বাজেট</span>
+    <div><h2>ফিচার বনাম ঋণ — ৭০ / ২০ / ১০</h2>
+      <div class="sub">প্রতি রিলিজের কাজ ভাগ করে নিন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="14" width="690" height="42" rx="6" fill="#4f46e5"/>
+        <text x="355" y="41" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">৭০% — নতুন ফিচার (গ্রাহক যা চায়)</text>
+        <rect x="704" y="14" width="194" height="42" rx="6" fill="#0891b2"/>
+        <text x="801" y="41" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">২০% ঋণ</text>
+        <rect x="902" y="14" width="94" height="42" rx="6" fill="#d97706"/>
+        <text x="949" y="41" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">১০%</text>
+
+        <text x="10" y="80" font-size="11" fill="#334155">ফিচার — ব্যবহারকারীর কাজ সহজ করে</text>
+        <text x="10" y="102" font-size="11" fill="#334155">ঋণ — টেস্ট, রিফ্যাক্টর, ইনডেক্স, দস্তাবেজ</text>
+        <text x="10" y="124" font-size="11" fill="#334155">১০% — অনিশ্চিত কাজ / পরীক্ষা (নতুন ফিচার বা ঝুঁকি)</text>
+        <text x="990" y="80" text-anchor="end" font-size="10.5" fill="#94a3b8">ঋণ শূন্য হলে ঋণ ৩০% করুন</text>
+        <text x="990" y="102" text-anchor="end" font-size="10.5" fill="#94a3b8">কখনো ০% নয়</text>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:2.6mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>IMS-এর ঋণ-তালিকা বাস্তবে:</b> academics টেস্ট · reports/audit টেস্ট · CI · healthz · রেট লিমিট · ৫০০ পাতার reference id
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ফাঁদ:</b> ঋণ ০% রাখলে কয়েক মাস পর ফিচারের গতি অর্ধেক — প্রতিটি ফিচার আগের ফিচারের কাঁটায় আটকে যায়
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ঋণ শোধ করা মানে নতুন কাজ না করা" — এই ভুল ধারণাটি ভাঙুন; ২০% নিয়মিত রাখলে বড় সংকট আসে না
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ডেপ্রিকেশন</span>
+    <div><h2>ফিচার বন্ধ করা — তিন ধাপ</h2>
+      <div class="sub">হঠাৎ বন্ধ করলেই ব্যবহারকারী হারাবেন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 118" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a32" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="8" y="24" width="300" height="66" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="158" y="48" text-anchor="middle" font-size="12" font-weight="700" fill="#312e81">১. ঘোষণা</text>
+        <text x="158" y="68" text-anchor="middle" font-size="9.6" fill="#3730a3">"এই পর্দা ৩০ দিনে সরবে"</text>
+        <text x="158" y="84" text-anchor="middle" font-size="9" fill="#64748b">কী বদলে ব্যবহার করবে, তা-ও বলুন</text>
+
+        <rect x="348" y="24" width="300" height="66" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="498" y="48" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">২. সতর্কবার্তা</text>
+        <text x="498" y="68" text-anchor="middle" font-size="9.6" fill="#b45309">পর্দায় ব্যানার + ডেপ্রিকেশন লগ</text>
+        <text x="498" y="84" text-anchor="middle" font-size="9" fill="#64748b">কতজন এখনো ব্যবহার করছে, মাপা যায়</text>
+
+        <rect x="688" y="24" width="304" height="66" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="840" y="48" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">৩. সরানো</text>
+        <text x="840" y="68" text-anchor="middle" font-size="9.6" fill="#15803d">কোড, URL, টেস্ট — একসাথে</text>
+        <text x="840" y="84" text-anchor="middle" font-size="9" fill="#64748b">চেঞ্জলগে ভাঙা পরিবর্তন (MAJOR)</text>
+
+        <line x1="310" y1="57" x2="342" y2="57" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a32)"/>
+        <line x1="650" y1="57" x2="682" y2="57" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a32)"/>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>উদাহরণ যেভাবে হবে:</b> ধরা যাক ম্যানুয়াল bKash এন্ট্রি বদলে গেটওয়ে আসছে — পুরোনো পর্দা ৩০ দিন ব্যানারসহ থাকবে, তারপর সরবে ডেটা (<code>Invoice.reference</code>) থাকবে
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>কখনো করবেন না:</b> ডেটা সরানো পর্দা সরানো যায়, ইতিহাস নয় — অডিট আর ইনভয়েস চিরকাল থাকা দরকার
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "কোড মুছে ফেলা সহজ, ব্যবহারকারীর অভ্যাস মুছে ফেলা কঠিন" — তিন ধাপের কারণ এটাই
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">গোপনীয়তা</span>
+    <div><h2>কোন ডেটা কত দিন রাখবেন</h2>
+      <div class="sub">অডিট, ছাত্র, ব্যাকআপ — তিনটি আলাদা নিয়ম</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:24%">ডেটা</th><th style="width:26%">কত দিন</th><th>কারণ</th></tr></thead>
+      <tbody>
+        <tr><td>নম্বর, উপস্থিতি</td><td>যত দিন প্রতিষ্ঠান গ্রাহক</td><td>রিপোর্ট কার্ড ও বছরের তুলনা দরকার</td></tr>
+        <tr><td><code>AuditLog</code></td><td>অন্তত ১ বছর</td><td>"কে বদলাল" প্রশ্ন বছরের শেষেও আসে</td></tr>
+        <tr><td>ব্যাকআপ</td><td>১৪ দিন (বর্তমানে)</td><td>ভুল ধরা ও ফেরানোর জন্য যথেষ্ট</td></tr>
+        <tr><td>লগ</td><td>আয়োজক যত রাখে</td><td>ডিবাগিংয়ের জন্য; ব্যক্তিগত তথ্য নয়</td></tr>
+        <tr><td>মুছে ফেলা প্রতিষ্ঠান</td><td>প্রথমে ব্যাকআপ, পরে মুছে ফেলা</td><td>UI-তে ডিলিট নেই — ইচ্ছাকৃত</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>অনুরোধ এলে:</b> "আমার ডেটা দিন" → রিপোর্ট/এক্সপোর্ট (CSV, XLSX, PDF) আছে; "মুছুন" → ব্যাকআপ নিয়ে, মালিকের অনুমোদনে
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যা লগে রাখবেন না:</b> পাসওয়ার্ড, রিসেট টোকেন, পুরো ছাত্র-রেকর্ড — <code>AuditLog</code>-এর নিয়মেই লেখা
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাংলাদেশে নাগরিক তথ্য সুরক্ষা নিয়ে আলোচনা চলছে; নীতি এখনই লিখে রাখলে ভবিষ্যতে সুবিধা — "কম রাখুন, দরকারে রাখুন"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খরচ</span>
+    <div><h2>এক বছরে খরচ কত</h2>
+      <div class="sub">৮০০ ছাত্র, একটি প্রতিষ্ঠান — মোটামুটি হিসাব</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:34%">খাত</th><th style="width:22%">মাসিক (আনুমানিক)</th><th>নোট</th></tr></thead>
+      <tbody>
+        <tr><td>অ্যাপ হোস্টিং (ছোট ইনস্ট্যান্স)</td><td>মার্কিন $৭–২৫</td><td>Render/Railway/Fly ফ্রি টিয়ারও চলে</td></tr>
+        <tr><td>PostgreSQL (ম্যানেজড)</td><td>$০–১৫</td><td>ফ্রি টিয়ারে সীমা; ব্যাকআপ আলাদা</td></tr>
+        <tr><td>ডোমেইন</td><td>বছরে ~$১২</td><td>কাস্টম ডোমেইন ক্লায়েন্টের</td></tr>
+        <tr><td>ইমেইল (৩০০০/মাস)</td><td>$০–১০</td><td>Brevo ফ্রি টিয়ার যথেষ্ট শুরুতে</td></tr>
+        <tr><td>স্টোরেজ (<code>media/</code>)</td><td>কয়েক ডলার</td><td>লোগো ছোট, পড়ার উপকরণ বড় হতে পারে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>আয়:</b> স্টার্টার ৳১,৫০০/মাস — এক প্রতিষ্ঠানই হোস্টিংয়ের কয়েকগুণ কভার করে
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>লুকানো খরচ:</b> আপনার সময় সাপোর্ট, ব্যাকআপ যাচাই, আপডেট — এগুলোই আসল মাসিক ব্যয়
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সংখ্যাগুলো আজকের বাজারদর নয়, মাত্রা বোঝানোর জন্য — শিক্ষার্থীদের নিজে যাচাই করতে বলুন
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ফাঁদ</span>
+    <div><h2>"নতুন করে লিখে ফেলি" — প্রায় সবসময় ভুল</h2>
+      <div class="sub">পুরোনো কোডে যা আছে, তা দেখা যায় না — কিন্তু থাকে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:44%">পুরোনো কোডে লুকানো আছে</th><th>নতুন কোডে</th></tr></thead>
+          <tbody>
+            <tr><td>এজ-কেস: অনুপস্থিত ছাত্র, মেয়াদোত্তীর্ণ ট্রায়াল</td><td>প্রথম থেকে শিখতে হবে</td></tr>
+            <tr><td>স্কোপিংয়ের সূক্ষ্ম নিয়ম</td><td>আবার বাগ হবে</td></tr>
+            <tr><td>১০৩ টেস্টের জ্ঞান</td><td>শূন্য থেকে শুরু</td></tr>
+            <tr><td>গ্রাহকের অভ্যস্ত পর্দা</td><td>আবার প্রশিক্ষণ</td></tr>
+            <tr><td>মাইগ্রেশন-ইতিহাস</td><td>ডেটা সরানোর ঝুঁকি</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 46%">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">বিকল্প: ধীরে বদল (strangler)</b>
+            <p style="font-size:9.2pt">একটি অংশ নতুন করে লিখুন, পুরোনোটা পাশে রেখে — ট্রাফিক ধীরে সরান, তারপর পুরোনোটা সরান</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">IMS-এ কোথায় প্রযোজ্য</b>
+            <p style="font-size:9.2pt">রিপোর্ট বা রফতানি ধীর হলে সেটিকে আলাদা সার্ভিস করা যায় — পুরো সিস্টেম নয়</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">প্রথম প্রশ্ন</b>
+            <p style="font-size:9.2pt">"কোন সমস্যার সমাধান করছি?" উত্তর না থাকলে রিওয়াইট নয়, রিফ্যাক্টর করুন</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জোর দিন: "রিওয়াইট মানে পুরোনো জ্ঞান ফেলে নতুন করে শেখা" — াসে এটি সবচেয়ে দরকারি সতর্কতা
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রযুক্তি</span>
+    <div><h2>ফ্রেমওয়ার্ক বা ভাষা বদলাবেন কখন</h2>
+      <div class="sub">প্রায় কখনোই কারিগরি কারণে নয়</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card soft" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">যুক্তিসঙ্গত কারণ</b>
+        <p style="font-size:10.4pt">ফ্রেমওয়ার্ক আর রক্ষণাবেক্ষণ পাচ্ছে না (নিরাপত্তা আপডেট নেই) · স্কেলিংয়ে প্রকৃত দেয়াল · পুরো দলের দক্ষতা অন্য স্ট্যাকে</p></div>
+      <div class="card warn" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">অজুহাত</b>
+        <p style="font-size:10.4pt">"নতুন প্রযুক্তি বেশি আধুনিক" · "অন্যরা করছে" · "আমার পছন্দের নয়" — এগুলো দিয়ে শুরু হলে বছর শেষে কিছুই তৈরি হয় না</p></div>
+      <div class="card bad" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">লক-ইন হিসাব</b>
+        <p style="font-size:10.4pt">Django, PostgreSQL, WhiteNoise — সবগুলো ওপেন ও প্রতিস্থাপনযোগ্য সবচেয়ে বড় লক-ইন আপনার নিজের কোড, ফ্রেমওয়ার্ক নয়</p></div>
+    </div>
+    <div class="call" style="margin-top:3.6mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      IMS-এ Django 6.1.2 · Python 3.13 · PostgreSQL — দশ বছরের বেশি রক্ষণাবেক্ষণের ইতিহাস আছে এমন স্ট্যাক; নিরাপত্তা আপডেটই আসল কারণ
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "নতুন ফ্রেমওয়ার্কে যেতে কত মাস লাগবে, আর কী লাভ?" সংখ্যা দুইটা পাশাপাশি লিখলেই উত্তর স্পষ্ট হয়
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বীমা</span>
+    <div><h2>আপনি ছাড়া প্রজেক্ট চলবে?</h2>
+      <div class="sub">দস্তাবেজ = bus factor-এর একমাত্র প্রতিকার</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">৫০০+ লাইনের দস্তাবেজ</b>
+            <p style="font-size:9.2pt">START_HERE ২১১ · USER_MANUAL ২০৩ · BUILD_STATUS ১৭০ · LAUNCH_PLAYBOOK ১৩৬ · DEPLOYMENT ১২২ · README ৫৮</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দস্তাবেজও কোড</b>
+            <p style="font-size:9.2pt"><code>docs/gen_feature_catalogue.py</code> · <code>gen_proof_pdf.py</code> · <code>gen_roadmap.py</code> · <code>build_status.py</code> · <code>shoot.py</code> (৫৩ স্ক্রিনশট)</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন স্ক্রিপ্ট</b>
+            <p style="font-size:9.2pt">হাতে লেখা দস্তাবেজ পুরোনো হয়; স্ক্রিপ্ট চালালেই ছবি ও সংখ্যা নতুন — BUILD_STATUS-এর "৯০ টেস্ট" এভাবেই বাসি হয়েছে</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">তবু ফাঁক</b>
+            <p style="font-size:9.2pt">স্ক্রিপ্ট চালানোর কথা কেউ মনে রাখে না — রিলিজ চেকলিস্টে "দস্তাবেজ পুনরুত্পাদন" ধাপ যোগ করুন</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 40%">
+        <pre style="font-size:8.2pt;line-height:1.46">$ python docs/build_status.py
+$ python docs/gen_feature_catalogue.py
+$ python docs/gen_proof_pdf.py
+$ python docs/gen_roadmap.py
+$ python docs/shoot.py     # ৫৩ স্ক্রিনশট
+
+# এক কমান্ডে সব (এখনো নেই — বানাতে হবে)
+$ bash docs/rebuild_docs.sh</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটি সত্যি নয় — এমন <code>rebuild_docs.sh</code> ফাইল এখনো নেই; শিক্ষার্থীদের বলুন সেটি বানানোই প্রথম কাজ (সৎ উদাহরণ: দস্তাবেজও দাবি করে, যাচাই করতে হয়)
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — এক বছরের পরিকল্পনা লিখুন</h2>
+      <div class="sub">চারটি ছোট ফলাফল</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. একটি ADR</b>
+            <p style="font-size:9.8pt">নিজের প্রজেক্টের একটি সিদ্ধান্ত — প্রসঙ্গ, সিদ্ধান্ত, বাদ পড়া বিকল্প, পরিণতি</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. ৭০/২০/১০ বাজেট</b>
+            <p style="font-size:9.8pt">পরের তিন মাসের কাজ তিন ভাগে ভাগ করুন</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. ডেটা-নীতি</b>
+            <p style="font-size:9.8pt">কোন টেবিল কত দিন রাখবেন — পাঁচটি সারি লিখুন</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. bus factor পরীক্ষা</b>
+            <p style="font-size:9.8pt">একজন সহপাঠীকে দিন — সে কি আপনার প্রজেক্ট চালু করতে পারল?</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>কেন ADR আলাদা নথি?</li>
+          <li class="g">ঋণ ০% রাখলে কী হয়?</li>
+          <li>রিওয়াইটের আগে প্রথম প্রশ্ন?</li>
+          <li class="r">দস্তাবেজ পুরোনো হলে কীভাবে বুঝবেন?</li>
+          <li class="g">কোন ডেটা কখনো মুছবেন না?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ কাজটি সত্যিই করান — এক সহপাঠীকে ২০ মিনিট দিন; যেখানে আটকে যায়, সেটাই দস্তাবেজের ফাঁক
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পর্ব ৭ সমাপ্তি</span>
+    <div><h2>দুই ক্লাসে যা শেখা হলো</h2>
+      <div class="sub">৩৪ স্লাইড · রক্ষণাবেক্ষণের পুরো ছবি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">ক্লাস</th><th style="width:40%">মূল ধারণা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>৩১ · কোড বড় হয়</td><td>মানচিত্র · ঋণ · রিফ্যাক্টর · নির্ভরতা · বৃদ্ধি</td><td>৬,৮৩৩ লাইন · ১,৬০,০০০ উপস্থিতি সারি</td></tr>
+        <tr><td>৩২ · এক বছর পর</td><td>ADR · রিলিজ · ফিচার বনাম ঋণ · রিওয়াইট নয়</td><td>১৯ কমিট · ৯০০ লাইন দস্তাবেজ · ৫৩ স্ক্রিনশট</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>মনে রাখুন:</b> কোড বাড়লে <b>নিয়ম</b> বাড়াতে হয়, আর নিয়ম লিখে রাখতে হয় — নইলে তা কেবল আপনার মাথায় থাকে
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সৎ ফাঁক:</b> ADR ফোল্ডার নেই · git tag/CHANGELOG নেই · দস্তাবেজ পুনরুত্পাদনের এক-কমান্ড স্ক্রিপ্ট নেই
+      </div></div>
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 4mm">
+      পরের পর্বে (৮): দস্তাবেজ — এই ফাঁকগুলো পূরণ করার ক্লাস ব্যবহারকারীর জন্য লেখা, ডেভেলপারের জন্য লেখা, আর প্রমাণের দস্তাবেজ
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পর্ব ৮-এর সূচনা এই ফাঁকগুলো থেকেই — শিক্ষার্থীরা যেন দেখে দস্তাবেজ কেবল সাজসজ্জা নয়, প্রকৌশলের অংশ
+</section>
+
+<section class="slide divider">
+  <div class="n">৩৩</div>
+  <h2>পর্ব ৮ — দস্তাবেজ</h2>
+  <p>ব্যবহারবিধি · ডেভেলপার গাইড · প্রমাণের দস্তাবেজ · স্ক্রিনশট · বাংলায় লেখা</p>
+</section>

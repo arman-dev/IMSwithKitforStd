@@ -1,0 +1,40 @@
+<section class="slide">
+  <div class="head"><span class="badge">পরিধি-২</span>
+    <div><h2>সমন্বয়কের পরিধি — অনুমতি <b>ডেটা</b> হিসেবে</h2>
+      <div class="sub"><code>CoordinatorScope</code> · "এই দুই বিভাগ আর এই এক ক্লাস"</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">class CoordinatorScope(models.Model):
+    workspace = FK(Workspace)
+    user = FK(User)
+    department = FK(Department, null=True)
+    class_group = FK(ClassGroup, null=True)
+    is_active = Bool(default=True)
+
+    class Meta:
+        constraints = [CheckConstraint(
+            condition=~(Q(department__isnull=True) &
+                        Q(class_group__isnull=True)),
+            name="coordinator_scope_needs_a_target")]
+        indexes = [Index(fields=["workspace", "user", "is_active"])]</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">সিদ্ধান্ত</th><th style="width:56%">কারণ</th></tr>
+          <tr><td>রোল-স্ট্রিং নয়, সারি</td><td>"সমন্বয়ক-২" বানালে প্রতিটি নতুন স্কুলে নতুন কোড লাগত</td></tr>
+          <tr><td><code>department</code> বা <code>class_group</code></td><td>কেউ বিভাগভিত্তিক, কেউ এক ক্লাসের — দুটোই সম্ভব</td></tr>
+          <tr><td><code>CheckConstraint</code></td><td>দুটোই null মানে "কিছুই দেখবে না" — অর্থহীন সারি, তাই ডেটাবেজেই বন্ধ</td></tr>
+          <tr><td><code>is_active</code> + ইনডেক্স</td><td>পরিধি বাতিল মানে মুছে ফেলা নয়; কোয়েরি indexed</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>প্রমাণ:</b> <code>test_coordinator_sees_only_their_scope</code> — দুই সমন্বয়ক, আলাদা পরিধি, একে অন্যের ক্লাস দেখে না।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>সৎ সীমা:</b> পরিধি একই স্কুলের ভেতরে সীমিত করে, কিন্তু ডেটাবেজ-স্তরে (RLS) নয়। কেউ ভিউতে <code>scoping.py</code> বাদ দিলে ডেটাবেজ তাকে আটকাবে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "অনুমতি ডেটা হিসেবে রাখা" — এই বাক্যটি মনে রাখতে বলুন। এর অর্থ: নতুন পরিধি যোগ করতে মাইগ্রেশন লাগে না, কেবল একটি সারি।
+</section>

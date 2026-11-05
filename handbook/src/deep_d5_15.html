@@ -1,0 +1,41 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্তর</span>
+    <div><h2>তিন স্তরের বার্তা — ব্যাজ, ব্যানার, অ্যালার্ট</h2>
+      <div class="sub">কতটা জরুরি, তার ভিত্তিতে কোনটা কোথায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.6mm">
+      <div style="flex:1.02">
+        <table class="tight">
+          <tr><th style="width:26%">স্তর</th><th style="width:30%">কোথায়</th><th style="width:44%">ব্যবহার (মাপা)</th></tr>
+          <tr><td><code>ims-badge</code></td><td>টেবিলের সেলের ভিতরে</td><td>৭১ বার — ok ২৭ · warn ১১ · info ১০</td></tr>
+          <tr><td><code>ims-banner</code></td><td>পৃষ্ঠার একদম উপরে</td><td>৭ বার — warn ৬ · info ১</td></tr>
+          <tr><td><code>alert-*</code></td><td>ফর্মের পরে ফলাফল</td><td>danger ৫ · warning ৫ · info ৩</td></tr>
+        </table>
+        <pre style="font-size:7.4pt;line-height:1.45;padding:2.4mm 3mm;margin-top:2mm">{% if subscription.is_grace %}
+&lt;div class="ims-banner ims-banner--warn"&gt;
+  &lt;i class="bi bi-exclamation-triangle"&gt;&lt;/i&gt;
+  &lt;div&gt;Grace period ends in {{ days_left }} days.&lt;/div&gt;
+&lt;/div&gt;
+{% endif %}</pre>
+      </div>
+      <div style="flex:1">
+        <div class="call warn" style="font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>নিয়ম:</b> ব্যাজ = তথ্য ("Paid"), ব্যানার = সময়ভিত্তিক সতর্কতা ("৫ দিন বাকি"), অ্যালার্ট = কাজের ফল ("সেভ হয়েছে")। একটি দিয়ে অন্যটা করলে ব্যবহারকারী সতর্কতা চিনতে ভুল করে।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>সৎ ফাঁক ১:</b> <code>ims-badge--danger</code> নেই — লাল ব্যাজ দরকার হলে Bootstrap-এর <code>text-danger</code> ব্যবহার করা হয়। অর্থ একই, ক্লাস আলাদা।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>সৎ ফাঁক ২:</b> <code>alert-success</code> ও <code>alert-secondary</code> CSS-এ সংজ্ঞায়িত, কিন্তু টেমপ্লেটে একবারও ব্যবহৃত নয় — মৃত কোড।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:9.9pt;padding:2.6mm 4mm;display:flex;gap:6mm;align-items:center">
+      <span><b>কোথায় বসে:</b> ব্যাজ → টেবিলের সেল</span><span>·</span>
+      <span>ব্যানার → পৃষ্ঠার উপরে, পুরো প্রস্থ</span><span>·</span>
+      <span>অ্যালার্ট → ফর্ম/কাজের পরে</span><span>·</span>
+      <span>ব্যাজ কখনো পৃষ্ঠার উপরে নয় — সেটি ব্যানারের কাজ</span>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তিন স্তরের পার্থক্য একটা বাক্যে বলুন: "ব্যাজ জিনিসটা কী, ব্যানার সময় কত বাকি, অ্যালার্ট এইমাত্র কী হলো।" ছাত্ররা প্রায়ই সবকিছু alert দিয়ে করে — কোর্সের সবচেয়ে সাধারণ UI ভুল।
+</section>

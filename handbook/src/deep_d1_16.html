@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">গতি</span>
+    <div><h2>১৩টি হাতে লেখা ইনডেক্স — কোন কোয়েরির জন্য</h2>
+      <div class="sub">মোট ইনডেক্স ≈ ১৩৯; তার ১২৬টি Django নিজেই বানায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.15">
+        <table class="tight">
+          <tr><th style="width:44%">ইনডেক্স</th><th style="width:56%">যে কোয়েরি দ্রুত হয়</th></tr>
+          <tr><td><code>(workspace, date)</code> · Attendance</td><td>আজকের হাজিরা, স্কুলের সব ক্লাস</td></tr>
+          <tr><td><code>(class_group, date)</code></td><td>এক ক্লাসের দৈনিক হাজিরা</td></tr>
+          <tr><td><code>(workspace, class_group, is_active)</code></td><td>ক্লাসের সক্রিয় ছাত্র-তালিকা</td></tr>
+          <tr><td><code>(workspace, status)</code> · Student</td><td>সক্রিয় ছাত্রের তালিকা</td></tr>
+          <tr><td><code>(workspace, term, is_archived)</code></td><td>সেশনের ক্লাস-তালিকা</td></tr>
+          <tr><td><code>(workspace, term, is_published)</code></td><td>প্রকাশিত ফলাফল</td></tr>
+          <tr><td><code>(workspace, class_group, due_at)</code></td><td>আসন্ন হোমওয়ার্ক</td></tr>
+          <tr><td><code>(workspace, -created_at)</code> · Audit</td><td>সাম্প্রতিক অডিট লগ</td></tr>
+          <tr><td><code>(user, is_active)</code> · Membership</td><td>ইউজারের স্কুল-তালিকা (প্রতি রিকোয়েস্টে)</td></tr>
+        </table>
+      </div>
+      <div style="flex:.86">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card soft" style="padding:3mm 3.6mm"><b style="font-size:11pt">৩১ · প্রাইমারি কী</b><p style="font-size:9.8pt">স্বয়ংক্রিয়</p></div>
+          <div class="card soft" style="padding:3mm 3.6mm"><b style="font-size:11pt">৭৪ · ফরেন কী</b><p style="font-size:9.8pt">Django প্রতিটি FK-তে</p></div>
+          <div class="card soft" style="padding:3mm 3.6mm"><b style="font-size:11pt">২১ · unique নিয়ম</b><p style="font-size:9.8pt">১৩ unique_together + ৮ শর্তসাপেক্ষ</p></div>
+          <div class="card" style="padding:3mm 3.6mm;background:#eef2ff;border-color:#6366f1"><b style="font-size:11pt">১৩ · হাতে লেখা</b><p style="font-size:9.8pt">কেবল আসল কোয়েরি দেখে</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      এগুলোর কোনোটিই <code>EXPLAIN</code> দেখে নেওয়া নয় — লিস্ট-ভিউয়ের <code>filter()</code> পড়ে অনুমান করা। প্রকৃত পরিমাপ এখনো হয়নি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সততাটুকু জোর দিয়ে বলুন: ইনডেক্স "সঠিক" প্রমাণ করতে <code>EXPLAIN ANALYZE</code> লাগে, অনুমান নয়। ৪০০ ছাত্রের ডেমোতে পার্থক্যই দেখা যায় না; পার্থক্য দেখা যায় ৫০ হাজার সারিতে।
+</section>

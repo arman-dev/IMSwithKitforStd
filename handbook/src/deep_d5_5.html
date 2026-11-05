@@ -1,0 +1,27 @@
+<section class="slide">
+  <div class="head"><span class="badge">রঙ</span>
+    <div><h2>রঙের অর্থ — কোন অবস্থায় কোনটা</h2>
+      <div class="sub">রঙ সাজসজ্জা নয়, সংকেত; একই রঙ দুই অর্থে ব্যবহার করলে সংকেত ভাঙে</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:20%">টোকেন</th><th style="width:34%">কোথায় ব্যবহার</th><th style="width:46%">অর্থ</th></tr>
+      <tr><td><b>primary</b> #4f46e5</td><td>বাটন, সক্রিয় মেনু, লিংক, KPI আইকন</td><td>"এটি করো" — এক পর্দায় একটাই প্রাথমিক কাজ</td></tr>
+      <tr><td><b>success</b> #059669</td><td><code>ims-badge--ok</code>, <code>alert-success</code></td><td>সম্পন্ন · উপস্থিত · সক্রিয়</td></tr>
+      <tr><td><b>warning</b> #d97706</td><td><code>ims-badge--warn</code>, <code>ims-banner--warn</code>, <code>ims-slice-note</code></td><td>খেয়াল করুন · ট্রায়াল শেষ হচ্ছে · read-only</td></tr>
+      <tr><td><b>danger</b> #dc2626</td><td><code>ims-error</code>, <code>alert-danger</code></td><td>ভুল হয়েছে · হবে না</td></tr>
+      <tr><td><b>muted</b> #64748b</td><td><code>ims-hint</code> (১৬৫ বার — সবচেয়ে বেশি)</td><td>সাহায্যকারী লেখা, পড়া বাধ্যতামূলক নয়</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>মাপা কনট্রাস্ট:</b> sidebar-এ #cbd5e1 / #0f172a = <b>12.0:1</b> (উত্তম) · primary-তে সাদা = <b>6.3:1</b> (AA পাশ)
+      </div>
+      <div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>মাপা ব্যর্থতা:</b> sidebar-এর <code>--ims-muted</code> #64748b / #0f172a = <b>3.75:1</b> — AA-এর ন্যূনতম 4.5:1 ছোঁয় না। ছোট লেবেলগুলো দুর্বল।
+      </div>
+      <div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>আরেকটি:</b> সবুজ #059669-এ সাদা লেখা = <b>3.77:1</b> — তাই success ব্যাজে সবুজ লেখা হালকা পটভূমিতে ব্যবহৃত হয়েছে, সাদা সবুজে নয়।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কনট্রাস্টের হিসাবটি বোর্ডে করুন — এটাই "ডিজাইন যাচাইযোগ্য" হওয়ার প্রমাণ। রুচি বিতর্কের বিষয়, 3.75:1 গণনার বিষয়।
+</section>

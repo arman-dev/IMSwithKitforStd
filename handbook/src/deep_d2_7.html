@@ -1,0 +1,23 @@
+<section class="slide">
+  <div class="head"><span class="badge">কনফিগ</span>
+    <div><h2>একটি <code>settings.py</code> নয় — চারটি মডিউল, ৩০০ লাইন</h2>
+      <div class="sub"><code>config/settings/</code> · base ১৮৯ · dev ১৪ · prod ৭৪ · sqlite ২৩</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:20%">মডিউল</th><th style="width:12%">লাইন</th><th style="width:34%">কী থাকে</th><th style="width:34%">কী বদলায়</th></tr>
+      <tr><td><b>base.py</b></td><td class="num">১৮৯</td><td>সব সাধারণ সেটিং: ১১টি অ্যাপ, ১০টি মিডলওয়্যার, টেমপ্লেট, DB, i18n, লগিং</td><td>কিছুই না — এখানে কোনো গোপন মান নেই</td></tr>
+      <tr><td><b>dev.py</b></td><td class="num">১৪</td><td><code>DEBUG=True</code>, <code>ALLOWED_HOSTS=["*"]</code></td><td>কনসোল ইমেইল, লোকাল CSRF</td></tr>
+      <tr><td><b>sqlite.py</b></td><td class="num">২৩</td><td>শুধু ডেটাবেজ বদল — PostgreSQL নয়, ফাইল</td><td>শূন্য-সেটআপ ডেমোর জন্য</td></tr>
+      <tr><td><b>prod.py</b></td><td class="num">৭৪</td><td>HTTPS, HSTS, cookie-র flags, WhiteNoise, SMTP, লগিং</td><td>নিরাপত্তার সব কঠোর মান</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.4mm;gap:5mm">
+      <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>প্রতিটি ফাইলের প্রথম লাইন এক:</b> <code>from .base import *</code>। তাই base-এ কিছু যোগ করলে চার জায়গায় পাওয়া যায় — কপি করে রাখতে হয় না।
+      </div>
+      <div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>শৃঙ্খলা:</b> <code>dev.py</code> কখনো prod-এ ব্যবহার হয় না, <code>sqlite.py</code> কখনো ডিপ্লয়ে হয় না। কোনটি চলছে, তা <code>DJANGO_SETTINGS_MODULE</code> বলে।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "সব এক ফাইলে রাখলে কী হারাতাম?" উত্তর: নিরাপত্তা-মানগুলো আলাদা করে দেখার সুযোগ। prod.py খুললেই বোঝা যায় প্রোডাকশনে কী কী কঠোর নিয়ম আছে।
+</section>

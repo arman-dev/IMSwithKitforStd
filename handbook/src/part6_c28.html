@@ -1,0 +1,569 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৬ · ক্লাস ২৮</div>
+  <h1>ল্যাপটপ থেকে সার্ভার পর্যন্ত</h1>
+  <p class="sub">ডিপ্লয়মেন্টের মৌলিক: <b>prod.py</b> · পরিবেশ চলক · Gunicorn · WhiteNoise · PostgreSQL · রিহার্সাল</p>
+  <div class="pill">IMS · ক্লাস ২৮ · স্লাইড ১–১৯</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>সার্ভারে <code>runserver</code> কেন চলবে না?</h2>
+      <div class="sub">কাজ করে, কিন্তু দায়িত্ব নেয় না</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">১. এক থ্রেড, এক অনুরোধ</b>
+        <p style="font-size:11pt">ডেভ সার্ভার অনুরোধের পর অনুরোধ লম্বা লাইনে সার্ভ করে। ৩০ জন শিক্ষক একসাথে মার্কস এন্ট্রি দিলে সবাই অপেক্ষা করবে।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">২. নিজেই বলে "প্রোডাকশনে চালাবেন না"</b>
+        <p style="font-size:11pt"><code>runserver</code> চালু হলেই সতর্কবার্তা দেয়; নিরাপত্তা হার্ডেনিং, স্ট্যাটিক ফাইল, লগ — কোনোটাই এর কাজ নয়।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">৩. DEBUG=True মানে সব গোপন তথ্য পর্দায়</b>
+        <p style="font-size:11pt">একটি এরর হলেই সেটিংস, SQL, ফাইল-পথ — যা কিছু দরকার। শিক্ষকের ব্রাউজারে সেটি দেখানো মানে সেটি ফাঁস করা।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:4.5mm;font-size:11pt;padding:3mm 4.4mm">
+      তাই ডিপ্লয়মেন্ট মানে কেবল "অন্য কম্পিউটারে চালানো" নয় — <b>অন্য একটি ভঙ্গি</b>: কঠোর সেটিংস, সত্যিকারের অ্যাপ সার্ভার, আসল ডেটাবেস, আর পেছনে ওয়েব সার্ভার।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম প্রশ্ন করুন: "আপনার প্রজেক্ট সার্ভারে দিলে কী হবে?" বেশিরভাগ উত্তর "চলবে" — আসল উত্তর "চলবে, কিন্তু ভাঙবে"।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মানচিত্র</span>
+    <div><h2>তিনটি পরিবেশ, তিনটি উদ্দেশ্য</h2>
+      <div class="sub">IMS-এ তিনটি সেটিংস ফাইল আছে — একটি নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:24%">দিক</th><th style="width:25%">dev</th><th style="width:25%"><code>sqlite</code> (ডেমো)</th><th>prod</th></tr></thead>
+      <tbody>
+        <tr><td>DEBUG</td><td>True</td><td>True</td><td><b>False</b></td></tr>
+        <tr><td>ডেটাবেস</td><td>PostgreSQL</td><td>SQLite ফাইল</td><td>PostgreSQL</td></tr>
+        <tr><td>স্ট্যাটিক</td><td>ডেভ সার্ভার</td><td>ডেভ সার্ভার</td><td>WhiteNoise (সংকুচিত)</td></tr>
+        <tr><td>ইমেইল</td><td>কনসোলে ছাপে</td><td>কনসোলে ছাপে</td><td>SMTP</td></tr>
+        <tr><td>ALLOWED_HOSTS</td><td><code>*</code></td><td><code>*</code></td><td>আসল ডোমেইন, <code>*</code> নিষিদ্ধ</td></tr>
+        <tr><td>HTTPS</td><td>নেই</td><td>নেই</td><td>রিডাইরেক্ট + HSTS</td></tr>
+        <tr><td>কমান্ড</td><td><code>runserver</code></td><td><code>run.sh</code></td><td><code>gunicorn</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>তিনটি ফাইলই <code>base.py</code> থেকে উত্তরাধিকার</b> নেয় — শুধু পার্থক্যটুকু ওভাররাইড করে। <code>from .base import *</code>
+      </div></div>
+      <div><div class="call bad" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>একটি ফাইলে <code>if DEBUG:</code></b> লিখে সব সামলানো যায় না — একটি ভুল মানেই প্রোডাকশনে ডিবাগ চালু।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "ডেমো আর প্রোডাকশনের মধ্যে তফাত সেটিংসে, কোডে নয়।" একই কোড তিনটি ভঙ্গিতে চলে — এটাই সেটিংস-স্প্লিটের পুরো লাভ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রথম নিয়ম</span>
+    <div><h2><code>prod.py</code> নিজেই থামে, ভুল মান নিলে</h2>
+      <div class="sub">দুইটি রক্ষী — সত্যি চালিয়ে দেখা আউটপুট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.44"># config/settings/prod.py
+DEBUG = False
+
+if SECRET_KEY == DEV_INSECURE_KEY:
+    raise RuntimeError(
+        "Refusing to start: SECRET_KEY is the "
+        "development default. Generate one with: "
+        "python -c \"import secrets;"
+        " print(secrets.token_urlsafe(50))\""
+    )
+
+if not ALLOWED_HOSTS or "*" in ALLOWED_HOSTS:
+    raise RuntimeError(
+        "ALLOWED_HOSTS must list real hostnames "
+        "in production; '*' is not allowed."
+    )</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">চালিয়ে পাওয়া ফল</b>
+            <p style="font-size:9.4pt"><code>RuntimeError: Refusing to start: SECRET_KEY …</code> · <code>RuntimeError: ALLOWED_HOSTS must list real hostnames…</code></p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">ডিজাইনের সিদ্ধান্ত</b>
+            <p style="font-size:9.4pt">সার্ভার চালু হওয়ার আগেই ব্যর্থ — ভাঙা সাইট চালু থাকার চেয়ে বন্ধ থাকা ভালো।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">একই কৌশল</b>
+            <p style="font-size:9.4pt"><code>DEBUG</code> ডিফল্ট <code>False</code>; ভুলে চালু রাখা প্রায় অসম্ভব।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">দর্শন</b>
+            <p style="font-size:9.4pt">"ডিপ্লয় কাজ করাতে সেটিং শিথিল করবেন না — কারণ ঠিক করুন, সেটিং নয়।"</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে ইচ্ছাকৃতভাবে পুরোনো ডেভ কী দিয়ে চালান — লম্বা এররটি পর্দায় দেখান। "সেটিং নিজে নিজেকে রক্ষা করছে।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রমাণ</span>
+    <div><h2><code>check --deploy</code> — এক লাইনের নিরীক্ষা</h2>
+      <div class="sub">আজ সত্যি চালানো: কোনো সমস্যা নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:8.6pt;line-height:1.5"># ১. আসল কী বানান
+python -c "import secrets;
+print(secrets.token_urlsafe(50))"
+
+# ২. প্রোডাকশন সেটিংসে চালান
+SECRET_KEY="…" \
+ALLOWED_HOSTS="ims.example.com" \
+DJANGO_SETTINGS_MODULE=config.settings.prod \
+python manage.py check --deploy
+
+# আউটপুট:
+System check identified no issues (0 silenced).</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">এটি কী দেখে</b>
+            <p style="font-size:9.2pt">HSTS · SSL রিডাইরেক্ট · সিকিউর কুকি · <code>X-Frame-Options</code> · <code>DEBUG</code> · সিক্রেট · হোস্ট</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন নিজে না করে</b>
+            <p style="font-size:9.2pt">এটি ডিপ্লয়ের <b>সর্বনিম্ন</b> শর্ত — পাস করলেই নিরাপদ নয়, কিন্তু ফেল করলে অবশ্যই অনিরাপদ।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কোথায় চালাবেন</b>
+            <p style="font-size:9.2pt">লোকালে rehearsel-এ <b>এবং</b> সার্ভারে ডিপ্লয়ের পরপরই — দুই জায়গায়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "0 silenced" কথাটি ব্যাখ্যা করুন — কোনো চেক নীরবে চাপা দেওয়া হয়নি; সব চেক চলে, সব পাস করেছে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">কনফিগারেশন</span>
+    <div><h2>প্রতিটি পরিবর্তনশীল মান = পরিবেশ চলক</h2>
+      <div class="sub">কোডে কোনো পাসওয়ার্ড নয়, কোনো ডোমেইন নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8pt;line-height:1.44"># config/settings/base.py
+def env(key, default=None):
+    value = os.environ.get(key, default)
+    if value is None:
+        raise RuntimeError(
+            f"Missing required environment "
+            f"variable: {key}. Copy .env.example "
+            f"to .env and fill it in.")
+    return value
+
+def env_bool(key, default=False):
+    return env(key, str(default)).strip().lower() \
+        in {"1", "true", "yes", "on"}
+
+def env_list(key, default=""):
+    raw = env(key, default)
+    return [x.strip() for x in raw.split(",") if x.strip()]</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:46%">চলক</th><th>থাকে কোথায়</th></tr></thead>
+          <tbody>
+            <tr><td><code>SECRET_KEY</code></td><td>হোস্টের সিক্রেট স্টোর</td></tr>
+            <tr><td><code>ALLOWED_HOSTS</code></td><td>প্রতি পরিবেশে আলাদা</td></tr>
+            <tr><td><code>CSRF_TRUSTED_ORIGINS</code></td><td>আসল https ডোমেইন</td></tr>
+            <tr><td><code>DB_NAME / DB_USER / DB_PASSWORD / DB_HOST</code></td><td>ডেটাবেস প্রদানকারী</td></tr>
+            <tr><td><code>EMAIL_HOST / USER / PASSWORD</code></td><td>মেইল সেবা</td></tr>
+            <tr><td><code>LOG_LEVEL / SECURE_SSL_REDIRECT</code></td><td>অপারেটরের সিদ্ধান্ত</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.8mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          <code>.env</code> কখনো Git-এ নয় — <code>.env.example</code> যায়, আসলটি যায় না। ফাঁস হওয়া কী = ফাঁস হওয়া অ্যাপ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>env()</code>-এর কাজ শুধু পড়া নয় — <b>না থাকলে স্পষ্ট বার্তা দিয়ে থামা</b>। নীরব ডিফল্ট সবচেয়ে বিপজ্জনক।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">গোপনীয়তা</span>
+    <div><h2><code>SECRET_KEY</code> ফাঁস হলে কী ভাঙে</h2>
+      <div class="sub">এটি পাসওয়ার্ড নয় — এটি অ্যাপের হস্তাক্ষর</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">সেশন কুকি</b>
+        <p style="font-size:10.4pt">কী দিয়ে সেশন স্বাক্ষরিত — কী জানলে যে কেউ বৈধ সেশন কুকি বানাতে পারে।</p></div>
+      <div class="card" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">পাসওয়ার্ড রিসেট টোকেন</b>
+        <p style="font-size:10.4pt">টোকেনের স্বাক্ষরে এই কী — কী জানলে যেকোনো অ্যাকাউন্টের রিসেট লিংক বানানো যায়।</p></div>
+      <div class="card" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">CSRF টোকেন</b>
+        <p style="font-size:10.4pt">ফর্মের গোপন মান — কী জানলে ক্রস-সাইট অনুরোধে অনুকরণ সহজ।</p></div>
+    </div>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>বানানো:</b> <code>python -c "import secrets; print(secrets.token_urlsafe(50))"</code> — ৫০+ অক্ষর, প্রতিটি পরিবেশে আলাদা।
+      </div></div>
+      <div><div class="call warn" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>ফাঁস হলে:</b> কী পাল্টান → সব সেশন বাতিল হবে (সবাই আবার লগইন করবে), রিসেট লিংকের পুরোনো টোকেনও অচল।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জোর দিন: এই কী রোটেট করলে ব্যবহারকারীদের লগআউট হয়ে যায় — সেটি দোষ নয়, নিরাপত্তার দাম। রাতে করুন, ব্যবহার কম থাকলে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ঠিকানা</span>
+    <div><h2><code>ALLOWED_HOSTS</code> ও <code>CSRF_TRUSTED_ORIGINS</code></h2>
+      <div class="sub">দুটি আলাদা দরজা, দুটি আলাদা আক্রমণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:26%">সেটিং</th><th style="width:34%">কোন আক্রমণ থামায়</th><th>ভুল হলে লক্ষণ</th></tr></thead>
+      <tbody>
+        <tr><td><code>ALLOWED_HOSTS</code></td><td>Host হেডারের জালিয়াতি — অন্য ডোমেইনের নামে অনুরোধ পাঠিয়ে পাসওয়ার্ড-রিসেট লিংক বিষাক্ত করা</td><td>অচেনা হোস্টে <b>400 Bad Request</b></td></tr>
+        <tr><td><code>CSRF_TRUSTED_ORIGINS</code></td><td>অন্য সাইট থেকে ফর্ম সাবমিট — লগইন থাকা ব্রাউজার দিয়ে</td><td>https ডোমেইনে সাবমিট করলে <b>403 CSRF</b></td></tr>
+        <tr><td><code>SECURE_PROXY_SSL_HEADER</code></td><td>প্রক্সির পেছনে থাকা অ্যাপকে "এটি https" বোঝানো</td><td>অসীম <b>রিডাইরেক্ট লুপ</b></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>IMS-এ:</b> <code>ALLOWED_HOSTS="*"</code> হলে <code>prod.py</code> চালুই হয় না — এই ফাঁদটা কাঠামোগতভাবে বন্ধ।
+      </div></div>
+      <div><div class="call warn" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>বাস্তব ফল:</b> সাবডোমেইন বা কাস্টম ডোমেইন যোগ করলে এই দুটি তালিকা <b>দুই জায়গায়</b> আপডেট করতে হয় — নইলে 400/403।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "আইপি দিয়ে টেস্ট করছি, ডোমেইন নেই — তখন কী?" উত্তর: হোস্টের দেওয়া ডোমেইনটাই লিখুন; <code>*</code> দিয়ে "পরে ঠিক করব" সবচেয়ে সাধারণ ও সবচেয়ে বিপজ্জনক অভ্যাস।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">HTTPS</span>
+    <div><h2>সাতটি সুইচ একসাথে</h2>
+      <div class="sub"><code>prod.py</code>-তে যা ইতিমধ্যেই চালু</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:34%">সেটিং</th><th style="width:22%">মান</th><th>কার কাজ</th></tr></thead>
+      <tbody>
+        <tr><td><code>SECURE_SSL_REDIRECT</code></td><td>True</td><td>http → https</td></tr>
+        <tr><td><code>SECURE_HSTS_SECONDS</code></td><td>2592000 (৩০ দিন)</td><td>ব্রাউজারকে বলে: এই সাইটে আর কখনো http নয়</td></tr>
+        <tr><td><code>SECURE_HSTS_PRELOAD</code></td><td>True</td><td>ব্রাউজার-তালিকায় স্থায়ী এন্ট্রি</td></tr>
+        <tr><td><code>SESSION_COOKIE_SECURE</code></td><td>True</td><td>সেশন কুকি কেবল https-এ যাবে</td></tr>
+        <tr><td><code>CSRF_COOKIE_SECURE</code></td><td>True</td><td>একই নিয়ম CSRF কুকিতে</td></tr>
+        <tr><td><code>SESSION_COOKIE_HTTPONLY</code></td><td>True</td><td>জাভাস্ক্রিপ্ট কুকি পড়তে পারবে না</td></tr>
+        <tr><td><code>X_FRAME_OPTIONS</code></td><td>DENY</td><td>অন্য সাইটে iframe-এ বসানো যাবে না</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      <b>HSTS-এর ফাঁদ:</b> একবার ব্রাউজার এই হেডার পেলে ৩০ দিন https-ই দাবি করবে। সার্টিফিকেট না থাকলে সাইট <b>খুলবেই না</b> — তাই TLS আগে, HSTS পরে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম দিনেই <code>preload</code> জমা দেবেন না — ৩০ দিন চালু রেখে সমস্যা নেই দেখে তারপর। ভুল হলে ফেরানো কঠিন, কারণ ব্রাউজারে হেডার জমে থাকে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">স্ট্যাটিক</span>
+    <div><h2><code>collectstatic</code> ও WhiteNoise</h2>
+      <div class="sub">৫টি ফাইল, ৫২৮ কিলোবাইট — প্রোডাকশনে কে পরিবেশন করবে?</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.46">python manage.py collectstatic --noinput
+# static/ -> staticfiles/
+#   ims.css
+#   vendor/bootstrap.min.css
+#   vendor/bootstrap-icons.css
+#   vendor/bootstrap.bundle.min.js
+#   vendor/fonts/bootstrap-icons.woff2
+
+# prod.py
+MIDDLEWARE = ["whitenoise.middleware."
+              "WhiteNoiseMiddleware"] + MIDDLEWARE
+STORAGES = {
+  "staticfiles": {"BACKEND": "whitenoise.storage."
+                  "CompressedManifestStaticFilesStorage"},
+}
+WHITENOISE_MAX_AGE = 60 * 60 * 24 * 30</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">CompressedManifest কী করে</b>
+            <p style="font-size:9.2pt">ফাইলের নামে হ্যাশ যোগ করে (<code>ims.7f3c1a.css</code>) — ৩০ দিন ক্যাশ করা নিরাপদ।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">Manifest-এর ফাঁদ</b>
+            <p style="font-size:9.2pt">টেমপ্লেটে <code>{% static "x.css" %}</code> না লিখে হার্ডকোড করলে <code>ValueError: Missing staticfiles manifest entry</code>।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">WhiteNoise কেবল static</b>
+            <p style="font-size:9.2pt">লোগো ও আপলোড করা <code>media/</code> এখান দিয়ে যায় না — আলাদা ভলিউম বা nginx দরকার।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন গুনছি ৫টি</b>
+            <p style="font-size:9.2pt">CDN নেই — নিজের ৫টি ফাইলই যথেষ্ট। কমানো ফাইল-সংখ্যা = কম ভাঙার জায়গা।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>media/</code> ভুলে যাওয়া সবচেয়ে সাধারণ ডিপ্লয়-বাগ: রিডিপ্লয়ে লোগো মুছে যায়। ক্লাসে বলুন: "কোড আর ডেটা আলাদা — আপলোড করা ফাইল কোডের সঙ্গে যায় না।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অ্যাপ সার্ভার</span>
+    <div><h2>Gunicorn — <code>runserver</code>-এর জায়গা নেয় কে</h2>
+      <div class="sub">Procfile-এ এক লাইনেই পুরো সিদ্ধান্ত</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.44"># Procfile
+release: python manage.py migrate --noinput
+web: gunicorn config.wsgi:application \
+       --bind 0.0.0.0:$PORT \
+       --workers 3 \
+       --timeout 60 \
+       --access-logfile - \
+       --error-logfile -</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:38%">প্যারামিটার</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td><code>0.0.0.0:$PORT</code></td><td>হোস্ট যে পোর্ট দেয়, সেটিতেই শুনতে হবে</td></tr>
+            <tr><td><code>--workers 3</code></td><td>আনুমানিক ২×CPU+১; ছোট ভিড়ে ৩টিই যথেষ্ট</td></tr>
+            <tr><td><code>--timeout 60</code></td><td>৬০ সেকেন্ডে উত্তর না দিলে শ্রমিক মারা যাবে (আটকে থাকা অনুরোধ নয়)</td></tr>
+            <tr><td><code>--access-logfile -</code></td><td>লগ stdout-এ — হোস্টের লগ ভিউয়ারে দেখা যাবে</td></tr>
+            <tr><td><code>release:</code></td><td>নতুন কোড চালু হওয়ার <b>আগে</b> মাইগ্রেশন</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      শ্রমিক বাড়ালে মেমরি বাড়ে, আর <code>CONN_MAX_AGE=60</code> মানে প্রতি শ্রমিক ডেটাবেসে সংযোগ ধরে রাখে — ৩ শ্রমিক × সংযোগ = হিসাব করে বাড়ান, ইচ্ছেমতো নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "Gunicorn = অনেক শ্রমিক, প্রত্যেকে একটি অনুরোধ সামলায়; Django কোড অপরিবর্তিত থাকে।" WSGI কী — সংক্ষেপে: পাইথন অ্যাপ আর ওয়েব সার্ভারের মধ্যে চুক্তি।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বিল্ড</span>
+    <div><h2>চার লাইনের <code>build.sh</code></h2>
+      <div class="sub">ক্রমটাই আসল — উল্টালে ডিপ্লয় ভাঙে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.6pt;line-height:1.5">#!/usr/bin/env bash
+set -euo pipefail          # যেকোনো ধাপ ব্যর্থ = থামো
+python -m pip install --upgrade pip
+pip install -r requirements-prod.txt
+python manage.py collectstatic --noinput
+python manage.py migrate --noinput</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন <code>set -euo pipefail</code></b>
+            <p style="font-size:9.2pt">ব্যর্থ ধাপ চুপচাপ পেরিয়ে গেলে আধা-বিল্ড চালু হয় — সবচেয়ে বিভ্রান্তিকর ব্যর্থতা।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">requirements-prod.txt</b>
+            <p style="font-size:9.2pt"><code>-r requirements.txt</code> + <code>gunicorn</code> + <code>whitenoise</code> + <code>dj-database-url</code></p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">collectstatic আগে, migrate পরে</b>
+            <p style="font-size:9.2pt">হ্যাশ করা ফাইল নাম দরকার; মাইগ্রেশন ব্যর্থ হলে নতুন কোড চালু হবে না, পুরোনো চলবে।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">--noinput কেন</b>
+            <p style="font-size:9.2pt">স্বয়ংক্রিয় বিল্ডে কেউ "yes" চাপবে না — প্রশ্ন করলেই বিল্ড ঝুলে থাকবে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "বিল্ড স্ক্রিপ্ট হলো রেসিপি — টার্মিনালে হাতে যা করেন, সেটাই লিখে রাখা।" হাতে করা ধাপ ভুলে যাওয়াই সবচেয়ে সাধারণ ডিপ্লয়-বাগ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পথ</span>
+    <div><h2>একটি অনুরোধের যাত্রা</h2>
+      <div class="sub">ব্রাউজার → nginx → Gunicorn → Django</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 210" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a28" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="14" y="56" width="196" height="94" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="112" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#312e81">ব্রাউজার</text>
+        <text x="112" y="103" text-anchor="middle" font-size="10.5" fill="#3730a3">HTTPS অনুরোধ</text>
+        <text x="112" y="122" text-anchor="middle" font-size="10.5" fill="#3730a3">কুকি · ফর্ম</text>
+        <text x="112" y="140" text-anchor="middle" font-size="9.6" fill="#64748b">সেশন আইডি সহ</text>
+
+        <rect x="248" y="40" width="212" height="126" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="354" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#155e75">nginx</text>
+        <text x="354" y="88" text-anchor="middle" font-size="10.2" fill="#0e7490">TLS শেষ হয় এখানে</text>
+        <text x="354" y="107" text-anchor="middle" font-size="10.2" fill="#0e7490">/media/ নিজেই দেয়</text>
+        <text x="354" y="126" text-anchor="middle" font-size="10.2" fill="#0e7490">X-Forwarded-Proto</text>
+        <text x="354" y="146" text-anchor="middle" font-size="9.6" fill="#64748b">স্ট্যাটিক চাইলে এখানেও</text>
+
+        <rect x="498" y="40" width="212" height="126" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="604" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">Gunicorn</text>
+        <text x="604" y="88" text-anchor="middle" font-size="10.2" fill="#15803d">৩ শ্রমিক</text>
+        <text x="604" y="107" text-anchor="middle" font-size="10.2" fill="#15803d">প্রতিটি আলাদা প্রসেস</text>
+        <text x="604" y="126" text-anchor="middle" font-size="10.2" fill="#15803d">WhiteNoise static</text>
+        <text x="604" y="146" text-anchor="middle" font-size="9.6" fill="#64748b">timeout 60s</text>
+
+        <rect x="748" y="40" width="238" height="126" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="867" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Django + PostgreSQL</text>
+        <text x="867" y="88" text-anchor="middle" font-size="10.2" fill="#b45309">middleware → ভিউ</text>
+        <text x="867" y="107" text-anchor="middle" font-size="10.2" fill="#b45309">ORM → ডেটাবেস</text>
+        <text x="867" y="126" text-anchor="middle" font-size="10.2" fill="#b45309">CONN_MAX_AGE 60</text>
+        <text x="867" y="146" text-anchor="middle" font-size="9.6" fill="#64748b">health check চালু</text>
+
+        <line x1="212" y1="103" x2="242" y2="103" stroke="#4338ca" stroke-width="2.4" marker-end="url(#a28)"/>
+        <line x1="462" y1="103" x2="492" y2="103" stroke="#4338ca" stroke-width="2.4" marker-end="url(#a28)"/>
+        <line x1="712" y1="103" x2="742" y2="103" stroke="#4338ca" stroke-width="2.4" marker-end="url(#a28)"/>
+        <path d="M867,170 C867,196 604,196 604,172" fill="none" stroke="#64748b" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#a28)"/>
+        <text x="736" y="205" text-anchor="middle" font-size="9.8" fill="#475569">প্রতিক্রিয়া একই পথে ফিরে যায়</text>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:2.6mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>কেন দুটি সার্ভার:</b> nginx ধীর ক্লায়েন্ট, TLS, ফাইল সামলায়; Gunicorn শুধু পাইথন কোড।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ভুল হলে:</b> <code>SECURE_PROXY_SSL_HEADER</code> না থাকলে Django-র কাছে অনুরোধ http — রিডাইরেক্ট লুপ।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে চারটি বাক্স আঁকুন, তারপর জিজ্ঞেস করুন: "কোন ধাপে ডেটা পড়া যায়?" উত্তরে বোঝান — TLS nginx-এ শেষ, তাই nginx আর Gunicorn-এর মধ্যে প্লেইন HTTP শুধু ভেতরের নেটওয়ার্কে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ডেটাবেস</span>
+    <div><h2>প্রোডাকশনে PostgreSQL</h2>
+      <div class="sub">তিনটি সিদ্ধান্ত: সংযোগ, মাইগ্রেশন, ডেটা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.46"># prod.py — সংযোগ পুনরায় ব্যবহার
+DATABASES["default"]["CONN_MAX_AGE"] = 60
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
+
+# সার্ভারে (আসল কাজ)
+createdb ims_prod
+python manage.py migrate --settings=config.settings.prod
+python manage.py createsuperuser --settings=config.settings.prod
+
+# NEVER on a real deployment:
+python manage.py seed_demo     # admin@ims.local + DemoPass!2026</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">CONN_MAX_AGE = 60</b>
+            <p style="font-size:9.2pt">প্রতি অনুরোধে নতুন সংযোগ নয় — ৬০ সেকেন্ড সংযোগ ধরে রাখা; শিক্ষার্থীর তালিকা খুললে পার্থক্য বোঝা যায়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">HEALTH_CHECKS</b>
+            <p style="font-size:9.2pt">পুরোনো সংযোগ মৃত হলে ব্যবহারের আগেই ধরা পড়ে — "server closed the connection" এরর কমে।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">seed_demo নিষিদ্ধ</b>
+            <p style="font-size:9.2pt">সবার জানা পাসওয়ার্ডের সুপারইউজার বানায় — ডেমোর জন্য ভালো, প্রোডাকশনে বিপর্যয়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">SQLite কেন নয়</b>
+            <p style="font-size:9.2pt">এক লেখক, দুর্বল কনকারেন্সি — ৩০ শিক্ষকের মার্কস এন্ট্রিতে লক।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডেমো ও প্রোডাকশনের ডেটাবেস আলাদা — এই সতর্কতাটি বারবার বলুন, কারণ <code>seed_demo</code> চালানো খুব সহজ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রিহার্সাল</span>
+    <div><h2><code>deploy_check.sh</code> — ডিপ্লয়ের আগেই ডিপ্লয়</h2>
+      <div class="sub">Gunicorn :8010, DEBUG=False, ৫টি দাবি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.44">gunicorn config.wsgi:application --bind 127.0.0.1:8010 \
+         --workers 2 --daemon --pid /tmp/ims-prod.pid
+
+check "login page"                /accounts/login/     # 200
+check "static css"                /static/css/ims.css  # 200
+check "unknown page (404 page)"   /does-not-exist      # 404
+check "workspace page anon"       /w/sunrise-model-school/  # 302
+
+curl -sI /accounts/login/ | grep -iE \
+  "x-content-type|x-frame|referrer|cross-origin"</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">৫টি প্রশ্নের উত্তর</b>
+            <p style="font-size:9.2pt">লগইন খোলে? CSS আসে? ৪০৪ পাতা কাজ করে? অচেনা মানুষ ভেতরে ঢোকে না? হেডার আছে?</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন লোকালে</b>
+            <p style="font-size:9.2pt">সার্ভারে গিয়ে ভাঙার চেয়ে নিজের মেশিনে ভাঙা অনেক সস্তা।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কমDEBUG-এ যা দেখা যায়</b>
+            <p style="font-size:9.2pt">স্ট্যাটিক ৪০৪, ৫০০ পাতার রূপ, রিডাইরেক্ট — এগুলো DEBUG=True-তে কখনো ধরা পড়ে না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে চালাতে চাইলে PostgreSQL চালু থাকতে হবে — নইলে ৫০০ দেখে বিভ্রান্ত হবেন। বিকল্প: <code>check --deploy</code> আর হেডারগুলো দেখান।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">চেকলিস্ট</span>
+    <div><h2>Go-live-এর আটটি দরজা</h2>
+      <div class="sub">DEPLOYMENT.md §8 থেকে বাছাই</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:52%">যাচাই</th><th>না হলে</th></tr></thead>
+      <tbody>
+        <tr><td><code>SECRET_KEY</code> ৫০+ অক্ষর, হোস্টের সিক্রেট স্টোরে</td><td>কোডে লেখা কী = ফাঁস হওয়া কী</td></tr>
+        <tr><td><code>ALLOWED_HOSTS</code> ও <code>CSRF_TRUSTED_ORIGINS</code>-এ আসল ডোমেইন</td><td>400 / 403, ফর্ম সাবমিট ব্যর্থ</td></tr>
+        <tr><td>http → https রিডাইরেক্ট কাজ করে</td><td>পাসওয়ার্ড প্লেইনে যায়</td></tr>
+        <tr><td>"Forgot password" একবার শুরু থেকে শেষ পর্যন্ত</td><td>SMTP ভুল — ব্যবহারকারী আটকে থাকে</td></tr>
+        <tr><td><code>check --deploy</code> সার্ভারে "no issues"</td><td>অজানা ফাঁক রয়ে যায়</td></tr>
+        <tr><td>ব্যাকআপ চলেছে <b>এবং</b> restore একবার পরীক্ষা হয়েছে</td><td>ব্যাকআপ আছে বলেই ভরসা — ভুল ভরসা</td></tr>
+        <tr><td>ডেমো ডেটা মুছে (<code>DemoPass!2026</code> নেই)</td><td>যে কেউ সুপারইউজার</td></tr>
+        <tr><td>হোস্ট <code>gunicorn</code> চালায়, <code>runserver</code> নয়</td><td>একজন ব্যবহারকারীতেই সাইট আটকে যায়</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      DEPLOYMENT.md-এ লেখা আছে: "It has <b>not</b> yet been deployed to a public host" — অর্থাৎ এই ৮টি দরজা এখনো কেউ সম্পূর্ণ পেরোয়নি। সৎ খাতা রাখাই এখানেও নিয়ম।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন এই ৮টি নিজের প্রজেক্টে মিলিয়ে দেখতে; যেটি "না", সেটাই পরের ক্লাসের আলোচনা।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — নিজের অ্যাপকে সার্ভারের ভঙ্গিতে চালান</h2>
+      <div class="sub">প্রথম ১০ মিনিট হাতে, শেষ ১০ মিনিট প্রশ্ন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">১. ডেভ কী বানান</b>
+            <p style="font-size:10pt"><code>python -c "import secrets; print(secrets.token_urlsafe(50))"</code></p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">২. ভুল মান দিয়ে চালান</b>
+            <p style="font-size:10pt">প্রথমে একই ডেভ কী, পরে <code>ALLOWED_HOSTS="*"</code> — দুই রকম থামা দেখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">৩. সঠিক মান দিয়ে <code>check --deploy</code></b>
+            <p style="font-size:10pt">"no issues" না আসা পর্যন্ত সেটিং ঠিক করুন — সেটিং নয়, কারণ ঠিক করুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">৪. হেডার যাচাই</b>
+            <p style="font-size:10pt"><code>curl -sI</code> দিয়ে HSTS, X-Frame-Options, Referrer-Policy খুঁজুন।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>DEBUG=True রাখলে কী কী ফাঁস হয়?</li>
+          <li class="g">HSTS আগে চালু করলে কী বিপদ?</li>
+          <li>মিডিয়া ফাইল কোথায় থাকবে?</li>
+          <li class="r">শ্রমিক সংখ্যা বাড়ালে কী বাড়ে?</li>
+          <li class="g"><code>seed_demo</code> প্রোডাকশনে চালালে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দ্বিতীয় ধাপে সবাই নিজের চোখে থামতে দেখুক — এটি মুখস্থ নিয়মের চেয়ে অনেক বেশি কার্যকর।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">ডিপ্লয়মেন্টের পুরো সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:54%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>runserver সার্ভারের জন্য নয়</b></td><td><code>Procfile</code>: gunicorn, ৩ শ্রমিক</td></tr>
+        <tr><td><b>সেটিংস তিন ভাগে</b></td><td><code>base</code> / <code>dev</code> / <code>prod</code></td></tr>
+        <tr><td><b>গোপন মান পরিবেশে, কোডে নয়</b></td><td><code>env()</code> · <code>.env.example</code></td></tr>
+        <tr><td><b>ভুল মানে অ্যাপ চালুই হবে না</b></td><td>দুটি <code>RuntimeError</code></td></tr>
+        <tr><td><b>ডিপ্লয়ের আগে লোকালে রিহার্সাল</b></td><td><code>deploy_check.sh</code> · ৫টি চেক</td></tr>
+        <tr><td><b>ব্যাকআপ যাচাই না করলে ব্যাকআপ নয়</b></td><td><code>ops/restore.sh</code> — scratch ডিবি</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      পরের ক্লাসে: এই সার্ভারকে <b>দিনের পর দিন</b> সচল রাখা — লগ, মনিটরিং, ব্যাকআপের সময়সূচি, আপডেট, এবং রোলব্যাক।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ বাক্যটি দিয়ে পরের ক্লাসের টান তৈরি করুন — "ডিপ্লয় একবারের কাজ, চালু রাখা প্রতিদিনের কাজ।"
+</section>
+
+<section class="slide divider">
+  <div class="n">২৯</div>
+  <h2>পরিচালনা — সার্ভার চালু রাখা</h2>
+  <p>লগ পড়া · মনিটরিং · ব্যাকআপ সময়সূচি · আপডেট · রোলব্যাক · ৫০০ এরর তদন্ত</p>
+</section>

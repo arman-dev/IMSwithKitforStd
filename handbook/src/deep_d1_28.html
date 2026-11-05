@@ -1,0 +1,32 @@
+<section class="slide">
+  <div class="head"><span class="badge">নিরাপত্তা</span>
+    <div><h2>ব্যাকআপ — স্কিমা যত ভালো, হারানো ডেটা তত বেদনাদায়ক</h2>
+      <div class="sub"><code>ops/backup.sh</code> · <code>ops/restore.sh</code> · দুটোই ২০ লাইনের কম</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.05">
+        <pre style="font-size:8.1pt;line-height:1.5;padding:3.2mm 3.8mm">STAMP=$(date +%Y%m%d-%H%M%S)
+pg_dump -Fc -f "$DEST/ims-$STAMP.dump"
+tar -czf "$DEST/media-$STAMP.tar.gz" media/
+find "$DEST" -name '*.dump'  -mtime +14 -delete
+find "$DEST" -name '*.tar.gz' -mtime +14 -delete</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">দুটি জিনিস আলাদা: <b>ডেটাবেজ</b> (pg_dump) আর <b>ফাইল</b> (media/)। একটি ডাম্প দুইয়ের কোনোটিকেই ঢাকে না।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">সিদ্ধান্ত</th><th style="width:66%">কারণ</th></tr>
+          <tr><td><code>-Fc</code> ফরম্যাট</td><td>কাস্টম ফরম্যাট — <code>pg_restore</code> দিয়ে টেবিল ধরে ধরে ফেরানো যায়</td></tr>
+          <tr><td>১৪ দিন রাখা</td><td>দুই সপ্তাহের মধ্যে ভুল ধরা পড়ে; তার বেশি রাখলে জায়গা নষ্ট</td></tr>
+          <tr><td><code>set -euo pipefail</code></td><td>মাঝপথে ব্যর্থ হলে স্ক্রিপ্ট থামে, আধা-ব্যাকআপ নয়</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> ব্যাকআপ <b>একই সার্ভারে</b> থাকে (<code>./backups</code>) — সার্ভার হারালে ব্যাকআপও হারায়। অফসাইট কপি নেই, রিস্টোর কখনো স্বয়ংক্রিয়ভাবে পরীক্ষা করা হয়নি, WAL আর্কাইভ/PITR নেই।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      নিয়ম: <b>যে ব্যাকআপ কখনো ফেরানো হয়নি, সেটি ব্যাকআপ কি না জানা নেই।</b> তাই পরের কাজ — মাসে একবার রিস্টোর-অনুশীলন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "১৪ দিনের পুরনো ফাইল মুছে যায় — কোন অবস্থায় সেটি বিপদ?" উত্তর: কেউ দুই সপ্তাহ ধরে ভুল ডেটা লিখলে, আর সেটি তখনই ধরা পড়লে — ভালো ব্যাকআপও ইতিমধ্যে মুছে গেছে।
+</section>

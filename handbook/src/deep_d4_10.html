@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">লগ</span>
+    <div><h2>লগ কোথায় যায়, আর কী কখনো যাবে না</h2>
+      <div class="sub">সব লগ <code>stdout</code>-এ — ফাইলে নয়, তাই ঘুরিয়ে ফেলা সহজ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">LOGGING = {
+  "handlers": {"console": {"class":
+      "logging.StreamHandler"}},
+  "root": {"handlers": ["console"],
+           "level": env("LOG_LEVEL", "INFO")},
+  "loggers": {
+    "django.request": {"level": "WARNING"},
+    "django.security": {"level": "WARNING"},
+  },
+}</pre>
+        <div style="font-size:9.5pt;color:#334155;margin-top:1.5mm">gunicorn-এর <code>--access-logfile -</code> আর <code>--error-logfile -</code> — দুটোই একই স্রোতে।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:46%">নিয়ম</th><th style="width:54%">কারণ</th></tr>
+          <tr><td>ফাইলে লেখা হয় না</td><td>host/stdout সংগ্রহ করে; অ্যাপ নিজে ফাইল ঘোরাতে হয় না</td></tr>
+          <tr><td><code>django.request</code> WARNING</td><td>প্রতিটি ৪xx/৫xx একটি এন্ট্রি — কিন্তু কেউ পড়ে না</td></tr>
+          <tr><td>মেয়াদ host-এর হাতে</td><td>অ্যাপের জানা নেই লগ কত দিন থাকে</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>অডিট মডেলের নিয়ম:</b> "পাসওয়ার্ড, রিসেট টোকেন বা সিক্রেট কখনো সংরক্ষণ করবেন না" — <code>AuditLog</code>-এ কেবল শনাক্তকারী আর সংক্ষিপ্ত সারাংশ।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      <b>তিন ধরনের লগ, তিন জায়গা:</b> অ্যাপ-এরর → stdout · ব্যবসায়িক কাজ → <code>AuditLog</code> টেবিল · অ্যাক্সেস → gunicorn। কোনটা কোথায়, তা জানা থাকলে সমস্যার সময় খোঁজা সহজ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "ব্যবহারকারী বলল 'আমার নম্বর বদলে গেছে' — কোথায় খুঁজবেন?" উত্তর: <code>AuditLog</code> (কে বদলাল), তারপর gunicorn access log (কখন), শেষে অ্যাপ লগ (এরর ছিল কি না)।
+</section>

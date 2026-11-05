@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">রিলিজ</span>
+    <div><h2>একটি রিলিজের তিনটি ধাপ</h2>
+      <div class="sub">build → release → web; তিনটির দায়িত্ব আলাদা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.1pt;line-height:1.5;padding:3mm 3.6mm"># build.sh
+pip install -r requirements-prod.txt
+python manage.py collectstatic --noinput
+python manage.py migrate --noinput
+
+# Procfile
+release: python manage.py migrate --noinput
+web: gunicorn config.wsgi:application \
+     --bind 0.0.0.0:$PORT --workers 3 \
+     --timeout 60 --access-logfile - \
+     --error-logfile -</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:30%">ধাপ</th><th style="width:70%">কেন আলাদা</th></tr>
+          <tr><td>build</td><td>নির্ভরতা + স্ট্যাটিক — একবার, ইমেজ তৈরি হওয়ার সময়</td></tr>
+          <tr><td>release</td><td>স্কিমা বদল — নতুন কোড চালু হওয়ার ঠিক আগে, একবার</td></tr>
+          <tr><td>web</td><td>অনুরোধ সামলানো — একাধিক worker, যেকোনো সময় বন্ধ হতে পারে</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>ঝুঁকি:</b> ৩ worker একসাথে চালু হলে migrate একবারই হয় (<code>release</code> ধাপে) — কিন্তু worker মাঝপথে নতুন স্কিমা পেলে পুরনো কোড ভাঙতে পারে। ব্লু-গ্রিন ডিপ্লয় নেই।
+        </div>
+        <div class="call warn" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>--timeout 60:</b> ৬০ সেকেন্ডে উত্তর না দিলে worker মারা যায় — PDF/রিপোর্ট বড় হলে এই সীমা ছুঁতে পারে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "worker মাঝপথে নতুন স্কিমা" — এটি বোঝানো কঠিন কিন্তু জরুরি। উদাহরণ: কলামের নাম বদলালে পুরনো worker ভাঙবে; তাই দুই ধাপে নাম বদলানো হয় (যোগ → ব্যবহার → পুরনো মোছা)।
+</section>

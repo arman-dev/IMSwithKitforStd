@@ -1,0 +1,53 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্তর</span>
+    <div><h2>তিন স্তর: টোকেন → কম্পোনেন্ট → পর্দা</h2>
+      <div class="sub">নিচের স্তর বদলালে উপরের সব বদলায়; উপরের স্তর কখনো নিচকে বদলায় না</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 240" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">
+        <defs><marker id="a3" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+          <path d="M0,0 L9,3.5 L0,7 z" fill="#4338ca"/></marker></defs>
+
+        <rect x="4" y="70" width="250" height="104" rx="8" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="129" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#312e81">১. টোকেন (১৫)</text>
+        <text x="129" y="110" text-anchor="middle" font-size="8.3" fill="#3730a3">--ims-primary #4f46e5</text>
+        <text x="129" y="124" text-anchor="middle" font-size="8.3" fill="#3730a3">--ims-radius 14px</text>
+        <text x="129" y="138" text-anchor="middle" font-size="8.3" fill="#3730a3">--ims-line #e2e8f0</text>
+        <text x="129" y="152" text-anchor="middle" font-size="8.3" fill="#3730a3">--ims-success / warning / danger</text>
+        <text x="129" y="166" text-anchor="middle" font-size="7.8" fill="#64748b">কোনো ক্লাস জানে না কে ব্যবহার করছে</text>
+
+        <rect x="286" y="70" width="250" height="104" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="411" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#155e75">২. কম্পোনেন্ট (৫৯)</text>
+        <text x="411" y="110" text-anchor="middle" font-size="8.3" fill="#0e7490">.ims-card · .ims-kpi__card</text>
+        <text x="411" y="124" text-anchor="middle" font-size="8.3" fill="#0e7490">.ims-badge--ok · .ims-empty</text>
+        <text x="411" y="138" text-anchor="middle" font-size="8.3" fill="#0e7490">.btn-ims · .ims-nav</text>
+        <text x="411" y="152" text-anchor="middle" font-size="8.3" fill="#0e7490">.ims-banner--warn</text>
+        <text x="411" y="166" text-anchor="middle" font-size="7.8" fill="#64748b">কেবল টোকেন পড়ে, নিজে রঙ বানায় না</text>
+
+        <rect x="568" y="70" width="250" height="104" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="693" y="92" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">৩. পর্দা (৭৫ টেমপ্লেট)</text>
+        <text x="693" y="110" text-anchor="middle" font-size="8.3" fill="#15803d">dashboard · attendance/take</text>
+        <text x="693" y="124" text-anchor="middle" font-size="8.3" fill="#15803d">students/list · assessments/result</text>
+        <text x="693" y="138" text-anchor="middle" font-size="8.3" fill="#15803d">platform/* · public/pricing</text>
+        <text x="693" y="152" text-anchor="middle" font-size="8.3" fill="#15803d">একই ব্লক, ভিন্ন বিন্যাস</text>
+        <text x="693" y="166" text-anchor="middle" font-size="7.8" fill="#64748b">নিজের স্টাইল প্রায় লেখেই না</text>
+
+        <rect x="850" y="70" width="146" height="104" rx="8" fill="#fef2f2" stroke="#f43f5e"/>
+        <text x="923" y="92" text-anchor="middle" font-size="9pt" font-weight="700" fill="#991b1b">ব্যতিক্রম</text>
+        <text x="923" y="110" text-anchor="middle" font-size="8" fill="#7f1d1d">স্কুলের রঙ</text>
+        <text x="923" y="124" text-anchor="middle" font-size="8" fill="#7f1d1d">উপরের স্তর থেকে</text>
+        <text x="923" y="138" text-anchor="middle" font-size="8" fill="#7f1d1d">নিচে ঢোকে —</text>
+        <text x="923" y="152" text-anchor="middle" font-size="8" fill="#7f1d1d">একমাত্র বৈধ পথ</text>
+
+        <line x1="254" y1="122" x2="282" y2="122" stroke="#4338ca" stroke-width="1.8" marker-end="url(#a3)"/>
+        <line x1="536" y1="122" x2="564" y2="122" stroke="#4338ca" stroke-width="1.8" marker-end="url(#a3)"/>
+        <line x1="818" y1="122" x2="846" y2="122" stroke="#f43f5e" stroke-width="1.4" stroke-dasharray="4 3"/>
+
+        <rect x="4" y="196" width="992" height="38" rx="7" fill="#f8faff" stroke="#c7d2fe"/>
+        <text x="500" y="213" text-anchor="middle" font-size="8.8" fill="#3730a3">নিয়ম: পর্দায় কখনো color:#dc2626 লেখা হয় না — লেখা হয় class="ims-badge--warn" জাতীয় অর্থবাহী নাম।</text>
+        <text x="500" y="228" text-anchor="middle" font-size="8.4" fill="#4f46e5">রঙের নাম নয়, অর্থ ব্যবহার করুন — কারণ স্কুল নিজের রঙ বদলালে অর্থ একই থাকে, নাম বদলায়।</text>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> নিয়মটি বোর্ডে লিখুন: "সিদ্ধান্ত একবার, ব্যবহার বহুবার"। শিক্ষার্থীদের নিজের প্রজেক্টে খুঁজতে বলুন — কোথায় কোথায় সরাসরি রঙ লেখা আছে, যা বদলাতে সব জায়গায় হাত দিতে হয়।
+</section>

@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">ফর্ম</span>
+    <div><h2>প্রতিটি ইনপুটে তিনটি প্রশ্নের উত্তর</h2>
+      <div class="sub">লেবেল · সাহায্য · ভুলের কারণ — তিনটি আলাদা ক্লাস</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <pre style="font-size:7.9pt;line-height:1.5;padding:3mm 3.4mm">&lt;label class="form-label"
+       for="id_minimum_percent"&gt;
+  Minimum attendance %
+&lt;/label&gt;
+&lt;input class="form-control" id="id_minimum_percent"
+       name="minimum_percent" value="75"&gt;
+&lt;p class="ims-hint"&gt;
+  Students below this are flagged in reports.&lt;/p&gt;
+&lt;p class="ims-error"&gt;{{ field.errors }}&lt;/p&gt;</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">ক্লাস</th><th style="width:66%">কী বলে</th></tr>
+          <tr><td><code>form-label</code></td><td>"এই ঘরে কী বসবে" — ০.৮৬rem, গাঢ়</td></tr>
+          <tr><td><code>ims-hint</code></td><td>"কেন, কীভাবে" — muted, ছোট (১৬৫ বার)</td></tr>
+          <tr><td><code>ims-error</code></td><td>"কী ভুল হয়েছে" — danger রঙ</td></tr>
+          <tr><td><code>alert-danger</code></td><td>পুরো ফর্ম ব্যর্থ হলে উপরে সারাংশ</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>নিয়ম:</b> ভুল বার্তা কখনো "Invalid input" নয় — "Pass marks cannot exceed full marks" (আসল কোডে ঠিক এই বাক্য)।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+      <b>সৎ ফাঁক:</b> ভুলগুলো ফিল্ডের নিচে দেখানো হয়, কিন্তু ফোকাস স্বয়ংক্রিয়ভাবে প্রথম ভুল ফিল্ডে যায় না — বড় ফর্মে (মার্কস এন্ট্রি, ৪০ সারি) ব্যবহারকারীকে খুঁজতে হয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "কেন hint সবচেয়ে বেশি ব্যবহৃত ক্লাস?" উত্তর: কারণ এই ডোমেইনে ব্যবহারকারী ক্লার্ক নন — "minimum percent" কী, তা ব্যাখ্যা করতে হয়। ভালো UI লেখার কাজ, সাজানোর নয়।
+</section>

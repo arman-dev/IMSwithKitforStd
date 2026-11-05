@@ -1,0 +1,20 @@
+<section class="slide">
+  <div class="head"><span class="badge">প্রমাণ</span>
+    <div><h2>কেন ৪০৪ বনাম ৪০৩ — এবং টেস্ট যা তা প্রমাণ করে</h2>
+      <div class="sub">প্রতিটি কোডের পেছনে একটি টেস্টের নাম আছে</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:38%">টেস্ট (আসল নাম)</th><th style="width:22%">প্রত্যাশা</th><th style="width:40%">কেন এটাই সঠিক</th></tr>
+      <tr><td><code>test_non_member_gets_404_not_403</code></td><td>৪০৪</td><td>সদস্যপদ নেই মানে স্কুলটির অস্তিত্ব জানানোর অধিকারও নেই</td></tr>
+      <tr><td><code>test_anonymous_visitor_is_sent_to_login</code></td><td>৩০২</td><td>লগইন নেই — লগইনই সমাধান, তাই সেখানেই পাঠানো</td></tr>
+      <tr><td><code>test_student_cannot_open_teaching_pages</code></td><td>৪০৩</td><td>সদস্য, কিন্তু ভূমিকা ভুল — "কেন নয়" বলা নিরাপদ</td></tr>
+      <tr><td><code>test_coordinator_cannot_open_owner_only_pages</code></td><td>৪০৩</td><td>সমন্বয়ক দেখে, কিন্তু সেটিং বদলায় না</td></tr>
+      <tr><td><code>test_teacher_cannot_open_administration_pages_by_typing_the_url</code></td><td>৪০৩</td><td>মেনুতে লিংক নেই — তবু URL টাইপ করে ঢোকা যায় না</td></tr>
+      <tr><td><code>test_inactive_membership_sees_nothing</code></td><td>৪০৪ / খালি</td><td>সদস্যতা বন্ধ করা মানে অপসারণ, কিন্তু ডেটা রাখা</td></tr>
+    </table>
+    <div class="call" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>নিয়ম:</b> প্রতিটি অনুমতি-সিদ্ধান্তের একটি টেস্ট থাকা চাই — নাহলে ভবিষ্যতের কেউ ডেকোরেটর বদলে দিলে কেউ টের পাবে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "মেনুতে লিংক নেই" আর "ঢোকা যায় না" — এই দুইয়ের পার্থক্য শিক্ষার্থীদের প্রায়ই বুঝতে হয় না। UI লুকানো নিরাপত্তা নয়; সার্ভার-চেকই নিরাপত্তা।
+</section>

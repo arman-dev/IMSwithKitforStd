@@ -1,0 +1,33 @@
+<section class="slide">
+  <div class="head"><span class="badge">প্রিন্ট</span>
+    <div><h2>পর্দা আর কাগজ — দুই রকম ডিজাইন</h2>
+      <div class="sub">রেজাল্ট-শিট PDF reportlab দিয়ে, HTML থেকে নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">জিনিস</th><th style="width:60%">কীভাবে</th></tr>
+          <tr><td>রেজাল্ট-শিট</td><td><code>reportlab</code> দিয়ে সরাসরি PDF — A4, স্কুলের নাম ও লোগো</td></tr>
+          <tr><td>স্ক্রিনশট</td><td><code>docs/shoot.py</code> · Playwright · ৭৭টি PNG</td></tr>
+          <tr><td>এক্সপোর্ট</td><td><code>openpyxl</code> → XLSX · CSV</td></tr>
+          <tr><td>প্রিন্ট CSS</td><td><b>নেই</b> — <code>@media print</code> একটিও লেখা হয়নি</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>পরিণতি:</b> ব্রাউজারে Ctrl+P চাপলে সাইডবার, টপবার ও বাটনগুলোও ছাপা হবে — কারণ লুকানোর নিয়ম নেই।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>কেন PDF আলাদা করে:</b> কাগজের ডিজাইন আলাদা — মার্জিন, পৃষ্ঠা-বিভাজন, স্কুলের হেডার, স্বাক্ষরের জায়গা। HTML প্রিন্ট করে সেটি পাওয়া যায় না, তাই PDF নিজে আঁকা।
+        </div>
+        <div style="font-size:9.6pt;color:#334155;margin-top:2mm">
+          <b>স্ক্রিনশটের নিয়ম:</b> একই আকার (১৪৪০×৯০০), একই জুম, একটাই ডেমো-ডেটা — তাই ৭৭টি ছবি পাশাপাশি রাখলে একই অ্যাপ মনে হয়।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>সংশোধনের পথ:</b> ২০ লাইনের <code>@media print</code> — সাইডবার/টপবার <code>display:none</code>, টেবিলের সীমানা কালো, লিংকের রঙ কালো।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> স্কুলের আসল কাজ কাগজে শেষ হয় — রেজাল্ট-শিট ছাপা হয়, স্বাক্ষর হয়, বন্ধ করা হয়। তাই "প্রিন্ট" ডিজাইন সিস্টেমের বাইরের জিনিস নয়, তার একটি অংশ।
+</section>

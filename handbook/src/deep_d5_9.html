@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="head"><span class="badge">সাদা-লেবেল</span>
+    <div><h2>স্কুলের রঙ ঢোকে একটি ভেরিয়েবল দিয়ে</h2>
+      <div class="sub"><code>base.html</code>-এ ৯ লাইন — আর ৭৫টি পর্দার রঙ বদলে যায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <pre style="font-size:7.9pt;line-height:1.5;padding:3mm 3.4mm">&lt;style&gt;
+  :root {
+    --ims-indigo: {{ brand.color|default:"#4f46e5" }};
+    --ims-brand:  {{ brand.color|default:"#4f46e5" }};
+  }
+  .btn-ims, .ims-nav.is-active,
+  .ims-auth__submit { background: var(--ims-brand); }
+  .ims-sidebar { background: linear-gradient(180deg,
+      color-mix(in srgb, var(--ims-brand) 22%, #0b1220), #0b1220); }
+  a { color: var(--ims-brand); }
+&lt;/style&gt;</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">কৌশল</th><th style="width:56%">কেন</th></tr>
+          <tr><td>CSS ভেরিয়েবল ইনজেক্ট</td><td>৭৫ টেমপ্লেটে একটি রঙের নাম লিখতে হয় না</td></tr>
+          <tr><td><code>color-mix()</code></td><td>স্কুলের রঙ যাই হোক, sidebar-এর গাঢ় সংস্করণ নিজে বানায়</td></tr>
+          <tr><td><code>default:"#4f46e5"</code></td><td>রঙ না দেওয়া স্কুলও ভাঙে না</td></tr>
+          <tr><td>শুধু ভরাট রঙ, লেখার রঙ নয়</td><td>লেখার রঙ বদলালে কনট্রাস্ট ভাঙতে পারত</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>সীমা:</b> স্কুল যদি খুব হালকা রঙ দেয় (যেমন #fde047), সাদা লেখা পড়া যায় না — কনট্রাস্ট যাচাই করা হয় না, কেবল ফরম্যাট যাচাই হয়।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.4mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      <b>একই পদ্ধতি, দুই স্তর:</b> পণ্যের নামও একইভাবে আসে (<code>product.name</code> সেটিংস থেকে), তাই "IMS" শব্দটি কোথাও হার্ডকোড নয় — একবার <code>PRODUCT_NAME</code> বদলালে পুরো অ্যাপ বদলায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "স্কুলকে পুরো রঙ-তালিকা দেওয়া যায় না কেন?" উত্তর: ১২টি রঙের সমন্বয় ঠিক রাখা অসম্ভব; একটি রঙ দিয়ে বাকিটা নিজে বানানোই নিরাপদ।
+</section>

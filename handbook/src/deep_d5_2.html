@@ -1,0 +1,33 @@
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>ডিজাইন সিস্টেম মানে CSS নয় — সিদ্ধান্তের তালিকা</h2>
+      <div class="sub">প্রতিটি নতুন পর্দা পুরনো পর্দার মতো দেখতে হয়, কারণ সিদ্ধান্ত আগেই নেওয়া</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft" style="padding:4mm 4.4mm">
+        <b style="font-size:12.4pt">টোকেন</b>
+        <p style="font-size:10.2pt"><b>১৫</b>টি CSS ভেরিয়েবল — রঙ, ব্যাসার্ধ, ছায়া। এক জায়গায় বদলালে পুরো অ্যাপ বদলায়।</p>
+        <p style="font-size:9.8pt;color:#4f46e5"><code>static/css/ims.css</code> · ৮ KB</p>
+      </div>
+      <div class="card soft" style="padding:4mm 4.4mm">
+        <b style="font-size:12.4pt">কম্পোনেন্ট</b>
+        <p style="font-size:10.2pt"><b>৫৯</b>টি ক্লাস — card, kpi, badge, empty, banner, nav, form, alert। একই নাম সব পর্দায়।</p>
+        <p style="font-size:9.8pt;color:#4f46e5"><b>১,০০৭</b>টি ব্যবহার, ৫৪টি ভিন্ন ক্লাস</p>
+      </div>
+      <div class="card soft" style="padding:4mm 4.4mm">
+        <b style="font-size:12.4pt">ভিত্তি</b>
+        <p style="font-size:10.2pt">Bootstrap <b>৫</b> vendor-এ — গ্রিড আর ফর্মের ভিত্তি, নিজে চাকা বানানো হয়নি।</p>
+        <p style="font-size:9.8pt;color:#4f46e5">CDN নেই — নিজের ফাইলে</p>
+      </div>
+      <div class="card soft" style="padding:4mm 4.4mm">
+        <b style="font-size:12.4pt">সাদা-লেবেল</b>
+        <p style="font-size:10.2pt">স্কুল নিজের রঙ দিলে <b>একটি ভেরিয়েবল</b> বদলায় — বাকি সব নিজে থেকে বদলে যায়।</p>
+        <p style="font-size:9.8pt;color:#4f46e5"><code>brand.color</code> → <code>--ims-brand</code></p>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:4.2mm;font-size:10.4pt;padding:2.8mm 4.2mm">
+      <b>এই ডেকের সৎ অবস্থান:</b> সিস্টেমটি ছোট ও কাজ করে, কিন্তু এর একটি নথিও নেই — কোন টোকেন কী অর্থে, তা কেবল CSS পড়ে জানা যায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের জিজ্ঞেস করুন: "নতুন পর্দা বানাতে কতটা CSS লিখতে হবে?" উত্তর: প্রায়শই <b>শূন্য</b> — শুধু পুরনো ক্লাস ব্যবহার। এটাই ডিজাইন সিস্টেমের লাভ।
+</section>

@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">সাজ</span>
+    <div><h2>৫২টি ভিউ একই সাজে — <code>@workspace_view</code></h2>
+      <div class="sub">প্রতিটি workspace-ভিউতে তিনটি প্রশ্ন, একটাই উত্তরদাতা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:8.1pt;line-height:1.48;padding:3mm 3.6mm">@workspace_view(*TEACHING)
+def take(request, slug):
+    ...
+
+# decorator যা করে:
+# ১. লগইন নেই → /accounts/login/?next=...
+# ২. ওই স্কুলে সদস্য নয় → 404
+# ৩. ভূমিকা অনুমোদিত নয় → 403
+# ৪. পাশ হলে request.workspace + membership</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">ভূমিকা-সেট</th><th style="width:66%">কারা</th></tr>
+          <tr><td><code>TEACHING</code></td><td>ORG_ADMIN · COORDINATOR · TEACHER (৩২টি ভিউ)</td></tr>
+          <tr><td><code>ALL_ROLES</code></td><td>সবাই + STUDENT (৮টি ভিউ)</td></tr>
+          <tr><td><code>OWNERS</code></td><td>ORG_ADMIN (১১টি ভিউ)</td></tr>
+          <tr><td><code>MANAGERS</code></td><td>ORG_ADMIN · COORDINATOR (১টি)</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>তিনটি স্তর:</b> সদস্যতা (404) → ভূমিকা (403) → বস্তু-স্তরের অনুমতি, যেমন <code>teacher_can_access_class()</code>। তৃতীয়টি ছাড়া একজন শিক্ষক অন্য ক্লাসের নম্বর দেখতে পারতেন।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10.1pt;padding:2.4mm 3.8mm">
+      <b>কেন ৪০৪ আর ৪০৩ আলাদা:</b> সদস্য না হলে "এই স্কুল আছে কি না" জানানোই তথ্য ফাঁস; তাই ৪০৪। সদস্য কিন্তু ভূমিকা ভুল হলে ৪০৩ — কেন না, সেটা বলা নিরাপদ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "একজন ছাত্র <code>attendance:take</code> খুললে কী হবে?" — ৪০৩, কারণ সে সদস্য (৪০৪ নয়) কিন্তু ভূমিকা TEACHING নয়।
+</section>

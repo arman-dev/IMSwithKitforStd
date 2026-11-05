@@ -1,0 +1,537 @@
+<!-- ===================== CLASS 20 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৪ · কোডিং · ক্লাস ২০ / ৩৭</div>
+  <h1>প্রমাণ দিয়ে<br>পরিচয়</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৬ · টপিক ৬.২ (অথেন্টিকেশন)<br>৯টি অ্যাকাউন্ট রুট · ৯টি টেস্ট · ৪টি পাসওয়ার্ড নিয়ম · ৩টি কাস্টম middleware</div>
+  <div class="pill">AbstractBaseUser · session · নিরাপত্তার স্তর</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>লগইনের পর আপনি কোথায় "মনে" থাকেন?</h2>
+      <div class="sub">হাত তুলুন: ব্রাউজারে? সার্ভারে? ডেটাবেসে?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:25pt;line-height:1.55">
+      ব্রাউজারে থাকে শুধু একটি <span class="hl">আইডি</span> — আসল তথ্য সার্ভারের ডেটাবেসে।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:14pt">
+      তাই কেউ কুকি চুরি করলেও পাসওয়ার্ড পায় না, আর সার্ভার যেকোনো মুহূর্তে সেশন বাতিল করতে পারে।
+      আজকের ক্লাসে এই প্রমাণ-ব্যবস্থার প্রতিটি স্তর — মডেল থেকে কুকি ফ্ল্যাগ পর্যন্ত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডিভ-টুলে <code>sessionid</code> কুকি দেখান, তারপর ডেটাবেসের <code>django_session</code> টেবিল। "এই দুটো মিলেই আপনি লগইন করা" — এটাই সবচেয়ে স্পষ্ট ব্যাখ্যা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>প্রথম সিদ্ধান্ত: কাস্টম User মডেল</h2>
+      <div class="sub">প্রথম মাইগ্রেশনের <b>আগে</b> — নাহলে বদলানো যন্ত্রণার কাজ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True, db_index=True)
+    full_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=16, blank=True,
+                             validators=[phone_validator])
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    objects = UserManager()
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["full_name"]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">কেন ডিফল্ট User নয়</b>
+            <p style="font-size:9.8pt">ডিফল্টে লগইন আইডি <code>username</code> — কিন্তু স্কুলের ব্যবহারকারী মনে রাখে ইমেইল।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ভূমিকা এখানে নেই</b>
+            <p style="font-size:9.8pt">একজন মানুষ একাধিক প্রতিষ্ঠানে — তাই ভূমিকা <code>Membership</code>-এ, User-এ নয়।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">মডেলের ৩টি ক্ষেত্র</b>
+            <p style="font-size:9.8pt">Mobile / <code>full_name</code> / <code>is_active</code> + ডকুমেন্টে <code>last_login</code> ও পাসওয়ার্ড হ্যাশ।</p></div>
+          <div class="card" style="padding:3mm 3.8mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11.2pt">দেরি করার খরচ</b>
+            <p style="font-size:9.8pt">পরে বদলাতে ৭০টি ForeignKey-এর মাইগ্রেশন — তাই সিদ্ধান্ত দিন এক, দিন শূন্যতে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> IMS-এর মডেল ফাইলের শিরোনামেই লেখা: "never start a Django project with the default User model"। এটা মুখস্থ নিয়ম নয় — ৭০টি FK-এর হিসাব।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>পাসওয়ার্ড কখনোই সংরক্ষণ নয়</h2>
+      <div class="sub"><code>UserManager</code> — ইমেইল নরমালাইজ, তারপর <code>set_password()</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">def _create_user(self, email, password, **extra):
+    if not email:
+        raise ValueError("An e-mail address is required.")
+    email = self.normalize_email(email).lower()
+    user = self.model(email=email, **extra)
+    user.set_password(password)   # হ্যাশ করে, প্লেইন নয়
+    user.save(using=self._db)
+    return user
+
+def create_superuser(self, email, password=None, **extra):
+    extra.setdefault("is_staff", True)
+    extra.setdefault("is_superuser", True)
+    if extra.get("is_staff") is not True:
+        raise ValueError("Superuser must have is_staff=True.")
+    ...</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:40%">কোন লাইন</th><th>কেন</th></tr></thead>
+          <tbody>
+            <tr><td><code>.lower()</code></td><td><code>Ayesha@Example.COM</code> → <code>ayesha@example.com</code></td></tr>
+            <tr><td><code>set_password</code></td><td>PBKDF2 + সল্ট; DB-তে <code>pbkdf2_sha256$…</code></td></tr>
+            <tr><td><code>unique=True</code></td><td>দুই অ্যাকাউন্ট, এক ইমেইল — অসম্ভব</td></tr>
+            <tr><td><code>is_active=False</code></td><td>অ্যাকাউন্ট মুছে না, শুধু লগইন বন্ধ</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          <code>create_superuser</code>-এ <b>স্পষ্ট <code>ValueError</code></b> — ভুল কনফিগে চুপচাপ এগোয় না, সাথে সাথে থামে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেলে <code>user.password</code> প্রিন্ট করুন — লম্বা হ্যাশ দেখে ছাত্ররা বোঝে পাসওয়ার্ড আসলে কোথাও নেই। তারপর <code>check_password</code>।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>লগইনের সাত ধাপ</h2>
+      <div class="sub">ফর্ম → <code>authenticate()</code> → <code>login()</code> → সেশন কুকি → রিডাইরেক্ট</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <line x1="150" y1="24" x2="150" y2="176" stroke="#cbd5e1" stroke-dasharray="4 3"/>
+          <line x1="470" y1="24" x2="470" y2="176" stroke="#cbd5e1" stroke-dasharray="4 3"/>
+          <line x1="820" y1="24" x2="820" y2="176" stroke="#cbd5e1" stroke-dasharray="4 3"/>
+          <text x="150" y="16" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0f172a">ব্রাউজার</text>
+          <text x="470" y="16" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0f172a">IMSLoginView</text>
+          <text x="820" y="16" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0f172a">ডেটাবেস</text>
+
+          <line x1="150" y1="36" x2="470" y2="36" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a20)"/>
+          <text x="310" y="32" text-anchor="middle" font-size="8.2" fill="#4338ca">POST email + password + csrf</text>
+
+          <line x1="470" y1="62" x2="820" y2="62" stroke="#0f766e" stroke-width="1.3" marker-end="url(#a20b)"/>
+          <text x="645" y="58" text-anchor="middle" font-size="8.2" fill="#0f766e">authenticate() → check_password</text>
+
+          <line x1="820" y1="84" x2="470" y2="84" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#a20c)"/>
+          <text x="645" y="80" text-anchor="middle" font-size="8.2" fill="#475569">ইউজার অথবা None</text>
+
+          <line x1="470" y1="106" x2="820" y2="106" stroke="#0f766e" stroke-width="1.3" marker-end="url(#a20b)"/>
+          <text x="645" y="102" text-anchor="middle" font-size="8.2" fill="#0f766e">login() → session রো তৈরি</text>
+
+          <line x1="820" y1="128" x2="150" y2="128" stroke="#d97706" stroke-width="1.3" marker-end="url(#a20d)"/>
+          <text x="480" y="124" text-anchor="middle" font-size="8.2" fill="#b45309">302 + Set-Cookie: sessionid (HttpOnly)</text>
+
+          <line x1="150" y1="152" x2="470" y2="152" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a20)"/>
+          <text x="310" y="148" text-anchor="middle" font-size="8.2" fill="#4338ca">GET /w/springfield/</text>
+
+          <text x="150" y="176" text-anchor="middle" font-size="7.6" fill="#64748b">সেশন আইডি</text>
+          <text x="470" y="176" text-anchor="middle" font-size="7.6" fill="#64748b">কোন ওয়ার্কস্পেসে যাবে ঠিক করে</text>
+          <text x="820" y="176" text-anchor="middle" font-size="7.6" fill="#64748b">django_session টেবিল</text>
+
+          <defs>
+            <marker id="a20" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#4f46e5"/></marker>
+            <marker id="a20b" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#0f766e"/></marker>
+            <marker id="a20c" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker>
+            <marker id="a20d" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#d97706"/></marker>
+          </defs>
+        </g>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:4.5mm">
+      <div><div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <code>redirect_authenticated_user = True</code> — লগইন করা মানুষ লগইন পর্দা আর দেখেন না।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <code>form_valid</code>-এ পুরোনো <code>SESSION_KEY</code> মুছে দেওয়া হয় — নাহলে আগের প্রতিষ্ঠানেই ঢুকে পড়তেন।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দ্বিতীয় কার্ডটা বাস্তব বাগ থেকে: এক ব্রাউজারে দুই স্কুলের অ্যাডমিন লগইন করলে ভুল স্কুলে ঢুকে যাচ্ছিলেন। "সেশনেও পুরোনো স্মৃতি থাকে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>একই এরর, দুই কারণে</h2>
+      <div class="sub"><code>IMSAuthenticationForm</code> — ইচ্ছাকৃতভাবে অস্পষ্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">class IMSAuthenticationForm(AuthenticationForm):
+    username = forms.EmailField(label="E-mail",
+        widget=forms.EmailInput(attrs={
+            "class": "form-control", "autofocus": True,
+            "autocomplete": "email"}))
+    password = forms.CharField(label="Password",
+        widget=forms.PasswordInput(attrs={
+            "class": "form-control",
+            "autocomplete": "current-password"}))
+
+    error_messages = {
+        "invalid_login": "E-mail or password is incorrect.",
+        "inactive": "This account is deactivated. "
+                    "Contact your administrator.",
+    }</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:42%">পরিস্থিতি</th><th>ব্যবহারকারী যা দেখেন</th></tr></thead>
+          <tbody>
+            <tr><td>ইমেইলই নেই</td><td rowspan="2"><b>"E-mail or password is incorrect."</b><br>দুই ক্ষেত্রেই হুবহু এক</td></tr>
+            <tr><td>ইমেইল আছে, পাসওয়ার্ড ভুল</td></tr>
+            <tr><td>অ্যাকাউন্ট নিষ্ক্রিয়</td><td>আলাদা বার্তা (মালিককে জানানো দরকার)</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          কেন? আলাদা বার্তা মানে কেউ একা একা <b>কোন ইমেইলগুলো নিবন্ধিত</b> তা বের করে ফেলতে পারে।
+        </div>
+        <div class="call warn" style="margin-top:2.4mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          <code>autocomplete</code>-এ <code>current-password</code> — পাসওয়ার্ড ম্যানেজার সঠিকভাবে কাজ করার শর্ত।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "নিষ্ক্রিয় অ্যাকাউন্টের কথা আলাদা করে বলা কি নিরাপদ?" উত্তর: কিছুটা তথ্য ফাঁস হয়, কিন্তু ব্যবহারকারীকে অকারণে দোষারোপ করা আরও খারাপ — এটা সচেতন সমঝোতা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>সেশনের নিয়ম — কোডে লেখা আট লাইন</h2>
+      <div class="sub"><code>config/settings/base.py</code> ও <code>prod.py</code></div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:44%">সেটিং</th><th style="width:18%">মান</th><th>মানে</th></tr></thead>
+      <tbody>
+        <tr><td><code>SESSION_COOKIE_AGE</code></td><td>৮ ঘণ্টা</td><td>এক কর্মদিবস — রাতে নিজেই শেষ</td></tr>
+        <tr><td><code>SESSION_SAVE_EVERY_REQUEST</code></td><td>True</td><td>প্রতিটি অনুরোধে মেয়াদ নবায়ন (কাজ করলে লগআউট নয়)</td></tr>
+        <tr><td><code>EXPIRE_AT_BROWSER_CLOSE</code></td><td>False</td><td>ব্রাউজার বন্ধ করলেই লগআউট হয় না</td></tr>
+        <tr><td><code>SESSION_COOKIE_SECURE</code></td><td>prod: True</td><td>শুধু HTTPS-এ কুকি যায়</td></tr>
+        <tr><td><code>SESSION_COOKIE_HTTPONLY</code></td><td>prod: True</td><td>JavaScript কুকি পড়তে পারে না</td></tr>
+        <tr><td><code>SESSION_COOKIE_SAMESITE</code></td><td>prod: Lax</td><td>অন্য সাইট থেকে পাঠানো POST-এ কুকি যায় না</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        লগ আউট = সেশন রো মুছে ফেলা + <code>SESSION_KEY</code> পপ। বাকি সব কপি তখন অর্থহীন।
+      </div></div>
+      <div><div class="call bad" style="font-size:10.4pt;padding:2.6mm 4mm">
+        এই তিনটি ফ্ল্যাগ <b>শুধু prod.py-তে</b> — লোকালে HTTP বলে চালু থাকলে লগইনই হতো না। পার্থক্যের কারণ জানুন।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "৮ ঘণ্টা মানে শিক্ষকের এক কর্মদিবস।" সময়সীমা ব্যবসায়িক সিদ্ধান্ত, শুধু কারিগরি নয় — ব্যাংকে ১৫ মিনিট, এখানে ৮ ঘণ্টা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>লগইনের পরে: কোন প্রতিষ্ঠানে?</h2>
+      <div class="sub"><code>CurrentWorkspaceMiddleware</code> — প্রতিটি অনুরোধে একবার</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">ws_id = request.session.get(SESSION_KEY)   # active_workspace_id
+qs = Membership.objects.filter(user=request.user, is_active=True)
+
+if ws_id:
+    m = qs.filter(workspace_id=ws_id, workspace__is_active=True).first()
+    if m:
+        return m
+
+# না থাকলে: সর্বোচ্চ ভূমিকা, তারপর প্রতিষ্ঠান, তারপর নাম
+m = (qs.filter(workspace__is_active=True)
+       .order_by(ROLE_PRIORITY, KIND_PRIORITY, "workspace__name").first())
+if m:
+    request.session[SESSION_KEY] = m.workspace_id
+return m</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:34%">অগ্রাধিকার</th><th>কে আগে</th></tr></thead>
+          <tbody>
+            <tr><td><code>ROLE_PRIORITY</code></td><td>ORG_ADMIN → COORDINATOR → TEACHER → STUDENT</td></tr>
+            <tr><td><code>KIND_PRIORITY</code></td><td>INSTITUTION আগে, PERSONAL পরে</td></tr>
+            <tr><td>শেষে</td><td>নাম অনুযায়ী — ফলাফল নির্ভরযোগ্য</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          বাস্তব বাগ: এখানে একবার <b>lazy</b> অবজেক্ট ফেরানো হয়েছিল। <code>lazy_obj is None</code> কখনো True হয় না — ওয়ার্কস্পেসহীন ব্যবহারকারী চেক পাশ করে গিয়েছিলেন।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভে দেখান: এক ব্যবহারকারী দুই প্রতিষ্ঠানে — <code>bash run.sh</code> দিয়ে লগইন করে প্রথমে কোনটি খোলে, তারপর switch করে দেখান।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>রেজিস্ট্রেশন = তিনটি সারি, একসাথে</h2>
+      <div class="sub"><code>transaction.atomic()</code> — অর্ধেক অ্যাকাউন্ট কখনো নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45">def form_valid(self, form):
+    with transaction.atomic():
+        user = form.save()
+        workspace = Workspace.objects.create(
+            kind=WorkspaceKinds.PERSONAL,
+            name=form.cleaned_data["workspace_name"],
+            owner=user)
+        Membership.objects.create(
+            user=user, workspace=workspace,
+            role=Roles.TEACHER)
+    login(self.request, user)
+    self.request.session[SESSION_KEY] = workspace.pk
+    return redirect("reports:dashboard", slug=workspace.slug)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:52%">টেস্ট</th><th>যা প্রমাণ করে</th></tr></thead>
+          <tbody>
+            <tr><td><code>test_registration_creates_user_workspace_and_membership</code></td><td>৩ সারি + সেশন + ৩০২</td></tr>
+            <tr><td><code>test_duplicate_email_is_rejected</code></td><td>"already exists"</td></tr>
+            <tr><td><code>test_password_mismatch_is_rejected</code></td><td>"do not match"</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          টেস্টে ইমেইল <code>Ayesha@Example.COM</code> পাঠিয়ে যাচাই করা হয় <code>ayesha@example.com</code> সেভ হয়েছে কি না।
+        </div>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+          <code>atomic</code> না থাকলে দুর্ঘটনায় ব্যবহারকারী তৈরি হয়ে ওয়ার্কস্পেস ছাড়া থেকে যেতে পারে — "লগইন হয়, কিন্তু কোথাও নেই"।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সবুজ টেস্ট দেখান: <code>pytest apps/accounts</code> বা <code>manage.py test apps.accounts</code>। "দাবি নয়, প্রমাণ" — এই কোর্সের সুর।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>পাসওয়ার্ড ভুলে গেলে — চার ধাপ, দুই টোকেন</h2>
+      <div class="sub"><code>uidb64</code> + <code>token</code> — লিংক একবারই কাজ করে, সময়সীমা আছে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 132" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="26" width="225" height="72" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="112" y="48" text-anchor="middle" font-size="9.4" font-weight="700" fill="#312e81">১. ইমেইল দিন</text>
+          <text x="112" y="66" text-anchor="middle" font-size="8" fill="#3730a3">/accounts/password-reset/</text>
+          <text x="112" y="84" text-anchor="middle" font-size="7.6" fill="#4338ca">যে-ই দেন, উত্তর একই</text>
+
+          <rect x="258" y="26" width="225" height="72" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="370" y="48" text-anchor="middle" font-size="9.4" font-weight="700" fill="#115e59">২. লিংক যায়</text>
+          <text x="370" y="66" text-anchor="middle" font-size="8" fill="#115e59">console/SMTP ব্যাকএন্ড</text>
+          <text x="370" y="84" text-anchor="middle" font-size="7.6" fill="#0f766e">১টি মেইল, একবার দেখুন</text>
+
+          <rect x="516" y="26" width="225" height="72" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.4"/>
+          <text x="628" y="48" text-anchor="middle" font-size="9.4" font-weight="700" fill="#7c2d12">৩. নতুন পাসওয়ার্ড</text>
+          <text x="628" y="66" text-anchor="middle" font-size="8" fill="#92400e">reset/&lt;uidb64&gt;/&lt;token&gt;/</text>
+          <text x="628" y="84" text-anchor="middle" font-size="7.6" fill="#b45309">টোকেন মেয়াদোত্তীর্ণ হতে পারে</text>
+
+          <rect x="774" y="26" width="225" height="72" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+          <text x="886" y="48" text-anchor="middle" font-size="9.4" font-weight="700" fill="#4c1d95">৪. সম্পন্ন</text>
+          <text x="886" y="66" text-anchor="middle" font-size="8" fill="#5b21b6">password_reset_complete</text>
+          <text x="886" y="84" text-anchor="middle" font-size="7.6" fill="#6d28d9">নতুন পাসওয়ার্ডে লগইন</text>
+
+          <g stroke="#94a3b8" stroke-width="1.2" fill="none">
+            <path d="M227,62 L254,62" marker-end="url(#a20r)"/>
+            <path d="M485,62 L512,62" marker-end="url(#a20r)"/>
+            <path d="M743,62 L770,62" marker-end="url(#a20r)"/>
+          </g>
+          <text x="500" y="118" text-anchor="middle" font-size="8" fill="#64748b">টেস্ট: mail.outbox থেকে লিংক তুলে সত্যিকারের পথে হেঁটে নতুন পাসওয়ার্ড সেট করে যাচাই</text>
+          <defs><marker id="a20r" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:5mm">
+      <div><div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        অজানা ইমেইলেও <b>একই ৩০২ উত্তর</b> — কেউ অনুমান করে দেখতে পারে না কে নিবন্ধিত।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        ডেমোতে ইমেইল কনসোলে ছাপা হয় (<code>EMAIL_BACKEND=console</code>) — প্রোডাকশনে SMTP।
+      </div></div>
+    </div>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="card soft" style="padding:3mm 4mm"><b style="font-size:11pt">টোকেন কেন দুটি</b>
+        <p style="font-size:9.8pt"><code>uidb64</code> বলে কে, <code>token</code> বলে অনুমতি — শুধু আইডি জানা থাকলে লিংক বানানো যেত।</p></div></div>
+      <div><div class="card soft" style="padding:3mm 4mm"><b style="font-size:11pt">একবারই</b>
+        <p style="font-size:9.8pt">পাসওয়ার্ড সেট হওয়ামাত্র টোকেন অকার্যকর — পুরোনো মেইল আবার ব্যবহার করা যায় না।</p></div></div>
+      <div><div class="card soft" style="padding:3mm 4mm"><b style="font-size:11pt">মেয়াদ</b>
+        <p style="font-size:9.8pt">Django-র ডিফল্ট <code>PASSWORD_RESET_TIMEOUT</code> ৩ দিন — দীর্ঘ, কিন্তু সেটাও সচেতন পছন্দ।</p></div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>mail.outbox</code>-এর টেস্টটা দেখান: "মেইল সত্যিই গেছে কি না" — এটাই ওই ফিচারের একমাত্র নির্ভরযোগ্য প্রমাণ, কারণ UI কখনোই জানে না মেইল পৌঁছেছে কি না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>পাসওয়ার্ড বদল — তিনটি ঘর, একটি কঠিন নিয়ম</h2>
+      <div class="sub"><code>PasswordChangeForm</code> নিজেই পুরোনো পাসওয়ার্ড যাচাই করে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">class IMSPasswordChangeView(PasswordChangeView):
+    template_name = "accounts/password_change.html"
+    form_class = IMSPasswordChangeForm
+    success_url = reverse_lazy("accounts:profile")
+
+    def form_valid(self, form):
+        messages.success(self.request,
+                         "Password changed successfully.")
+        return super().form_valid(form)
+
+class IMSPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Current password",
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "current-password"}))
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            "autocomplete": "new-password"}))</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">পুরোনো পাসওয়ার্ড কেন</b>
+            <p style="font-size:9.8pt">কেউ চুরি করা সেশন নিয়ে পাসওয়ার্ড বদলে আপনাকে বের করে দিতে পারবে না।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">একই নিয়ম আবার</b>
+            <p style="font-size:9.8pt">নতুন পাসওয়ার্ডও ৪টি validator পার হতে হয় — ফর্ম বদলালেও নিয়ম বদলায় না।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">সেশন টিকে থাকে</b>
+            <p style="font-size:9.8pt">পাসওয়ার্ড বদলালে Django সেশন-কি ঘুরিয়ে দেয় — অন্য ডিভাইসের সেশন বাতিল হয় না, কিন্তু কুকি নতুন হয়।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">প্রোফাইল আলাদা</b>
+            <p style="font-size:9.8pt"><code>IMSUserProfileForm</code> — শুধু <code>full_name</code> ও <code>phone</code>; ইমেইল বদলানো এখানে নেই, ইচ্ছাকৃত।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "প্রোফাইল থেকে ইমেইল বদলানো গেলে কী ঝুঁকি?" উত্তর: লগইন আইডি বদলে যাওয়া + অন্য অ্যাকাউন্টের ইমেইলে দখল — তাই আলাদা, কঠিন প্রবাহ দরকার।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>লগইন পর্দাটাই প্রথম ছাপ</h2>
+      <div class="sub">দুই কলাম · ব্র্যান্ডের নাম · কুকি গার্ড · ডেমো লগইন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">{% extends "base.html" %}
+&lt;div class="ims-auth"&gt;            {# 1.05fr .95fr #}
+  &lt;aside class="ims-auth__aside"&gt;  {# বাম: ব্র্যান্ড #}
+    {{ brand.name|default:"Teacher Management System" }}
+    &lt;h1&gt;{{ brand.tagline|default:"Every class, every mark…" }}&lt;/h1&gt;
+  &lt;/aside&gt;
+  &lt;main class="ims-auth__main"&gt;
+    &lt;h2&gt;Sign in{% if brand.name and brand.name != product.short %}
+        to {{ brand.name }}{% endif %}&lt;/h2&gt;
+    {% include "partials/cookie_guard.html" %}
+    &lt;form method="post" novalidate&gt;
+      {% csrf_token %}
+      {% include "partials/field.html" with field=form.username %}
+      {% include "partials/field.html" with field=form.password %}&lt;/form&gt;
+  &lt;/main&gt;&lt;/div&gt;</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ব্র্যান্ড বদলায় শিরোনাম</b>
+            <p style="font-size:9.8pt">প্রতিষ্ঠানের নাম থাকলে "Sign in to Springfield High" — নাহলে শুধু "Sign in"।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">কুকি গার্ড</b>
+            <p style="font-size:9.8pt">১৫ লাইন JS পরীক্ষা করে কুকি লেখা যায় কি না — না গেলে টাইপ করার আগেই সতর্ক করে।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">novalidate কেন</b>
+            <p style="font-size:9.8pt">আসল যাচাই সার্ভারে; ব্রাউজারের বাধা শুধুই সুবিধা। এমবেড করা প্রিভিউতেও ফর্ম কাজ করে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ডেমো লগইন বাক্স</b>
+            <p style="font-size:9.8pt"><code>admin@ · teacher@ · student@ims.local</code> · <code>DemoPass!2026</code> — ক্লাসে সময় বাঁচায়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কুকি ব্লক করা ব্রাউজারে (বা প্রাইভেট মোড + কঠোর সেটিং) লগইন পর্দা খুলে দেখান — সতর্কবার্তাটা নিজেই বলে দেয় সমস্যা কী।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>ছয়টি স্তর, তারপরও একটি ফাঁক</h2>
+      <div class="sub"><code>prod.py</code>-তে যেগুলো আছে — আর যা এখনো নেই</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:34%">স্তর</th><th>কী আটকায়</th></tr></thead>
+      <tbody>
+        <tr><td><code>CsrfViewMiddleware</code> (৩৬ ফর্মে টোকেন)</td><td>অন্য সাইট থেকে জাল POST</td></tr>
+        <tr><td><code>SESSION_COOKIE_HTTPONLY</code></td><td>XSS দিয়ে কুকি চুরি</td></tr>
+        <tr><td><code>SECURE_SSL_REDIRECT</code> + HSTS ৩০ দিন</td><td>HTTP-তে পাসওয়ার্ড যাওয়া</td></tr>
+        <tr><td><code>X_FRAME_OPTIONS = DENY</code></td><td>ক্লিকজ্যাকিং</td></tr>
+        <tr><td>পাসওয়ার্ড হ্যাশ + ৪টি validator</td><td>দুর্বল পাসওয়ার্ড, ডাম্প/লিক হলে ক্ষতি</td></tr>
+        <tr><td>prod.py-এর <code>RuntimeError</code> গার্ড</td><td>ডিফল্ট SECRET_KEY বা <code>*</code> হোস্ট দিয়ে চালু হওয়া</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4mm;font-size:11pt;padding:2.8mm 4.4mm">
+      <b>যা এখনো নেই:</b> লগইন প্রচেষ্টার সীমা (rate limit) · অ্যাকাউন্ট লকআউট · ইমেইল ভেরিফিকেশন · 2FA।
+      কোডে <code>ratelimit</code>/<code>attempt</code> শব্দ দুটির খোঁজে <b>শূন্য</b> মিল — অর্থাৎ আজ কেউ ১০,০০০ বার পাসওয়ার্ড অনুমান করতে পারবে।
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10.4pt;padding:2.6mm 4mm">
+      প্রতিকার সাধারণত ক্যাশ-ভিত্তিক কাউন্টার: <code>(ip, email)</code> কী-তে ৫ ব্যর্থতায় ১৫ মিনিট ব্লক — মডেল বদলাতে হয় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটা সৎ থাকুন: "প্রথম সংস্করণে এটাই স্বাভাবিক, কিন্তু প্রকাশের আগে জানা থাকতে হবে।" বাস্তব আক্রমণ: একটি স্কুলের ৪০০ ইমেইলে স্প্রে-হামলা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — প্রমাণ নিজে পরীক্ষা করুন</h2>
+      <div class="sub">তিনটি কাজ, তারপর চারটি প্রশ্ন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. সেশন কোথায় (৬ মিনিট)</b>
+            <p style="font-size:10pt">লগইন করে <code>sessionid</code> কুকি কপি করুন, তারপর <code>django_session</code> টেবিলে ওই কী খুঁজুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. এরর বার্তা (৬ মিনিট)</b>
+            <p style="font-size:10pt">অস্তিত্বহীন ইমেইল আর ভুল পাসওয়ার্ড — দুইবার লগইন করে দেখুন উত্তর হুবহু এক কি না।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. নিষ্ক্রিয় ব্যবহারকারী (৮ মিনিট)</b>
+            <p style="font-size:10pt"><code>is_active=False</code> করে লগইন চেষ্টা করুন; তারপর <code>apps/accounts/tests.py</code>-এর টেস্টটি চালান।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>পাসওয়ার্ড কোথায় জমা থাকে — আর কী জমা থাকে না?</li>
+          <li class="g">একই এরর বার্তা কেন দুটি ভিন্ন কারণে?</li>
+          <li>সেশন কুকি চুরি হলে পাসওয়ার্ডও যায় — সত্যি?</li>
+          <li class="r">rate limit না থাকলে প্রথম ২৪ ঘণ্টায় কী হবে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় প্রশ্নের সঠিক উত্তর: "না — কুকি থাকলে ওই সেশনটাই ব্যবহার করা যায়, পাসওয়ার্ড নয়।" পার্থক্যটা ছাত্ররা প্রায়ই গুলিয়ে ফেলে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>কাস্টম User, প্রথম দিনেই</b></td><td><code>USERNAME_FIELD = "email"</code> · ৭০টি FK</td></tr>
+        <tr><td><b>পাসওয়ার্ড কখনো প্লেইন নয়</b></td><td><code>set_password()</code> · <code>pbkdf2_sha256$…</code></td></tr>
+        <tr><td><b>এরর বার্তা তথ্য ফাঁস করে না</b></td><td><code>invalid_login</code> এক, দুই কারণে</td></tr>
+        <tr><td><b>সেশন = সার্ভারে সত্য, ক্লায়েন্টে আইডি</b></td><td><code>django_session</code> · HttpOnly · ৮ ঘণ্টা</td></tr>
+        <tr><td><b>লগইনের পরই ঠিক হয় কোন প্রতিষ্ঠান</b></td><td><code>CurrentWorkspaceMiddleware</code> · ROLE_PRIORITY</td></tr>
+        <tr><td><b>যা লেখা হয়নি, তা সুরক্ষাও নয়</b></td><td><b>rate limit শূন্য</b> · লকআউট নেই · 2FA নেই</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটা আবার বলুন: "নিরাপত্তার তালিকা তৈরি করা মানে নিজের ফাঁক জেনে রাখা।" পরের ক্লাসে ফাইল আপলোডেও একই ধরনের ফাঁক দেখবেন।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২১</div>
+  <h2>পরের ক্লাস — "ফাইল ঢোকে, বিপদ ঢোকে না"</h2>
+  <p>ফাইল আপলোড: <code>MEDIA_ROOT</code> · <code>upload_to</code> · ImageField · SVG/XSS ঝুঁকি · সাইজ ও ধরন যাচাই · ডাউনলোড অনুমতি</p>
+</section>

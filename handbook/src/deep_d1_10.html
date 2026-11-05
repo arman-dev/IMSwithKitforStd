@@ -1,0 +1,23 @@
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত ৩</span>
+    <div><h2>এক ইউজার, বহু বিদ্যালয়, প্রতি বিদ্যালয়ে ভিন্ন ভূমিকা</h2>
+      <div class="sub">ভূমিকা ইউজারের কলামে নয় — <code>Membership</code> সারিতে</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:24%">টেবিল</th><th style="width:30%">কী বলে</th><th style="width:46%">কেন এখানে</th></tr>
+      <tr><td><code>accounts.User</code></td><td>"এই ব্যক্তিটি কে" — ইমেইল, নাম, ফোন</td><td>পরিচয় গ্লোবাল; স্কুল বদলালেও পরিচয় এক</td></tr>
+      <tr><td><code>workspaces.Membership</code></td><td>"এই বিদ্যালয়ে তার ভূমিকা কী"</td><td>একই মানুষ এক স্কুলে শিক্ষক, আরেক স্কুলে সমন্বয়ক — একটি <code>role</code> কলাম দিয়ে সম্ভব নয়</td></tr>
+      <tr><td><code>students.StudentProfile</code></td><td>"ছাত্র হিসেবে তার নম্বর, ভর্তি নম্বর"</td><td>প্রতিটি ছাত্রের অ্যাকাউন্ট থাকে না; থাকলেও প্রোফাইল আলাদা তথ্য</td></tr>
+      <tr><td><code>academics.CoordinatorScope</code></td><td>"সমন্বয়ক কোন বিভাগ/ক্লাস দেখবে"</td><td>অনুমতি ডেটা হিসেবে রাখা — রোল-স্ট্রিং-এ লুকানো নয়</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.5mm;gap:5mm">
+      <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>প্রমাণ ১:</b> <code>Membership</code>-এ <code>UniqueConstraint(["user","workspace"])</code> — এক স্কুলে এক ভূমিকা। দুই ভূমিকা দরকার হলে সেটি ডিজাইনের সংকেত, দুটি সারি নয়।
+      </div>
+      <div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>প্রমাণ ২:</b> <code>StudentProfile.account</code> ← <code>OneToOneField(..., on_delete=SET_NULL, null=True)</code>। অ্যাকাউন্ট মুছলেও ছাত্রের নম্বর-হাজিরা টিকে থাকে।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাস্তব উদাহরণ দিন: একজন শিক্ষক দুটি স্কুলে পড়ান। তিনি দ্বিতীয় স্কুলে যোগ দিলে নতুন অ্যাকাউন্ট বানাতে হয় না — কেবল একটি <code>Membership</code> সারি। এটাই "এক ইউজার, বহু প্রতিষ্ঠান"।
+</section>

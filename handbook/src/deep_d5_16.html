@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">ড্যাশবোর্ড</span>
+    <div><h2>KPI কার্ড — এক নজরে সংখ্যা, তারপর পথ</h2>
+      <div class="sub"><code>auto-fit minmax(190px,1fr)</code> — কোনো মিডিয়া কোয়েরি ছাড়াই</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:7.3pt;line-height:1.42;padding:2.2mm 2.8mm">.ims-kpi{display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:1rem}
+.ims-kpi__card{background:var(--ims-surface);
+  border:1px solid var(--ims-line);border-radius:14px;
+  padding:1rem 1.1rem}
+.ims-kpi__value{font-size:1.75rem;font-weight:700}
+.ims-kpi__label{font-size:.78rem;color:var(--ims-muted);
+  text-transform:uppercase;letter-spacing:.04em}</pre>
+        <div class="call" style="margin-top:2mm;font-size:9.5pt;padding:2.2mm 3.2mm">
+          <b>কেন <code>auto-fit</code>:</b> ১৯০px-এ এক কলাম ভরে না মানে দুই কলাম — ব্রাউজার নিজেই ঠিক করে। ৩ কার্ড থাকলে ৩ কলাম, ফোনে ১ কলাম। কোডে একটি মাত্র লাইন।
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">ক্লাস</th><th style="width:56%">ব্যবহার</th></tr>
+          <tr><td><code>ims-kpi__card</code></td><td>৩৭</td></tr>
+          <tr><td><code>ims-kpi__label</code></td><td>৩৭</td></tr>
+          <tr><td><code>ims-kpi__value</code></td><td>৩৫</td></tr>
+          <tr><td><code>ims-kpi__icon</code></td><td>১৩</td></tr>
+          <tr><td><code>ims-kpi</code> (গ্রিড)</td><td>৯</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.4pt;padding:2.2mm 3.2mm">
+          <b>ছন্দ:</b> ১০টি পর্দায় ৩৭টি কার্ড — গড়ে ৩.৭। প্রতিটি বাক্সে ৩–৪টি কার্ড, তাই গ্রিড কখনো অর্ধেক খালি দেখায় না। সংখ্যাটা কাকতালীয় নয়, ইচ্ছাকৃত ছন্দ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে ১৯০px × ৩ = ৫৭০px লিখুন, তারপর প্রশ্ন করুন — ৬৪০px পর্দায় কয়টি কার্ড বসবে? (৩টি, কারণ padding বাদ দিয়ে জায়গা কমে)। এটাই CSS Grid বোঝানোর সবচেয়ে দ্রুত পথ।
+</section>

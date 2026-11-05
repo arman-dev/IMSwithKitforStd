@@ -1,0 +1,55 @@
+<section class="slide">
+  <div class="head"><span class="badge">দেয়াল</span>
+    <div><h2>এক ডেটাবেজ, তিন বিদ্যালয় — দেয়াল কীভাবে টানে</h2>
+      <div class="sub">মিডলওয়্যার একবার ঠিক করে, প্রতিটি কোয়েরি সেটাই ব্যবহার করে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 236" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="DejaVu Sans, sans-serif">
+        <rect x="4" y="8" width="470" height="220" rx="10" fill="#f8faff" stroke="#6366f1" stroke-width="2"/>
+        <text x="239" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#312e81">PostgreSQL · ims_dev (একটাই ডেটাবেজ)</text>
+
+        <rect x="20" y="42" width="200" height="52" rx="7" fill="#eef2ff" stroke="#818cf8"/>
+        <text x="120" y="62" text-anchor="middle" font-size="9.6" font-weight="700" fill="#3730a3">workspace_id = 1</text>
+        <text x="120" y="78" text-anchor="middle" font-size="8.6" fill="#475569">ঢাকা মডেল স্কুল</text>
+        <text x="120" y="90" text-anchor="middle" font-size="8" fill="#64748b">৪০০ ছাত্র · ৩২ শিক্ষক</text>
+
+        <rect x="254" y="42" width="200" height="52" rx="7" fill="#ecfeff" stroke="#22d3ee"/>
+        <text x="354" y="62" text-anchor="middle" font-size="9.6" font-weight="700" fill="#155e75">workspace_id = 2</text>
+        <text x="354" y="78" text-anchor="middle" font-size="8.6" fill="#475569">চট্টগ্রাম কলেজ</text>
+        <text x="354" y="90" text-anchor="middle" font-size="8" fill="#64748b">৯০০ ছাত্র · ৪১ শিক্ষক</text>
+
+        <rect x="20" y="108" width="434" height="52" rx="7" fill="#f0fdf4" stroke="#4ade80"/>
+        <text x="237" y="128" text-anchor="middle" font-size="9.6" font-weight="700" fill="#166534">workspace_id = 3</text>
+        <text x="237" y="144" text-anchor="middle" font-size="8.6" fill="#475569">এক শিক্ষকের ব্যক্তিগত ওয়ার্কস্পেস (ফ্রি)</text>
+        <text x="237" y="156" text-anchor="middle" font-size="8" fill="#64748b">বিলিং নেই · subscription সারি নেই</text>
+
+        <text x="239" y="184" text-anchor="middle" font-size="8.8" fill="#334155">সব টেবিলে একই তিনটি মান — আলাদা স্কিমা নয়, আলাদা ডেটাবেজ নয়</text>
+        <text x="239" y="202" text-anchor="middle" font-size="8.8" font-weight="700" fill="#4f46e5">৩১ টেবিল · ২৩-এ workspace_id · ৭৪ সম্পর্ক</text>
+        <text x="239" y="218" text-anchor="middle" font-size="8.2" fill="#64748b">প্ল্যান বদলালেও স্কিমা বদলায় না</text>
+
+        <rect x="510" y="60" width="200" height="86" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.6"/>
+        <text x="610" y="80" text-anchor="middle" font-size="9.8" font-weight="700" fill="#78350f">middleware</text>
+        <text x="610" y="96" text-anchor="middle" font-size="8.6" fill="#92400e">slug দেখে workspace ঠিক করে</text>
+        <text x="610" y="112" text-anchor="middle" font-size="8.6" fill="#92400e">request.workspace = obj</text>
+        <text x="610" y="128" text-anchor="middle" font-size="8.2" fill="#a16207">সদস্য না হলে → ৪০৪</text>
+
+        <rect x="748" y="60" width="248" height="86" rx="8" fill="#fff" stroke="#94a3b8"/>
+        <text x="872" y="80" text-anchor="middle" font-size="9.8" font-weight="700" fill="#1e293b">প্রতিটি ভিউ / scoping.py</text>
+        <text x="872" y="98" text-anchor="middle" font-size="8.6" fill="#475569">filter(workspace=request.workspace)</text>
+        <text x="872" y="114" text-anchor="middle" font-size="8.6" fill="#475569">+ ভূমিকা অনুযায়ী আরও সংকীর্ণ</text>
+        <text x="872" y="130" text-anchor="middle" font-size="8.2" fill="#64748b">শিক্ষক → নিজের ক্লাস · ছাত্র → নিজের</text>
+
+        <line x1="474" y1="103" x2="506" y2="103" stroke="#4338ca" stroke-width="1.8" marker-end="url(#a7)"/>
+        <line x1="712" y1="103" x2="744" y2="103" stroke="#4338ca" stroke-width="1.8" marker-end="url(#a7)"/>
+        <defs><marker id="a7" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+          <path d="M0,0 L9,3.5 L0,7 z" fill="#4338ca"/></marker></defs>
+        <text x="490" y="96" text-anchor="middle" font-size="7.8" fill="#4338ca">সলভ</text>
+
+        <rect x="510" y="170" width="486" height="44" rx="7" fill="#fef2f2" stroke="#f43f5e"/>
+        <text x="753" y="188" text-anchor="middle" font-size="9" font-weight="700" fill="#991b1b">যে কোয়েরিতে শর্ত ভুলে যায় — সেটি অন্য বিদ্যালয়ের ডেটা ফেরত দেয়, এরর দেয় না</text>
+        <text x="753" y="204" text-anchor="middle" font-size="8.4" fill="#7f1d1d">তাই ৫টি টেবিলে কলাম নেই, সেখানে প্যারেন্ট-পথে শর্ত — ভুলের ঝুঁকি বেশি, টেস্ট দিয়ে ধরা হয়</text>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডান দিকের লাল বাক্সটি পড়ে জিজ্ঞেস করুন: "এরর না দিয়ে ভুল ডেটা দেওয়া আর এরর দেওয়া — কোনটা বিপজ্জনক?" উত্তর: ভুল ডেটা, কারণ কেউ টের পায় না। এটাই পরের স্লাইডের ভিত্তি।
+</section>

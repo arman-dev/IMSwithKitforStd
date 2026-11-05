@@ -1,0 +1,31 @@
+<section class="slide">
+  <div class="head"><span class="badge">পাসওয়ার্ড</span>
+    <div><h2>চারটি ভ্যালিডেটর — আর একটি ইচ্ছাকৃত সীমা</h2>
+      <div class="sub"><code>AUTH_PASSWORD_VALIDATORS</code> · ন্যূনতম ১০ অক্ষর</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">ভ্যালিডেটর</th><th style="width:48%">কী আটকায়</th></tr>
+          <tr><td>UserAttributeSimilarity</td><td>নাম/ইমেইলের কাছাকাছি পাসওয়ার্ড</td></tr>
+          <tr><td>MinimumLength <b>min_length=10</b></td><td>ছোট পাসওয়ার্ড</td></tr>
+          <tr><td>CommonPassword</td><td>"password123" জাতীয় তালিকা</td></tr>
+          <tr><td>NumericPassword</td><td>কেবল সংখ্যা — "01712345678" নয়</td></tr>
+        </table>
+        <div style="font-size:9.8pt;color:#334155;margin-top:2mm">ডেমো পাসওয়ার্ড <code>DemoPass!2026</code> — ১০ অক্ষরের বেশি, তালিকায় নেই, সংখ্যা-একক নয়।</div>
+      </div>
+      <div style="flex:1">
+        <div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>সৎ সীমা:</b> "কতবার ভুল হয়েছে" গণনা কোথাও নেই — ১০০ বার ভুল পাসওয়ার্ড দিলেও কিছু হয় না। brute-force ঠেকানোর কোনো স্তর নেই।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>ভালো দিক:</b> লগইনে ভুল হলে বার্তা একটাই — "E-mail or password is incorrect." ফলে কোন ইমেইল আছে, তা বোঝা যায় না (user enumeration বন্ধ)।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>কিন্তু:</b> নিষ্ক্রিয় অ্যাকাউন্টে আলাদা বার্তা — "This account is deactivated." এতে বোঝা যায় অ্যাকাউন্টটি আছে। ব্যবহারকারীর সুবিধার জন্য নেওয়া ছাড়, তথ্য ফাঁসের সামান্য দাম।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ পয়েন্টটি সূক্ষ্ম — নিরাপত্তা আর সহায়তার মধ্যে এই ধরনের ছাড় প্রতিটি অ্যাপে থাকে। শিক্ষার্থীদের জিজ্ঞেস করুন: "কোনটি বেছে নিতেন?" — সঠিক উত্তর নেই, কিন্তু সিদ্ধান্তটা জানা দরকার।
+</section>

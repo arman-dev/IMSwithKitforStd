@@ -1,0 +1,39 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ৫</span>
+    <div><h2>সময়ের ৫৩টি ঘর — কে লেখে, কে বদলায়</h2>
+      <div class="sub">১৯টি মডেল <code>TimeStamped</code> থেকে উত্তরাধিকার পায় (১৯ × ২ = ৩৮ ঘর)</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.3pt;line-height:1.55;padding:3.2mm 3.8mm">class TimeStamped(models.Model):
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True</pre>
+        <table class="tight" style="margin-top:2mm">
+          <tr><th style="width:44%">ফিল্ড</th><th style="width:56%">কে লেখে</th></tr>
+          <tr><td><code>auto_now_add</code></td><td>প্রথম সেভে একবার; পরে কেউ বদলাতে পারে না</td></tr>
+          <tr><td><code>auto_now</code></td><td>প্রতিটি <code>save()</code>-এ আবার</td></tr>
+          <tr><td><code>default=timezone.now</code></td><td>মডেল-স্তরে নয়, মাইগ্রেশনে মান লেখা হয়</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">যেখানে সময় গুরুত্বপূর্ণ</th><th style="width:60%">কেন</th></tr>
+          <tr><td><code>AttendanceRecord.date</code> (<code>DateField</code>)</td><td>হাজিরার দিন — সময় নয়, তারিখ</td></tr>
+          <tr><td><code>Homework.due_at</code> (datetime)</td><td>"আজ রাত ১১:৫৯" — সময় দরকার</td></tr>
+          <tr><td><code>AuditLog.created_at</code></td><td>সাম্প্রতিক লগ ইনডেক্সের ভিত্তি</td></tr>
+          <tr><td><code>Invoice.issued_on</code></td><td><code>timezone.localdate()</code> — সার্ভার UTC নয়, স্থানীয় দিন</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <code>USE_TZ=True</code> · ডেটাবেজে UTC · পর্দায় <code>Asia/Dhaka</code>। ভুল করলে "আজকের হাজিরা" রাত ১২টার পর একদিন পিছিয়ে যায়।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      নিয়ম: <b>যে তথ্য ব্যবহারকারী বেছে নেয়, তার জন্য <code>default</code>; যে তথ্য সিস্টেম লেখে, তার জন্য <code>auto_now*</code>।</b> দুটো মিশিয়ে ফেললেই পরীক্ষায় সময় নিয়ে বিভ্রান্তি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "মাইগ্রেশনে <code>auto_now_add</code> কেন সমস্যা করে?" — কারণ পুরনো সারিতে তারিখ লাগে, আর <code>auto_now_add</code> মাইগ্রেশনকে সেটি লিখতে দেয় না; তখন <code>default</code> দিয়ে দুই ধাপে করতে হয়।
+</section>

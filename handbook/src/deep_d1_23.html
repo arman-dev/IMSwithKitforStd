@@ -1,0 +1,41 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ৪</span>
+    <div><h2>টাকা কখনো <code>float</code> নয় — ৬টি <code>DecimalField</code></h2>
+      <div class="sub">আর ইনভয়েস নম্বরের একটি বাস্তব দুর্বলতা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">কলাম</th><th style="width:48%">সেটিং</th></tr>
+          <tr><td><code>Plan.price</code></td><td>max_digits=10 · decimal_places=2 · ≥ ০</td></tr>
+          <tr><td><code>Invoice.amount</code></td><td>max_digits=10 · decimal_places=2</td></tr>
+          <tr><td><code>Mark.obtained</code></td><td>max_digits=6 · decimal_places=2 · NULL অনুমোদিত</td></tr>
+          <tr><td><code>GradeBand.min/max_percent</code></td><td>max_digits=5 · decimal_places=2</td></tr>
+          <tr><td><code>GradeBand.gpa</code></td><td>max_digits=3 · default 0.00</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <code>float</code>-এ ০.১ + ০.২ = ০.৩০০০০০০০০০০০০০০৪। এক বছরে হাজার ইনভয়েসে সেটি টাকায় পরিণত হয়।
+        </div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm">@staticmethod
+def _next_number():
+    year = timezone.localdate().year
+    prefix = f"{settings.INVOICE_PREFIX}-{year}-"
+    last = (Invoice.objects
+            .filter(number__startswith=prefix)
+            .order_by("-number")
+            .values_list("number", flat=True).first())
+    n = int(last.split("-")[-1]) + 1 if last else 1
+    return f"{prefix}{n:04d}"</pre>
+        <div class="call warn" style="margin-top:2mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>দুর্বলতা:</b> "শেষটি পড়ে এক যোগ" — একই মুহূর্তে দুই ইনভয়েস হলে দুটোই একই নম্বর পায়। <code>number</code>-এ <code>unique=True</code> থাকায় ডেটাবেজ আটকায়, কিন্তু ব্যবহারকারী ৫০০ এরর দেখে।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      সঠিক পথ হতো ডেটাবেজ সিকোয়েন্স, অথবা <code>select_for_update()</code> দিয়ে সারি লক করে নম্বর বাড়ানো। এখনো করা হয়নি — এটি প্রকৃত, চিহ্নিত ঋণ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডে সততাই মূল্য: কোড কাজ করে, কিন্তু একই সময়ে দুই ইনভয়েস হলে ভাঙে। শিক্ষার্থীদের জিজ্ঞেস করুন — "লোড কম, তাই ধরা পড়েনি" এটা কি যথেষ্ট কারণ?
+</section>

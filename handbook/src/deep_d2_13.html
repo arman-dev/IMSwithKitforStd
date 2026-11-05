@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ১</span>
+    <div><h2>CurrentWorkspaceMiddleware — এবং একটি আসল বাগ</h2>
+      <div class="sub">সেশন → সদস্যতা → না মিললে ভূমিকা-অনুযায়ী ডিফল্ট</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">ws_id = request.session.get(SESSION_KEY)
+qs = Membership.objects.filter(user=request.user,
+                               is_active=True)
+if ws_id:
+    membership = qs.filter(workspace_id=ws_id).first()
+    if membership:
+        return membership
+
+# ডিফল্ট: সর্বোচ্চ ভূমিকা, তারপর প্রতিষ্ঠান
+membership = (qs.order_by(ROLE_PRIORITY,
+                          KIND_PRIORITY,
+                          "workspace__name").first())</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:38%">অবস্থা</th><th style="width:62%">ফল</th></tr>
+          <tr><td>স্কুলের অ্যাডমিন + অন্যত্র সমন্বয়ক</td><td>স্কুলেই খোলে — ভূমিকা-ক্রম দেখে</td></tr>
+          <tr><td>স্কুলের শিক্ষক + নিজের ব্যক্তিগত স্পেস</td><td>স্কুলই আগে — ব্যক্তিগতটি "পিছনের ঘর"</td></tr>
+          <tr><td>কোনো সদস্যতা নেই</td><td><code>request.workspace = None</code> → ভিউ ৪০৪</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>আসল বাগ:</b> প্রথমে রেজলভিং ছিল "lazy"। কিন্তু <code>lazy_obj is None</code> সবসময় False — তাই workspace-হীন ইউজার None-চেক পাশ করে ভেতরে ঢুকে যেত।
+        </div>
+        <div style="font-size:9.6pt;color:#334155;margin-top:2mm">সমাধান: রিকোয়েস্টের শুরুতে <b>সরাসরি</b> রেজলভ (eager) — প্রতি রিকোয়েস্টে একটি ছোট indexed কোয়েরি।</div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই বাগটি শিক্ষার্থীদের সবচেয়ে বেশি কাজে লাগবে — "lazy মানে ফ্রি নয়"। lazy অবজেক্টে <code>is None</code> কাজ করে না; শুধু <code>if obj</code> ডাকলে সত্য-মিথ্যা বোঝা যায়। এটাই ছিল আসল ফাঁদ।
+</section>

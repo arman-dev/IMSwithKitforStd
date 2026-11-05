@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">সততা</span>
+    <div><h2>এই ডেটাবেজে যা নেই — জেনে রাখুন</h2>
+      <div class="sub">আটটি ফাঁক, প্রতিটির সঙ্গে "কীভাবে ধরা পড়বে"</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">যা নেই</th><th style="width:56%">ফল</th></tr>
+          <tr><td><code>EXPLAIN ANALYZE</code></td><td>ইনডেক্সগুলো অনুমানে বাছা; ধীর কোয়েরি অজানা</td></tr>
+          <tr><td>সারি-সংখ্যার পরিমাপ</td><td>স্কেল কত বড়, তার কোনো হিসাব নেই</td></tr>
+          <tr><td>Row Level Security</td><td>সীমানা অ্যাপে, ডেটাবেজে নয়</td></tr>
+          <tr><td>রেপ্লিকা / শার্ডিং</td><td>একটাই ডেটাবেজ, একটাই সার্ভার</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">যা নেই</th><th style="width:56%">ফল</th></tr>
+          <tr><td>৮ টেবিলে <code>workspace</code> কলাম</td><td>প্যারেন্ট-পথে শর্ত; ভুলে গেলে ডেটা মিশে</td></tr>
+          <tr><td>ইনভয়েস নম্বরে লক</td><td>সমান্তরাল সেভে <code>IntegrityError</code></td></tr>
+          <tr><td><code>clean()</code>-এর DB সংস্করণ</td><td>শেল/স্ক্রিপ্ট নিয়ম এড়াতে পারে</td></tr>
+          <tr><td>মাইগ্রেশন সিআই</td><td>মাইগ্রেশন ভুলে যাওয়া ধরা পড়ে ডিপ্লয়ে গিয়ে</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:3mm;gap:4.5mm">
+      <div class="call" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+        <b>৫টি সিদ্ধান্ত যা ঠিক আছে:</b> workspace কলাম · শর্তসাপেক্ষ unique · SET_NULL বনাম PROTECT · ডেটা মাইগ্রেশন · অনুপস্থিত ≠ ০
+      </div>
+      <div class="call warn" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+        <b>৫টি কাজ যা এখনো বাকি:</b> EXPLAIN · ইনভয়েস লক · RLS নয়তো টেস্ট-জাল · অফসাইট ব্যাকআপ · মাইগ্রেশন চেক
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি মুখস্থ করাতে হবে না — শুধু দেখান যে সৎ তালিকা দিলে বিশ্বাস বাড়ে, কমে না। শেষে জিজ্ঞেস করুন: "এর মধ্যে একটি ফাঁক আজ ঠিক করতে বললে কোনটি বাছতেন?" — উত্তর সাধারণত ইনভয়েস লক।
+</section>

@@ -1,0 +1,27 @@
+<section class="slide">
+  <div class="head"><span class="badge">ম্যাট্রিক্স</span>
+    <div><h2>চারটি ভূমিকা, আটটি কাজ</h2>
+      <div class="sub">প্রতিটি ঘর কোডে লেখা — ডকুমেন্টে নয়, তাই পুরনো হওয়ার সুযোগ নেই</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:34%">কাজ</th><th style="width:16.5%">ORG_ADMIN</th><th style="width:16.5%">COORDINATOR</th><th style="width:16.5%">TEACHER</th><th style="width:16.5%">STUDENT</th></tr>
+      <tr><td>হাজিরা নেওয়া</td><td>✓</td><td>✓</td><td>✓</td><td>✕</td></tr>
+      <tr><td>নম্বর এন্ট্রি</td><td>✓</td><td>✓</td><td>✓</td><td>✕</td></tr>
+      <tr><td>ফলাফল প্রকাশ</td><td>✓</td><td>✓</td><td>✓ (নিজের ক্লাস)</td><td>✕</td></tr>
+      <tr><td>শ্রেণি/বিষয় তৈরি</td><td>✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+      <tr><td>শিক্ষক-অ্যাসাইনমেন্ট</td><td>✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+      <tr><td>অডিট লগ দেখা</td><td>✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+      <tr><td>ব্র্যান্ডিং / সেটিং</td><td>✓</td><td>✕</td><td>✕</td><td>✕</td></tr>
+      <tr><td>নিজের রেজাল্ট দেখা</td><td>✓</td><td>✓</td><td>✓</td><td>✓ (কেবল নিজের)</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>কোডে:</b> <code>OWNERS</code> (১টি) · <code>MANAGERS</code> (২টি) · <code>TEACHING</code> (৩২টি ভিউ) · <code>ALL_ROLES</code> (৮টি ভিউ)
+      </div>
+      <div class="call warn" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>সূক্ষ্মতা:</b> TEACHER "ফল প্রকাশ" পারে, কিন্তু কেবল <code>teacher_can_access_class()</code> পাশ করলে — ভূমিকা ঠিক, বস্তু ভুল, তখন ৪০৩।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ম্যাট্রিক্সটি বোর্ডে আঁকুন এবং শিক্ষার্থীদের জিজ্ঞেস করুন: "সমন্বয়ক নম্বর দিতে পারে, কিন্তু শ্রেণি বানাতে পারে না — কেন?" উত্তর: নম্বর তার দৈনন্দিন কাজ, শ্রেণি-কাঠামো প্রতিষ্ঠানের সিদ্ধান্ত।
+</section>

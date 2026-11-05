@@ -1,0 +1,22 @@
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম ১</span>
+    <div><h2><code>unique_together</code> — ১৩টি, প্রতিটি একটি বাস্তব ভুল আটকায়</h2>
+      <div class="sub">"একই জিনিস দুবার" সমস্যার ডেটাবেজ-স্তরের উত্তর</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:34%">টেবিল</th><th style="width:30%">unique</th><th style="width:36%">কোন ভুল আটকায়</th></tr>
+      <tr><td>StudentProfile</td><td>workspace · admission_no</td><td>এক স্কুলে একই ভর্তি নম্বর দুজন ছাত্রের নয়</td></tr>
+      <tr><td>AcademicYear</td><td>workspace · name</td><td>"২০২৬" দুইবার তৈরি</td></tr>
+      <tr><td>AcademicTerm</td><td>workspace · year · name</td><td>এক বছরেই দুইবার "Term 1"</td></tr>
+      <tr><td>ClassGroup</td><td>workspace · term · name · section</td><td>"Class 8 · A" দুবার, একই সেশনে</td></tr>
+      <tr><td>TeacherAssignment</td><td>teacher · class_group · subject · term</td><td>একই বিষয়ে একজনকে দুইবার যোগ</td></tr>
+      <tr><td>AttendanceRecord</td><td>student · class_group · subject · date</td><td>একদিনে এক ছাত্রের দুই হাজিরা</td></tr>
+      <tr><td>Exam</td><td>class_group · subject · term · name</td><td>"মিডটার্ম" পরীক্ষা দুইবার</td></tr>
+      <tr><td>LessonLog · Syllabus · Chapter · Topic · GradeScale · Department · Subject</td><td>৩–২ কলাম</td><td>পাঠ-ডায়েরি, সিলেবাস ও গ্রেড স্কেলে একই পুনরাবৃত্তি</td></tr>
+    </table>
+    <div class="call" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 4mm">
+      সবগুলোতেই <code>workspace</code> প্রথমে — কারণ uniqueness-ও স্কুলের ভেতরে, স্কুল জুড়ে নয়। দুটি স্কুলের "Class 8 · A" এক হতে পারে, এবং হওয়া উচিত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ বাক্যটি বোর্ডে লিখুন। শিক্ষার্থীরা প্রথমে <code>unique=True</code> দিতে চায় — তখন দ্বিতীয় স্কুল "Class 8 · A" বানাতে পারে না। বাগটা ডেমোতে চোখে দেখা যায় না, দ্বিতীয় স্কুল যোগ করলেই দেখা যায়।
+</section>

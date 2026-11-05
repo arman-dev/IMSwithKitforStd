@@ -1,0 +1,24 @@
+<section class="slide">
+  <div class="head"><span class="badge">কনটেক্সট</span>
+    <div><h2>প্রতি পাতায় যে ৫টি জিনিস নিজে থেকেই আসে</h2>
+      <div class="sub">৩টি Django-র, ২টি নিজস্ব — কোন ভিউ আলাদা করে পাঠায় না</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:26%">প্রসেসর</th><th style="width:26%">যা দেয়</th><th style="width:48%">কোথায় কাজে লাগে</th></tr>
+      <tr><td><code>request</code></td><td><code>request</code></td><td>টেমপ্লেটে পথ, হোস্ট, মিডলওয়্যারের হাতের তথ্য</td></tr>
+      <tr><td><code>auth</code></td><td><code>user</code> · <code>perms</code></td><td><code>{% if user.is_authenticated %}</code></td></tr>
+      <tr><td><code>messages</code></td><td><code>messages</code></td><td>ফ্ল্যাশ বার্তা — ৫টি শেল-টেমপ্লেটে একই ব্লক</td></tr>
+      <tr><td><b><code>workspace_context</code></b></td><td><code>nav_groups</code> · <code>nav_role</code> · <code>active_workspace</code> · <code>my_memberships</code></td><td>সাইডবারের মেনু — ভূমিকা অনুযায়ী আলাদা</td></tr>
+      <tr><td><b><code>branding_context</code></b></td><td><code>brand</code> · <code>product</code> · <code>subscription</code> · <code>platform_mode</code></td><td>লোগো, রঙ, পণ্যের নাম, বিলিং ব্যানার</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.2mm;gap:5mm">
+      <div class="call" style="font-size:10.1pt;padding:2.5mm 3.9mm">
+        <b>brand একটি dict, মডেল নয়:</b> নতুন স্কুলের ব্র্যান্ডিং সারি না থাকলেও টেমপ্লেট কখনো ক্র্যাশ করবে না — ডিফল্ট পণ্য-নাম দেখাবে।
+      </div>
+      <div class="call warn" style="font-size:10.1pt;padding:2.5mm 3.9mm">
+        <b>দাম:</b> এই দুই প্রসেসর প্রতি রিকোয়েস্টে একাধিক কোয়েরি চালায় (সদস্যতা, ব্র্যান্ডিং, সাবস্ক্রিপশন) — লগইন-পাতায়ও চলে, যদিও সেখানে দরকার নেই।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের জিজ্ঞেস করুন: "সাইডবারের মেনু কোন ভিউ পাঠায়?" উত্তর — কেউ না। এটাই কনটেক্সট প্রসেসরের লাভ: ৫২টি ভিউতে একই কোড লিখতে হয় না।
+</section>

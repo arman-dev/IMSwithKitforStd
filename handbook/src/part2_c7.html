@@ -1,0 +1,550 @@
+<!-- ===================== CLASS 7 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান · ক্লাস ৭ / ৩৭</div>
+  <h1>কেন এই স্ট্যাক —<br>আর কেন নয়</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৩ · টপিক ৩.৩ (প্রযুক্তি নির্বাচন ও ADR)<br>তিন বিকল্পের তুলনা · সিদ্ধান্তের নথি · সিদ্ধান্ত কোথায় থাকে</div>
+  <div class="pill">৬টি প্যাকেজ · ৩টি settings · ১টি ADR-নিয়ম</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>"কেন Django?" — এই প্রশ্নের উত্তর মুখস্থ নয়, লিখিত হতে হবে</h2>
+      <div class="sub">হাত তুলুন: আপনার স্ট্যাক কেন বেছেছেন — এক বাক্যে বলুন</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:27pt;line-height:1.6">
+      "সবাই ব্যবহার করে" — এটা <span class="hl">কারণ নয়</span>।<br>
+      কারণ হলো: <b>এই কাজে এটার কী সুবিধা, আর কী দাম</b>।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      প্রযুক্তি বাছাই দুটি প্রশ্নের উত্তর: <b>"কী সহজ হবে?"</b> আর <b>"কী কঠিন হবে?"</b>।
+      দুটোর উত্তর লিখে রাখলে সেটাকে বলে <b>ADR</b> — Architecture Decision Record।<br>
+      না লিখলে ছয় মাস পরে আপনি নিজেই জানবেন না কেন এটা বেছেছিলেন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "React শিখতে চাই বলে React" বললে খুব ভালো — কিন্তু সেটাও লিখে রাখতে বলুন। ADR-এ "আমি এটা শিখতে চাই" একটি সম্পূর্ণ বৈধ কারণ, যদি সেটা লেখা থাকে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>স্ট্যাকের ছয়টি স্তর — প্রতিটির একটা সিদ্ধান্ত</h2>
+      <div class="sub">"স্ট্যাক" মানে শুধু ফ্রেমওয়ার্ক নয় — ছয় জায়গায় ছয়টা পছন্দ</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 235" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="12">
+          <rect x="0" y="0" width="330" height="66" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="18" y="26" font-weight="700" fill="#312e81">১. ভাষা</text>
+          <text x="18" y="48" fill="#334155">Python 3.13</text>
+          <text x="200" y="48" fill="#64748b" font-size="11">কোর্সের ভাষা</text>
+
+          <rect x="350" y="0" width="330" height="66" rx="9" fill="#e0e7ff" stroke="#818cf8"/>
+          <text x="368" y="26" font-weight="700" fill="#312e81">২. ফ্রেমওয়ার্ক</text>
+          <text x="368" y="48" fill="#334155">Django 6.1.2</text>
+          <text x="550" y="48" fill="#64748b" font-size="11">auth · ORM · forms</text>
+
+          <rect x="700" y="0" width="300" height="66" rx="9" fill="#c7d2fe" stroke="#6366f1"/>
+          <text x="718" y="26" font-weight="700" fill="#1e1b4b">৩. ডেটাবেস</text>
+          <text x="718" y="48" fill="#1e293b">PostgreSQL · sqlite (ডেমো)</text>
+
+          <rect x="0" y="84" width="330" height="66" rx="9" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="18" y="110" font-weight="700" fill="#065f46">৪. পর্দা</text>
+          <text x="18" y="132" fill="#334155">Django templates · ৭৫টি</text>
+          <text x="230" y="132" fill="#64748b" font-size="11">SPA নয়</text>
+
+          <rect x="350" y="84" width="330" height="66" rx="9" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="368" y="110" font-weight="700" fill="#78350f">৫. ফাইল আউটপুট</text>
+          <text x="368" y="132" fill="#334155">openpyxl · reportlab</text>
+          <text x="560" y="132" fill="#64748b" font-size="11">Excel · PDF</text>
+
+          <rect x="700" y="84" width="300" height="66" rx="9" fill="#fef2f2" stroke="#f87171"/>
+          <text x="718" y="110" font-weight="700" fill="#7f1d1d">৬. সার্ভার</text>
+          <text x="718" y="132" fill="#7f1d1d">gunicorn · ২ worker</text>
+
+          <rect x="0" y="168" width="1000" height="58" rx="9" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="18" y="192" font-size="12" fill="#334155">নিয়ম: প্রতিটি স্তরের পছন্দের জন্য একটি করে ADR — ছয়টি স্তর, ছয়টি সিদ্ধান্ত, ছয়টি কারণ।</text>
+          <text x="18" y="214" font-size="12" fill="#64748b">এগুলোর কোনোটাই "ডিফল্ট" নয় — প্রতিটি বেছে নেওয়া, আর প্রতিটির একটা না-বাছাইয়ের বিকল্প ছিল।</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছয়টি বাক্স বোর্ডে আঁকুন। ছাত্ররা সাধারণত ২ আর ৩ নিয়ে ভাবে, ৪ ও ৬ ভুলে যায় — অথচ ডেমোর দিনে সমস্যা হয় ঠিক ওই দুটোতেই।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>তিনটি বিকল্প — একই কাজ, তিন পথ</h2>
+      <div class="sub">স্কোর নয়, <b>প্রতিদান</b> — প্রতিটি সারিতে "কী পাব, কী হারাব"</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:19%">মানদণ্ড</th><th>Django (Python)</th><th>Node + Express + React</th><th>Laravel (PHP)</th></tr></thead>
+      <tbody>
+        <tr><td><b>লগইন ও ভূমিকা</b></td><td style="color:#065f46">✓ বিল্ট-ইন, ২ ঘণ্টার কাজ</td><td style="color:#991b1b">✗ নিজে: JWT, রিফ্রেশ, গার্ড</td><td style="color:#065f46">✓ বিল্ট-ইন</td></tr>
+        <tr><td><b>ডেটাবেস বদল</b></td><td style="color:#065f46">✓ মাইগ্রেশন স্বয়ংক্রিয়</td><td style="color:#b45309">◐ Prisma/Sequelize যোগ</td><td style="color:#065f46">✓ Eloquent মাইগ্রেশন</td></tr>
+        <tr><td><b>৩১ টেবিল, ৮টি সম্পর্ক</b></td><td style="color:#065f46">✓ ORM সহজে সামলায়</td><td style="color:#b45309">◐ সম্ভব, কাঠামো নিজের</td><td style="color:#065f46">✓ সম্ভব</td></tr>
+        <tr><td><b>পর্দা বানানো</b></td><td style="color:#065f46">✓ টেমপ্লেট — ১ ফাইলে ১ পর্দা</td><td style="color:#991b1b">✗ বিল্ড স্টেপ, npm, bundler</td><td style="color:#065f46">✓ Blade</td></tr>
+        <tr><td><b>এক কমান্ডে চালু</b></td><td style="color:#065f46">✓ <code>run.sh</code></td><td style="color:#991b1b">✗ ২টি সার্ভার + ২টি পোর্ট</td><td style="color:#b45309">◐ সম্ভব</td></tr>
+        <tr><td><b>কোর্সের ভাষা</b></td><td style="color:#065f46">✓ Python</td><td style="color:#991b1b">✗ JavaScript</td><td style="color:#991b1b">✗ PHP</td></tr>
+        <tr><td><b>ডাকুমেন্টেশন</b></td><td style="color:#065f46">✓ সর্বোত্তম</td><td style="color:#065f46">✓ ভালো</td><td style="color:#065f46">✓ ভালো</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      খেয়াল করুন: <b>React-এর কোনো সারিতে "খারাপ" লেখা নেই</b> — শুধু "এই প্রজেক্টে অতিরিক্ত"। ADR-এ এভাবে সৎ ভাষা লিখতে হয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "React বাদ কেন" জিজ্ঞেস করলে বলুন — "বাদ নয়, দামি।" ৩১ টেবিলের CRUD-এ SPA-র সুবিধা কম, খরচ বেশি। ছাত্রদের নিজের প্রজেক্টে একই টেবিল লিখতে বলুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>কেন SPA নয় — সিদ্ধান্তটার সৎ হিসাব</h2>
+      <div class="sub">৭৫টি টেমপ্লেট · কোনো npm · কোনো বিল্ড স্টেপ নেই</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="border-color:#059669;background:#ecfdf5;padding:5mm">
+          <b style="font-size:13pt;color:#065f46">সার্ভার-রেন্ডারড যা দেয়</b>
+          <p style="font-size:11.5pt;color:#065f46;line-height:1.75">
+            ✓ প্রথম পাতাই পূর্ণ HTML — ধীর নেটেও পড়া যায়<br>
+            ✓ SEO নিজে থেকেই (পাবলিক সাইট)<br>
+            ✓ এক সার্ভার, এক পোর্ট, এক কমান্ড<br>
+            ✓ ফর্ম ভ্যালিডেশন সার্ভারে — বাইপাস করা যায় না<br>
+            ✓ ৪ ভূমিকার জন্য ৪টি টেমপ্লেট — শর্ত দিয়ে লুকানো নয়
+          </p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="border-color:#dc2626;background:#fef2f2;padding:5mm">
+          <b style="font-size:13pt;color:#7f1d1d">যা হারাতে হয়েছে</b>
+          <p style="font-size:11.5pt;color:#7f1d1d;line-height:1.75">
+            ✗ পূর্ণ-পাতা রিলোড — একটু ধীর অনুভূত হয়<br>
+            ✗ অফলাইনে কাজ করে না<br>
+            ✗ জটিল ইন্টারঅ্যাকশন (টানা ড্র্যাগ) কষ্টকর<br>
+            ✗ BFF/রিয়েল-টাইম পরে যোগ করতে হবে
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:6mm;font-size:13pt;padding:4mm 5mm">
+      <b>সিদ্ধান্ত:</b> ৪৩টি ফিচারের <b>৩৮টিই ফর্ম-ভিত্তিক</b> — অর্থাৎ SPA-র সুবিধা প্রায় লাগবেই না। তাই সার্ভার-রেন্ডারডই সঠিক পছন্দ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানে সততার একটা উদাহরণ দিন: "যদি আপনার প্রজেক্টে লাইভ চ্যাট বা ক্যানভাস অঙ্কন থাকে, তাহলে এই সিদ্ধান্ত উল্টো হবে।" ADR নির্দিষ্ট প্রজেক্টের জন্য, সব প্রজেক্টের জন্য নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>ছয়টি প্যাকেজ, ভার্সন পিন করা — হুবহু ফাইল থেকে</h2>
+      <div class="sub"><code>requirements.txt</code>-এর নিজের মন্তব্য: "Exact versions used and verified in this build (2026-10-29, Python 3.13)"</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.1">
+<pre style="font-size:9.6pt;line-height:1.62">Django==6.1.2
+psycopg[binary]==3.3.6
+python-dotenv==1.2.4
+Pillow==12.3.0
+
+# Used for exports and the marksheet PDF
+openpyxl==3.1.5
+reportlab==5.1.0</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:13pt">== কেন, &gt;= কেন নয়</b>
+          <p style="font-size:11.5pt;line-height:1.75">
+            <b>&gt;=</b> লিখলে আজ ঠিক চললেও ছয় মাস পরে নতুন ভার্সন আসবে — আর আপনার কোড ভাঙতে পারে।<br>
+            <b>==</b> লিখলে "আজ যা চলছে, সেটাই চলবে"।<br><br>
+            <b>আপডেট তখনই</b>, যখন <b>ইচ্ছাকৃতভাবে</b> করবেন — টেস্ট চালিয়ে, এক প্যাকেজ করে।
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>৬টি প্যাকেজই যথেষ্ট</b> — ৩১ টেবিল, ৭৫ পর্দা, PDF, Excel, PostgreSQL। লাইব্রেরির সংখ্যা কম মানে দুর্বলতা নয়, নিয়ন্ত্রণ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "pip freeze" করে ফাইলটা বানানোর কথা বলুন — হাতে লেখা নয়। আর commit করার আগে ভার্সনগুলো মিলিয়ে নেওয়া, নইলে ডেমোর দিনে ভিন্ন মেশিনে ভিন্ন ভার্সন চলবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>ADR কী — এক পাতার সিদ্ধান্ত-নথি</h2>
+      <div class="sub">পাঁচটি অংশ, একটির বেশি নয় — বড় হলে সিদ্ধান্তটা এখনো স্পষ্ট নয়</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="12">
+          <rect x="0" y="14" width="186" height="120" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="16" y="42" font-weight="700" fill="#312e81">১. প্রসঙ্গ</text>
+          <text x="16" y="66" fill="#334155" font-size="11">কী পরিস্থিতিতে</text>
+          <text x="16" y="84" fill="#334155" font-size="11">সিদ্ধান্ত নিতে হচ্ছে</text>
+          <text x="16" y="112" fill="#64748b" font-size="10.5">৩–৪ লাইন</text>
+
+          <rect x="203" y="14" width="186" height="120" rx="9" fill="#e0e7ff" stroke="#818cf8"/>
+          <text x="219" y="42" font-weight="700" fill="#312e81">২. সিদ্ধান্ত</text>
+          <text x="219" y="66" fill="#334155" font-size="11">এক বাক্যে</text>
+          <text x="219" y="84" fill="#334155" font-size="11">"আমরা X ব্যবহার করব"</text>
+          <text x="219" y="112" fill="#64748b" font-size="10.5">আপস নেই</text>
+
+          <rect x="406" y="14" width="186" height="120" rx="9" fill="#c7d2fe" stroke="#6366f1"/>
+          <text x="422" y="42" font-weight="700" fill="#1e1b4b">৩. বিকল্প</text>
+          <text x="422" y="66" fill="#1e293b" font-size="11">অন্তত দুটি</text>
+          <text x="422" y="84" fill="#1e293b" font-size="11">+ কেন বাদ</text>
+          <text x="422" y="112" fill="#3730a3" font-size="10.5">এটাই ADR-এর প্রাণ</text>
+
+          <rect x="609" y="14" width="186" height="120" rx="9" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="625" y="42" font-weight="700" fill="#78350f">৪. পরিণাম</text>
+          <text x="625" y="66" fill="#78350f" font-size="11">কী লাভ, কী দাম</text>
+          <text x="625" y="84" fill="#78350f" font-size="11">কী কঠিন হয়ে যাবে</text>
+          <text x="625" y="112" fill="#92400e" font-size="10.5">সৎ ভাষায়</text>
+
+          <rect x="812" y="14" width="188" height="120" rx="9" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="828" y="42" font-weight="700" fill="#065f46">৫. তারিখ ও নাম</text>
+          <text x="828" y="66" fill="#065f46" font-size="11">কবে, কে</text>
+          <text x="828" y="84" fill="#065f46" font-size="11">কোন ক্লাসে</text>
+          <text x="828" y="112" fill="#047857" font-size="10.5">পরে খুঁজে পাওয়ার জন্য</text>
+
+          <text x="0" y="172" font-size="12" fill="#334155">পাঁচটি ঘর ভরে ফেলুন — এক পাতায়, বাংলায়, নিজের ভাষায়। এক ঘর খালি থাকলে সিদ্ধান্তটা অসম্পূর্ণ।</text>
+          <text x="0" y="192" font-size="11.5" fill="#64748b">ADR মূলত ভবিষ্যতের নিজের কাছে লেখা চিঠি — "কেন এটা করেছিলাম" তার উত্তর।</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "৪ নম্বর ঘরটা লিখতে গিয়ে থেমে যাবেন — সেটাই আসল কাজ।" যে সিদ্ধান্তের কোনো খারাপ দিক নেই, সেটা সিদ্ধান্ত নয়, ইচ্ছা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ADR-001</span>
+    <div><h2>ভরা উদাহরণ — কেন Django</h2>
+      <div class="sub">পাঁচটি ঘর, পাঁচটি উত্তর — এক পাতায়</div></div></div>
+  <div class="body">
+    <div style="background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:5mm 6mm">
+      <div style="display:flex;justify-content:space-between;border-bottom:2px solid #4f46e5;padding-bottom:2mm;margin-bottom:3mm">
+        <b style="font-size:13.5pt;color:#1e1b4b">ADR-001 · ফ্রেমওয়ার্ক নির্বাচন</b>
+        <span style="font-size:9.5pt;color:#64748b">২০২৬-১০-২৯ · ক্লাস C071</span>
+      </div>
+      <div style="font-size:10.8pt;line-height:1.62;color:#334155">
+        <p><b style="color:#4f46e5">প্রসঙ্গ:</b> ৩১ টেবিল, ৬ ভূমিকা, ৫৭ ফিচারের একটি প্রতিষ্ঠান-ব্যবস্থাপনা সিস্টেম; টিম এক জন; সময় ১২ সপ্তাহ। লগইন, পারমিশন ও অডিট — তিনটেই লাগবেই।</p>
+        <p><b style="color:#4f46e5">সিদ্ধান্ত:</b> Django 6.1.2 (Python 3.13), সার্ভার-রেন্ডারড টেমপ্লেট সহ। কোনো SPA ফ্রেমওয়ার্ক নয়।</p>
+        <p><b style="color:#4f46e5">বিকল্প ও কেন বাদ:</b> <b>Flask</b> — auth/ভূমিকা নিজে লিখতে হতো (+~২০০০ লাইন); <b>Node + React</b> — দুই সার্ভার, বিল্ড স্টেপ, আর কোর্স Python-ভিত্তিক; <b>Laravel</b> — সমমানের ভালো, কিন্তু ভাষা PHP; <b>No-code</b> — কোড শেখার উদ্দেশ্যই ভাঙে।</p>
+        <p><b style="color:#4f46e5">পরিণাম:</b> লাভ — ২ ঘণ্টায় লগইন+ভূমিকা, স্বয়ংক্রিয় মাইগ্রেশন, admin প্যানেল। দাম — Django-র শেখার বাঁক, আর জটিল ইন্টারঅ্যাকশনে কম স্বাধীনতা।</p>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই পাতা হুবহু ছাত্রদের খাতায় লিখিয়ে নিন — তারপর নিজের প্রজেক্টের জন্য একই পাঁচ ঘর ভরতে বলুন। ভাষা বদলাবে, কাঠামো একই থাকবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ADR-002</span>
+    <div><h2>যে সিদ্ধান্তটা একবারই নেওয়া যায় — কাস্টম User</h2>
+      <div class="sub">কোডের নিজের মন্তব্য: "never start a Django project with the default User model"</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#818cf8">
+          <b style="font-size:13pt;color:#312e81">ADR-002 · কাস্টম ইউজার মডেল</b>
+          <p style="font-size:10.8pt;line-height:1.62;margin-top:2mm;color:#334155">
+            <b style="color:#4f46e5">প্রসঙ্গ:</b> প্রথম মাইগ্রেশনের আগে ঠিক করতে হবে — ইউজারকে ইমেইল দিয়ে লগইন করাব? ফোন? নাম আলাদা রাখব?<br>
+            <b style="color:#4f46e5">সিদ্ধান্ত:</b> ইমেইল-ভিত্তিক কাস্টম <code>User</code> মডেল, প্রথম মাইগ্রেশনের <b>আগে</b>।<br>
+            <b style="color:#4f46e5">বিকল্প:</b> ডিফল্ট <code>User</code> (username দিয়ে) — পরে বদলানো প্রায় অসম্ভব।<br>
+            <b style="color:#4f46e5">পরিণাম:</b> লাভ — ইমেইল লগইন, ভূমিকা আলাদা অ্যাপে। দাম — নিজে ম্যানেজার লিখতে হয়েছে।
+          </p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2">
+          <b style="font-size:13pt;color:#7f1d1d">কেন এটা "একবারই"?</b>
+          <p style="font-size:11.5pt;color:#7f1d1d;line-height:1.75">
+            Django-তে ইউজার মডেল বদলাতে হলে <b>সব মাইগ্রেশন নতুন করে</b> করতে হয় — অর্থাৎ ডেটাবেস খালি করা।
+            স্কুলের এক বছরের উপস্থিতি থাকলে সেটা চলে না।
+          </p>
+        </div>
+        <div class="card soft" style="margin-top:4mm;padding:5mm">
+          <b style="font-size:12.5pt">সিদ্ধান্তের চিহ্ন কোডে</b>
+          <p style="font-size:10.5pt;line-height:1.6;margin-top:2mm">
+            <code>AUTH_USER_MODEL = "accounts.User"</code><br>
+            <span style="color:#64748b"># MUST be set before the first migration</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ADR-টা ছাত্রদের সবার আগে লিখতে বলুন — এটাই একমাত্র সিদ্ধান্ত যা ভুল হলে পুরো কাজ নতুন করে শুরু করতে হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ADR-003</span>
+    <div><h2>যে সিদ্ধান্ত ভুল হয়েছিল — টাকার একক</h2>
+      <div class="sub">এটাই ADR লেখার সবচেয়ে বড় যুক্তি: ভুলটাও লিখে রাখতে হয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#dc2626">
+          <b style="font-size:13pt;color:#991b1b">প্রথম সিদ্ধান্ত (ভুল)</b>
+          <p style="font-size:11pt;line-height:1.65;color:#7f1d1d;margin-top:2mm">
+            সাবস্ক্রিপশন <b>ব্যবহারকারীর</b> নামে বাঁধা। কারণ তখন ধরা হয়েছিল "একজন মানুষই একাউন্ট খোলে।"<br><br>
+            <b>ফল:</b> শিক্ষক দুই স্কুলে পড়ালে বিল কার নামে? প্রতিষ্ঠানের সিট কে ব্যবহার করছে — সেই প্রশ্নের উত্তরই নেই।
+          </p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#059669">
+          <b style="font-size:13pt;color:#065f46">ADR-003 (সংশোধিত · <code>8a25724</code>)</b>
+          <p style="font-size:11pt;line-height:1.65;color:#065f46;margin-top:2mm">
+            <b>সিদ্ধান্ত:</b> সাবস্ক্রিপশন <b>Workspace-এ</b>; মানুষ শুধু সদস্য।<br>
+            <b>পরিণাম:</b> বিল প্রতিষ্ঠানের, সিট প্রতিষ্ঠানের; শিক্ষক একাধিক প্রতিষ্ঠানে থাকতে পারেন।<br>
+            <b>দাম:</b> ১টি মাইগ্রেশন + বিলিং ভিউ + ৪টি টেস্ট।
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:6mm;font-size:12.5pt;padding:4mm 5mm">
+      <b>নিয়ম:</b> পুরনো ADR <b>মুছবেন না</b> — "superseded by ADR-003b" লিখে রাখুন। ভুলের ইতিহাসই সবচেয়ে দামি নথি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষকেরা জিজ্ঞেস করবেন "ভুল করা ADR কেন রাখব?" উত্তর: কারণ তিন মাস পরে কেউ একই ভুল করতে যাবে। মুছে ফেলা মানে তাকে একই দেয়ালে আবার ধাক্কা খেতে দেওয়া।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>সিদ্ধান্ত কোথায় থাকে — প্রজেক্টের আসল প্রমাণ</h2>
+      <div class="sub"><code>docs/</code>-এ ADR ফোল্ডার নেই; কিন্তু সিদ্ধান্তগুলো আছে ফাইলের মন্তব্যে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:32%">ফাইল</th><th>যা লেখা আছে (হুবহু)</th><th style="width:26%">কোন সিদ্ধান্ত</th></tr></thead>
+      <tbody>
+        <tr><td><code>config/settings/base.py</code></td><td>"Nothing secret lives here. Everything that changes between dev, demo and production is read from environment variables."</td><td>সেটিংস ভাগ</td></tr>
+        <tr><td><code>config/settings/prod.py</code></td><td>"Every value here is deliberate. Nothing in this file may be relaxed to make a deployment 'work'."</td><td>প্রোডাকশন কঠোরতা</td></tr>
+        <tr><td><code>config/settings/sqlite.py</code></td><td>"Use this ONLY to try the application quickly… The real stack (PostgreSQL) remains the documented path."</td><td>ডেমো ডেটাবেস</td></tr>
+        <tr><td><code>apps/accounts/models.py</code></td><td>"Custom user model — created BEFORE the first migration… never start a Django project with the default User model."</td><td>কাস্টম User</td></tr>
+        <tr><td><code>docs/build_status.py</code></td><td>"the catalogue is the *plan*, this file is the *evidence*."</td><td>পরিকল্পনা/প্রমাণ পৃথক</td></tr>
+        <tr><td><code>apps/accounts/urls.py</code></td><td>পাসওয়ার্ড রিসেটের চারটি রুট একসাথে</td><td>রিসেট ফ্লো</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      এগুলো ADR নয়, কিন্তু <b>ADR-এর কাজ করছে</b> — কারণ প্রতিটি ভবিষ্যতের পাঠককে "কেন" বলছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ভালো অভ্যাস: নিজের প্রজেক্টে <code>docs/adr/</code> ফোল্ডার বানিয়ে <code>001-...md</code> রাখুন। প্রজেক্টে যেটা হয়নি, সেটা ছাত্ররা আরও ভালোভাবে করতে পারে — বলুন এটা একটা উন্নতির সুযোগ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>ADR লেখার ছয়টি নিয়ম</h2>
+      <div class="sub">এক পাতা না হলে সিদ্ধান্তটা তখনো স্পষ্ট নয়</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm;flex-wrap:wrap">
+      <div class="card" style="flex:1 1 30%"><b style="font-size:12.5pt">১. এক ADR = এক সিদ্ধান্ত</b>
+        <p>"ডেটাবেস ও টেমপ্লেট" একসাথে লিখবেন না — পরে একটা বদলালে অন্যটার ইতিহাস হারায়।</p></div>
+      <div class="card" style="flex:1 1 30%"><b style="font-size:12.5pt">২. বিকল্প অন্তত দুটি</b>
+        <p>একটাই বিকল্প মানে সিদ্ধান্ত নয়, অনুমোদন। যে দুটি বিকল্প ভেবেছেন, দুটিই লিখুন।</p></div>
+      <div class="card" style="flex:1 1 30%"><b style="font-size:12.5pt">৩. পরিণামে খারাপ দিকও</b>
+        <p>"কোনো অসুবিধা নেই" — এই বাক্য থাকলে ADR-টা বিশ্বাসযোগ্য নয়।</p></div>
+      <div class="card" style="flex:1 1 30%"><b style="font-size:12.5pt">৪. তারিখ ও নাম</b>
+        <p>কে, কবে, কোন ক্লাসে — পরে "এটা কার ধারণা ছিল" প্রশ্নের উত্তর থাকবে।</p></div>
+      <div class="card" style="flex:1 1 30%"><b style="font-size:12.5pt">৫. বদলালে নতুন ADR</b>
+        <p>পুরনোটা মুছবেন না; নতুনটায় "supersedes ADR-003" লিখুন।</p></div>
+      <div class="card" style="flex:1 1 30%;border-color:#dc2626;background:#fef2f2"><b style="font-size:12.5pt;color:#7f1d1d">৬. কোড দেখিয়ে লিখুন</b>
+        <p style="color:#7f1d1d">"আমরা X ব্যবহার করি" নয় — <b>কোন ফাইলে, কোন লাইনে</b> সেটা পাওয়া যায়।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:6mm;font-size:12.5pt;padding:4mm 5mm">
+      দৈর্ঘ্য: <b>এক পাতা, সর্বোচ্চ দুই পাতা।</b> তিন পাতায় গেলে সেটা ADR নয়, ডিজাইন ডকুমেন্ট — আলাদা জিনিস।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৬ নম্বর নিয়মটা সবচেয়ে বেশি বাদ পড়ে — অথচ এটাই ADR-কে অনুমান থেকে প্রমাণে নিয়ে যায়। ছাত্রদের প্রতিটি ADR-এ অন্তত একটি ফাইলের নাম লিখতে বাধ্য করুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>প্রতিটি পছন্দের একটা দাম আছে</h2>
+      <div class="sub">ADR-এর "পরিণাম" ঘরটা সৎভাবে ভরার জন্য</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:26%">পছন্দ</th><th style="width:34%">যা পাওয়া গেল</th><th>যা কিনতে হলো (দাম)</th></tr></thead>
+      <tbody>
+        <tr><td><b>Django 6.1.2</b></td><td>auth, ORM, forms, admin — বিনা লেখায়</td><td>মেজর আপডেটে ভাঙার ঝুঁকি; শেখার বাঁক</td></tr>
+        <tr><td><b>PostgreSQL</b></td><td>৭২ লাখ সারি, ইনডেক্স, লক</td><td>সার্ভারে আলাদা ডেটাবেস সার্ভিস চালাতে হয়</td></tr>
+        <tr><td><b>sqlite ডেমো</b></td><td>এক ক্লিকে চালু, কোনো সেটআপ নেই</td><td>দুই পথ — ডেমো আর প্রোডাকশনে আচরণ আলাদা হতে পারে</td></tr>
+        <tr><td><b>সার্ভার-রেন্ডারড</b></td><td>এক সার্ভার, SEO, সহজ ডিপ্লয়</td><td>পূর্ণ-পাতা রিলোড; সমৃদ্ধ ইন্টারঅ্যাকশন কষ্টকর</td></tr>
+        <tr><td><b>reportlab + openpyxl</b></td><td>মার্কশিট PDF, Excel এক্সপোর্ট</td><td>দুই লাইব্রেরি, দুই ধরনের টেস্ট</td></tr>
+        <tr><td><b>gunicorn ২ worker</b></td><td>সহজ, কম মেমরি</td><td>এক worker মরলে অর্ধেক ক্ষমতা; পরে স্কেলিং লাগবে</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের স্ট্যাকের জন্য এই তিন-কলামের টেবিল বানাতে — বিশেষ করে ডান কলামটা। যে টেবিলে ডান কলাম খালি, সে টেবিলটা মিথ্যা বলছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>বাংলা + PDF-এর ফাঁদ — আমাদের নিজের অভিজ্ঞতা</h2>
+      <div class="sub">এই ডেকটাই যেভাবে তৈরি হয়েছে, সেটাই এখানে প্রমাণ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2">
+          <b style="font-size:13pt;color:#7f1d1d">যা কাজ করে না</b>
+          <p style="font-size:11.5pt;color:#7f1d1d;line-height:1.7">
+            <b>reportlab</b> বাংলা অক্ষর জোড়া লাগাতে পারে না — "ক্ষ" আলাদা দুই অক্ষর হয়ে যায়, মাত্রা (vowel sign) জায়গায় বসে না।
+            ফল: PDF-এ অক্ষর দেখতে পাওয়া যায়, কিন্তু পড়া যায় না।
+          </p>
+        </div>
+        <div class="card" style="margin-top:4mm;padding:5mm;border-color:#059669;background:#ecfdf5">
+          <b style="font-size:13pt;color:#065f46">যা কাজ করে</b>
+          <p style="font-size:11.5pt;color:#065f46;line-height:1.7">
+            HTML + CSS দিয়ে পাতা সাজিয়ে <b>হেডলেস ব্রাউজার</b> দিয়ে PDF বানানো — ব্রাউজারের শেপিং ইঞ্জিন বাংলা নিখুঁতভাবে সামলায়।
+          </p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card soft" style="padding:5mm">
+          <b style="font-size:12.5pt">এই ডেকের আসল পাইপলাইন</b>
+          <p style="font-size:10.8pt;line-height:1.75;margin-top:2mm">
+            <b>১.</b> বাংলা ফন্ট <code>@font-face</code> দিয়ে এমবেড<br>
+            <b>২.</b> ligature বন্ধ — <code>font-variant-ligatures:none</code><br>
+            <b>৩.</b> প্রতিটি স্লাইড এক পাতা (338.7 × 190.5 mm)<br>
+            <b>৪.</b> Chromium: <code>page.pdf(print_background=True)</code><br>
+            <b>৫.</b> প্রতিটি পাতা ছবি করে চোখে দেখা
+          </p>
+        </div>
+        <div class="call warn" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>শিক্ষা:</b> "লাইব্রেরি আছে" মানে "লাইব্রেরি আপনার ভাষা পারে" নয় — সবসময় নিজের ভাষায় এক পাতা বানিয়ে দেখুন।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটা প্রজেক্টের নিজের কষ্ট থেকে — এই পুরো কোর্স কিটই এই পাইপলাইনে তৈরি। ছাত্রদের বলুন: "তোমাদের ডেমোতে বাংলা PDF লাগলে এই পাঁচ ধাপ লাগবেই।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>কোন সিদ্ধান্ত বদলানো সবচেয়ে কঠিন</h2>
+      <div class="sub">আগে যেগুলো ঠিক করবেন, সেগুলোই এই তালিকার উপরের দিকে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 235" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="12">
+          <rect x="0" y="8" width="1000" height="42" rx="8" fill="#fef2f2" stroke="#f87171" stroke-width="2"/>
+          <text x="18" y="34" font-weight="700" fill="#7f1d1d">১. ইউজার মডেল</text>
+          <text x="230" y="34" fill="#991b1b">সব মাইগ্রেশন নতুন করে — ডেটা খালি করা ছাড়া উপায় নেই</text>
+          <text x="900" y="34" fill="#dc2626" font-weight="700">প্রায় অসম্ভব</text>
+
+          <rect x="0" y="56" width="1000" height="42" rx="8" fill="#fef2f2" stroke="#f87171"/>
+          <text x="18" y="82" font-weight="700" fill="#7f1d1d">২. টেন্যান্টের একক</text>
+          <text x="230" y="82" fill="#991b1b">কে মালিক — ব্যক্তি না প্রতিষ্ঠান? টেবিল, পারমিশন, বিল সব বদলায়</text>
+          <text x="880" y="82" fill="#dc2626" font-weight="700">খুব কঠিন</text>
+
+          <rect x="0" y="104" width="1000" height="42" rx="8" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="18" y="130" font-weight="700" fill="#78350f">৩. ডেটাবেস ইঞ্জিন</text>
+          <text x="230" y="130" fill="#78350f">dump → restore, SQL ভিন্নতা, দুটি সেটিংস রক্ষণাবেক্ষণ</text>
+          <text x="900" y="130" fill="#d97706" font-weight="700">কঠিন</text>
+
+          <rect x="0" y="152" width="1000" height="42" rx="8" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="18" y="178" font-weight="700" fill="#065f46">৪. পর্দার প্রযুক্তি</text>
+          <text x="230" y="178" fill="#065f46">টেমপ্লেট → SPA: প্রতিটি ৭৫ পর্দা আবার লেখা</text>
+          <text x="900" y="178" fill="#059669" font-weight="700">খরচসাপেক্ষ</text>
+
+          <rect x="0" y="200" width="1000" height="32" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="18" y="221" font-weight="700" fill="#334155">৫. লাইব্রেরি</text>
+          <text x="230" y="221" fill="#475569">একটি প্যাকেজ বদলানো — সাধারণত সহজ, টেস্ট থাকলে</text>
+          <text x="910" y="221" fill="#059669" font-weight="700">সহজ</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:12.5pt;padding:3.5mm 5mm">
+      তাই নিয়ম: <b>উপরের তিনটি সিদ্ধান্ত প্রথম সপ্তাহে, ADR-সহ।</b> নিচের দুটি যেকোনো সময়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের জিজ্ঞেস করুন — "তোমার কোন সিদ্ধান্ত এখনো নেওয়া হয়নি, যেটা তালিকার ১ বা ২ নম্বরে?" বেশিরভাগের ক্ষেত্রে উত্তর থাকবে "টেন্যান্টের একক" — কারণ তারা এটা নিয়ে ভাবেইনি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>ADR আর কমিট — একই সিদ্ধান্তের দুই চিহ্ন</h2>
+      <div class="sub">প্রতিটি বড় সিদ্ধান্তের পাশে একটা কমিট থাকা উচিত, আর উল্টোটাও</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:16%">কমিট</th><th style="width:34%">যা ঘটল</th><th style="width:20%">কোন সিদ্ধান্ত</th><th>কীভাবে যাচাই করবেন</th></tr></thead>
+      <tbody>
+        <tr><td><code>05c63dc</code></td><td>স্লাইস ১: কাস্টম ইউজার, লগইন, workspace, ভূমিকা, ১৩ টেস্ট</td>
+          <td><b>ADR-002</b> কাস্টম User</td><td><code>git show 05c63dc --stat</code></td></tr>
+        <tr><td><code>674375b</code></td><td>তিনটি settings, <code>run.sh</code>, pinned requirements</td>
+          <td><b>ADR-004</b> পরিবেশ ভাগ</td><td><code>ls config/settings/</code></td></tr>
+        <tr><td><code>7802a82</code></td><td>কমার্শিয়াল লেয়ার: সাবস্ক্রিপশন, ট্রায়াল, প্ল্যাটফর্ম কনসোল</td>
+          <td><b>ভুল সিদ্ধান্ত</b> — টাকার একক ব্যক্তি</td><td>ওই কমিটের মাইগ্রেশন দেখুন</td></tr>
+        <tr><td><code>8a25724</code></td><td>"the subscription belongs to the institution, not to individuals"</td>
+          <td><b>ADR-003b</b> সংশোধন</td><td><code>git show 8a25724</code></td></tr>
+        <tr><td><code>bfd058e</code></td><td>TMS → IMS, কিন্তু <b>settings থেকে চালিত</b></td>
+          <td><b>ADR-005</b> নাম কোডে নয়</td><td><code>grep PRODUCT_NAME config/settings/base.py</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      পরীক্ষা: <b>ADR-এ লেখা প্রতিটি দাবির পাশে একটা কমিট দেখাতে পারবেন?</b> না পারলে দাবিটা এখনো প্রমাণ হয়নি — শুধু লেখা হয়েছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাস ২৩-এ গিট নিয়ে পুরো ক্লাস আছে; এখানে শুধু সংযোগটা দেখান। ছাত্রদের বলুন প্রতিটি ADR-এ কমিট হ্যাশ লেখার অভ্যাস করতে — এক লাইনে ভবিষ্যতের অনেক প্রশ্নের উত্তর হয়ে যায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ক্লাসের কাজ</span>
+    <div><h2>একটি ADR লিখুন — ১৫ মিনিট, এক পাতা</h2>
+      <div class="sub">নিজের প্রজেক্টের সবচেয়ে গুরুত্বপূর্ণ সিদ্ধান্তটা নিয়ে</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><b>১. সিদ্ধান্ত বাছুন</b><p>ভাষা · ফ্রেমওয়ার্ক · ডেটাবেস · টেন্যান্টের একক — একটাই বেছে নিন।</p></div>
+      <div class="card soft"><b>২. প্রসঙ্গ তিন লাইনে</b><p>কী বানাচ্ছেন, কতজন ব্যবহার করবে, কত সময় আছে।</p></div>
+      <div class="card soft"><b>৩. দুটি বিকল্প লিখুন</b><p>যেটা আপনি সত্যিই ভেবেছিলেন — বানানো বিকল্প নয়।</p></div>
+      <div class="card soft"><b>৪. পরিণামে দাম লিখুন</b><p>অন্তত একটি খারাপ দিক। না থাকলে আরেকবার ভাবুন।</p></div>
+      <div class="card soft"><b>৫. ফাইলের নাম দিন</b><p><code>docs/adr/001-framework.md</code> — তারিখ ও নিজের নাম সহ।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:7mm;font-size:13pt;padding:4.5mm 5.5mm">
+      <b>যাচাই:</b> পাশের জনকে দিন — সে কি ৩০ সেকেন্ডে বলতে পারবে <b>কী সিদ্ধান্ত, কেন, আর কী দাম</b>? না পারলে ADR-টা এখনো শেষ হয়নি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসের শেষে ২–৩টি ADR পড়ে শোনান। যেটায় "পরিণাম"-এর ঘর সবচেয়ে সৎ, সেটাকেই সবচেয়ে ভালো ADR বলুন — সবচেয়ে বড় সিদ্ধান্তটা নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>চারটি প্রশ্ন — স্ট্যাক নিয়ে</h2>
+      <div class="sub">উত্তর লিখে রাখুন, ক্লাস ৮-এ ফিরে আসবে</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;gap:6mm">
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>১.</b> আপনার স্ট্যাকের <b>তিনটি</b> পছন্দ লিখুন — প্রতিটির একটি সুবিধা ও একটি দাম।</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>২.</b> আপনার কোথায় <b>দুই ভাষা</b> লাগছে (Python + JavaScript)? সেটা কি সত্যিই দরকার?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>৩.</b> আপনার প্রজেক্টে <b>PDF বা Excel</b> আউটপুট লাগবে? কোন লাইব্রেরি, আর বাংলা পারবে কি?</p></div>
+    <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2"><p style="font-size:14pt;color:#7f1d1d">
+      <b>৪.</b> আপনার কোন সিদ্ধান্তটা তালিকার <b>১ বা ২ নম্বরে</b>, আর সেটা কি এখনো নেওয়া হয়নি?</p></div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩ নম্বর প্রশ্নটা হালকা মনে হলেও অনেক প্রজেক্টের ডেমো এখানেই আটকায় — বিশেষ করে বাংলা মার্কশিট। যার উত্তর "পরে দেখব", তার ডেমোর শেষ সপ্তাহটা নষ্ট হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারসংক্ষেপ</span>
+    <div><h2>আজকের পাঁচটি শিক্ষা</h2>
+      <div class="sub">প্রতিটি দাবির পাশে তার প্রমাণ</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:52%">শিক্ষা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>স্ট্যাক = ছয়টি স্তর, ছয়টি সিদ্ধান্ত</b> — শুধু ফ্রেমওয়ার্ক নয়</td>
+          <td>ভাষা · ফ্রেমওয়ার্ক · ডেটাবেস · পর্দা · ফাইল · সার্ভার</td></tr>
+        <tr><td><b>প্রযুক্তি বাছাই হয় প্রতিদান দিয়ে</b>, স্কোর দিয়ে নয়</td>
+          <td>Django ২ ঘণ্টায় auth · Node-এ দুই সার্ভার · Laravel সমান কিন্তু ভাষা PHP</td></tr>
+        <tr><td><b>ভার্সন পিন করা মানে নিয়ন্ত্রণ</b></td>
+          <td><code>requirements.txt</code>: ৬টি প্যাকেজ, সব <code>==</code> সহ</td></tr>
+        <tr><td><b>ADR = ৫ ঘরের এক পাতা</b>, আর খারাপ দিক লেখা বাধ্যতামূলক</td>
+          <td>তিনটি ভরা ADR — Django · কাস্টম User · টাকার একক</td></tr>
+        <tr><td><b>ভুল সিদ্ধান্তও লিখে রাখুন</b> — মুছবেন না</td>
+          <td>সাবস্ক্রিপশন সংশোধন <code>8a25724</code> · ১ মাইগ্রেশন + ৪ টেস্ট</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটা সবচেয়ে গুরুত্বপূর্ণ নৈতিক শিক্ষা — ডেমোতে "কোন ভুল করেছিলেন?" প্রশ্নের সেরা উত্তর হলো একটা ADR, কারণ সেটা প্রমাণ করে আপনি ভুল ধরতে পারেন।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">০৮</div>
+  <h2>পরের ক্লাস — "১১টি অ্যাপ, এক সিস্টেম"</h2>
+  <p>আর্কিটেকচার: অ্যাপ নির্ভরতার গ্রাফ · স্তর ভাগ · কেন এত অ্যাপ</p>
+</section>

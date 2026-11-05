@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">SET_NULL</span>
+    <div><h2>"কে করেছিল" ঘরটি ফাঁকা হয়, তথ্য থাকে</h2>
+      <div class="sub">১৬টি SET_NULL; ১২টি ইউজারের দিকে — একটি ইচ্ছাকৃত প্যাটার্ন</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.1pt;line-height:1.45;padding:3mm 3.6mm">recorded_by = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+    on_delete=models.SET_NULL, null=True,
+    related_name="+")
+
+updated_by = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+    on_delete=models.SET_NULL, null=True,
+    blank=True, related_name="+")</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">হাজিরা সারি থেকে যায়; কে লিখেছিল, তা আর দেখা যায় না।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">SET_NULL (১২টি ইউজার)</th><th style="width:48%">কেন</th></tr>
+          <tr><td><code>AttendanceRecord.recorded_by</code>·<code>updated_by</code></td><td>হাজিরা ছাত্রের তথ্য, শিক্ষকের নয়</td></tr>
+          <tr><td><code>Mark.entered_by</code> · <code>Exam.published_by</code></td><td>নম্বর থাকা চাই, লেখক বদলাতে পারে</td></tr>
+          <tr><td><code>AuditLog.actor</code></td><td>লগ থাকে, ইউজার না-ও থাকতে পারে</td></tr>
+          <tr><td><code>Enrollment.enrolled_by</code> · <code>Homework.created_by</code></td><td>ভর্তি ইতিহাস মুছবে না</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>ফাঁক:</b> ইউজার মুছে গেলে "কে করেছিল" কেবল <code>AuditLog</code>-এ থাকে — আর সেটি সব কাজে লেখা হয় না।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "শিক্ষক অবসরে গেলে তার ৬ বছরের হাজিরা মুছে ফেলা কি ঠিক?" উত্তর স্পষ্ট না হলেও আলোচনাটাই শেখায় — ডেটাবেজ ডিজাইনে সবসময় "একটি সারি" নয়, "একটি মানুষের কাজের ইতিহাস" জড়িত।
+</section>

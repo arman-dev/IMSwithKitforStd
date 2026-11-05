@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">গোপন</span>
+    <div><h2>এক ফাংশন <code>env()</code>, আর সিক্রেট কোথাও নেই</h2>
+      <div class="sub">base.py-তে একটি পাসওয়ার্ডও লেখা নেই — সব <code>.env</code> থেকে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm">def env(key, default=None):
+    value = os.environ.get(key, default)
+    if value is None:
+        raise RuntimeError(
+            f"Missing required environment variable: {key}. "
+            f"Copy .env.example to .env and fill it in.")
+    return value
+
+SECRET_KEY = env("SECRET_KEY", DEV_INSECURE_KEY)
+DEBUG = env_bool("DEBUG", False)
+ALLOWED_HOSTS = env_list("ALLOWED_HOSTS", "127.0.0.1,localhost")</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">ফাংশন</th><th style="width:56%">ব্যবহার</th></tr>
+          <tr><td><code>env()</code></td><td>স্ট্রিং; না পেলে স্পষ্ট এরর, নীরব None নয়</td></tr>
+          <tr><td><code>env_bool()</code></td><td><code>"1/true/yes/on"</code> → True</td></tr>
+          <tr><td><code>env_list()</code></td><td>কমা দিয়ে ভাগ করা তালিকা</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>কেন স্পষ্ট এরর?</b> <code>os.environ.get()</code> চুপচাপ <code>None</code> দিলে অ্যাপ চালু হয়, তারপর অর্ধেক কাজ করে — ভুলটা তখন অনেক দূরে খুঁজতে হয়।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>.env.example-এ ৫টি কী</b> — কিন্তু কোডে পড়া হয় ৪টির বেশি: <code>DB_NAME/DB_USER/DB_PASSWORD/DB_HOST/DB_PORT</code> ডকুমেন্টেড নয়। নতুন কেউ সেটআপ করতে গেলে অনুমান করতে হয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>.env</code> কখনো Git-এ যায় না — <code>.gitignore</code>-এ আছে। আর <code>.env.example</code> যায়, কারণ তাতে কোনো আসল মান নেই। এই দুই ফাইলের পার্থক্যটাই নতুন ডেভেলপারের প্রথম পাঠ।
+</section>

@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ৩</span>
+    <div><h2>ফলাফল প্রকাশ — এক বুলিয়ান নয়, একটি তারিখও</h2>
+      <div class="sub">is_published · published_at · published_by · তিনটিই দরকার</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.05">
+        <table class="tight">
+          <tr><th style="width:40%">কলাম</th><th style="width:60%">উত্তর দেয়</th></tr>
+          <tr><td><code>is_published</code></td><td>ছাত্র এখন দেখতে পাবে কি না</td></tr>
+          <tr><td><code>published_at</code></td><td>কখন প্রকাশ হলো — অভিযোগের সময় কাজে লাগে</td></tr>
+          <tr><td><code>published_by</code></td><td>কে প্রকাশ করল (SET_NULL, <code>related_name="+"</code>)</td></tr>
+        </table>
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm">exam.is_published = True
+exam.published_at = timezone.now()
+exam.published_by = request.user
+exam.save(update_fields=[
+    "is_published", "published_at",
+    "published_by", "updated_at"])</pre>
+      </div>
+      <div style="flex:1">
+        <div class="call bad" style="font-size:9.9pt;padding:2.6mm 3.8mm">
+          <b>প্রশ্ন:</b> শুধু <code>is_published</code> রাখলে কী হারাতাম? উত্তর: "কবে, কে" — এবং প্রতারণার অভিযোগ এলে কোনো প্রমাণ থাকত না।
+        </div>
+        <div class="call" style="margin-top:2.4mm;font-size:9.9pt;padding:2.6mm 3.8mm">
+          <b>প্রবেশ-নিয়ন্ত্রণ দুই জায়গায়:</b> ভিউতে ভূমিকা (<code>TEACHING</code>) + <code>teacher_can_access_class()</code>; আর ছাত্রের পথে অপ্রকাশিত ফল হলে <code>PermissionDenied</code> → ৪০৩।
+        </div>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.9pt;padding:2.6mm 3.8mm">
+          <b>সৎ ফাঁক:</b> প্রকাশের সময় কোনো <code>transaction.atomic</code> নেই — একটি সারি বদলানোয় দরকারও নেই; কিন্তু <code>log()</code> আর <code>save()</code> আলাদা লেনদেন, তাই লগ লেখা ব্যর্থ হলে (নীরবে) থেকেই যায়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বাস্তব ঘটনা বলুন: অভিভাবক এসে বললেন "গতকাল রাতে নম্বর বদলেছে"। <code>published_at</code> + অডিট লগ থাকলে উত্তর দেওয়া যায়; না থাকলে কেবল অনুমান।
+</section>

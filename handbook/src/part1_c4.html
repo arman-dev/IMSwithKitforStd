@@ -1,0 +1,346 @@
+<!-- ===================== CLASS 4 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ১ · কনসেপ্ট · ক্লাস ৪ / ৩৭</div>
+  <h1>কী কী ভুল<br>হতে পারে?</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ২ · টপিক ২.২–২.৩<br>ঝুঁকি রেজিস্টার · আগাম সংকেত · কনসেপ্ট পেপারের ছয় অংশ</div>
+  <div class="pill">৬টি ঝুঁকি — প্রতিটি সত্যিই ঘটেছিল</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>ছয়টি ঝুঁকি — প্রতিটির আগাম সংকেত সহ</h2>
+      <div class="sub">ঝুঁকি লিখতে হয় তিন কলামে: কী ভুল হতে পারে · আগে থেকে কী দেখে বুঝবেন · কী করবেন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:4%">#</th><th style="width:26%">ঝুঁকি</th><th style="width:30%">আগাম সংকেত</th><th>প্রতিকার (প্রজেক্টে যা করা হয়েছে)</th></tr></thead>
+      <tbody>
+        <tr><td class="num">১</td><td><b>মূল ধারণা ভুল বোঝা</b><br>কে কার অধীন</td>
+          <td>"একই প্রশ্নটা দুইবার আসছে"</td>
+          <td>এক লাইনে লিখে রাখা: <b>টাকার একক = প্রতিষ্ঠান</b> (<code>8a25724</code>)</td></tr>
+        <tr><td class="num">২</td><td><b>পরিবেশ আলাদা</b><br>ছাত্রের মেশিনে চলে না</td>
+          <td>"আমার ল্যাপটপে চলে না"</td>
+          <td><code>run.sh</code> পাইথন ভার্সন চেক (৩.১২+) + <code>sqlite</code> settings (<code>2cc4e2d</code>)</td></tr>
+        <tr><td class="num">৩</td><td><b>দেরিতে নামকরণ</b><br>পরে নাম বদলানো</td>
+          <td>কোড লেখার <i>পরে</i> নাম নিয়ে আলোচনা</td>
+          <td>নাম <code>settings</code>-এ সরানো: <code>PRODUCT_NAME</code> (<code>bfd058e</code>)</td></tr>
+        <tr><td class="num">৪</td><td><b>ডেমো পরিবেশ</b><br>লগইন হয়ে আবার লগআউট</td>
+          <td>প্রিভিউ উইন্ডোতে কুকি থাকে না</td>
+          <td>কুকি-গার্ড ব্যানার + ভদ্র CSRF পাতা (<code>e1ead8a</code>)</td></tr>
+        <tr><td class="num">৫</td><td><b>স্কোপ ফুলে যাওয়া</b></td>
+          <td>প্রতিদিন একটা করে নতুন ফিচার</td>
+          <td>তিন-বাক্স ফ্রিজ + সৎ হিসাব ৪৩/৫৭</td></tr>
+        <tr><td class="num">৬</td><td><b>প্রমাণ না রাখা</b></td>
+          <td>"স্ক্রিনশট পরে তুলব"</td>
+          <td>পরিকল্পনা আর প্রমাণ <b>আলাদা ফাইল</b>: <code>catalogue_data.py</code> বনাম <code>build_status.py</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:4mm;font-size:12pt;padding:3.5mm 5mm">
+      আগাম সংকেত কলামটাই আসল — ঝুঁকি এলে প্রতিকার কাজে লাগে, কিন্তু <b>সংকেত দেখলে</b> ঝুঁকিটাই এড়ানো যায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ছয়টি বানানো ঝুঁকি নয় — প্রতিটির পাশে কমিট নম্বর দেওয়া আছে, অর্থাৎ প্রতিটি সত্যিই ঘটেছিল। ছাত্রদের বলুন নিজের প্রজেক্টে ঠিক এই ছয়টি দিয়ে শুরু করতে; তারপর নিজের মতো দুটি যোগ করতে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>কোন ঝুঁকিতে আগে হাত দেবেন — ম্যাপ</h2>
+      <div class="sub">সম্ভাবনা × ক্ষতি — উপরে-ডানে থাকলে আগে সামলাতে হবে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+        <!-- quadrants -->
+        <rect x="90" y="10" width="450" height="115" fill="#fffbeb"/>
+        <rect x="540" y="10" width="450" height="115" fill="#fef2f2"/>
+        <rect x="90" y="125" width="450" height="115" fill="#f8fafc"/>
+        <rect x="540" y="125" width="450" height="115" fill="#fffbeb"/>
+        <line x1="540" y1="10" x2="540" y2="240" stroke="#cbd5e1"/>
+        <line x1="90" y1="125" x2="990" y2="125" stroke="#cbd5e1"/>
+        <rect x="90" y="10" width="900" height="230" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+
+        <text x="305" y="34" text-anchor="middle" font-size="12" fill="#b45309" font-weight="700">সম্ভাবনা কম · ক্ষতি বেশি</text>
+        <text x="765" y="34" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="700">এখনই সামলান</text>
+        <text x="305" y="152" text-anchor="middle" font-size="12" fill="#64748b">উপেক্ষা করা চলে</text>
+        <text x="765" y="152" text-anchor="middle" font-size="12" fill="#b45309" font-weight="700">নজরে রাখুন</text>
+
+        <!-- axes labels -->
+        <text x="45" y="130" text-anchor="middle" font-size="12" fill="#475569" transform="rotate(-90 45 130)">ক্ষতি →</text>
+        <text x="540" y="266" text-anchor="middle" font-size="12" fill="#475569">সম্ভাবনা →</text>
+
+        <!-- points -->
+        <circle cx="180" cy="200" r="9" fill="#94a3b8"/><text x="196" y="205" font-size="12" fill="#334155">৩ নামকরণ</text>
+        <circle cx="300" cy="190" r="9" fill="#94a3b8"/><text x="316" y="195" font-size="12" fill="#334155">৬ প্রমাণ</text>
+        <circle cx="600" cy="200" r="9" fill="#f59e0b"/><text x="616" y="205" font-size="12" fill="#334155">২ পরিবেশ</text>
+        <circle cx="720" cy="180" r="9" fill="#f59e0b"/><text x="736" y="185" font-size="12" fill="#334155">৪ ডেমো</text>
+        <circle cx="830" cy="80" r="9" fill="#dc2626"/><text x="846" y="85" font-size="12" fill="#7f1d1d" font-weight="700">১ ধারণা</text>
+        <circle cx="690" cy="62" r="9" fill="#dc2626"/><text x="706" y="67" font-size="12" fill="#7f1d1d" font-weight="700">৫ স্কোপ</text>
+        <text x="90" y="290" font-size="11.5" fill="#64748b">সংখ্যাগুলো আগের স্লাইডের ঝুঁকির ক্রম — ১ = ধারণা ভুল বোঝা, ৬ = প্রমাণ না রাখা</text>
+      </svg>
+    </div>
+    <div class="call bad" style="margin-top:3mm;font-size:12.5pt;padding:4mm 5mm">
+      <b>১ ও ৫ সবচেয়ে বিপজ্জনক</b> — কারণ এরা ক্ষতি করে <b>সবচেয়ে দেরিতে</b> ধরা পড়ে: ধারণা ভুল হলে ৩১ টেবিল ভাঙে, স্কোপ ফুললে শেষ সপ্তাহে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের নিজের দুটি ঝুঁকি এই ম্যাপে বসাতে বলুন। সবাই যেটা "উপেক্ষা করা চলে" ঘরে ফেলে, সেটাই সাধারণত পরীক্ষার আগের রাতে ফেটে পড়ে — জিজ্ঞেস করুন কেন ওটা ওখানে ফেলেছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩ · প্রমাণ</span>
+    <div><h2>যে ঝুঁকিগুলো সত্যিই ঘটেছিল</h2>
+      <div class="sub">চারটি ঘটনা, চারটি কমিট — আর প্রতিটির দাম</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card" style="border-color:#dc2626"><div class="ic">🍪</div><b style="font-size:13.5pt">ডেমোতে কুকি থাকে না</b>
+        <p>প্রিভিউ উইন্ডো কুকি রাখতে পারে না → লগইন করে ঢুকলেই আবার লগইন পাতা।</p>
+        <p style="margin-top:2mm"><b>দাম:</b> ১টি আলাদা কমিট (<code>e1ead8a</code>) + ভদ্র এরর পাতা</p></div>
+      <div class="card" style="border-color:#dc2626"><div class="ic">🧾</div><b style="font-size:13.5pt">বিল ভুল জায়গায়</b>
+        <p>সাবস্ক্রিপশন ব্যক্তির নামে — প্রতিষ্ঠানের সিট কে ব্যবহার করছে, তার উত্তরই নেই।</p>
+        <p style="margin-top:2mm"><b>দাম:</b> ১ মাইগ্রেশন + বিলিং ভিউ + ৪ টেস্ট (<code>8a25724</code>)</p></div>
+      <div class="card" style="border-color:#d97706"><div class="ic">🏷️</div><b style="font-size:13.5pt">দেরিতে নাম বদল</b>
+        <p>TMS → IMS। কোডে নাম ছড়িয়ে ছিল; বদলাতে ৩টি কমিট লাগল, তারপর আবার স্ক্রিনশট।</p>
+        <p style="margin-top:2mm"><b>দাম:</b> ৩ কমিট শুধু নামে (<code>bfd058e</code>, <code>7c27e1b</code>, <code>86660f3</code>)</p></div>
+      <div class="card" style="border-color:#d97706"><div class="ic">🐍</div><b style="font-size:13.5pt">ছাত্রের পাইথন পুরনো</b>
+        <p>"চলে না" — কারণ ৩.১০, প্রজেক্ট চায় ৩.১২+। ছয়টি ভিন্ন এরর, একটাই মূল কারণ।</p>
+        <p style="margin-top:2mm"><b>দাম:</b> <code>run.sh</code>-এ ভার্সন চেক + স্পষ্ট বার্তা (<code>2cc4e2d</code>)</p></div>
+    </div>
+    <div class="call" style="margin-top:6mm;font-size:13pt;padding:4mm 5mm">
+      চারটির কোনোটাই "কোডিং ভুল" নয়। চারটিই <b>সিদ্ধান্ত বা পরিবেশের</b> ঝুঁকি — তাই এদের ঠিক করতে কোড নয়, <b>সিদ্ধান্ত</b> ঠিক করতে হয়েছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানেই বলুন — "বাগ মেটানো মানে কোড লেখা নয়, আগের সিদ্ধান্ত ভাঙা।" চারটি উদাহরণেই দেখুন: এক লাইন বদলাতে গিয়ে পাঁচ জায়গা বদলাতে হয়েছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>এখন সব এক পাতায় — কনসেপ্ট পেপারের ছয়টি অংশ</h2>
+      <div class="sub">আগের তিন ক্লাসের সব কাজ এই ছয়টি ঘরে ঢোকে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 260" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="12.5">
+          <rect x="0" y="0" width="320" height="120" rx="12" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="24" y="32" font-size="14.5" font-weight="700" fill="#312e81">১. সমস্যা ও প্রেক্ষাপট</text>
+          <text x="24" y="58" fill="#334155">খাতা কেন যথেষ্ট নয় — তিনটি ক্ষতি</text>
+          <text x="24" y="80" fill="#334155">এক লাইনে সমস্যা-বিবৃতি</text>
+          <text x="24" y="102" fill="#64748b">ক্লাস ১ · স্লাইড ৩</text>
+
+          <rect x="340" y="0" width="320" height="120" rx="12" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="364" y="32" font-size="14.5" font-weight="700" fill="#065f46">২. ব্যবহারকারী ও ভূমিকা</text>
+          <text x="364" y="58" fill="#334155">৫ ভূমিকা · কে কী দেখতে পায় না</text>
+          <text x="364" y="80" fill="#334155">ব্যবহারকারী ≠ গ্রাহক</text>
+          <text x="364" y="102" fill="#64748b">ক্লাস ১ · স্লাইড ৬–৮</text>
+
+          <rect x="680" y="0" width="320" height="120" rx="12" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="704" y="32" font-size="14.5" font-weight="700" fill="#78350f">৩. স্কোপ</text>
+          <text x="704" y="58" fill="#334155">MVP / পরে / কখনো নয়</text>
+          <text x="704" y="80" fill="#334155">৫৭ ফিচার, ছয়-লাইনের স্পেক</text>
+          <text x="704" y="102" fill="#64748b">ক্লাস ২ · স্লাইড ২১–২৩</text>
+
+          <rect x="0" y="140" width="320" height="120" rx="12" fill="#fef2f2" stroke="#f87171"/>
+          <text x="24" y="172" font-size="14.5" font-weight="700" fill="#7f1d1d">৪. ফিজিবিলিটি</text>
+          <text x="24" y="198" fill="#334155">চারটি খাতা, চারটি সংখ্যা</text>
+          <text x="24" y="220" fill="#334155">ভাঙার বিন্দু · সময়ের গুণক</text>
+          <text x="24" y="242" fill="#64748b">ক্লাস ৩</text>
+
+          <rect x="340" y="140" width="320" height="120" rx="12" fill="#f5f3ff" stroke="#a78bfa"/>
+          <text x="364" y="172" font-size="14.5" font-weight="700" fill="#5b21b6">৫. ঝুঁকি</text>
+          <text x="364" y="198" fill="#334155">৬টি ঝুঁকি + আগাম সংকেত</text>
+          <text x="364" y="220" fill="#334155">ম্যাপে কোথায় দাঁড়িয়ে</text>
+          <text x="364" y="242" fill="#64748b">ক্লাস ৪ · এই স্লাইডের আগের তিনটি</text>
+
+          <rect x="680" y="140" width="320" height="120" rx="12" fill="#f0fdfa" stroke="#2dd4bf"/>
+          <text x="704" y="172" font-size="14.5" font-weight="700" fill="#115e59">৬. ডেলিভারি পরিকল্পনা</text>
+          <text x="704" y="198" fill="#334155">৫টি স্লাইস · প্রতিটির প্রমাণ</text>
+          <text x="704" y="220" fill="#334155">কোন সপ্তাহে কী সবুজ হবে</text>
+          <text x="704" y="242" fill="#64748b">ক্লাস ২ · স্লাইড ২৭</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:12.5pt;padding:4mm 5mm">
+      নিয়ম: <b>ছয়টি অংশ, সর্বোচ্চ দুই পাতা।</b> যেটা দুই পাতায় ধরছে না — সেটা এখনো ভাবা হয়নি, শুধু লেখা হয়েছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ছয়টি ঘর বোর্ডে আঁকুন, প্রতিটির নিচে ক্লাস নম্বর লিখুন। ছাত্ররা বুঝবে — পেপারটা নতুন কিছু নয়, গত তিন ক্লাসের কাজের সাজানো রূপ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অংশ ১–২</span>
+    <div><h2>সমস্যা আর মানুষ — দুই পাতা, কোনও ভূমিকা নয়</h2>
+      <div class="sub">লেখার নিয়ম: প্রতিটি বাক্যে একটা সংখ্যা বা একটা নাম থাকতে হবে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div>
+        <div class="card" style="padding:5mm;border-color:#818cf8">
+          <b style="font-size:13.5pt;color:#312e81">১. সমস্যা ও প্রেক্ষাপট</b>
+          <p style="font-size:11.5pt;line-height:1.65;margin-top:2mm">
+            একটি মাধ্যমিক স্কুলে <b>৩০০ শিক্ষার্থী</b>, <b>২৫ শিক্ষক</b>। উপস্থিতি ও নম্বর খাতায় লেখা হয়।
+            ফলে — মাসিক রিপোর্টে <b>কয়েক ঘণ্টা</b> লাগে, এক বছর পেছনের তথ্য <b>খোঁজা যায় না</b>,
+            আর কে নম্বর বদলাল তার <b>কোনো রেকর্ড থাকে না</b>।<br><br>
+            <b>এক লাইনে:</b> তথ্য একবার লেখা হবে, অনেকবার কাজে লাগবে — আর প্রতিটি বদলের দায় থাকবে।
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>ভুল লেখা:</b> "এটি একটি আধুনিক, ব্যবহারবান্ধব, স্কেলেবল সিস্টেম।" — এতে কোনও সংখ্যা নেই, কোনও নাম নেই, তাই কিছুই বলা হয়নি।
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:5mm;border-color:#34d399">
+          <b style="font-size:13.5pt;color:#065f46">২. ব্যবহারকারী ও ভূমিকা</b>
+          <table class="tight" style="font-size:9.5pt;margin-top:2mm">
+            <tbody>
+              <tr><td><b>প্রশাসক</b></td><td>সব প্রতিষ্ঠান, প্ল্যান</td><td style="color:#dc2626">ছাত্রের নম্বর দেখে না</td></tr>
+              <tr><td><b>অ্যাডমিন</b></td><td>নিজের প্রতিষ্ঠান</td><td style="color:#dc2626">অন্য প্রতিষ্ঠান দেখে না</td></tr>
+              <tr><td><b>কোঅর্ডিনেটর</b></td><td>নিজের বিভাগ</td><td style="color:#dc2626">বিল দেখে না</td></tr>
+              <tr><td><b>শিক্ষক</b></td><td>নিজের ক্লাস</td><td style="color:#dc2626">অন্য ক্লাসের নম্বর না</td></tr>
+              <tr><td><b>শিক্ষার্থী</b></td><td>শুধু নিজের</td><td style="color:#dc2626">অন্য কারও কিছু না</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:11pt;line-height:1.6;margin-top:2mm">
+            <b>গ্রাহক ≠ ব্যবহারকারী:</b> টাকা দেয় প্রতিষ্ঠান, ব্যবহার করে ২৫ জন শিক্ষক।
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ভুল লেখা" বাক্সটা মুখস্থ করান — "আধুনিক, ব্যবহারবান্ধব, স্কেলেবল" এই তিন শব্দ পেলেই লাল পতাকা। কোনও শিক্ষক এভাবে নিজের প্রজেক্টের পরিচয় লিখলে সেটা পেপারের প্রথম বাক্য হতে পারে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অংশ ৩–৪</span>
+    <div><h2>স্কোপ আর সংখ্যা — দুই পাতা</h2>
+      <div class="sub">স্কোপে তালিকা, ফিজিবিলিটিতে সংখ্যা — দুইটাই লাগবে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div>
+        <div class="card" style="padding:5mm;border-color:#fbbf24">
+          <b style="font-size:13.5pt;color:#78350f">৩. স্কোপ</b>
+          <p style="font-size:11.5pt;line-height:1.7;margin-top:2mm">
+            <b>MVP (৫টি স্লাইস):</b> লগইন ও ভূমিকা · প্রতিষ্ঠান · শিক্ষার্থী ও ভর্তি · উপস্থিতি · নম্বর ও রিপোর্ট<br>
+            <b>v1.1:</b> আমন্ত্রণ · ব্যাকআপ · পূর্ণ এক্সপোর্ট · নোটিফিকেশন<br>
+            <b>কখনো নয়:</b> SMS গেটওয়ে · মোবাইল অ্যাপ · AI উপস্থিতি<br><br>
+            <b>মোট:</b> ৫৭ ফিচার · ৬ ভূমিকা · ৩১ টেবিল — প্রতিটির ID (F-01 … F-57)
+          </p>
+        </div>
+        <div class="call" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          স্কোপে <b>সংখ্যা</b> থাকলে সেটা মাপা যায়; "বড় সিস্টেম" লেখা থাকলে কিছুই মাপা যায় না।
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:5mm;border-color:#f87171">
+          <b style="font-size:13.5pt;color:#7f1d1d">৪. ফিজিবিলিটি — চারটি সংখ্যা</b>
+          <table class="tight" style="font-size:9.8pt;margin-top:2mm">
+            <tbody>
+              <tr><td><b>প্রযুক্তি</b></td><td>Django 6.1.2 / Python 3.13</td></tr>
+              <tr><td><b>ডেটা</b></td><td>৩০০ × ৬ × ২০০ = ৩,৬০,০০০ সারি/বছর</td></tr>
+              <tr><td><b>খরচ</b></td><td>৳২,১০০/মাস → ভাঙার বিন্দু ২ গ্রাহক</td></tr>
+              <tr><td><b>সময়</b></td><td>৫ স্লাইস · অভিজ্ঞ ২ দিন · ছাত্র ×৪–×৬</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:11pt;line-height:1.6;margin-top:2mm">
+            <b>সিদ্ধান্ত:</b> 🟢 এগিয়ে যাওয়া — চার খাতাতেই সংখ্যা আছে, প্রতিটির প্রমাণ আছে।
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ফিজিবিলিটির ঘরে "সিদ্ধান্ত" লাইনটা বাদ দেবেন না — সংখ্যা থাকলেও সিদ্ধান্ত না লিখলে পেপারটা পড়ে কেউ জানবে না আপনি এগোচ্ছেন কি থামছেন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অংশ ৫–৬</span>
+    <div><h2>ঝুঁকি আর পরিকল্পনা — শেষ দুই পাতা</h2>
+      <div class="sub">ঝুঁকিতে সংকেত, পরিকল্পনায় তারিখ ও প্রমাণ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div>
+        <div class="card" style="padding:5mm;border-color:#a78bfa">
+          <b style="font-size:13.5pt;color:#5b21b6">৫. ঝুঁকি (৬টি)</b>
+          <table class="tight" style="font-size:9.5pt;margin-top:2mm">
+            <tbody>
+              <tr><td><b>১</b> ধারণা ভুল</td><td>"একই প্রশ্ন দুইবার"</td></tr>
+              <tr><td><b>২</b> পরিবেশ</td><td>"আমার মেশিনে চলে না"</td></tr>
+              <tr><td><b>৩</b> দেরিতে নাম</td><td>কোডের পরে নাম-আলোচনা</td></tr>
+              <tr><td><b>৪</b> ডেমো পরিবেশ</td><td>লগইন হয়ে আবার লগআউট</td></tr>
+              <tr><td><b>৫</b> স্কোপ ফোলা</td><td>প্রতিদিন নতুন ফিচার</td></tr>
+              <tr><td><b>৬</b> প্রমাণ নেই</td><td>"পরে স্ক্রিনশট তুলব"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:5mm;border-color:#2dd4bf">
+          <b style="font-size:13.5pt;color:#115e59">৬. ডেলিভারি পরিকল্পনা</b>
+          <table class="tight" style="font-size:9.5pt;margin-top:2mm">
+            <thead><tr><th>সপ্তাহ</th><th>কী হবে</th><th>প্রমাণ</th></tr></thead>
+            <tbody>
+              <tr><td class="num">১–২</td><td>লগইন · প্রতিষ্ঠান · ভূমিকা</td><td>১৩ টেস্ট</td></tr>
+              <tr><td class="num">৩</td><td>৫৭ ফিচারের তালিকা</td><td>ক্যাটালগ ফাইল</td></tr>
+              <tr><td class="num">৪–৭</td><td>ছাত্র · উপস্থিতি · নম্বর · রিপোর্ট</td><td>৪৩ টেস্ট · ৪৮ পর্দা × ৪ ভূমিকা</td></tr>
+              <tr><td class="num">৮</td><td>প্যাকেজিং · এক কমান্ডে চালু</td><td><code>run.sh</code></td></tr>
+              <tr><td class="num">৯–১০</td><td>প্রোডাকশন মহড়া</td><td><code>deploy_check.sh</code></td></tr>
+              <tr><td class="num">১১–১২</td><td>ডকুমেন্ট · ডেমো</td><td>ম্যানুয়াল · স্ক্রিনশট</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:12pt;padding:3.5mm 5mm">
+      পরিকল্পনার প্রতিটি সারিতে <b>"প্রমাণ"</b> কলাম থাকতেই হবে। যে সারিতে প্রমাণ লেখা যায় না, সেটা কাজ নয় — ইচ্ছা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই টেবিলটাই ছাত্রদের নিজের প্রজেক্টে পূরণ করতে দেবেন। সবচেয়ে কঠিন প্রশ্ন: "৮ম সপ্তাহে তোমার হাতে কী প্রমাণ থাকবে?" উত্তর না এলে বাকি পরিকল্পনাও বদলাতে হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ফলাফল</span>
+    <div><h2>কনসেপ্ট পেপার — এক পাতায় পুরো প্রজেক্ট</h2>
+      <div class="sub">এটাই সেই কাগজ যা নিয়ে কেউ প্রশ্ন করলে ৩০ সেকেন্ডে উত্তর দেওয়া যায়</div></div></div>
+  <div class="body">
+    <div style="background:#fff;border:1px solid #cbd5e1;border-radius:10px;padding:6mm 7mm;box-shadow:0 1px 3px rgba(15,23,42,.08)">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #4f46e5;padding-bottom:2.5mm">
+        <b style="font-size:15pt;color:#1e1b4b">IMS — Institute Management System</b>
+        <span style="font-size:10pt;color:#64748b">কনসেপ্ট পেপার v1.0 · ১ পাতা · ২০২৬</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4mm 7mm;margin-top:4mm;font-size:10.5pt;line-height:1.55;color:#334155">
+        <div><b style="color:#4f46e5">সমস্যা</b><br>খাতায় উপস্থিতি ও নম্বর → রিপোর্টে ঘণ্টা, পেছনের তথ্য নেই, দায় নেই।</div>
+        <div><b style="color:#4f46e5">ব্যবহারকারী</b><br>৫ ভূমিকা: প্রশাসক · অ্যাডমিন · কোঅর্ডিনেটর · শিক্ষক · শিক্ষার্থী। গ্রাহক = প্রতিষ্ঠান।</div>
+        <div><b style="color:#4f46e5">স্কোপ</b><br>৫৭ ফিচার · MVP ৫ স্লাইস · v1.1 তে ৪টি · কখনো নয়: SMS, অ্যাপ, AI।</div>
+        <div><b style="color:#4f46e5">ফিজিবিলিটি</b><br>Django 6.1.2 · ৩.৬ লাখ সারি/বছর · ৳২,১০০/মাস · ভাঙার বিন্দু ২ গ্রাহক।</div>
+        <div><b style="color:#4f46e5">ঝুঁকি</b><br>৬টি — ধারণা ভুল, পরিবেশ, দেরিতে নাম, ডেমো কুকি, স্কোপ, প্রমাণ।</div>
+        <div><b style="color:#4f46e5">পরিকল্পনা</b><br>১২ সপ্তাহ · ৫ স্লাইস · প্রতিটির শেষে টেস্ট সবুজ + স্ক্রিনশট।</div>
+      </div>
+      <div style="margin-top:4mm;border-top:1px dashed #cbd5e1;padding-top:3mm;font-size:10.5pt;color:#065f46">
+        <b>আজকের অবস্থা:</b> ৫৪/৫৭ ফিচার তৈরি (৪৩টি স্ক্রিনশটসহ) · ১০৩ টেস্ট · ১৯ কমিট · ৩১ টেবিল · ৭৫ টেমপ্লেট
+      </div>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      পরীক্ষা: এই পাতাটা <b>একজন অপরিচিত মানুষকে</b> দিন — সে কি ৩০ সেকেন্ডে বলতে পারবে কী বানাচ্ছেন, কার জন্য, কত সময়ে?
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে সত্যিই এই পরীক্ষাটা করুন — এক ছাত্রের পেপার আরেক ছাত্রকে পড়তে দিন, ৩০ সেকেন্ড গুনুন। পারলে পেপার ভালো, না পারলে পেপার সুন্দর।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ক্লাসের কাজ</span>
+    <div><h2>নিজের পেপার লেখা — পাঁচটি ধাপ, ২৫ মিনিট</h2>
+      <div class="sub">আজ শেষ না হলেও চলবে; কিন্তু প্রতিটি ঘরে অন্তত একটা সংখ্যা থাকতে হবে</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><b>১. ছয়টি ঘর আঁকুন</b><p>কাগজে ছয়টি বাক্স — আগে ভরবেন না, শুধু আঁকুন। খালি ঘর দেখলে মাথা কাজ করে।</p></div>
+      <div class="card soft"><b>২. সমস্যা এক লাইনে</b><p>কে, কতজন, কী হারাচ্ছে — তিনটে তথ্য একটি বাক্যে।</p></div>
+      <div class="card soft"><b>৩. ভূমিকা তালিকা</b><p>প্রতিটি ভূমিকার পাশে লিখুন <b>সে কী দেখতে পাবে না</b> — এটাই পারমিশনের নকশা।</p></div>
+      <div class="card soft"><b>৪. স্কোপ তিন বাক্স</b><p>MVP-তে সর্বোচ্চ ৫টি, "পরে"-তে ৩টি, "কখনো নয়"-তে ২টি।</p></div>
+      <div class="card soft"><b>৫. ঝুঁকি ৬ + সংকেত</b><p>আগের স্লাইডের ছয়টি থেকে শুরু করুন, তারপর নিজের দুটি যোগ করুন।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:7mm;font-size:13pt;padding:4.5mm 5.5mm">
+      <b>আলোচনার প্রশ্ন (হাতে তুলুন):</b> আপনার ছয়টি ঘরের কোনটায় এখনো <b>একটিও সংখ্যা নেই</b>?
+      ওই ঘরটাই আপনার প্রজেক্টে সবচেয়ে দেরিতে ফেটে পড়বে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ২৫ মিনিট শেষে ২–৩ জনের পেপার বোর্ডে টাঙিয়ে একসাথে দেখুন। যার খালি ঘর সবচেয়ে বেশি, তার পেপারটাই সবচেয়ে বেশি শেখাবে — সেটাই বেছে নিন।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">০৫</div>
+  <h2>পর্ব ১ শেষ — পর্ব ২: পরিকল্পনা</h2>
+  <p>ক্লাস ৫ থেকে: প্রয়োজন চিহ্নিত করা, ব্যবহারকারীর গল্প, আর গ্রহণযোগ্যতার শর্ত</p>
+</section>

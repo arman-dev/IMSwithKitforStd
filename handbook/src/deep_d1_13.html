@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম ২</span>
+    <div><h2>শর্তসাপেক্ষ unique — "একটাই active", ডেটাবেজেই আটকানো</h2>
+      <div class="sub">৮টি <code>UniqueConstraint(condition=…)</code>; পাইথন নয়, ডেটাবেজ সত্য বলে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.05">
+        <pre style="font-size:8.3pt;line-height:1.5;padding:3.2mm 3.8mm">class AcademicTerm(TimeStamped):
+    is_active = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["workspace"],
+                condition=Q(is_active=True),
+                name="uniq_active_term_per_workspace",
+            )
+        ]</pre>
+        <div style="font-size:10.2pt;color:#334155;margin-top:1.5mm">অর্থ: যেসব সারিতে <code>is_active=True</code>, তাদের মধ্যে <code>workspace</code> অনন্য। বাকি সারি যত খুশি।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:58%">কনস্ট্রেইন্টের নাম</th><th style="width:42%">যা অনন্য</th></tr>
+          <tr><td><code>uniq_active_term_per_workspace</code></td><td>সক্রিয় সেশন</td></tr>
+          <tr><td><code>uniq_active_grade_scale_per_workspace</code></td><td>সক্রিয় গ্রেড স্কেল</td></tr>
+          <tr><td><code>uniq_active_enrollment_student_class</code></td><td>ছাত্রের সক্রিয় এনরোলমেন্ট</td></tr>
+          <tr><td><code>uniq_membership_user_workspace</code></td><td>স্কুলে ইউজারের ভূমিকা</td></tr>
+          <tr><td><code>unique_custom_domain</code></td><td>কাস্টম ডোমেইন</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.5mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>কেন <code>clean()</code> নয়?</b> দুই ইউজার একসাথে সেভ করলে দুটোই <code>clean()</code> পাশ করে যেতে পারে — কেবল ডেটাবেজ-স্তরের নিয়মই সত্যিকারের দেয়াল।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "রেস কন্ডিশন" শব্দটি এখানেই প্রথম ব্যবহার করুন — দুই শিক্ষক একই মুহূর্তে সেশন বদলালে কী হয়? পাইথনে চেক করে নয়, ইনডেক্সই শেষ কথা বলে।
+</section>

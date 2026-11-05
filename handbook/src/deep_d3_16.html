@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">হোস্ট</span>
+    <div><h2>কাস্টম ডোমেইন দখল করা কেন কঠিন</h2>
+      <div class="sub">তিনটি বাধা: যাচাই, অনন্যতা, আর "নিজে সেট করা যায় না"</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">বাধা</th><th style="width:56%">কোথায়</th></tr>
+          <tr><td>যাচাই করা ছাড়া কাজ করে না</td><td><code>filter(domain_verified=True)</code> — মিডলওয়্যারে</td></tr>
+          <tr><td>এক ডোমেইন একবারই</td><td><code>UniqueConstraint(name="unique_custom_domain")</code></td></tr>
+          <tr><td>মালিক নিজে বসাতে পারেন না</td><td>প্ল্যাটফর্ম-অ্যাডমিনই সেট করেন — কারণ ডোমেইন যাচাই প্রমাণ দরকার</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>প্রমাণ:</b> <code>test_owner_cannot_set_a_custom_domain_themselves</code> · <code>test_domain_cannot_be_stolen_by_a_second_institution</code>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="call bad" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>যে ঝুঁকিটা লেখা হয়েছে:</b> মিডলওয়্যার রানটাইমে <code>settings.ALLOWED_HOSTS</code>-এ ডোমেইন যোগ করে। এটি কাজ করে, কিন্তু অ্যাপের গ্লোবাল অবস্থা বদলায় — একই প্রসেসে অন্য রিকোয়েস্টও এই তালিকা দেখে।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>ভালো দিক:</b> <code>patch_vary_headers(response, ["Host"])</code> — হোস্টভেদে আলাদা ক্যাশ, নাহলে এক স্কুলের লগইন পাতা আরেক স্কুলে দেখাত।
+        </div>
+        <div style="font-size:9.6pt;color:#334155;margin-top:2mm"><b>সংশোধনের পথ:</b> তালিকা বদলে রিকোয়েস্টে পাস করা, বা <code>sync_domains</code> কমান্ড দিয়ে আগেই তালিকা তৈরি রাখা।</div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "গ্লোবাল সেটিং রানটাইমে বদলানো" — এটি প্রায়ই বাগের উৎস। প্রশ্ন করুন: "দুই স্কুলের অনুরোধ একসাথে এলে কী হয়?" উত্তর: সাধারণত কাজ করে, কিন্তু নিশ্চয়তা নেই।
+</section>

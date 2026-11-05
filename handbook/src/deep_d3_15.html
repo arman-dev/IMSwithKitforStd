@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="head"><span class="badge">CSRF</span>
+    <div><h2>CSRF — টোকেন, উৎস, আর একটি ত্রুটি-পাতা</h2>
+      <div class="sub">ডিফল্ট <code>CsrfViewMiddleware</code> + নিজের বার্তা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm">CSRF_FAILURE_VIEW = "apps.core.views.csrf_failure"
+CSRF_TRUSTED_ORIGINS = env_list(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://127.0.0.1:8000,http://localhost:8000,"
+    "https://*.e2b.app")
+
+def csrf_failure(request, reason=""):
+    return render(request, "403_csrf.html",
+        {"reason": reason,
+         "origin": request.META.get("HTTP_ORIGIN","")},
+        status=403)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">প্রশ্ন</th><th style="width:60%">উত্তর</th></tr>
+          <tr><td>আক্রমণ কেমন?</td><td>অন্য সাইটে লুকানো ফর্ম → আপনার ব্রাউজারের কুকি দিয়ে POST</td></tr>
+          <tr><td>প্রতিরোধ কী?</td><td>ফর্মে টোকেন, যা অন্য সাইট জানে না</td></tr>
+          <tr><td>ব্যর্থ হলে?</td><td>ডিফল্ট ৪০৩-এর বদলে বাংলা/ইংরেজি ব্যাখ্যা-পাতা, উৎস দেখা যায়</td></tr>
+          <tr><td>কেন <code>TRUSTED_ORIGINS</code>?</td><td>HTTPS প্রক্সি/স্যান্ডবক্স ডোমেইন থেকে আসা ফর্ম বৈধ</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> <code>csrf_failure</code> পাতার কোনো টেস্ট নেই — কেউ ভাঙলে টের পাওয়া যাবে ব্যবহারকারীর অভিযোগে।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>মাপা হিসাব:</b> ৩৫টি টেমপ্লেটে ফর্ম আছে · ২৭টিতে <code>{% csrf_token %}</code> · বাকি ৮টি <code>method="get"</code> ফিল্টার — সেখানে টোকেন লাগেই না। অর্থাৎ প্রতিটি POST ফর্মে টোকেন আছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে তিন লিখুন: কুকি (কে), টোকেন (এই ফর্ম), Origin (কোন সাইট)। তিনটি না মিললে ৪০৩ — এটাই CSRF-এর পুরো গল্প।
+</section>

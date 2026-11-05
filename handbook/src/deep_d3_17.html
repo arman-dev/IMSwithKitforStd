@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">ফাইল</span>
+    <div><h2>আপলোড করা ফাইল — সবচেয়ে দুর্বল জায়গা</h2>
+      <div class="sub">লোগো <code>ImageField</code>, ম্যাটেরিয়াল <code>FileField</code> — দুটির সুরক্ষা সমান নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">জিনিস</th><th style="width:60%">যা যাচাই হয়</th></tr>
+          <tr><td><code>WorkspaceBranding.logo</code></td><td><code>ImageField</code> → Pillow ছবি কি না যাচাই করে (অ-ছবি আপলোড ব্যর্থ)</td></tr>
+          <tr><td><code>Material.file</code></td><td><b>কিছুই না</b> — শুধু ফাইল-নাম আর পথ (<code>materials/%Y/%m/</code>)</td></tr>
+          <tr><td>আকার-সীমা</td><td>কোনো <code>FILE_UPLOAD_MAX_MEMORY_SIZE</code> কাস্টম নেই</td></tr>
+          <tr><td>ধরন-সীমা</td><td>PDF/DOCX নয় এমন ফাইলও গ্রহণযোগ্য</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call bad" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>ঝুঁকি:</b> কেউ <code>.html</code> বা <code>.svg</code> আপলোড করে লিংক শেয়ার করলে ব্রাউজারে স্ক্রিপ্ট চলতে পারে — যদি মিডিয়া ফাইল পাবলিক পথে সার্ভ হয়।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>এখন যা হয়:</b> <code>/media/</code> কেবল <code>DEBUG=True</code>-তে সার্ভ হয় (<code>config/urls.py</code>)। প্রোডাকশনে মিডিয়া ওয়েব-সার্ভারকে দিতে হয় — এবং সেই নিয়ম কোথাও লেখা নেই।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>সংশোধন:</b> অনুমোদিত এক্সটেনশন-তালিকা + আকার-সীমা + <code>Content-Disposition: attachment</code>। এখনো বাকি।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ফাইল আপলোড মানে ব্যবহারকারীর দেওয়া কোড আপনার সার্ভারে" — এই বাক্যটি শেখান। Student-এর দেওয়া হোমওয়ার্ক ফাইলও একই ঝুঁকি বহন করে।
+</section>

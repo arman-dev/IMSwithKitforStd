@@ -1,0 +1,43 @@
+<section class="slide">
+  <div class="head"><span class="badge">পরিধি</span>
+    <div><h2><code>scoping.py</code> — এক জায়গায় "কে কী দেখবে"</h2>
+      <div class="sub">তালিকা-কোয়েরি আর বস্তু-যাচাই একই ফাংশন ডাকে, তাই কখনো মতভেদ হয় না</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <pre style="font-size:7.9pt;line-height:1.42;padding:3mm 3.4mm">def visible_students(user, workspace, membership=None):
+    qs = StudentProfile.objects.filter(workspace=workspace)
+    if membership is None:
+        return qs.none()
+
+    if role == ORG_ADMIN:
+        return qs                       # পুরো স্কুল
+
+    if role in (COORDINATOR, TEACHER):
+        return qs.filter(
+            enrollments__is_active=True,
+            enrollments__class_group__in=
+                visible_classes(user, workspace)).distinct()
+
+    if role == STUDENT:
+        return qs.filter(pk=student.pk)  # কেবল নিজের
+
+    return qs.none()</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">ফাংশন</th><th style="width:56%">কী ফেরত দেয়</th></tr>
+          <tr><td><code>visible_classes</code></td><td>ভূমিকা অনুযায়ী ক্লাসের queryset</td></tr>
+          <tr><td><code>visible_students</code></td><td>ওই ক্লাসগুলোর সক্রিয় ছাত্র</td></tr>
+          <tr><td><code>visible_exams</code></td><td>ছাত্রের জন্য কেবল <code>is_published</code> + নিজের নম্বর</td></tr>
+          <tr><td><code>visible_homework</code></td><td>ছাত্রের জন্য কেবল প্রকাশিত</td></tr>
+          <tr><td><code>teacher_can_access_class()</code></td><td>একই ফাংশনের <code>.filter(pk=…).exists()</code></td></tr>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          কারণ: <b>তালিকা ও বস্তু যাচাই আলাদা লজিক হলে</b> একদিন একটি পথ খোলা থেকে যায় — তালিকায় দেখা যায় না, কিন্তু URL জানলে ঢোকা যায়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ফাইলটিই ডেকের হৃদয়। প্রশ্ন করুন: "নতুন ভূমিকা যোগ করলে কত জায়গায় বদলাতে হবে?" উত্তর: এক জায়গায় — <code>scoping.py</code>. এটাই ভূমিকা-বাগ একবার ঠিক করার নকশা।
+</section>

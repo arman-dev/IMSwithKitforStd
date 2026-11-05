@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্ট্যাটিক</span>
+    <div><h2>৫টি ফাইল, ৫৩৪ KB — এবং একটি CDN-ও নেই</h2>
+      <div class="sub"><code>static/vendor/</code> — Bootstrap আর আইকন নিজের ভেতরে রাখা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:56%">ফাইল</th><th style="width:44%">আকার</th></tr>
+          <tr><td><code>vendor/bootstrap.min.css</code></td><td class="num">২২৭ KB</td></tr>
+          <tr><td><code>vendor/bootstrap-icons.woff2</code></td><td class="num">১২৭ KB</td></tr>
+          <tr><td><code>vendor/bootstrap-icons.css</code></td><td class="num">৮৪ KB</td></tr>
+          <tr><td><code>vendor/bootstrap.bundle.min.js</code></td><td class="num">৭৯ KB</td></tr>
+          <tr><td><code>css/ims.css</code></td><td class="num">৮ KB</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>কেন CDN নয়:</b> স্কুলের নেটওয়ার্ক প্রায়ই বন্ধ-নিয়ন্ত্রিত; CDN ব্লক হলে পর্দা ভেঙে পড়ে। নিজের ফাইল মানে নিজের নিয়ন্ত্রণ।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>দাম:</b> আপডেট নিজে টানতে হয় — Bootstrap-এর নিরাপত্তা-প্যাচ স্বয়ংক্রিয়ভাবে আসে না। ভার্সনও কোথাও লেখা নেই।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>প্রোডাকশনে:</b> <code>collectstatic</code> → <code>staticfiles/</code>; WhiteNoise manifest + ৩০ দিন ক্যাশ; ফাইলের নামে হ্যাশ, তাই পুরনো ক্যাশ কখনো ভুল ফাইল দেয় না।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>সৎ ফাঁক:</b> <code>staticfiles/</code> ফোল্ডার <code>.gitignore</code>-এ আছে, কিন্তু কোন Bootstrap ভার্সন, তা কোথাও লেখা নেই — আপডেট করতে গেলে প্রথমেই অনুমান করতে হবে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "CDN মানে দ্রুত" — এই ধারণাটি প্রশ্ন করুন। বাংলাদেশের স্কুল-নেটওয়ার্কে CDN ব্লক হওয়ার ঘটনা বাস্তব; ৫৩৪ KB নিজের সার্ভার থেকে দিলে ৫০ms বেশি লাগে, কিন্তু পর্দা কখনো ভাঙে না।
+</section>

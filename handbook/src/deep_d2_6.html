@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">দুই ফাইল</span>
+    <div><h2><code>requirements.txt</code> বনাম <code>requirements-prod.txt</code></h2>
+      <div class="sub">৬ + ৪ = ১০টি লাইন, কিন্তু সিদ্ধান্ত বড়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm"># requirements.txt  (দুই জায়গায়)
+Django==6.1.2
+psycopg[binary]==3.3.6
+python-dotenv==1.2.4
+Pillow==12.3.0
+openpyxl==3.1.5
+reportlab==5.1.0</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">ডেমো, টেস্ট, ডেভেলপমেন্ট — সবখানে একই।</div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm"># requirements-prod.txt
+-r requirements.txt
+gunicorn==23.0.0
+whitenoise==6.11.0
+dj-database-url==3.0.1</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">প্রথম লাইনটাই মূল: <code>-r</code> — base তালিকা আবার লিখতে হয় না, তাই দুটো কখনো আলাদা হয়ে যায় না।</div>
+      </div>
+    </div>
+    <table class="tight" style="margin-top:3mm">
+      <tr><th style="width:26%">প্রশ্ন</th><th style="width:74%">উত্তর</th></tr>
+      <tr><td>কেন gunicorn বেসে নেই?</td><td>শিক্ষার্থীর মেশিনে <code>runserver</code> চলে; gunicorn ইনস্টল থাকলে কেউ ভুল করে সেটি ডেমোতে চালাত</td></tr>
+      <tr><td>কেন whitenoise আলাদা?</td><td>ডেভে <code>runserver</code> নিজেই স্ট্যাটিক দেয়; প্রোডে সেই সুবিধা নেই</td></tr>
+      <tr><td><code>pip freeze</code> চলে?</td><td>না — হাতে লেখা, তাই কোনটি সরাসরি দরকার আর কোনটি টানল, তা পরিষ্কার</td></tr>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছোট প্রশ্ন: "prod ফাইলে <code>-r</code> না লিখে ৬টি লাইন কপি করলে কী হয়?" উত্তর: একদিন Django ভার্সন এক জায়গায় বাড়বে, অন্যটায় থাকবে — আর প্রোডে অচেনা বাগ।
+</section>

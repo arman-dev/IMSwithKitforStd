@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">ইতিহাস</span>
+    <div><h2>১২টি মাইগ্রেশন — ডেটাবেজের ডায়েরি</h2>
+      <div class="sub">৯ অ্যাপে <code>0001_initial</code> · ৩ অ্যাপে <code>0002</code> · core ও reports-এ শূন্য</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.02">
+        <table class="tight">
+          <tr><th style="width:52%">ফাইল</th><th style="width:48%">কী যোগ করল</th></tr>
+          <tr><td>accounts/0001 · academics/0001 · students/0001 · attendance/0001 · lessons/0001 · assessments/0001 · audit/0001 · workspaces/0001</td><td>প্রথম স্কিমা (৮টি অ্যাপের মূল টেবিল)</td></tr>
+          <tr><td>billing/0001</td><td>প্ল্যান · সাবস্ক্রিপশন · ইনভয়েস</td></tr>
+          <tr><td>workspaces/0002_workspacebranding</td><td>লোগো · রঙ · কাস্টম ডোমেইন</td></tr>
+          <tr><td>academics/0002_coordinatorscope</td><td>সমন্বয়কের পরিধি</td></tr>
+          <tr><td>billing/0002_seed_plans_and_grandfather</td><td><b>ডেটা</b> মাইগ্রেশন — ৩ প্ল্যান + পুরনো স্কুলের সাবস্ক্রিপশন</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8.1pt;line-height:1.45;padding:3mm 3.6mm">def forwards(apps, schema_editor):
+    Plan = apps.get_model("billing", "Plan")
+    ...
+    # নতুন স্কুল "চিরকাল ফ্রি" হয়ে যাওয়া
+    # ঠেকাতে প্রতিটি workspace-এ
+    # একটি Subscription সারি বানানো হয়</pre>
+        <div class="call" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>নিয়ম:</b> স্কিমা মাইগ্রেশন আর ডেটা মাইগ্রেশন আলাদা ফাইলে। একসাথে করলে রোলব্যাকের সময় ডেটা হারায়।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> <code>makemigrations --check</code> বা মাইগ্রেশন-লিন্টার কোথাও স্বয়ংক্রিয় নয়; সিআই নেই। ভুলে মডেল বদলে মাইগ্রেশন না বানালে ধরা পড়বে কেবল ডিপ্লয়ে করে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "মাইগ্রেশন ফাইল হাতে লেখা যায়?" — যায়, এবং কখনো দরকার হয় (ডেটা রূপান্তর)। কিন্তু স্কিমার জন্য কখনো হাতে লিখবেন না; <code>makemigrations</code>-এর আউটপুট পড়ুন, তারপর বিশ্বাস করুন।
+</section>

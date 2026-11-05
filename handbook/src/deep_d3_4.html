@@ -1,0 +1,43 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্তর ২–৩</span>
+    <div><h2><code>workspace_view</code> — চারটি ধাপ, ২৮ লাইন</h2>
+      <div class="sub">৫২টি ভিউ এই একটি ডেকোরেটরের উপর দাঁড়িয়ে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">if not request.user.is_authenticated:
+    return redirect(f"/accounts/login/?next={request.path}")
+
+workspace = Workspace.objects.filter(
+    slug=slug, is_active=True).first()
+if workspace is None:
+    raise Http404("Workspace not found.")
+
+membership = get_membership(request.user, workspace)
+if membership is None:
+    raise Http404("Workspace not found.")   # ইচ্ছাকৃত
+
+if allowed_roles and membership.role not in allowed_roles:
+    raise PermissionDenied("Your role ... does not allow this action.")
+
+request.workspace = workspace
+request.membership = membership
+request.session["active_workspace_id"] = workspace.pk</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:32%">ধাপ</th><th style="width:68%">ফল</th></tr>
+          <tr><td>১. লগইন?</td><td>না হলে ৩০২ + <code>?next=</code> — কাজ হারায় না</td></tr>
+          <tr><td>২. স্কুল আছে?</td><td>না হলে ৪০৪</td></tr>
+          <tr><td>৩. সদস্য?</td><td>না হলে <b>৪০৪</b>, ৪০৩ নয়</td></tr>
+          <tr><td>৪. ভূমিকা?</td><td>ভুল হলে ৪০৩ — বার্তা সহ</td></tr>
+          <tr><td>সফল হলে</td><td><code>request.workspace</code> + সেশন আপডেট</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>প্ল্যাটফর্ম-অ্যাডমিনও ছাড় পায় না:</b> ডেকোরেটরের মন্তব্যে লেখা — "platform admin may look at platform-level pages, never at private records of a workspace they do not belong to."
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩য় ধাপে থামুন। জিজ্ঞেস করুন: "সদস্য না হলে ৪০৩ দিলে কী ক্ষতি?" উত্তর: ৪০৩ মানে "এই স্কুল আছে, কিন্তু তোমার অধিকার নেই" — সেটাই তথ্য ফাঁস।
+</section>

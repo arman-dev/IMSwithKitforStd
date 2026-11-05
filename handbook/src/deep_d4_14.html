@@ -1,0 +1,24 @@
+<section class="slide">
+  <div class="head"><span class="badge">ডেটা</span>
+    <div><h2>কী জমা থাকে, কত দিন, আর কে দেখতে পারে</h2>
+      <div class="sub">শিশুর ডেটা রাখা মানে বাড়তি দায়িত্ব</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:26%">ডেটা</th><th style="width:26%">কোথায়</th><th style="width:48%">নিয়ম</th></tr>
+      <tr><td>ছাত্রের নাম, অভিভাবকের ফোন, জন্মতারিখ</td><td><code>StudentProfile</code></td><td>স্কুল নিজের ডেটা; অপারেটর কাজে ব্যবহার করে না</td></tr>
+      <tr><td>হাজিরা ও নম্বর</td><td><code>AttendanceRecord</code> · <code>Mark</code></td><td>কখনো মুছে ফেলা হয় না — সংশোধন হয়, লিপিবদ্ধভাবে</td></tr>
+      <tr><td>অডিট লগ</td><td><code>AuditLog</code></td><td>কে বদলাল, কখন, কেন — ৩০০ অক্ষরে</td></tr>
+      <tr><td>ইমেইল ও পাসওয়ার্ড</td><td><code>User</code></td><td>পাসওয়ার্ড হ্যাশ; কখনো লগে নয়, কখনো অডিটে নয়</td></tr>
+      <tr><td>ব্যাকআপ</td><td>সার্ভারের ডিস্ক</td><td><b>১৪ দিন</b> — তারপর স্বয়ংক্রিয় মুছে যায়</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সৎ ফাঁক:</b> কোনো গোপনীয়তা-নীতি (privacy policy) বা ডেটা-মুছে-ফেলার নীতি লেখা নেই — <code>LAUNCH_PLAYBOOK</code> নিজেই বলেছে "Terms + privacy page — not in this repo yet"।
+      </div>
+      <div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ব্যবহারিক নিয়ম:</b> ব্যাকআপ ফাইলে পুরো স্কুলের ডেটা থাকে — সেটি হাতে পাওয়া মানে সব ডেটা হাতে পাওয়া। তাই ব্যাকআপ ডিস্কের অনুমতিও সমান গুরুত্বপূর্ণ।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "শিশুর ডেটা" — এই শব্দ দুটি জোর দিন। প্রাপ্তবয়স্ক ব্যবহারকারীর ডেটার চেয়ে ভিন্ন দায়িত্ব, ভিন্ন আইন, ভিন্ন নৈতিকতার প্রশ্ন।
+</section>

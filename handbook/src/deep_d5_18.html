@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">প্রবেশগম্যতা</span>
+    <div><h2>কীবোর্ড, ফোকাস ও স্ক্রিন-রিডার</h2>
+      <div class="sub">মাপা অবস্থা: যেখানে ভালো, যেখানে ফাঁকা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.6mm">
+      <div style="flex:1.05">
+        <table class="tight">
+          <tr><th style="width:42%">যা দরকার</th><th style="width:20%">মাপা</th><th style="width:38%">ফল</th></tr>
+          <tr><td><code>aria-*</code> অ্যাট্রিবিউট</td><td><b>০</b></td><td>স্ক্রিন-রিডারকে কিছুই বলা হয় না</td></tr>
+          <tr><td><code>&lt;th scope="col"&gt;</code></td><td><b>০ / ৩৫ টেবিল</b></td><td>টেবিল পড়ার সময় মাথা মেলে না</td></tr>
+          <tr><td>skip-link</td><td><b>০</b></td><td>Tab চেপে ১২+ মেনু পার হতে হয়</td></tr>
+          <tr><td><code>:focus</code> নিয়ম</td><td><b>১</b></td><td>কেবল ফর্ম ঘরে; বাটনে নেই</td></tr>
+          <tr><td><code>alt</code></td><td>৫</td><td>২টিতে স্কুলের নাম, ৩টিতে খালি (পাশে লেখা আছে)</td></tr>
+          <tr><td><code>&lt;label for&gt;</code></td><td>৭ টেমপ্লেট</td><td>লেবেলে ক্লিক করলেই ঘর সক্রিয়</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>যা ভালো:</b> সিমান্টিক HTML ব্যবহার হয়েছে — <code>&lt;table&gt;</code>, <code>&lt;label&gt;</code>, <code>&lt;nav&gt;</code>, আসল <code>&lt;button&gt;</code>। ফলে ভিত্তিটা ঠিক; শুধু উপরের স্তরটুকু বাকি।
+        </div>
+        <pre style="font-size:7.3pt;line-height:1.45;padding:2.3mm 3mm;margin-top:2mm">/* সবচেয়ে ছোট উন্নতি — ৩ লাইন */
+.btn-ims:focus-visible,
+.ims-nav a:focus-visible{
+  outline:2px solid var(--ims-primary);
+  outline-offset:2px;
+}</pre>
+        <div class="call bad" style="margin-top:2mm;font-size:9.4pt;padding:2.2mm 3.2mm">
+          <b>সৎ ফাঁক:</b> কোনো অ্যাক্সেসিবিলিটি টেস্ট নেই, কোনো অডিট চালানো হয়নি — তাই এই সংখ্যাগুলোই একমাত্র প্রমাণ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ল্যাপটপ বন্ধ করুন, শুধু Tab চেপে লগইন করুন — ছাত্ররা নিজেই দেখবে ফোকাস কোথায় আছে বোঝা যায় না। এই একটি অভিজ্ঞতাই পুরো স্লাইডের চেয়ে বেশি কাজ করে।
+</section>

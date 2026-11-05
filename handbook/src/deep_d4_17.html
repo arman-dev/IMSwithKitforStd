@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">ধারণক্ষমতা</span>
+    <div><h2>একটি স্কুল এক বছরে কত সারি বানায়</h2>
+      <div class="sub">হিসাবটা সরল; মাপাটা হয়নি — দুটোই সত্য</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">হিসাব (৮০০ ছাত্রের স্কুল)</th><th style="width:48%">সারি/বছর</th></tr>
+          <tr><td>হাজিরা: ৮০০ × ৮ বিষয় × ২০০ দিন</td><td class="num">১২,৮০,০০০</td></tr>
+          <tr><td>নম্বর: ৮০০ × ৮ × ৩ পরীক্ষা</td><td class="num">১৯,২০০</td></tr>
+          <tr><td>অডিট: প্রতিদিন ~২০০ কাজ</td><td class="num">৭৩,০০০</td></tr>
+          <tr><td>এনরোলমেন্ট + হোমওয়ার্ক + সাবমিশন</td><td class="num">~৩০,০০০</td></tr>
+        </table>
+        <div style="font-size:9.8pt;color:#334155;margin-top:2mm">মূল চাপ হাজিরায় — একাই বাকি সব মিলিয়ে যা হয় তার প্রায় ১০ গুণ।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">সম্পদ</th><th style="width:56%">আজকের অবস্থা</th></tr>
+          <tr><td>gunicorn worker</td><td>৩টি · timeout ৬০ সে</td></tr>
+          <tr><td>DB সংযোগ</td><td><code>CONN_MAX_AGE=60</code> · worker-প্রতি একটি</td></tr>
+          <tr><td>ডিস্ক</td><td><code>media/</code> স্থায়ী ভলিউমে থাকতে হবে</td></tr>
+          <tr><td>লোড-টেস্ট</td><td><b>কখনো হয়নি</b></td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>তাই "১০০০ ব্যবহারকারী চলবে?" প্রশ্নের সৎ উত্তর:</b> "জানি না — মাপা হয়নি।" ইনডেক্স আছে, কিন্তু <code>EXPLAIN</code> করে দেখা হয়নি।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      পরের ধাপ স্পষ্ট: বড় স্কুলের ডেমো-ডেটা বানিয়ে (৫০ হাজার সারি) আগে <code>EXPLAIN ANALYZE</code>, তারপর দরকার হলে লোড-টেস্ট। অনুমান দিয়ে স্কেলিং নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> হিসাবটি বোর্ডে করুন — শিক্ষার্থীরা অবাক হয় দেখে যে হাজিরাই ৯০% ডেটা। এখান থেকেই বোঝা যায় কেন <code>(class_group, date)</code> ইনডেক্স সবচেয়ে জরুরি।
+</section>

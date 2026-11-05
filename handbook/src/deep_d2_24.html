@@ -1,0 +1,26 @@
+<section class="slide">
+  <div class="head"><span class="badge">কমান্ড</span>
+    <div><h2>৪টি ম্যানেজমেন্ট কমান্ড, ৪০৩ লাইন</h2>
+      <div class="sub">যে কাজ একবার করতে হয়, তার জন্য ভিউ নয় — কমান্ড</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:24%">কমান্ড</th><th style="width:10%">লাইন</th><th style="width:66%">কী করে</th></tr>
+      <tr><td><code>seed_demo</code></td><td class="num">২৮১</td><td>demo ডেটা: স্কুল, ৪০ ছাত্র, শ্রেণি, হাজিরা, পরীক্ষা — <code>run.sh</code> নিজে ডাকে</td></tr>
+      <tr><td><code>billing_report</code></td><td class="num">৫১</td><td>কোন স্কুল কত seats ব্যবহার করছে, কত টাকা বাকি — টার্মিনালে ছাপা</td></tr>
+      <tr><td><code>sync_domains</code></td><td class="num">৩৭</td><td>যাচাই করা কাস্টম ডোমেইন নিয়ে <code>ALLOWED_HOSTS</code>-এর তালিকা ছাপে/মেলায়</td></tr>
+      <tr><td><code>seed_plans</code></td><td class="num">৩৪</td><td>তিনটি প্ল্যান তৈরি/আপডেট — মাইগ্রেশন ছাড়াই পুনরায় চালানো যায়</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.2mm;gap:5mm">
+      <div class="call" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>কেন ভিউ নয়:</b> এই কাজের জন্য লগইন, সেশন বা CSRF লাগে না — আর ভুল করে কোনো ব্রাউজার থেকে চালানোও উচিত নয়।
+      </div>
+      <div class="call" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>সবচেয়ে বড়িটি <code>seed_demo</code>:</b> ২৮১ লাইন — ডেমোর পুরো গল্প এখানেই লেখা; তাই ডেমো রিসেট করা (<code>--reset</code>) মানে এক কমান্ডে নতুন গল্প।
+      </div>
+      <div class="call warn" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>সৎ ফাঁক:</b> <code>seed_demo</code>-র কোনো টেস্ট নেই। কেউ ভেঙে দিলে টের পাবেন কেবল ডেমো চালিয়ে।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "ডেটা বানানোর কাজটা ভিউতে রাখলে কী সমস্যা?" উত্তর: লগইন লাগত, আর ভুল করে প্রোডাকশনে কেউ ক্লিক করলে ডেমো-ডেটা ঢুকে যেত।
+</section>

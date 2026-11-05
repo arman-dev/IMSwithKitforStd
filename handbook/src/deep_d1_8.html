@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত ১</span>
+    <div><h2>কলাম যোগ করা, না প্যারেন্ট দিয়ে খোঁজা?</h2>
+      <div class="sub">একই প্রশ্ন পাঁচটি টেবিলে — উত্তর দুই রকম</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.05">
+        <div style="font-size:11.5pt;font-weight:700;color:#065f46;margin-bottom:1.5mm">যখন কলাম যোগ করলাম</div>
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.4mm"># attendance/models.py  (workspace আছে)
+qs = AttendanceRecord.objects.filter(
+    workspace=request.workspace, date=today)
+
+# lessons/models.py  (Homework-এ workspace আছে)
+qs = Homework.objects.filter(
+    workspace=ws, class_group=cg, due_at__gte=now)</pre>
+        <div style="font-size:10.2pt;color:#334155;margin-top:1.5mm">এক JOIN কম, কোয়েরি ছোট, ভুলের সুযোগ কম।</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:11.5pt;font-weight:700;color:#991b1b;margin-bottom:1.5mm">যখন কলাম দিইনি</div>
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.4mm"># Mark: workspace কলাম নেই, exam-এ আছে
+Mark.objects.filter(
+    exam__workspace=ws, exam__is_published=True)
+
+# Chapter: syllabus-এ workspace আছে
+Chapter.objects.filter(syllabus__workspace=ws)</pre>
+        <div style="font-size:10.2pt;color:#334155;margin-top:1.5mm">এক JOIN বেশি, কিন্তু সত্য এক জায়গায়।</div>
+      </div>
+    </div>
+    <table class="tight" style="margin-top:3.5mm">
+      <tr><th style="width:22%">প্রশ্ন</th><th style="width:39%">কলাম যোগ</th><th style="width:39%">প্যারেন্ট-পথ</th></tr>
+      <tr><td><b>কখন বেছে নিলাম</b></td><td>টেবিলটা নিজে ঘন ঘন লিস্ট হয়, এবং প্যারেন্ট ছাড়াও কাজে লাগে (<code>Homework</code>, <code>Exam</code>, <code>AttendanceRecord</code>)</td><td>টেবিলটা প্যারেন্ট ছাড়া কখনো পড়া হয় না (<code>Mark</code>, <code>Chapter</code>, <code>Topic</code>, <code>Submission</code>, <code>GradeBand</code>)</td></tr>
+      <tr><td><b>ভুলের ধরন</b></td><td>দুই জায়গায় <code>workspace</code> — একদিন একটি সারিতে ভুল মান ঢুকে যায়</td><td>ভিউতে <code>workspace</code> ফিল্টার ভুলে যাওয়া — ডেটা মিশে যায়, এরর নেই</td></tr>
+      <tr><td><b>এই ভুল ধরার উপায়</b></td><td><code>clean()</code>-এ প্যারেন্টের workspace মিলিয়ে দেখা</td><td><code>scoping.py</code>-র একক হেল্পার + ১০৩ টেস্টের আইসোলেশন টেস্ট</td></tr>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীরা প্রায় সবসময়ই সব টেবিলে <code>workspace</code> যোগ করতে চায় — সহজ বলে। তাদের জিজ্ঞেস করুন: "তাহলে Mark-এ workspace আর Exam-এ workspace আলাদা হলে কোনটা সত্য?" দ্বিতীয় সত্য সবসময় হারায়।
+</section>

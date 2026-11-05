@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ১</span>
+    <div><h2>একটি হাজিরা সারির ১৩টি ঘর — কেন প্রতিটি দরকার</h2>
+      <div class="sub">attendance.AttendanceRecord · ১৩ কলাম · ১ unique · ২ ইনডেক্স</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:36%">কলাম</th><th style="width:64%">কেন আছে</th></tr>
+          <tr><td><code>workspace</code></td><td>লিস্ট-কোয়েরির একক শর্ত</td></tr>
+          <tr><td><code>student</code> · <code>class_group</code></td><td>"কোন ছাত্র, কোন ক্লাসে"</td></tr>
+          <tr><td><code>subject</code></td><td>বিষয়ভিত্তিক হাজিরা; একই দিনে ৬ বিষয়</td></tr>
+          <tr><td><code>date</code></td><td>দিন; ভবিষ্যতের তারিখ নিষিদ্ধ (<code>clean()</code>)</td></tr>
+          <tr><td><code>status</code></td><td>PRESENT · ABSENT · LATE · LEAVE</td></tr>
+          <tr><td><code>note</code></td><td>২০০ অক্ষরের টীকা</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">কলাম</th><th style="width:56%">কেন আছে</th></tr>
+          <tr><td><code>recorded_by</code></td><td>কে প্রথম লিখল (SET_NULL)</td></tr>
+          <tr><td><code>updated_by</code></td><td>কে সংশোধন করল — না থাকলে সংশোধন নয়</td></tr>
+          <tr><td><code>correction_reason</code></td><td>সংশোধনের কারণ, ২০০ অক্ষরে</td></tr>
+          <tr><td><code>created_at</code> · <code>updated_at</code></td><td>কখন লেখা, কখন বদলানো</td></tr>
+          <tr><td><code>id</code></td><td>সারির পরিচয়</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          সংশোধনের অনুমতি কার, কত দিন পর্যন্ত — <code>AttendancePolicy.correction_window_days = 7</code>; ন্যূনতম উপস্থিতি ৭৫%। নীতি ডেটায়, কোডে নয়।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>খেয়াল করুন:</b> সংশোধন মানে পুরনো সারি বদলানো, নতুন সারি নয়। তাই ইতিহাস এক সারিতেই — কে, কখন, কেন বদলাল, তিনটিই ওই সারির ভেতরে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "শিক্ষক ভুল করে সবাইকে অনুপস্থিত দিয়ে ফেললেন — ডেটাবেজে কী ঘটবে?" দুটি উত্তর শোনান: বদলে ফেলা (ইতিহাস হারায়) আর নতুন সারি (ডুপ্লিকেট)। প্রকল্পে তৃতীয় পথ: একই সারি + <code>updated_by</code> + <code>correction_reason</code>।
+</section>

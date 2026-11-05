@@ -1,0 +1,463 @@
+<!-- ===================== CLASS 26 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৫ · টেস্টিং · ক্লাস ২৬ / ৩৭</div>
+  <h1>সংখ্যাটা মিথ্যা<br>বলে না — সবও বলে না</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৯ · টপিক ৯.৩ (কভারেজ ও ফাঁক)<br>১০৩ টেস্ট · ৬৬ HTTP · ৩৭ বিশুদ্ধ · ৫,৪৮০ লাইন অ্যাপ কোড</div>
+  <div class="pill">line vs branch · flaky · CI</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>"কভারেজ ৯২%" — এর মানে কী?</h2>
+      <div class="sub">হাত তুলুন: কোডের ৯২% কাজ করে? ৯২% বাগ ধরা পড়বে?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:23pt;line-height:1.6">
+      কোনোটাই নয় — এর মানে শুধু <span class="hl">"৯২% লাইন অন্তত একবার চলেছে"</span>।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      একটি লাইন চলা আর তার <b>সব শাখা</b> চলা এক নয়। তাই আজ: কভারেজ কী মাপে, কী মাপে না,
+      আর IMS-এর ১০৩ টেস্ট কোথায় পাহারা দেয় — কোথায় দেয় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "কভারেজ হলো স্পিডোমিটার, ব্রেক নয়।" বেশি সংখ্যা ভালো, কিন্তু নিরাপত্তার প্রমাণ নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>আমাদের স্যুটের আসল আকার</h2>
+      <div class="sub">১০৩ টেস্ট · ১,৩৫৩ লাইন · অ্যাপ কোড ৫,৪৮০ লাইন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 46%">
+        <div class="diagram" style="padding:0">
+          <svg viewBox="0 0 460 210" xmlns="http://www.w3.org/2000/svg">
+            <g font-family="NotoBn">
+              <rect x="20" y="150" width="420" height="34" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.3"/>
+              <text x="30" y="171" font-size="9.4" fill="#312e81">HTTP টেস্ট (self.client)</text>
+              <text x="430" y="171" text-anchor="end" font-size="10" font-weight="700" fill="#312e81">৬৬</text>
+
+              <rect x="20" y="104" width="300" height="34" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.3"/>
+              <text x="30" y="125" font-size="9.4" fill="#115e59">বিশুদ্ধ ফাংশন (helper · মডেল)</text>
+              <text x="310" y="125" text-anchor="end" font-size="10" font-weight="700" fill="#115e59">৩৭</text>
+
+              <rect x="20" y="58" width="180" height="34" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.3"/>
+              <text x="30" y="79" font-size="9.4" fill="#7c2d12">স্ক্রিপ্ট (smoke_test)</text>
+              <text x="190" y="79" text-anchor="end" font-size="10" font-weight="700" fill="#b45309">১টি</text>
+
+              <text x="20" y="30" font-size="9" fill="#334155">অ্যাপ কোড ৫,৪৮০ লাইন · টেস্ট কোড ১,৩৫৩ লাইন (অনুপাত ১ : ০.২৫)</text>
+              <text x="20" y="46" font-size="8.4" fill="#64748b">আয়তন নয়, দেখানো হয়েছে টেস্টের ধরন</text>
+            </g>
+          </svg>
+        </div>
+        <div class="call" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4mm">
+          প্রতি ৪ লাইন কোডে ১ লাইন টেস্ট — শিল্পে ১:০.৫–১ সাধারণ; IMS নিচু দিকে, কিন্তু <b>সঠিক জায়গায়</b> ঘন।
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:42%">অ্যাপ</th><th>টেস্ট</th><th>HTTP</th></tr></thead>
+          <tbody>
+            <tr><td>billing</td><td>৩৬</td><td>২৩</td></tr>
+            <tr><td>core</td><td>১৯</td><td>১০</td></tr>
+            <tr><td>assessments</td><td>১১</td><td>৬</td></tr>
+            <tr><td>workspaces</td><td>১০</td><td>৮</td></tr>
+            <tr><td>accounts</td><td>৯</td><td>৯</td></tr>
+            <tr><td>students · attendance</td><td>৫ · ৫</td><td>৩ · ৩</td></tr>
+            <tr><td>academics · lessons</td><td>৪ · ৪</td><td>১ · ৩</td></tr>
+            <tr><td><b>reports · audit</b></td><td><b>০ · ০</b></td><td>০</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "HTTP ৬৬, বিশুদ্ধ ৩৭" — এই ভাগটাই টেস্ট পিরামিডের বাস্তব রূপ; পরের স্লাইডে কেন এটাই সঠিক।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>পিরামিড — নিচে বেশি, উপরে কম</h2>
+      <div class="sub">বিশুদ্ধ টেস্ট দ্রুত ও স্পষ্ট; HTTP টেস্ট ধীর কিন্তু বাস্তব</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <polygon points="500,10 610,72 390,72" fill="#fffbeb" stroke="#d97706" stroke-width="1.4"/>
+          <text x="500" y="52" text-anchor="middle" font-size="10.6" font-weight="700" fill="#7c2d12">সিস্টেম</text>
+          <text x="500" y="66" text-anchor="middle" font-size="9" fill="#b45309">smoke_test · ১</text>
+
+          <polygon points="390,74 610,74 700,132 300,132" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="500" y="100" text-anchor="middle" font-size="10.6" font-weight="700" fill="#312e81">ইন্টিগ্রেশন (HTTP)</text>
+          <text x="500" y="116" text-anchor="middle" font-size="9" fill="#4338ca">client · reverse · 403/404 · ৬৬</text>
+
+          <polygon points="300,134 700,134 800,192 200,192" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="500" y="160" text-anchor="middle" font-size="10.6" font-weight="700" fill="#115e59">ইউনিট (বিশুদ্ধ ফাংশন)</text>
+          <text x="500" y="176" text-anchor="middle" font-size="9" fill="#0f766e">scoping · grade_for · build_result_sheet · ৩৭</text>
+
+          <text x="20" y="40" font-size="9.2" fill="#334155">উপরের স্তর:</text>
+          <text x="20" y="56" font-size="8.8" fill="#64748b">ধীর, ভঙ্গুর</text>
+          <text x="20" y="72" font-size="8.8" fill="#64748b">কিন্তু আসল</text>
+          <text x="980" y="160" text-anchor="end" font-size="9.2" fill="#334155">নিচের স্তর:</text>
+          <text x="980" y="176" text-anchor="end" font-size="8.8" fill="#64748b">দ্রুত, নির্দিষ্ট</text>
+          <text x="980" y="190" text-anchor="end" font-size="8.8" fill="#64748b">কিন্তু "অ্যাপ" দেখে না</text>
+        </g>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        IMS-এ ইন্টিগ্রেশন বেশি — কারণ বেশিরভাগ বাগ ছিল <b>অনুমতি ও URL</b> নিয়ে, যা শুধু HTTP-তে ধরা পড়ে।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        উল্টো পিরামিড (সব এন্ড-টু-এন্ড) ধীর আর ভঙ্গুর — ১০০০ টেস্ট ২০ মিনিট নিলে কেউ চালায় না।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "পিরামিড নিয়ম নয়, অনুপাত।" অ্যাপের ধরন অনুযায়ী ভাগ বদলায় — IMS-এ অনুমতি বেশি, তাই ইন্টিগ্রেশন বেশি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>কভারেজ মাপা — তিনটি কমান্ড</h2>
+      <div class="sub"><code>coverage.py</code> · শাখা-সহ · কোন লাইন বাদ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">pip install coverage
+
+# ১. টেস্ট চালিয়ে হিসাব নিন
+coverage run --branch manage.py test apps
+coverage report -m          # কোন লাইন বাদ, দেখায়
+coverage html               # htmlcov/index.html
+
+# ২. শাখা মোডেই চালান
+# --branch না দিলে if-এর ভেতরে না ঢুকলেও লাইন
+# "covering" দেখায় — সবচেয়ে বড় মিথ্যা
+
+# ৩. বাদ দিন যা মাপার দরকার নেই
+# .coveragerc
+[run]
+branch = True
+omit = */migrations/*, */tests.py, manage.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if TYPE_CHECKING:</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">IMS-এ এখন নেই</b>
+            <p style="font-size:9.6pt"><code>requirements.txt</code>-এ <code>coverage</code> নেই, <code>.coveragerc</code> নেই — অর্থাৎ আজ পর্যন্ত কভারেজ <b>কখনো মাপা হয়নি</b>।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">migrations বাদ কেন</b>
+            <p style="font-size:9.6pt">অটো-জেনারেটেড কোড — কভারেজের সংখ্যা বাড়ায়, আত্মবিশ্বাস দেয় না।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">লক্ষ্য সংখ্যা নয়</b>
+            <p style="font-size:9.6pt">৮০% নিয়ম হিসেবে দিলে লোকেরা অর্থহীন টেস্ট লেখে; বরং <b>ঝুঁকিপূর্ণ ফাইল</b> ১০০% চাই।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কোন ফাইল ঝুঁকিপূর্ণ</b>
+            <p style="font-size:9.6pt"><code>scoping.py</code> · <code>permissions.py</code> · <code>billing/services.py</code> · <code>assessments/models.py</code></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে <code>coverage run --branch</code> চালিয়ে দেখান কোন ফাইল লাল — বিশেষ করে <code>reports/views.py</code> ও <code>audit/views.py</code>।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>লাইন কভারেজের মিথ্যা</h2>
+      <div class="sub">একটি ফাংশন, চারটি শাখা — একটিমাত্র টেস্টে ৭৫% "কভার"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45">def is_writable(self):
+    if self.status in (PAST_DUE, SUSPENDED, CANCELLED):
+        return False                        # শাখা ১
+    if self.status == TRIAL:
+        return self.trial_ends_on is None or self.trial_ends_on >= today   # ২
+    if self.status == ACTIVE:
+        return self.current_period_end is None or self.current_period_end >= today  # ৩
+    return False                            # শাখা ৪
+
+# একটি ACTIVE সাবস্ক্রিপশন নিয়ে একবার কল করলেই
+# coverage বলে: "সব লাইন চলেছে" — কিন্তু
+# শাখা ১, ২ ও ৪ কখনো ছোঁয়া হয়নি।</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:44%">প্রশ্ন</th><th>উত্তর</th></tr></thead>
+          <tbody>
+            <tr><td>লাইন কভারেজ</td><td>"এই লাইন একবার চলেছে"</td></tr>
+            <tr><td>শাখা কভারেজ</td><td>"<code>if</code>-এর দুই দিকই চলেছে"</td></tr>
+            <tr><td>শর্ত কভারেজ</td><td>"<code>or</code>-এর দুই অংশ আলাদা চলেছে"</td></tr>
+            <tr><td>IMS-এ কত শাখা</td><td><code>is_writable</code> ৪ · <code>visible_classes</code> ৫ · <code>activate</code> ২</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          <code>or</code>-এর দ্বিতীয় অংশ কখনো পরীক্ষা না হলে লাইন-কভারেজ ১০০% দেখায়, অথচ একটা সীমা পুরোপুরি অজ্ঞাত।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>is_writable</code>-এর চারটি রিটার্ন বোর্ডে লিখুন, তারপর জিজ্ঞেস করুন: "billing-এর ৩৬ টেস্ট কি চারটিই ছোঁয়?" উত্তর: প্রায় — মেয়াদ, ACTIVE, PAST_DUE ও SUSPEND সবই আছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>শূন্য টেস্টের দুই অ্যাপ</h2>
+      <div class="sub"><code>reports/</code> ৩০০+ লাইন · <code>audit/</code> — দুটোই অন্ধ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:34%">যা অপরীক্ষিত</th><th>ভুল হলে</th></tr></thead>
+          <tbody>
+            <tr><td>CSV কলামের ক্রম</td><td>Excel-এ ডেটা সরে যায়, কেউ টের পায় না</td></tr>
+            <tr><td><code>_csv_response</code>-এর BOM</td><td>বাংলা নাম ভেঙে যায়</td></tr>
+            <tr><td>এক্সপোর্টের স্কোপ</td><td>শিক্ষক পুরো প্রতিষ্ঠানের ডেটা নামিয়ে ফেলেন</td></tr>
+            <tr><td>অডিট ফিল্টার (<code>action</code> · <code>actor</code>)</td><td>ভুল রেকর্ড দেখিয়ে তদন্ত বিভ্রান্ত</td></tr>
+            <tr><td>paginator ৪০/পাতা</td><td>শেষ পাতা কেউ দেখেন না</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 42%">
+        <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+          প্রথম তিনটি টেস্ট যা আজই লেখা উচিত:
+          <b>১.</b> ছাত্র CSV নামাতে পারে না (৪০৩) ·
+          <b>২.</b> CSV-র প্রথম বাইট <code>\ufeff</code> ·
+          <b>৩.</b> অন্য প্রতিষ্ঠানের ছাত্র CSV-তে নেই
+        </div>
+        <div class="call warn" style="margin-top:2.6mm;font-size:10.2pt;padding:2.6mm 4mm">
+          এগুলো লিখতে ৩০ মিনিট; এগুলো ছাড়া ঝুঁকি <b>চিরকাল</b>।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটা সরাসরি অনুশীলনে রূপ দিন — কেউ প্রথম টেস্টটা ক্লাসেই লিখে ফেলুক। "আজ ৩০ মিনিট, নাহলে অনন্তকাল।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>ফ্লেকি টেস্ট — মাঝে মাঝে লাল</h2>
+      <div class="sub">সবচেয়ে ক্ষতিকর: দল টেস্টকে বিশ্বাস করা বন্ধ করে দেয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:26%">কারণ</th><th style="width:32%">লক্ষণ</th><th>প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. সময়</b></td><td>আজ সবুজ, কাল লাল</td><td><code>today ± timedelta</code> ব্যবহার — IMS এই পথেই</td></tr>
+        <tr><td><b>২. র‍্যান্ডম ডেটা</b></td><td>কখনো ১টি, কখনো ২টি সারি</td><td><code>random.seed(7)</code> — <b>IMS-এ আছে</b></td></tr>
+        <tr><td><b>৩. টেস্টের ক্রম</b></td><td>একা চালালে পাশ, সব একসাথে ফেল</td><td>প্রতিটি টেস্ট নিজের ডেটা বানাবে; শেয়ারড অবজেক্ট নয়</td></tr>
+        <tr><td><b>৪. ধীর I/O</b></td><td>মেইল/ফাইল টাইমআউট</td><td><code>locmem</code> ইমেইল ব্যাকএন্ড · অস্থায়ী <code>MEDIA_ROOT</code></td></tr>
+        <tr><td><b>৫. অনির্দিষ্ট dict ক্রম</b></td><td>সারির ক্রম বদলায়</td><td><code>order_by()</code> সবসময়; <code>set()</code> দিয়ে তুলনা</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <code>seed_demo</code>-তে <code>random.seed(7)</code> — একই ডেমো প্রতিবার হুবহু একই। এটাই <b>reproducible fixture</b>।
+      </div></div>
+      <div><div class="call bad" style="font-size:10.2pt;padding:2.6mm 4mm">
+        কিন্তু <code>test_result_sheet_handles_absent_zero_and_boundaries</code> আসল তারিখের ওপর নির্ভর করে না — তাই ২০৩০ সালেও চলবে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "একটি ফ্লেকি টেস্ট পেলে কী করবেন — আবার চালাবেন?" উত্তর: না, কারণটা খুঁজুন। "এলোমেলো লাল মানে এলোমেলো ভরসা।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>CI নেই — যা এখন হাতের কাজ</h2>
+      <div class="sub">প্রতিটি কমিটে কেউ নিজে <code>manage.py test</code> চালান</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.4"># .github/workflows/test.yml — যা এখনো যোগ করা হয়নি
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_DB: ims, POSTGRES_USER: ims, POSTGRES_PASSWORD: ims }
+        ports: ["5432:5432"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install -r requirements.txt
+      - run: python manage.py test apps
+      - run: python smoke_test.py</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">এখন কী আছে</b>
+            <p style="font-size:9.6pt">শুধু <code>run.sh</code>, <code>build.sh</code>, <code>smoke_test.py</code> — সব হাতে চালানো।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">ঝুঁকি</b>
+            <p style="font-size:9.6pt">"ভুলে যাওয়া" একটা অদৃশ্য বাগ: যেদিন কেউ টেস্ট চালায়নি, সেদিনই ভাঙা কোড মেইন-এ ঢোকে।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">আগে কী যোগ করবেন</b>
+            <p style="font-size:9.6pt">১. টেস্ট · ২. <code>manage.py check --deploy</code> · ৩. কভারেজ রিপোর্ট আর্টিফ্যাক্ট হিসেবে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">লোকাল গার্ড</b>
+            <p style="font-size:9.6pt">CI-র আগে <code>pre-commit</code> হুক দিয়ে ফরম্যাট ও টেস্ট — ৩০ সেকেন্ডের বাধা।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "CI মানে আপনার চেয়ে ধৈর্যশীল সহকর্মী।" লোকালে ভুলে যাওয়া স্বাভাবিক — তাই স্বয়ংক্রিয় করা দরকার।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>স্যুট দ্রুত রাখা — ৪ সেকেন্ডের রহস্য</h2>
+      <div class="sub">ধীর স্যুট = কেউ চালায় না = স্যুট নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:44%">কৌশল</th><th>লাভ</th></tr></thead>
+          <tbody>
+            <tr><td><code>setUpTestData</code> (১৬ জায়গায়)</td><td>ডেটা একবার, টেস্ট অনেক</td></tr>
+            <tr><td><code>seed_demo</code> একবার চালানো</td><td>৩০ সারির বদলে একটি কল</td></tr>
+            <tr><td><code>--keepdb</code></td><td>টেস্ট-ডেটাবেস পুনঃতৈরি নয়</td></tr>
+            <tr><td>SQLite ডেমো সেটিংস</td><td><code>config/settings/sqlite.py</code> — পোস্টগ্রেসের চেয়ে দ্রুত</td></tr>
+            <tr><td>বাইরের কল নেই</td><td>ইমেইল <code>console</code>/<code>locmem</code>, কোনো HTTP ক্লায়েন্ট নয়</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 40%">
+        <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+          ১০৩ টেস্ট কয়েক সেকেন্ডে — তাই <b>প্রতিটি ছোট পরিবর্তনের পরেই</b> চালানো সম্ভব।
+        </div>
+        <div class="call warn" style="margin-top:2.6mm;font-size:10.2pt;padding:2.6mm 4mm">
+          ধীর টেস্টের আসল খরচ সময় নয় — <b>মনোযোগ</b>। ৫ মিনিটের অপেক্ষায় কেউ আর চালায় না।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভে টাইম করুন: <code>time python manage.py test apps</code>। সংখ্যাটা বোর্ডে লিখুন — সেটাই স্যুটের স্বাস্থ্য।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>সীমানার সংখ্যাগুলোই বাগের বাড়ি</h2>
+      <div class="sub">৩২.৯৯% · ৩৩ · ০ · পূর্ণমান · একদিন আগে/পরে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:26%">ক্ষেত্র</th><th style="width:30%">সীমানা</th><th>টেস্টে আছে?</th></tr></thead>
+      <tbody>
+        <tr><td>পাশ/ফেল</td><td><code>pass_marks</code> = ৩৩ → ৩২ · ৩৩ · ৩৪</td><td>✔ <code>test_result_sheet_handles_absent_zero_and_boundaries</code></td></tr>
+        <tr><td>গ্রেড ব্যান্ড</td><td><code>min_percent</code> ও <code>max_percent</code>-এর প্রান্ত</td><td>✔ <code>test_grade_band_lookup</code></td></tr>
+        <tr><td>পূর্ণমান</td><td>১০০-এর বেশি নম্বর</td><td>✔ <code>test_mark_above_full_marks_is_rejected</code></td></tr>
+        <tr><td>অনুপস্থিত</td><td><code>is_absent=True</code> + নম্বর দিলে?</td><td>✔ <code>test_absent_student_cannot_have_a_mark</code></td></tr>
+        <tr><td>সিট সীমা</td><td>allowed−1 · allowed · allowed+1</td><td>✔ <code>test_server_refuses_the_third_student</code></td></tr>
+        <tr><td>ট্রায়াল মেয়াদ</td><td>আজই শেষ · কাল শেষ · গতকাল শেষ</td><td>'আজ/গতকাল' পরোক্ষে; মাঝেরটি স্পষ্ট নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      নিয়ম: প্রতিটি শর্তের <b>ঠিক আগে, ঠিক উপরে, ঠিক পরে</b> — তিনটি মান। সমতুল্য ভেতরের মান (৩৩, ৫৫, ৮৮) একটাই যথেষ্ট।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ট্রায়াল মেয়াদের তিনটি তারিখ দিয়ে <code>is_writable</code> চালিয়ে দেখান — মাঝেরটি (আজই শেষ) সবচেয়ে বেশি ভুল হয়, কারণ <code>&gt;=</code> বনাম <code>&gt;</code>।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>ঝুঁকি দিয়ে অগ্রাধিকার</h2>
+      <div class="sub">সব জায়গায় ১০০% চাইলে কিছুই পাবেন না — তাই ক্রম</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:30%">অংশ</th><th style="width:16%">ভুলের প্রভাব</th><th style="width:14%">সম্ভাবনা</th><th>অগ্রাধিকার</th></tr></thead>
+      <tbody>
+        <tr><td><code>scoping.py</code> · <code>permissions.py</code></td><td>ডেটা ফাঁস</td><td>মাঝারি</td><td><b>১ — আজ</b></td></tr>
+        <tr><td><code>billing/services.py</code> · <code>Invoice</code></td><td>টাকা ভুল</td><td>মাঝারি</td><td><b>১ — আজ</b></td></tr>
+        <tr><td><code>assessments</code> হিসাব</td><td>ভুল ফল</td><td>উচ্চ</td><td><b>২</b></td></tr>
+        <tr><td class="xl"><code>reports</code> CSV</td><td>ভুল রিপোর্ট</td><td>মাঝারি</td><td><b>২</b> — ০ টেস্ট</td></tr>
+        <tr><td><code>audit</code></td><td>তদন্ত বিভ্রান্ত</td><td>কম</td><td>৩</td></tr>
+        <tr><td><code>admin.py</code> · টেমপ্লেট</td><td>সৌন্দর্য</td><td>উচ্চ</td><td>৪ — চোখেই ধরা পড়ে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        দুই মাত্রা: <b>ক্ষতি কত বড়</b> × <b>কত ঘন ঘন বদলায়</b>। ঘন বদলানো কোডে টেস্ট বেশি দরকার।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <code>reports/</code>-এর অবস্থান ২ নম্বরে, অথচ টেস্ট ০ — এই ফাঁকটাই আজকের ক্লাসের প্রমাণ।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দলের সঙ্গে ছকটা পূরণ করান — সবার অগ্রাধিকার এক নয়, কিন্তু "কোনটা ১ নম্বর" নিয়ে দ্বিমত থাকলে সেটাই আলোচনার শুরু।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>কভারেজ নিয়ে পাঁচটি ভুল</h2>
+      <div class="sub">সংখ্যাকে লক্ষ্য বানালে টেস্ট অর্থহীন হয়ে যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:38%">ভুল</th><th>পরিণতি</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. শতাংশকে লক্ষ্য বানানো</b></td><td>assert ছাড়া টেস্ট লেখা শুরু হয় — লাইন চলে, দাবি নেই</td></tr>
+        <tr><td><b>২. <code>--branch</code> বাদ দেওয়া</b></td><td>if-এর ভেতরে না ঢুকেও "কভার" দেখায়</td></tr>
+        <tr><td><b>৩. মাইগ্রেশন/টেস্ট কোড গোনা</b></td><td>সংখ্যা ফুলে ওঠে, আত্মবিশ্বাস বাড়ে না</td></tr>
+        <tr><td><b>৪. ভিউ-কভারেজে সন্তুষ্ট থাকা</b></td><td>helper-এর শাখা অজ্ঞাত থেকে যায় (ক্লাস ২৫-এর ফাঁক ১)</td></tr>
+        <tr><td><b>৫. রিপোর্ট না রাখা</b></td><td>প্রতি সপ্তাহে সংখ্যা বাড়ছে না কমছে, জানা যায় না</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:3.8mm;font-size:10.8pt;padding:2.8mm 4.4mm">
+      সবচেয়ে বড় ভুল: <b>ঝুঁকি ও কভারেজ আলাদা করে ভাবা</b>। <code>scoping.py</code>-এর ১০০% > <code>admin.py</code>-এর ১০০%।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটা বোর্ডে লিখুন। "কভারেজকে প্রশ্ন করুন — কোন ফাইল, কোন শাখা, কোন ঝুঁকি।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — ফাঁক বন্ধ করুন</h2>
+      <div class="sub">মাপুন, তারপর একটি ফাঁক বন্ধ করুন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. মাপুন (৬ মিনিট)</b>
+            <p style="font-size:10pt"><code>coverage run --branch manage.py test apps</code> → <code>coverage report -m</code>।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. সবচেয়ে লাল ফাইল (৬ মিনিট)</b>
+            <p style="font-size:10pt">শাখা-কভারেজ সবচেয়ে কম কোন ফাইলে — সেটি ঝুঁকিপূর্ণ কি না বিচার করুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. একটি টেস্ট (৮ মিনিট)</b>
+            <p style="font-size:10pt"><code>reports</code>-এর জন্য একটি: ছাত্র CSV-তে ৪০৩ পাওয়া উচিত।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>লাইন কভারেজ ১০০% তবু বাগ — কীভাবে?</li>
+          <li class="g">ফ্লেকি টেস্ট কীভাবে চেনেন?</li>
+          <li>CI না থাকলে সবচেয়ে বড় ঝুঁকি কী?</li>
+          <li class="r">কোন ফাইলে ১০০% চাইবেন?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের উত্তর: অনুমতি, স্কোপ, বিলিং হিসাব, মূল্যায়ন — যেখানে ভুল মানে টাকা বা গোপনীয়তা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর অবস্থা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>IMS-এ</th></tr></thead>
+      <tbody>
+        <tr><td><b>কভারেজ লক্ষ্য নয়, মাপকাঠি</b></td><td>আজ <b>কখনো মাপা হয়নি</b> — coverage ইনস্টল নেই</td></tr>
+        <tr><td><b>শাখা কভারেজই আসল</b></td><td><code>is_writable</code>-এর ৪ শাখা · <code>visible_classes</code>-এর ৫</td></tr>
+        <tr><td><b>পিরামিড মানুন</b></td><td>৩৭ বিশুদ্ধ + ৬৬ HTTP + ১ সিস্টেম</td></tr>
+        <tr><td><b>ফ্লেকি টেস্টের উৎস সময় ও র‍্যান্ডম</b></td><td><code>random.seed(7)</code> · আপেক্ষিক তারিখ</td></tr>
+        <tr><td><b>দ্রুত স্যুট = ব্যবহৃত স্যুট</b></td><td><code>setUpTestData</code> ×১৬ · <code>seed_demo</code> একবার</td></tr>
+        <tr><td><b>ফাঁক লিখে রাখুন</b></td><td><b>reports · audit ০ টেস্ট · CI নেই</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটাই এই কোর্সের শিক্ষণপদ্ধতি: গর্বের তালিকার পাশে ফাঁকের তালিকা — দুইটাই সত্য।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৭</div>
+  <h2>পরের ক্লাস — "টেস্ট আগে, কোড পরে"</h2>
+  <p>টেস্ট ডিজাইন: কী টেস্ট করবেন না · সীমানা ও সমতুল্য শ্রেণি · TDD চক্র · রিফ্যাক্টর নিরাপদে · পর্ব ৫ সমাপ্তি</p>
+</section>

@@ -1,0 +1,485 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৭ · ক্লাস ৩১</div>
+  <h1>কোড বড় হয়, দায়িত্বও</h1>
+  <p class="sub">কোডের মানচিত্র · ঋণ কোথায় লেখা · নিরাপদ রিফ্যাক্টর · ডেপেন্ডেন্সি · ডেটা বৃদ্ধি</p>
+  <div class="pill">IMS · ক্লাস ৩১ · স্লাইড ১–১৭</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>এখন কোডটি কত বড়?</h2>
+      <div class="sub">আজ গোনা সংখ্যা — অনুমান নয়</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card soft" style="padding:3.6mm 4.5mm"><b style="font-size:12.4pt">অ্যাপ কোড ৫,৪৮০ লাইন</b>
+        <p style="font-size:10.4pt">১১টি অ্যাপে, মাইগ্রেশন ও টেস্ট বাদ দিয়ে। সবচেয়ে বড়: <code>billing</code> (১,৩৩০)।</p></div>
+      <div class="card soft" style="padding:3.6mm 4.5mm"><b style="font-size:12.4pt">টেস্ট কোড ১,৩৫৩ লাইন</b>
+        <p style="font-size:10.4pt">অনুপাত ১ : ০.২৫ — অ্যাপ কোডের এক-চতুর্থাংশ। বেশি নয়, কমও নয়।</p></div>
+      <div class="card soft" style="padding:3.6mm 4.5mm"><b style="font-size:12.4pt">মোট ৬,৮৩৩ লাইন</b>
+        <p style="font-size:10.4pt">৩১ মডেল · ১২ মাইগ্রেশন · ১০৩ টেস্ট · ১০ middleware · ১৯ কমিট</p></div>
+    </div>
+    <div class="call warn" style="margin-top:4.4mm;font-size:10.8pt;padding:2.8mm 4.4mm">
+      সংখ্যা নিজে থেকে খারাপ নয় — কিন্তু <b>বড় ফাইল আর নকল যুক্তি</b> একদিনে তৈরি হয় না, ধীরে জমে। এই ক্লাসের কাজ সেই জমা চেনা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসের শুরুতেই একটি সত্যি কথা: "৬,৮৩৩ লাইন আপনার হাতে লেখা"। এরপর জিজ্ঞেস করুন — "এতে নতুন কেউ ঢুকলে কোথা থেকে শুরু করবে?"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মানচিত্র</span>
+    <div><h2>১১টি অ্যাপ, ১১টি দায়িত্ব</h2>
+      <div class="sub">কোড আর টেস্টের অনুপাতই বলে দেয় কোথায় ঝুঁকি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:8.8pt">
+      <thead><tr><th style="width:20%">অ্যাপ</th><th style="width:14%">কোড</th><th style="width:14%">টেস্ট</th><th style="width:12%">অনুপাত</th><th>মন্তব্য</th></tr></thead>
+      <tbody>
+        <tr><td>billing</td><td>১,৩৩০</td><td>৪৩৬</td><td>১:০.৩৩</td><td>সবচেয়ে বড় ও সবচেয়ে পরীক্ষিত</td></tr>
+        <tr><td>core</td><td>৬৫৮</td><td>২৪৯</td><td>১:০.৩৮</td><td>স্কোপিং, পারমিশন, সিড</td></tr>
+        <tr><td>academics</td><td>৫৮৯</td><td>৫২</td><td>১:০.০৯</td><td><b>সবচেয়ে কম</b> — ফাঁক</td></tr>
+        <tr><td>assessments</td><td>৫৬৯</td><td>১৫৫</td><td>১:০.২৭</td><td>নম্বর ও পাবলিশ গেট</td></tr>
+        <tr><td>lessons</td><td>৫২৭</td><td>৭৬</td><td>১:০.১৪</td><td>হোমওয়ার্ক, সিলেবাস</td></tr>
+        <tr><td>workspaces</td><td>৩৯৫</td><td>১১৮</td><td>১:০.৩০</td><td>ব্র্যান্ডিং, ভূমিকা</td></tr>
+        <tr><td>accounts</td><td>৩৬২</td><td>১১৪</td><td>১:০.৩১</td><td>লগইন, রিসেট</td></tr>
+        <tr><td>students</td><td>৩৫৫</td><td>৬৮</td><td>১:০.১৯</td><td>ভর্তি ও স্থানান্তর</td></tr>
+        <tr><td>attendance</td><td>৩৪৩</td><td>৮৫</td><td>১:০.২৫</td><td>নীতি ও সংশোধন</td></tr>
+        <tr><td>reports · audit</td><td>৩৫২</td><td>০</td><td>—</td><td><b>শূন্য টেস্ট</b> — ক্লাস ২৬-এ চিহ্নিত</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছকে দুইটি লাল দাগ দেখান — academics-এর কম অনুপাত আর reports/audit-এর শূন্য। "কোড বড় হওয়ার সঙ্গে সঙ্গে টেস্টও বাড়ে না — সেটাই ঋণ।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বড় ফাইল</span>
+    <div><h2>পাঁচটি ফাইল, পাঁচটি সংকেত</h2>
+      <div class="sub">ফাইলের আকার নিজে দোষ নয় — কিন্তু সীমা দরকার</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:34%">ফাইল</th><th style="width:10%">লাইন</th><th>সংকেত</th></tr></thead>
+      <tbody>
+        <tr><td><code>apps/billing/tests.py</code></td><td>৪৩৬</td><td>টেস্ট বেশি = ভালো; তবে এক ফাইলে সব = খুঁজতে সময়</td></tr>
+        <tr><td><code>apps/billing/views_platform.py</code></td><td>৩১৭</td><td>এক ফাইলে বহু ভিউ — ভাগ করার প্রার্থী</td></tr>
+        <tr><td><code>core/management/commands/seed_demo.py</code></td><td>২৮১</td><td>ডেমো ডেটার বর্ণনা — লম্বা হওয়াই স্বাভাবিক</td></tr>
+        <tr><td><code>apps/billing/models.py</code></td><td>২৪৯</td><td>Plan + Subscription + Invoice + Payment — তিন মডেল এক ফাইলে</td></tr>
+        <tr><td><code>apps/lessons/views.py</code></td><td>২৪৮</td><td>৯ ভিউ — স্কোপিং নিয়ম একই থাকলে ভাগ করা সহজ</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      নিয়ম: <b>৩০০ লাইনের বেশি = থামুন ও ভাবুন</b>। কিন্তু ভাগ করবেন তখনই, যখন টেস্ট আগে থেকে আছে — নইলে ভাগ করা মানে ঝুঁকি নেওয়া।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "views_platform.py ভাগ করলে কী লাভ, কী ক্ষতি?" লাভ: পড়া সহজ; ক্ষতি: ইমপোর্ট আর URL নাম বদলাতে হবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ঋণের খাতা</span>
+    <div><h2>ঝুঁকি কোথায় লেখা থাকে</h2>
+      <div class="sub">IMS-এ কোডে একটিও <code>TODO</code> নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কোডে মন্তব্য-ঋণ</b>
+            <p style="font-size:9.4pt"><code># TODO: পরে ঠিক করব</code> — গোনা হয়েছে <b>০</b>। ভালো লক্ষণ, তবে মানে এই নয় ঋণ নেই।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">যেখানে আসলে লেখা</b>
+            <p style="font-size:9.4pt"><code>BUILD_STATUS.md</code> — "Remaining work (not faked, not skipped)" · <code>DEPLOYMENT.md</code> — "not yet deployed"</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কেন এভাবে</b>
+            <p style="font-size:9.4pt">একটি তালিকা সবার চোখে থাকে; ছড়িয়ে থাকা <code>TODO</code> কেউ পড়ে না।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">ঝুঁকি</b>
+            <p style="font-size:9.4pt">খাতা হালনাগাদ না হলে ঋণ আবার লুকিয়ে যায় — তাই রিলিজের সঙ্গে খাতা বদলাতে হবে।</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 44%">
+        <pre style="font-size:8.2pt;line-height:1.46">## Remaining work
+1. Invitation workflow
+2. Platform console
+4. Backup &amp; restore console
+5. Security attack suite
+
+## Verified numbers
+test            -&gt;  90 tests, 90 OK
+smoke_test.py   -&gt;  55 pages x 4 roles
+check --deploy  -&gt;  no issues</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কৌশলটি শেখান: ঋণ লিখুন <b>এক জায়গায়</b>, আর প্রতিটি সংখ্যার সঙ্গে প্রমাণের কমান্ড। এটাই ক্লাস ২৭-এর প্রমাণ-খাতার ধারাবাহিকতা।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত</span>
+    <div><h2>কখন রিফ্যাক্টর করবেন, কখন নয়</h2>
+      <div class="sub">"তিনবার নিয়ম" — শেখার সবচেয়ে কাজের নিয়ম</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="card soft" style="padding:3.4mm 4.4mm;height:100%;display:flex;flex-direction:column;justify-content:center">
+          <b style="font-size:13pt;display:block;margin-bottom:2.4mm">তিনবার নিয়ম</b>
+          <p style="font-size:11pt;line-height:1.55">একই জিনিস প্রথমবার লিখলে — শুধু লিখুন।<br>দ্বিতীয়বার — মেনে নিন।<br><b>তৃতীয়বার — তখনই সাধারণ রূপ বের করুন।</b></p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:48%">করুন</th><th>করবেন না</th></tr></thead>
+          <tbody>
+            <tr><td>তিনবার একই যুক্তি</td><td>ভবিষ্যতে "হতে পারে" বলে</td></tr>
+            <tr><td>বাগের পরে, টেস্ট লেখার পর</td><td>টেস্ট ছাড়া</td></tr>
+            <tr><td>একটি ছোট ধাপে</td><td>পুরো ফাইল একসাথে</td></tr>
+            <tr><td>কাজের অংশ হিসেবে</td><td>"শুধু রিফ্যাক্টরের" আলাদা সপ্তাহে</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.6mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          <b>IMS-এ বাস্তব:</b> <code>BootstrapFormMixin</code> আর <code>ImsFormMixin</code> — দুটি mixin, একই কাজ। তৃতীয়বার দরকার হলেই এক করা উচিত।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "Rule of three" মুখস্থ করান। শিক্ষার্থীরা প্রায়ই আগেভাগে abstraction বানায় — সেটিই সবচেয়ে বেশি ক্ষতি করে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রোটোকল</span>
+    <div><h2>নিরাপদ রিফ্যাক্টরের পাঁচ ধাপ</h2>
+      <div class="sub">প্রতিটি ধাপের শেষে স্যুট সবুজ — নইলে পিছিয়ে যান</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 128" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a31" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="6" y="28" width="180" height="70" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="96" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#312e81">১. জাল</text>
+        <text x="96" y="72" text-anchor="middle" font-size="9.4" fill="#3730a3">আচরণের টেস্ট লিখুন</text>
+        <text x="96" y="89" text-anchor="middle" font-size="9" fill="#64748b">আগে সবুজ দেখুন</text>
+
+        <rect x="206" y="28" width="180" height="70" rx="9" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="296" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#155e75">২. ছোট ধাপ</text>
+        <text x="296" y="72" text-anchor="middle" font-size="9.4" fill="#0e7490">একবারে একটি কাজ</text>
+        <text x="296" y="89" text-anchor="middle" font-size="9" fill="#64748b">নাম / সরানো / ভাগ</text>
+
+        <rect x="406" y="28" width="180" height="70" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="496" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">৩. স্যুট</text>
+        <text x="496" y="72" text-anchor="middle" font-size="9.4" fill="#15803d">১০৩ টেস্ট চালান</text>
+        <text x="496" y="89" text-anchor="middle" font-size="9" fill="#64748b">লাল হলে ফিরে যান</text>
+
+        <rect x="606" y="28" width="180" height="70" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="696" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">৪. কমিট</text>
+        <text x="696" y="72" text-anchor="middle" font-size="9.4" fill="#b45309">আলাদা কমিট</text>
+        <text x="696" y="89" text-anchor="middle" font-size="9" fill="#64748b">কেন, সেটাও লিখুন</text>
+
+        <rect x="806" y="28" width="188" height="70" rx="9" fill="#faf5ff" stroke="#9333ea" stroke-width="2"/>
+        <text x="900" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#6b21a8">৫. পুনরাবৃত্তি</text>
+        <text x="900" y="72" text-anchor="middle" font-size="9.4" fill="#7e22ce">পরের ছোট ধাপ</text>
+        <text x="900" y="89" text-anchor="middle" font-size="9" fill="#64748b">এক ধাপে সব নয়</text>
+
+        <line x1="188" y1="63" x2="200" y2="63" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a31)"/>
+        <line x1="388" y1="63" x2="400" y2="63" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a31)"/>
+        <line x1="588" y1="63" x2="600" y2="63" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a31)"/>
+        <line x1="788" y1="63" x2="800" y2="63" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a31)"/>
+        <path d="M900,102 C900,122 496,122 496,104" fill="none" stroke="#64748b" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a31)"/>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:2.6mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>একমাত্র অনুমোদন:</b> রিফ্যাক্টরে কোনো টেস্ট <b>বদলানো যাবে না</b>। টেস্ট বদলাতে হলে আচরণ বদলেছে — সেটি নতুন ফিচার, রিফ্যাক্টর নয়।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>বাস্তব সময়:</b> ১০০ লাইনের রিফ্যাক্টর ২০ মিনিট; ১,০০০ লাইনের "রিফ্যাক্টর" দুই দিন — আর সেটি প্রায়ই ব্যর্থ হয়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে ৫ ধাপ লিখে রাখুন; ক্লাসের বাকি অংশে প্রতিটি উদাহরণে এই ধাপগুলোই দেখাবেন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নকল</span>
+    <div><h2>দুই mixin, এক কাজ</h2>
+      <div class="sub">কীভাবে এক করবেন — টেস্ট আগে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.44"># জাল: আচরণ লিখে ফেলুন (কোড বদলানোর আগে)
+def test_every_form_field_gets_design_classes(self):
+    f = StudentForm(workspace=self.ws).fields
+    self.assertIn("form-control", f["full_name"].widget.attrs["class"])
+    self.assertIn("form-select", f["class_group"].widget.attrs["class"])
+
+# ধাপ ১: সবুজ দেখুন (দুই কপি এখনো আছে)
+# ধাপ ২: একটিকে apps/core/forms.py-তে নিন
+#   class DesignClassesMixin:  ...  (এক জায়গায়)
+# ধাপ ৩: academics আর billing দুটোই
+#         from apps.core.forms import DesignClassesMixin
+# ধাপ ৪: পুরো স্যুট — ১০৩ টেস্ট সবুজ = আচরণ অপরিবর্তিত</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন দুই কপি বিপজ্জনক</b>
+            <p style="font-size:9.2pt">এক কপিতে বাগ ঠিক করলে অন্য কপিতে থাকে — "কিছু ফর্মে ত্রুটি দেখায় না" ধরনের অদ্ভুত বাগ।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ধাপ ৩-এর ফাঁদ</b>
+            <p style="font-size:9.2pt">একসাথে দুই ফাইল বদলালে কোনটি ভাঙল বোঝা যায় না — ফাইল ধরে ধরে এগোন, প্রতি ধাপে স্যুট।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">নতুন জায়গা</b>
+            <p style="font-size:9.2pt"><code>apps/core/forms.py</code> — শেয়ারড ফর্ম-আচরণের ঘর; অ্যাপগুলো এখান থেকে নেয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জোর দিন: নকল সরানোর আগে <b>টেস্ট</b> — নইলে "সব ঠিক আছে" বলার প্রমাণ থাকে না।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নির্ভরতা</span>
+    <div><h2>৯টি প্যাকেজ, সবগুলোর নির্দিষ্ট সংস্করণ</h2>
+      <div class="sub">ওপেন রেঞ্জ নয় — পিন করা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.5"># requirements.txt (dev + app)
+Django==6.1.2
+psycopg[binary]==3.3.6
+python-dotenv==1.2.4
+Pillow==12.3.0
+openpyxl==3.1.5      # এক্সেল এক্সপোর্ট
+reportlab==5.1.0     # মার্কশিট PDF
+
+# requirements-prod.txt
+-r requirements.txt
+gunicorn==23.0.0
+whitenoise==6.11.0
+dj-database-url==3.0.1</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন <code>==</code></b>
+            <p style="font-size:9.2pt">আজ যা পরীক্ষা করেছেন, কাল সার্ভারে ঠিক সেটাই বসবে — নীরব আপডেট নেই।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কীভাবে আপডেট</b>
+            <p style="font-size:9.2pt">একটি প্যাকেজ → শাখা → <code>pip install -U</code> → টেস্ট → স্টেজিং → ডিপ্লয়।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">নিরাপত্তা আপডেট</b>
+            <p style="font-size:9.2pt">Django-র নিরাপত্তা রিলিজ বাদ দেওয়া সবচেয়ে ব্যয়বহুল অবহেলা — মাসে একবার দেখার অভ্যাস।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ফাঁক</b>
+            <p style="font-size:9.2pt">অটোমেটেড নির্ভরতা-স্ক্যান (dependabot/audit) নেই — হাতে দেখতে হয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "উপকারী প্যাকেজ যোগ করার আগে কী ভাববেন?" উত্তর: রক্ষণাবেক্ষণ কে করে, লাইসেন্স কী, আর সরানোর খরচ কত।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আপগ্রেড</span>
+    <div><h2>ফ্রেমওয়ার্ক আপডেট — ভয় নয়, ক্রম</h2>
+      <div class="sub">Django 6.1.2-এ দাঁড়িয়ে আছে; পরের লাফের প্রস্তুতি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:8%">#</th><th style="width:36%">ধাপ</th><th>কেন</th></tr></thead>
+      <tbody>
+        <tr><td>১</td><td>রিলিজ নোট পড়ুন (deprecations)</td><td>কী সরছে, তা আগেই জানা</td></tr>
+        <tr><td>২</td><td>ওয়ার্নিং চালু করে টেস্ট</td><td><code>python -W error::DeprecationWarning manage.py test</code></td></tr>
+        <tr><td>৩</td><td>এক মাইনর সংস্করণ করে এগোন</td><td>৬.১ → ৬.২, একসাথে ৬.১ → ৭.০ নয়</td></tr>
+        <tr><td>৪</td><td>পূর্ণ স্যুট + <code>smoke_test</code> + <code>check --deploy</code></td><td>তিনটি ভিন্ন দৃষ্টি</td></tr>
+        <tr><td>৫</td><td>প্রথমে স্টেজিং/রিহার্সাল, পরে আসল</td><td><code>deploy_check.sh</code> এখানেই কাজে লাগে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>IMS-এর সুবিধা:</b> <code>override_settings</code> আর <code>django.conf.settings</code> ব্যবহার — হার্ডকোড কম, তাই আপগ্রেডে কম ভাঙে।
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ফাঁদ:</b> আপগ্রেড আর নতুন ফিচার একই রিলিজে নয় — ভাঙলে কারণ দুটির কোনটি, বোঝা যায় না।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন: "আপগ্রেড একটি কাজ, ফিচার আরেকটি কাজ" — একসাথে করলেই বিভ্রান্তি।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বৃদ্ধি</span>
+    <div><h2>ডেটা বাড়লে কী বাড়ে</h2>
+      <div class="sub">ডেমোর সংখ্যা বনাম এক বছরের বাস্তবতা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:32%">টেবিল</th><th style="width:20%">ডেমোতে আজ</th><th>৮০০ ছাত্র · ১ বছর</th></tr></thead>
+      <tbody>
+        <tr><td>ছাত্র প্রোফাইল</td><td>১০</td><td>৮০০</td></tr>
+        <tr><td>উপস্থিতি সারি</td><td>২০০</td><td>৮০০ × ২০০ দিন ≈ <b>১,৬০,০০০</b></td></tr>
+        <tr><td>নম্বর</td><td>৩০</td><td>৮০০ × ৮ বিষয় × ৩ পরীক্ষা ≈ <b>১৯,২০০</b></td></tr>
+        <tr><td>হোমওয়ার্ক জমা</td><td>১৫</td><td>৮০০ × ৩০ ≈ ২৪,০০০</td></tr>
+        <tr><td>অডিট সারি</td><td>০</td><td>প্রতিদিন ১০০ কর্ম ≈ <b>৩৬,৫০০</b></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>মূল কথা:</b> ২ লাখ সারিতে ইনডেক্স ছাড়া তালিকা খুললে সেকেন্ডের হিসাব বদলে যায়।
+      </div></div>
+      <div><div class="call soft" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>IMS-এ আছে:</b> ১৪টি <code>db_index</code>/<code>indexes</code> ঘোষণা আর ৫০টি unique সীমা — তবে সব কোয়েরি মাপা হয়নি।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে হিসাবটি করুন: ৮০০ × ২০০ = ১,৬০,০০০। শিক্ষার্থীরা নিজে গুণ করলে সংখ্যাটি মনে থাকে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধীর কোয়েরি</span>
+    <div><h2>N+1 — সবচেয়ে সাধারণ ধীরতা</h2>
+      <div class="sub">লুপের ভেতরে কোয়েরি = বিপদ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.46"># খারাপ: প্রতি সারিতে একটি কোয়েরি (N+1)
+for st in students:            # ৮০০ কোয়েরি
+    print(st.class_group.name) # +৮০০
+
+# ভালো: এক কোয়েরিতে সব
+students = StudentProfile.objects.filter(
+    workspace=ws).select_related("class_group")   # ১ কোয়েরি
+
+# অনেক-এর-অনেক হলে
+    .prefetch_related("enrollments__class_group")
+
+# মাপার উপায় (dev-এ)
+from django.test.utils import CaptureQueriesContext
+from django.db import connection
+with CaptureQueriesContext(connection) as ctx:
+    list(students)
+print(len(ctx.captured_queries))     # সংখ্যাটাই প্রমাণ</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন চোখে ধরা পড়ে না</b>
+            <p style="font-size:9.2pt">ডেমোতে ১০ ছাত্র — ৫ মিলিসেকেন্ড। বাস্তবে ৮০০ — ৪ সেকেন্ড।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">মাপার অভ্যাস</b>
+            <p style="font-size:9.2pt">নতুন তালিকা-ভিউ লিখলে একবার কোয়েরি গুনে নিন; সংখ্যা জানলে উন্নতি বোঝা যায়।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ক্যাশ আগে নয়</b>
+            <p style="font-size:9.2pt">ভুল কোয়েরি ক্যাশ করলে ভুল উত্তর দ্রুত আসে — আগে কোয়েরি ঠিক করুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>CaptureQueriesContext</code> ক্লাসে চালিয়ে দেখান — সংখ্যা মুদ্রিত হলে "অনুভূতি" বদলে যায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মাইগ্রেশন</span>
+    <div><h2>১২টি মাইগ্রেশন — কখন জমানো থামাবেন</h2>
+      <div class="sub">ইতিহাস মুছবেন না, তবে গুছিয়ে রাখুন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">১১ অ্যাপে ১২টি মাইগ্রেশন</b>
+            <p style="font-size:9.4pt">প্রতিটি অ্যাপের প্রথম মাইগ্রেশনেই বেশিরভাগ মডেল — ছোট, পড়ার মতো ইতিহাস।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">squash কখন</b>
+            <p style="font-size:9.4pt">একই অ্যাপে ২০+ মাইগ্রেশন হলে, বা পুরোনো রিলিজ আর দরকার না হলে — <code>squashmigrations</code>।</p></div>
+          <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">সবচেয়ে বিপজ্জনক</b>
+            <p style="font-size:9.4pt">ইতিমধ্যে ডিপ্লয় করা মাইগ্রেশন সম্পাদনা করা — অন্য পরিবেশে ইতিহাস অমিল হয়ে যায়।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">যাচাই</b>
+            <p style="font-size:9.4pt"><code>makemigrations --check --dry-run</code> — মডেল আর মাইগ্রেশন অমিল হলে ধরা পড়ে।</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 42%">
+        <pre style="font-size:8.2pt;line-height:1.46"># নিয়মিত তিনটি কমান্ড
+python manage.py makemigrations --check --dry-run
+python manage.py showmigrations
+python manage.py migrate --plan
+
+# শাখা মিলিয়ে নেওয়ার পর
+python manage.py migrate --merge</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "মাইগ্রেশন ফাইল হলো ডেটাবেসের ইতিহাস — ইতিহাস নতুন করে লেখা যায় না, শুধু সামনে এগোয়।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">হাতবদল</span>
+    <div><h2>নতুন ডেভেলপারের প্রথম দিন</h2>
+      <div class="sub">দস্তাবেজ যদি কাজ করে, তবে কোড পড়া কম লাগে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:8%">#</th><th>কাজ</th></tr></thead>
+          <tbody>
+            <tr><td>১</td><td><code>START_HERE.md</code> — দুই পথ: SQLite দ্রুত, PostgreSQL আসল</td></tr>
+            <tr><td>২</td><td><code>bash run.sh</code> → চারটি লগইন দিয়ে ঢুকে দেখুন</td></tr>
+            <tr><td>৩</td><td><code>BUILD_STATUS.md</code> — কী তৈরি, কী বাকি, কোন প্রমাণে</td></tr>
+            <tr><td>৪</td><td><code>python manage.py test</code> → ১০৩ সবুজ দেখুন</td></tr>
+            <tr><td>৫</td><td>একটি ছোট বাগ ঠিক করে টেস্টসহ কমিট</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          প্রতিটি ধাপের একটি <b>যাচাইযোগ্য ফল</b> আছে — "পড়ে নিন" নয়, "চালিয়ে দেখুন"।
+        </div>
+      </div>
+      <div style="flex:0 0 44%">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">দস্তাবেজ যা আছে</b>
+            <p style="font-size:9.2pt">START_HERE · README · BUILD_STATUS · DEPLOYMENT · LAUNCH_PLAYBOOK · USER_MANUAL (বাংলা) · ৫৩ স্ক্রিনশট</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">যা নেই</b>
+            <p style="font-size:9.2pt">আর্কিটেকচার সিদ্ধান্তের আলাদা নথি (ADR) — কেন এভাবে, তা কোড-মন্তব্যেই ছড়িয়ে আছে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন: "আপনার প্রজেক্টে নতুন কেউ এলে প্রথম দিনের পাঁচ ধাপ লিখে দিন" — এটাই হাতবদলের প্রস্তুতি।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — নিজের কোডের ঋণ মাপুন</h2>
+      <div class="sub">চারটি কাজ, সবই মাপা যায়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. বড় ফাইল খুঁজুন</b>
+            <p style="font-size:9.8pt"><code>find . -name "*.py" | xargs wc -l | sort -rn | head</code></p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. কোয়েরি গুনুন</b>
+            <p style="font-size:9.8pt">একটি তালিকা-ভিউতে <code>CaptureQueriesContext</code> দিয়ে সংখ্যা লিখে রাখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. নকল খুঁজুন</b>
+            <p style="font-size:9.8pt">একই ৫ লাইনের বেশি দুই জায়গায়? তালিকায় লিখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. ঋণ-খাতা লিখুন</b>
+            <p style="font-size:9.8pt">তিনটি কাজ, প্রতিটির সঙ্গে কারণ ও ঝুঁকি।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>বড় ফাইল ভাঙলে কী লাভ?</li>
+          <li class="g">N+1 ধরা পড়ে কীভাবে?</li>
+          <li>Django আপগ্রেড কেন ধাপে ধাপে?</li>
+          <li class="r">প্যাকেজ পিন না করলে কী হয়?</li>
+          <li class="g">৮০০ ছাত্রে কোন টেবিল সবচেয়ে বড়?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ প্রশ্নের উত্তর: উপস্থিতি (attendance) — ১,৬০,০০০ সারি। এটাই প্রথম জায়গা যেখানে ইনডেক্স দরকার হবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">রক্ষণাবেক্ষণের প্রথম ক্লাসের সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:54%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>কোড বাড়লে দায়িত্ব বাড়ে</b></td><td>৫,৪৮০ লাইন · ৬,৮৩৩ মোট</td></tr>
+        <tr><td><b>টেস্টের অনুপাতই ঝুঁকির মানচিত্র</b></td><td>academics ১:০.০৯ · reports/audit ০</td></tr>
+        <tr><td><b>ঋণ এক জায়গায় লিখুন</b></td><td><code>BUILD_STATUS.md</code> · ০ <code>TODO</code></td></tr>
+        <tr><td><b>তিনবার নিয়ম</b></td><td>দুই mixin — তৃতীয়বারে এক করুন</td></tr>
+        <tr><td><b>রিফ্যাক্টরের অনুমোদন = সবুজ স্যুট</b></td><td>১০৩ টেস্ট অপরিবর্তিত</td></tr>
+        <tr><td><b>বৃদ্ধি মাপুন, অনুমান নয়</b></td><td>১,৬০,০০০ উপস্থিতি সারি/বছর</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      পরের ক্লাসে: এই কোড দল বদলালে, দায়িত্ব হাতবদল হলে, আর এক বছর পরের IMS কেমন হবে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন নিজের প্রজেক্টের জন্য এই ছয়টি সারির একটি নিজের ভাষায় লিখতে।
+</section>
+
+<section class="slide divider">
+  <div class="n">৩২</div>
+  <h2>এক বছর পরের IMS</h2>
+  <p>হাতবদল ও দল · সিদ্ধান্তের নথি · রোডম্যাপ · ফিচার বনাম ঋণ · কখন থামবেন</p>
+</section>

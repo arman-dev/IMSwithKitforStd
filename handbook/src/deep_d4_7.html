@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="head"><span class="badge">মাইগ্রেশন</span>
+    <div><h2>১২টি মাইগ্রেশন — কেবল সামনের দিকে</h2>
+      <div class="sub">৯ অ্যাপে <code>0001</code>, ৩ অ্যাপে <code>0002</code>; কোনো reverse migration লেখা নেই</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.04">
+        <table class="tight">
+          <tr><th style="width:56%">ধাপ</th><th style="width:44%">কেন</th></tr>
+          <tr><td>১. নতুন কলাম যোগ, <code>null=True</code></td><td>পুরনো সারি ভাঙে না</td></tr>
+          <tr><td>২. ডেটা মাইগ্রেশন দিয়ে পূরণ</td><td>কোড আর ডেটা আলাদা ফাইলে</td></tr>
+          <tr><td>৩. পরের রিলিজে <code>null=False</code></td><td>তখন সব সারিতে মান আছে</td></tr>
+          <tr><td>৪. পুরনো কলাম মোছা (আরেক রিলিজ)</td><td>আগে কোড বদলাতে হয়</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> <code>RunPython.noop</code> ছাড়া কোনো reverse লেখা নেই — অর্থাৎ ডেটা মাইগ্রেশন (<code>0002_seed_plans</code>) হুবহু ফিরিয়ে আনা যায় না।
+        </div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm"># ডেটা মাইগ্রেশন (billing/0002)
+def forwards(apps, schema_editor):
+    Plan = apps.get_model("billing", "Plan")
+    Subscription = apps.get_model(
+        "billing", "Subscription")
+    ...
+    # পুরনো প্রতিটি workspace-এ
+    # একটি Subscription সারি
+
+operations = [migrations.RunPython(forwards)]</pre>
+        <div style="font-size:9.5pt;color:#334155;margin-top:1.5mm"><code>apps.get_model()</code> — ভবিষ্যতের মডেল নয়, ওই মুহূর্তের মডেল। এটাই ডেটা মাইগ্রেশনের একমাত্র নিরাপদ নিয়ম।</div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.4mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      <b>মাইগ্রেশন = ডেটাবেজের লাইফসাইকেল:</b> প্রতিটি ফাইল ইতিহাসের একটি পৃষ্ঠা। হাতে বদলাবেন না, ফাইল মুছবেন না — কেবল সামনে এগোবেন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "মাইগ্রেশন ফাইল মুছে দিলে কী হয়?" উত্তর: অন্য সব পরিবেশের ইতিহাস আলাদা হয়ে যায় — আর কেউ আর জানে না কোনটা সত্য।
+</section>

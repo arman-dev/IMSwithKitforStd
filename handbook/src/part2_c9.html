@@ -1,0 +1,394 @@
+<!-- ===================== CLASS 9 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান · ক্লাস ৯ / ৩৭</div>
+  <h1>কে কী পারবে,<br>কে পারবে না</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৩ · টপিক ৩.৫ (ভূমিকা ও অনুমতি)<br>রোল ম্যাট্রিক্স · ৪০৪ বনাম ৪০৩ · এক তালিকা তিন ভোক্তা</div>
+  <div class="pill">২২ মেনু আইটেম · ৫ গ্রুপ · ৪ ভূমিকা</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>মেনু থেকে লুকিয়ে দিলেই কি নিরাপত্তা হয়?</h2>
+      <div class="sub">প্রথম ক্লাসে এই প্রশ্নটা এসেছিল — আজ উত্তরটা কোডে দেখব</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:27pt;line-height:1.6">
+      না। মেনু <span class="hl">লুকানো</span>, নিরাপত্তা <b>আটকানো</b>।<br>
+      দুটো আলাদা কাজ — আর দুটোই লাগবে।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      কারণ ব্যবহারকারী মেনু দেখে না, <b>ঠিকানা টাইপ করে</b>। তাই প্রতিটি অনুরোধে সার্ভারকে নিজে জিজ্ঞেস করতে হয়:
+      "এই মানুষটা এই প্রতিষ্ঠানের সদস্য কি? তার ভূমিকা কি এই কাজ করতে দেয়?"<br>
+      আজকের ক্লাসে এই দুই প্রশ্নের নকশা — এবং একটি তৃতীয় প্রশ্ন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "মেনু লুকালেই তো হয়" বললে বলুন: "ঠিক আছে, তুমি শিক্ষক। এখন ব্রাউজারে <code>/w/&lt;slug&gt;/audit/</code> টাইপ করো।" লাইভে দেখালে এই একটা মুহূর্তই পুরো ক্লাসের ভিত্তি হয়ে যাবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>তিনটি প্রশ্ন — প্রতিটি অনুরোধে</h2>
+      <div class="sub"><code>apps/core/permissions.py</code>-এর নিজের মন্তব্য থেকে</div></div></div>
+  <div class="body">
+    <div class="cards">
+      <div class="card" style="border-color:#059669"><div class="ic">🏢</div><b>১. টেন্যান্ট যাচাই</b>
+        <p>"এই ইউজার কি URL-এ থাকা প্রতিষ্ঠানের <b>সদস্য</b>?"<br><br><code>get_membership(user, workspace)</code><br>
+        <span style="font-size:10.5pt;color:#64748b">না হলে → ৪০৪</span></p></div>
+      <div class="card" style="border-color:#818cf8"><div class="ic">🎭</div><b>২. ভূমিকা যাচাই</b>
+        <p>"এই প্রতিষ্ঠানে তার <b>ভূমিকা</b> কি এই কাজ করতে দেয়?"<br><br><code>allowed_roles</code><br>
+        <span style="font-size:10.5pt;color:#64748b">না হলে → ৪০৩</span></p></div>
+      <div class="card" style="border-color:#d97706"><div class="ic">📚</div><b>৩. বরাদ্দ যাচাই</b>
+        <p>"এই শিক্ষক কি <b>এই ক্লাসে</b> পড়ান?"<br><br>শিক্ষামূলক বস্তুতে তৃতীয় প্রশ্ন<br>
+        <span style="font-size:10.5pt;color:#64748b">না হলে → ৪০৪ (কিছু নেই)</span></p></div>
+    </div>
+    <div class="call warn" style="margin-top:8mm;font-size:13pt;padding:4mm 5mm">
+      প্রথম দুই প্রশ্ন <b>সব</b> প্রতিষ্ঠান-পাতায়; তৃতীয়টি শুধু যেখানে শিক্ষকের নিজের ক্লাসের কথা — যেমন হাজিরা, নম্বর।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় প্রশ্নটা সবচেয়ে বেশি বাদ পড়ে — ফলে একই প্রতিষ্ঠানের দুই শিক্ষক একে অন্যের ক্লাসের নম্বর বদলাতে পারেন। এটা স্কুলের দৃষ্টিতে গুরুতর ফুটো।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>NAV ফাইল — ৫ গ্রুপ, ২২ আইটেম, এক তালিকা</h2>
+      <div class="sub"><code>apps/core/navigation.py</code> — মেনুর একমাত্র সত্য</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.1">
+<pre style="font-size:9.2pt;line-height:1.52">NAV = [
+ { "title": None,  "items": [
+     _item("Dashboard", …, STAFF+STUDENT) ]},
+
+ { "title": "Teaching", "items": [          # ১০টি
+     Students · Classes &amp; subjects
+     Attendance · Syllabus · Lesson log
+     Homework · Materials · Exams
+     Reports · My oversight area ]},
+
+ { "title": "My learning", "items": [        # ৩টি
+     My homework · My results · Materials ]},
+
+ { "title": "Administration", "items": [     # ৬টি
+     Coordinator scope · Audit log
+     Workspace settings · Grading
+     Branding · Subscription ]},
+
+ { "title": "Account", "items": [            # ২টি
+     My profile · Switch workspace ]},
+]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:12.5pt">প্রতিটি আইটেমে পাঁচটি তথ্য</b>
+          <p style="font-size:11pt;line-height:1.7;margin-top:2mm">
+            <b>label</b> — যা দেখা যাবে<br>
+            <b>icon</b> — কোন চিহ্ন<br>
+            <b>url_name</b> — কোন রুট (নাম দিয়ে, ঠিকানা দিয়ে নয়)<br>
+            <b>roles</b> — কারা দেখবে<br>
+            <b>badge</b> — সংখ্যা দেখানোর জায়গা
+          </p>
+        </div>
+        <div class="call" style="margin-top:4mm;font-size:11pt;padding:3.5mm 4.5mm">
+          <b>url_name কেন?</b> <code>reverse()</code> দিয়ে তৈরি হয় — তাই রুট বদলালে মেনু নিজেই বদলে যায়, হাতে ঠিক করতে হয় না।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "Teaching"-এর ১০টি আইটেম বোর্ডে লিখুন — এটাই শিক্ষকের পুরো দিন। তারপর জিজ্ঞেস করুন: এর মধ্যে কোনটা শিক্ষার্থী দেখা উচিত? উত্তর: একটাও না, তার নিজের তিনটি আলাদা গ্রুপে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>ভূমিকা × মেনু গ্রুপ — আসল সংখ্যা</h2>
+      <div class="sub">কোড চালিয়ে গোনা: কোন ভূমিকা কতটি আইটেম দেখে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:10pt">
+      <thead><tr><th style="width:24%">ভূমিকা</th><th>Dashboard</th><th>Teaching</th><th>My learning</th><th>Administration</th><th>Account</th><th style="width:12%">মোট</th></tr></thead>
+      <tbody>
+        <tr><td><b>প্রতিষ্ঠান অ্যাডমিন</b></td><td class="num">১</td><td class="num">৯</td><td class="num">—</td><td class="num">৬</td><td class="num">২</td><td class="num"><b>১৮</b></td></tr>
+        <tr><td><b>কোঅর্ডিনেটর</b></td><td class="num">১</td><td class="num">১০</td><td class="num">—</td><td class="num">—</td><td class="num">২</td><td class="num"><b>১৩</b></td></tr>
+        <tr><td><b>শিক্ষক</b></td><td class="num">১</td><td class="num">৯</td><td class="num">—</td><td class="num">—</td><td class="num">২</td><td class="num"><b>১২</b></td></tr>
+        <tr><td><b>শিক্ষার্থী</b></td><td class="num">১</td><td class="num">—</td><td class="num">৩</td><td class="num">—</td><td class="num">২</td><td class="num"><b>৬</b></td></tr>
+        <tr><td><b>প্ল্যাটফর্ম প্রশাসক</b></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>০</b></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:5mm;gap:5mm">
+      <div class="call" style="font-size:11.2pt;padding:3.5mm 4.5mm">
+        <b>কোঅর্ডিনেটর ১৩, শিক্ষক ১২</b> — পার্থক্য একটাই: "My oversight area"। বাকি সব এক।
+      </div>
+      <div class="call bad" style="font-size:11.2pt;padding:3.5mm 4.5mm">
+        <b>প্ল্যাটফর্ম প্রশাসকের ০</b> — ইচ্ছাকৃত। তাঁর জগৎ আলাদা: <code>/ops/</code>। প্রতিষ্ঠানের মেনুতে তাঁর কিছু নেই, কারণ সেখানে ঢোকার অধিকারও নেই।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "০" ঘরটা নিয়ে আলোচনা করুন — ছাত্ররা ভাবে সুপার-অ্যাডমিন সব পারে। বাস্তবে সে প্রতিষ্ঠানের ভেতরের কোনো ব্যক্তিগত রেকর্ড দেখতে পারে না; পারে শুধু প্রতিষ্ঠান বন্ধ করা বা প্ল্যান বদলানো।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>এক তালিকা, তিন ভোক্তা — আর একটি নিরাপদ ব্যর্থতা</h2>
+      <div class="sub">ফাইলের মন্তব্যটাই স্লাইডের শিরোনাম: "One definition, three consumers"</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 208" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="ar10" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <rect x="330" y="10" width="340" height="52" rx="10" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/>
+        <text x="500" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#312e81">navigation.py · NAV</text>
+        <text x="500" y="51" text-anchor="middle" font-size="10.5" fill="#475569">একটাই তালিকা, একটাই সত্য</text>
+
+        <rect x="20" y="100" width="290" height="60" rx="9" fill="#ecfdf5" stroke="#34d399"/>
+        <text x="165" y="124" text-anchor="middle" font-size="11.5" font-weight="700" fill="#065f46">১. সাইডবার</text>
+        <text x="165" y="144" text-anchor="middle" font-size="10.5" fill="#047857">যা দেখানো হবে</text>
+
+        <rect x="355" y="100" width="290" height="60" rx="9" fill="#fffbeb" stroke="#fbbf24"/>
+        <text x="500" y="124" text-anchor="middle" font-size="11.5" font-weight="700" fill="#78350f">২. ড্যাশবোর্ড</text>
+        <text x="500" y="144" text-anchor="middle" font-size="10.5" fill="#92400e">কোন এন্ট্রি জ্বলবে</text>
+
+        <rect x="690" y="100" width="290" height="60" rx="9" fill="#f5f3ff" stroke="#a78bfa"/>
+        <text x="835" y="124" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5b21b6">৩. টেস্ট</text>
+        <text x="835" y="144" text-anchor="middle" font-size="10.5" fill="#6d28d9">কে এমন লিংক দেখে না, যা ব্যবহার করতে পারে না</text>
+
+        <line x1="420" y1="62" x2="200" y2="98" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#ar10)"/>
+        <line x1="500" y1="62" x2="500" y2="98" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#ar10)"/>
+        <line x1="580" y1="62" x2="800" y2="98" stroke="#4f46e5" stroke-width="1.8" marker-end="url(#ar10)"/>
+
+        <text x="20" y="192" font-size="11.5" fill="#334155">নিরাপদ ব্যর্থতা: নতুন পাতা যোগ করে এই ফাইল ভুলে গেলে পাতা মেনুতে আসে না — অর্থাৎ "অদৃশ্য" হয়, "অনিরাপদ" নয়।</text>
+      </svg>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:12.5pt;padding:3.5mm 5mm">
+      কিন্তু সতর্কতা: এই ফাইল শুধু <b>দেখানো</b> ঠিক করে। <b>আটকানো</b> সবসময় সার্ভারে — দুই জায়গায় একই নিয়ম, কিন্তু দুই দায়িত্ব।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "নিরাপদ ব্যর্থতা" ধারণাটা নতুন — ব্যাখ্যা করুন: ভুল হলে সিস্টেম যেন কম দেখায়, বেশি নয়। বেশি দেখানো মানে ফুটো, কম দেখানো মানে শুধু অসুবিধা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>তিনটি ভূমিকা-দল — কোডের তিনটি ধ্রুবক</h2>
+      <div class="sub">প্রতিটি আইটেমে আলাদা করে ভূমিকা লেখা যায়, কিন্তু তিনটি দল বারবার লাগে</div></div></div>
+  <div class="body">
+    <div class="cards">
+      <div class="card" style="border-color:#dc2626"><div class="ic">⚙️</div><b style="font-size:13.5pt">CONFIG_ROLES</b>
+        <p><code>(ORG_ADMIN,)</code></p>
+        <p style="margin-top:2mm">প্রতিষ্ঠান-ব্যাপী কনফিগ: <b>Branding · Subscription</b></p>
+        <p style="font-size:10.5pt;color:#64748b;margin-top:2mm">কেন শুধু অ্যাডমিন: পরিচয় ও টাকা — দুটোই প্রতিষ্ঠানের সিদ্ধান্ত</p></div>
+      <div class="card" style="border-color:#d97706"><div class="ic">🗂️</div><b style="font-size:13.5pt">MANAGER_ROLES</b>
+        <p><code>(ORG_ADMIN,)</code></p>
+        <p style="margin-top:2mm">ব্যবস্থাপনার পর্দা: <b>Coordinator scope · Audit · Settings · Grading</b></p>
+        <p style="font-size:10.5pt;color:#64748b;margin-top:2mm">কোঅর্ডিনেটর এখানে নেই — কারণ নিজের ক্ষমতা নিজে বাড়াতে পারবে না</p></div>
+      <div class="card" style="border-color:#059669"><div class="ic">🎓</div><b style="font-size:13.5pt">STAFF_ROLES</b>
+        <p><code>(ORG_ADMIN, COORDINATOR, TEACHER)</code></p>
+        <p style="margin-top:2mm">পড়ানোর কাজ: <b>Teaching-এর ৯–১০টি আইটেম</b></p>
+        <p style="font-size:10.5pt;color:#64748b;margin-top:2mm">কেন তিনজন: অ্যাডমিনও পড়াতে পারেন, কোঅর্ডিনেটর শিক্ষকও</p></div>
+    </div>
+    <div class="call" style="margin-top:7mm;font-size:12.5pt;padding:4mm 5mm">
+      তিনটি দল = তিনটি <b>নীতি</b>। নতুন আইটেম যোগ করার সময় ভাবতে হয় না "কারা দেখবে" — শুধু "কোন দলে"।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন — "কোঅর্ডিনেটরকে MANAGER_ROLES-এ যোগ করলে কী হবে?" উত্তর: সে নিজের স্কোপ বাড়িয়ে ফেলতে পারবে — অর্থাৎ ক্ষমতার সীমা ভেঙে যাবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>৪০৪ বনাম ৪০৩ — কোনটা কখন</h2>
+      <div class="sub">ভুলটা শুধু বার্তা নয়, তথ্য ফাঁসের প্রশ্ন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:26%">পরিস্থিতি</th><th style="width:12%">কোড</th><th>কেন এটাই</th><th style="width:26%">ফল</th></tr></thead>
+      <tbody>
+        <tr><td>অন্য প্রতিষ্ঠানের সদস্য নন</td><td><b>৪০৪</b></td>
+          <td>৪০৩ দিলে বোঝা যেত "এই প্রতিষ্ঠান আছে, শুধু আপনি নন" — অর্থাৎ প্রতিষ্ঠানের অস্তিত্ব ফাঁস</td>
+          <td>"{slug} নেই"</td></tr>
+        <tr><td>সদস্য, কিন্তু ভূমিকা এই কাজে নয়</td><td><b>৪০৩</b></td>
+          <td>সে প্রতিষ্ঠানটা জানে, ভেতরে আছে — তাই লুকানোর কিছু নেই, শুধু অনুমতি নেই</td>
+          <td>"আপনার ভূমিকা এটা করতে দেয় না"</td></tr>
+        <tr><td>শিক্ষক, কিন্তু ক্লাসটা তার নয়</td><td><b>৪০৪</b></td>
+          <td>অন্য ক্লাসের অস্তিত্ব জানানোর দরকার নেই</td>
+          <td>"ক্লাস পাওয়া যায়নি"</td></tr>
+        <tr><td>লগইনই করা নেই</td><td><b>৩০২</b></td>
+          <td>লগইন পাতায় পাঠানো — আর ফেরার ঠিকানা সাথে রাখা</td>
+          <td><code>?next=/w/…</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      কোডে হুবহু: <code>raise Http404("Workspace not found.")</code> — মন্তব্য সহ: <i>"A platform admin may look at platform-level pages, never at private records of a workspace they do not belong to."</i>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটাই ডেমোতে সবচেয়ে প্রশ্ন তোলে — শিক্ষক লগইন করে অন্য প্রতিষ্ঠানের ঠিকানা টাইপ করলে ৪০৪ পাবেন। লাইভে দেখান।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>রিসোর্স ম্যাট্রিক্স — কোন বস্তুতে কে কী</h2>
+      <div class="sub">ভূমিকা নয়, <b>বস্তু</b> ধরে ভাবুন — এটাই আসল নকশা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:19%">বস্তু</th><th>প্রশাসক</th><th>অ্যাডমিন</th><th>কোঅর্ডি.</th><th>শিক্ষক</th><th>শিক্ষার্থী</th></tr></thead>
+      <tbody>
+        <tr><td><b>প্রতিষ্ঠান</b></td><td>সব দেখে</td><td>নিজের</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td><b>সদস্য</b></td><td>সব</td><td>সব</td><td>নিজের বিভাগ</td><td>—</td><td>—</td></tr>
+        <tr><td><b>ক্লাস</b></td><td>—</td><td>সব</td><td>নিজের</td><td>নিজের</td><td>নিজের</td></tr>
+        <tr><td><b>শিক্ষার্থী</b></td><td>—</td><td>সব</td><td>নিজের বিভাগ</td><td>নিজের ক্লাস</td><td>শুধু নিজে</td></tr>
+        <tr><td><b>উপস্থিতি</b></td><td>—</td><td>সব</td><td>নিজের + পর্যবেক্ষণ</td><td>নিজের ক্লাস</td><td>শুধু নিজের</td></tr>
+        <tr><td><b>নম্বর</b></td><td>—</td><td>গ্রেড স্কেল</td><td>—</td><td>নিজের ক্লাস</td><td>প্রকাশের পরে</td></tr>
+        <tr><td><b>বিল</b></td><td>প্ল্যান</td><td>সব</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td><b>অডিট লগ</b></td><td>—</td><td>সব</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:5mm;font-size:12px;padding:3.5mm 5mm">
+      নিয়ম: প্রতিটি ঘরে <b>"সব" / "নিজের" / "ধরন" / "—"</b> — চারটি শব্দের বেশি নয়। ঘরে যদি দুই বাক্য লিখতে হয়, নিয়মটা তখনো তৈরি হয়নি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "নিজের ক্লাস" ঘরটাই যেখানে তৃতীয় প্রশ্ন (assignment) লাগে। ছাত্রদের বলুন এই গ্রিডে নিজের প্রজেক্টের ৫টি বস্তু বসাতে — বেশিরভাগ দেখবে তাদের কোথাও কোথাও "—" লেখার সাহস হচ্ছে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>ডেকোরেটর — দুই প্রশ্ন এক জায়গায়</h2>
+      <div class="sub">প্রতিটি view-তে নিয়ম লিখলে একটায় ভুল হলে ফুটো; তাই নিয়ম এক জায়গায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.15">
+<pre style="font-size:9.2pt;line-height:1.55">@workspace_view(Roles.TEACHER,
+                Roles.ORG_ADMIN)
+def take_attendance(request, slug, …):
+    # এখানে পৌঁছানোর মানেই:
+    #   ✓ লগইন করা আছে
+    #   ✓ প্রতিষ্ঠান আছে ও সক্রিয়
+    #   ✓ সদস্য আছেন
+    #   ✓ ভূমিকা অনুমতি দেয়
+    # …তাই ভেতরে আর যাচাই লিখতে হয় না
+    workspace    = request.workspace
+    membership   = request.membership</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:12.5pt">ডেকোরেটর কী করে (ক্রম অনুযায়ী)</b>
+          <p style="font-size:11pt;line-height:1.75;margin-top:2mm">
+            <b>১.</b> লগইন নেই → ৩০২ + <code>?next=</code><br>
+            <b>২.</b> প্রতিষ্ঠান নেই/বন্ধ → ৪০৪<br>
+            <b>৩.</b> সদস্য নন → ৪০৪<br>
+            <b>৪.</b> ভূমিকা মেলে না → ৪০৩<br>
+            <b>৫.</b> সব ঠিক → <code>request.workspace</code> ও <code>request.membership</code> বসিয়ে view চালানো
+          </p>
+        </div>
+        <div class="call" style="margin-top:4mm;font-size:11pt;padding:3.5mm 4.5mm">
+          <b>দারুণ কৌশল:</b> ভেতরে <code>request.workspace</code> তৈরি হয়ে আসে — ফলে view ভুল করে অন্য প্রতিষ্ঠানের ডেটা আনতে <b>পারেই না</b>।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটা ভালো করে বলুন — "ভুল করা অসম্ভব বানানো" (make it impossible to get wrong) হলো ভালো আর্কিটেকচারের লক্ষণ। এই ধারণাটা ক্লাস ১৭-এ আবার আসবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯ · প্রমাণ</span>
+    <div><h2>অনুমতি যাচাই করা হয় টেস্ট দিয়ে — নাম হুবহু</h2>
+      <div class="sub">তালিকার তৃতীয় ভোক্তা: "কোন ভূমিকা এমন লিংক দেখে না, যা সে খুলতে পারে না"</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:52%">টেস্টের নাম (কোডে যেমন আছে)</th><th>কী প্রমাণ করে</th></tr></thead>
+      <tbody>
+        <tr><td><code>test_each_role_is_offered_only_its_own_links</code></td><td>মেনু ভূমিকা অনুযায়ী সত্যিই ভিন্ন</td></tr>
+        <tr><td><code>test_no_role_sees_a_link_it_cannot_open</code></td><td>প্রতিটি দেখানো লিংক সত্যিই খোলে</td></tr>
+        <tr><td><code>test_teacher_cannot_open_administration_pages_by_typing_the_url</code></td><td>ঠিকানা টাইপ করেও লাভ নেই</td></tr>
+        <tr><td><code>test_coordinator_cannot_open_owner_only_pages</code></td><td>নিজের ক্ষমতা নিজে বাড়ানো যায় না</td></tr>
+        <tr><td><code>test_student_cannot_open_teaching_pages</code></td><td>শিক্ষার্থীর দরজা বন্ধ</td></tr>
+        <tr><td><code>test_non_member_gets_404_not_403</code></td><td>প্রতিষ্ঠানের অস্তিত্ব ফাঁস হয় না</td></tr>
+        <tr><td><code>test_cannot_open_another_workspace_by_guessing_its_slug</code></td><td>slug অনুমান করেও ঢোকা যায় না</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:4mm;font-size:12pt;padding:3.5mm 5mm">
+      লক্ষ্য করুন নামগুলোর ভাষা: <b>"cannot" আর "gets 404 not 403"</b> — টেস্টের নামেই নিয়মটা লেখা আছে, তাই ব্যর্থ হলে কী ভাঙল তা সাথে সাথে বোঝা যায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের প্রজেক্টে অন্তত এই সাতটির সমতুল্য টেস্ট লিখতে। এগুলো লেখা হয়ে গেলে পারমিশন নিয়ে আর ভয় থাকে না — কারণ প্রতিবার কোড বদলালে টেস্ট বলে দেবে ফুটো হয়েছে কি না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>পাঁচটি সাধারণ ভুল — প্রতিটির পরিণাম</h2>
+      <div class="sub">এই পাঁচটি প্রায় সব ছাত্র-প্রজেক্টে পাওয়া যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:30%">ভুল</th><th style="width:32%">কী হয়</th><th>ঠিক পথ</th></tr></thead>
+      <tbody>
+        <tr><td>শুধু মেনুতে লুকানো</td><td>ঠিকানা টাইপ করলেই ঢুকে যায়</td><td>view-এ <code>@workspace_view(...)</code></td></tr>
+        <tr><td>টেমপ্লেটে <code>if role</code> দিয়ে লুকানো</td><td>HTML-এ শর্ত, সার্ভারে কিছু নেই</td><td>শর্ত সার্ভারে, টেমপ্লেটে শুধু সাজসজ্জা</td></tr>
+        <tr><td>সব জায়গায় ৪০৩</td><td>প্রতিষ্ঠানের অস্তিত্ব ফাঁস হয়</td><td>অচেনা প্রতিষ্ঠান/ক্লাসে ৪০৪</td></tr>
+        <tr><td>শিক্ষকের ক্লাস যাচাই না করা</td><td>একই প্রতিষ্ঠানের দুই শিক্ষক একে অন্যের নম্বর বদলাতে পারে</td><td>তৃতীয় প্রশ্ন: বরাদ্দ যাচাই</td></tr>
+        <tr><td><code>is_superuser</code> দিয়ে বাইপাস</td><td>সুপার-অ্যাডমিন প্রতিষ্ঠানের গোপন রেকর্ড দেখে ফেলে</td><td>প্ল্যাটফর্ম প্রশাসকের আলাদা <code>/ops/</code> জগৎ</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      সবগুলোর একটাই কারণ: <b>"লুকানো" আর "আটকানো" গুলিয়ে ফেলা</b>। প্রথমটা পর্দার কাজ, দ্বিতীয়টা সার্ভারের।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ ভুলটা ক্লাসে সবচেয়ে বেশি পাওয়া যায় — কারণ ছাত্ররা "একই প্রতিষ্ঠান = সব এক" ভাবে। স্কুলের বাস্তবে শিক্ষক নিজের ক্লাসের বাইরের নম্বর দেখতে পাওয়াটাই বড় সমস্যা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ক্লাসের কাজ</span>
+    <div><h2>নিজের অনুমতি গ্রিড বানান — ২০ মিনিট</h2>
+      <div class="sub">ফলাফল: একটি টেবিল, যার প্রতিটি ঘরে এক শব্দ</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><b>১. বস্তু লিখুন</b><p>প্রজেক্টের ৫–৭টি মূল বস্তু: ক্লাস, ছাত্র, অর্ডার, বিল…</p></div>
+      <div class="card soft"><b>২. ভূমিকা লিখুন</b><p>সর্বোচ্চ ৫টি — বেশি হলে ভূমিকা ভাগ হয়নি।</p></div>
+      <div class="card soft"><b>৩. ঘর ভরুন</b><p>শুধু চার শব্দ: <b>সব · নিজের · ধরন · —</b></p></div>
+      <div class="card soft"><b>৪. দুর্বল ঘর খুঁজুন</b><p>যেখানে দুই বাক্য লিখতে হচ্ছে, সেখানে নিয়মটা এখনো স্পষ্ট নয়।</p></div>
+      <div class="card soft"><b>৫. লিখে রাখুন</b><p>গ্রিডটা <code>docs/roles.md</code>-এ — ক্লাস ১৭-এ এটাই কোড হবে।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:7mm;font-size:13pt;padding:4.5mm 5.5mm">
+      <b>যাচাই:</b> আপনার গ্রিডে কি "নিজের" ঘর আছে? না থাকলে তৃতীয় প্রশ্ন (বরাদ্দ যাচাই) নেই — অর্থাৎ আপনার সিস্টেমে সবাই সবাইকে দেখতে পায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> গ্রিড শেষে ৩ জনকে বোর্ডে ডাকুন। যে গ্রিডে সব ঘরে "সব" লেখা, সেটাই সবচেয়ে বড় শিক্ষার উদাহরণ — ওটা দিয়ে দেখান কী হারাচ্ছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>চারটি প্রশ্ন — অনুমতি নিয়ে</h2>
+      <div class="sub">উত্তর দিয়ে ক্লাস শেষ করুন</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;gap:6mm">
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>১.</b> আপনার সিস্টেমে <b>একই প্রতিষ্ঠানের দুই শিক্ষক</b> একে অন্যের ক্লাসের নম্বর বদলাতে পারবে? কেন?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>২.</b> আপনার কোথায় <b>৪০৪</b> আর কোথায় <b>৪০৩</b> হবে — দুটো উদাহরণ দিন।</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>৩.</b> আপনার মেনুতে <b>একই আইটেম</b> দুই ভূমিকার জন্য ভিন্ন অর্থ বোঝায়? সেটা কি আলাদা করা দরকার?</p></div>
+    <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2"><p style="font-size:14pt;color:#7f1d1d">
+      <b>৪.</b> আপনার সিস্টেমে <b>সুপার-অ্যাডমিন</b> আছে? সে কি প্রতিষ্ঠানের ব্যক্তিগত রেকর্ড দেখতে পারে — পারলে কেন?</p></div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৪ নম্বরের উত্তর দিয়ে বোঝা যায় ছাত্র "শক্তি" আর "দায়িত্ব" আলাদা করতে শিখেছে কি না। "আমিই সব, তাই সব পারব" — এটা নকশা নয়, অভ্যাস।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারসংক্ষেপ</span>
+    <div><h2>আজকের পাঁচটি শিক্ষা</h2>
+      <div class="sub">প্রতিটি দাবির পাশে তার প্রমাণ</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:52%">শিক্ষা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>প্রতিটি অনুরোধে তিনটি প্রশ্ন</b> — টেন্যান্ট · ভূমিকা · বরাদ্দ</td>
+          <td><code>permissions.py</code>-এর নিজের ডকস্ট্রিং, হুবহু তিনটি প্রশ্ন</td></tr>
+        <tr><td><b>মেনু লুকায়, সার্ভার আটকায়</b> — দুটো আলাদা দায়িত্ব</td>
+          <td><code>navigation.py</code>: "this file only decides what is shown"</td></tr>
+        <tr><td><b>এক তালিকা, তিন ভোক্তা</b> + নিরাপদ ব্যর্থতা</td>
+          <td>সাইডবার · ড্যাশবোর্ড · টেস্ট — ফাইল ভুলে গেলে পাতা অদৃশ্য, অনিরাপদ নয়</td></tr>
+        <tr><td><b>অচেনা লোকের জন্য ৪০৪, ভুল ভূমিকার জন্য ৪০৩</b></td>
+          <td><code>Http404("Workspace not found.")</code> — অস্তিত্ব ফাঁস না করার সিদ্ধান্ত</td></tr>
+        <tr><td><b>ভূমিকা ৪টি, মেনু আইটেম ২২টি, প্রশাসকের ০</b></td>
+          <td>অ্যাডমিন ১৮ · কোঅর্ডিনেটর ১৩ · শিক্ষক ১২ · শিক্ষার্থী ৬ · প্রশাসক ০</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনে "প্রশাসকের ০" — এটা নিয়ে শেষ কথা বলুন: "যত কম দেখতে পারে, তত কম ভাঙতে পারে। সর্বশক্তিমান অ্যাডমিন হলো সবচেয়ে বড় ঝুঁকি।"</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">১০</div>
+  <h2>পরের ক্লাস — "কত দিনে শেষ হবে"</h2>
+  <p>শিডিউল · নির্ভরতার ক্রম · ১২ সপ্তাহের বাজেট ও বাফার</p>
+</section>

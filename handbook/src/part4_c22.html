@@ -1,0 +1,495 @@
+<!-- ===================== CLASS 22 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৪ · কোডিং · ক্লাস ২২ / ৩৭</div>
+  <h1>সংখ্যা থেকে<br>সিদ্ধান্ত</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৭ · টপিক ৭.৩ (রিপোর্ট ও এক্সপোর্ট)<br>৭টি রিপোর্ট রুট · ৩টি CSV · ১টি PDF · ১১টি অ্যাসেসমেন্ট টেস্ট</div>
+  <div class="pill">aggregate · Decimal · BOM · marksheet</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>রিপোর্টে সবচেয়ে কঠিন অংশ কোনটি?</h2>
+      <div class="sub">হাত তুলুন: কুয়েরি? চার্ট? PDF? নাকি অনুমতি?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:24pt;line-height:1.6">
+      উত্তর: <span class="hl">হিসাব আর অনুমতি</span> — কুয়েরি Django শিখিয়ে দেয়, কিন্তু "কার ফল দেখা যাবে" সেটা কেউ বলে দেয় না।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      আজকের পথ: একটি নম্বর → শতাংশ (Decimal) → গ্রেড (band lookup) → সারসংক্ষেপ → CSV/PDF।
+      প্রতিটি ধাপে একটি করে সিদ্ধান্ত, আর প্রতিটির পাশে টেস্ট।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "রিপোর্টে বাগ মানে ভুল নম্বর, আর ভুল নম্বর অভিভাবককে ফোন করেন।" তাই এখানে টেস্ট সবচেয়ে বেশি দরকার — অথচ `apps/reports/tests.py` <b>নেই</b>; হিসাব টেস্ট করা আছে assessments-এ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>১১টি টেস্ট — হিসাবের প্রমাণ</h2>
+      <div class="sub"><code>apps/assessments/tests.py</code> — প্রতিটি নিয়মের পাশে একটি টেস্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:56%">টেস্ট</th><th>যা রক্ষা করে</th></tr></thead>
+          <tbody>
+            <tr><td><code>test_grade_band_lookup</code></td><td>শতাংশ → গ্রেড</td></tr>
+            <tr><td><code>test_overlapping_bands_are_rejected</code></td><td>দুই ব্যান্ড একই নম্বরে নয়</td></tr>
+            <tr><td><code>test_result_sheet_handles_absent_zero_and_boundaries</code></td><td>অনুপস্থিত · শূন্য · সীমানা</td></tr>
+            <tr><td><code>test_marks_entry_rejects_out_of_range_value</code></td><td>পূর্ণমানের বেশি নয়</td></tr>
+            <tr><td><code>test_results_are_invisible_until_published</code></td><td>প্রকাশের আগে লুকানো</td></tr>
+            <tr><td><code>test_student_cannot_see_another_students_marksheet</code></td><td>নিজের ফল ছাড়া নয়</td></tr>
+            <tr><td><code>test_marksheet_pdf_is_rendered</code></td><td>PDF সত্যিই তৈরি হয়</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 40%">
+        <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+          এই সাতটি দেখলেই বোঝা যায় —<b>রিপোর্ট মানে শুধু যোগফল নয়</b>; সীমা, অনুমতি আর প্রকাশের সময়ও হিসাবের অংশ।
+        </div>
+        <div class="call warn" style="margin-top:2.6mm;font-size:10.2pt;padding:2.6mm 4mm">
+          <code>apps/reports/</code>-এ টেস্ট <b>০</b> — CSV-র কলাম ক্রম, ফাইলের নাম, BOM — কিছুই অপরীক্ষিত।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> টেস্টের নাম পড়েই ছাত্ররা অনেক সময় ধারণা পেয়ে যায় কোডে কী আছে। বলুন: "ভালো টেস্টের নাম একটা বাক্যের ডকুমেন্টেশন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>নম্বর থেকে গ্রেড — একটাই ফাংশন</h2>
+      <div class="sub"><code>grade_for(percent, scale)</code> — সব পর্দা, CSV ও PDF একই ফাংশন ডাকে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 48%">
+        <pre style="font-size:8.4pt;line-height:1.45">def grade_for(percent, scale):
+    """Resolve a percentage to (letter, gpa)."""
+    if scale is None or percent is None:
+        return ("-", Decimal("0.00"))
+    p = Decimal(str(percent))
+    for band in scale.bands.all():        # ordering = -min_percent
+        if band.min_percent <= p <= band.max_percent:
+            return (band.letter, band.gpa)
+    return ("-", Decimal("0.00"))
+
+class GradeBand(models.Model):
+    letter = models.CharField(max_length=5)
+    min_percent = models.DecimalField(max_digits=5, decimal_places=2)
+    max_percent = models.DecimalField(max_digits=5, decimal_places=2)
+    gpa = models.DecimalField(max_digits=3, decimal_places=2)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:32%">সিদ্ধান্ত</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td>এক ফাংশন, তিন ভোক্তা</td><td>স্ক্রিন · CSV · PDF-এ গ্রেড কখনো আলাদা হয় না</td></tr>
+            <tr><td><code>Decimal(str(p))</code></td><td><code>75.0</code> → <code>"75.0"</code> — বাইনারি ভুল এড়ায়</td></tr>
+            <tr><td>ব্যান্ড না মিললে <code>"-"</code></td><td>ক্র্যাশ নয়; ফাঁকা গ্রেড দেখানো</td></tr>
+            <tr><td>একই workspace-এ ১টি active scale</td><td>partial unique constraint (ক্লাস ১৫)</td></tr>
+            <tr><td>ওভারল্যাপ নিষিদ্ধ</td><td>নাহলে কোন ব্যান্ড আগে মিলবে তা অনিশ্চিত</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "দুই ব্যান্ড একই নম্বরে মিললে কী হয়?" — প্রথমটা জেতে, মানে ডেটার ক্রম ফলাফল বদলায়। ওভারল্যাপ-টেস্ট এটাই আটকায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>রেজাল্ট শিট — বিশুদ্ধ ফাংশন</h2>
+      <div class="sub"><code>build_result_sheet(exam)</code> — কোনো ডেটাবেস লেখা নেই, তাই টেস্ট করা সহজ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8pt;line-height:1.4">for mark in exam.marks.select_related("student"):
+    obtained = None if mark.is_absent else mark.obtained
+    percent = None
+    if obtained is not None and exam.full_marks:
+        percent = (Decimal(obtained) * 100 / Decimal(exam.full_marks)
+                   ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    letter, gpa = grade_for(percent, scale)
+    rows.append({"student": mark.student, "obtained": obtained,
+                 "percent": percent, "letter": letter, "gpa": gpa,
+                 "is_pass": obtained is not None
+                            and obtained >= exam.pass_marks})
+
+scored = [r for r in rows if r["obtained"] is not None]
+summary = {"students": len(rows), "scored": len(scored),
+           "absent": ..., "passed": ..., "failed": ...,
+           "pass_rate": round(passed * 100 / total_scored, 1),
+           "average": ..., "highest": ..., "lowest": ...}</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">অনুপস্থিত আলাদা</b>
+            <p style="font-size:9.8pt"><code>obtained=None</code> — শূন্য নয়! নাহলে গড় আর পাশের হার দুটোই ভুল হবে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>scored</code> তালিকা</b>
+            <p style="font-size:9.8pt">গড়-পাশ কেবল যারা পরীক্ষা দিয়েছে তাদের নিয়ে —<code>total_scored</code>।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ডেটাবেস লেখে না</b>
+            <p style="font-size:9.8pt">পিওর ফাংশন মানে একই ইনপুটে একই আউটপুট — টেস্টে <code>self.assertEqual</code> দিয়ে ধরা যায়।</p></div>
+          <div class="card" style="padding:3mm 3.8mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11.2pt">শূন্য দিয়ে ভাগ</b>
+            <p style="font-size:9.8pt">কেউ পরীক্ষা দেয়নি? <code>if total_scored else 0</code> — নাহলে <code>ZeroDivisionError</code>।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে হিসাব করুন: ১০ জনের মধ্যে ২ জন অনুপস্থিত, বাকি ৮ জনের গড় ৬০ — "ক্লাসের গড় ৬০ নাকি ৪৮?" এই আলোচনাই রিপোর্টের রাজনীতি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2><code>Decimal</code>, <code>float</code> নয়</h2>
+      <div class="sub">টাকার হিসাব আর শতাংশে বাইনারি ভুল মেনে নেওয়া যায় না</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.6pt;line-height:1.5"># float — যা ঘটে
+>>> 0.1 + 0.2
+0.30000000000000004
+>>> round(2.675, 2)
+2.67          # প্রত্যাশা 2.68
+
+# Decimal — যা চাই
+Decimal("2.675").quantize(Decimal("0.01"),
+                          rounding=ROUND_HALF_UP)   # 2.68
+
+# IMS-এ একই নিয়ম
+percent = (Decimal(obtained) * Decimal("100")
+           / Decimal(exam.full_marks)).quantize(
+               Decimal("0.01"), rounding=ROUND_HALF_UP)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">কোথায় Decimal</b>
+            <p style="font-size:9.8pt"><code>GradeBand.min/max/gpa</code> · ইনভয়েসের <code>price/amount</code> · শতাংশ</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>ROUND_HALF_UP</code> কেন</b>
+            <p style="font-size:9.8pt">Python-এর ডিফল্ট banker's rounding (<code>2.5 → 2</code>) — স্কুলের নম্বরে অপ্রত্যাশিত।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">সীমানার ঝুঁকি</b>
+            <p style="font-size:9.8pt">৩২.৯৯% vs ৩৩% — পাশ/ফেল ঠিক এই জায়গায় নির্ধারিত হয়, তাই <code>quantize</code> আগে, তুলনা পরে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11.2pt">CSV-তে</b>
+            <p style="font-size:9.8pt"><code>Decimal</code> সরাসরি লেখা যায় না → <code>str(percent)</code>; নাহলে <code>csv</code> মডিউল TypeError দেয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> টার্মিনালে <code>0.1+0.2</code> চালিয়ে দেখান — ক্লাসে সবসময় একই "ওহ!" আসে। তারপর বলুন: "ব্যাংকে ১ পয়সা, এখানে ১ নম্বর।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>CSV-র চারটি লাইন যা সবাই ভুলে যায়</h2>
+      <div class="sub"><code>_csv_response()</code> — এক ফাংশন, তিনটি এক্সপোর্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">def _csv_response(filename, header, rows):
+    resp = HttpResponse(content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = (
+        f'attachment; filename="{filename}"')
+    resp.write("\ufeff")          # BOM so Excel opens UTF-8
+    writer = csv.writer(resp)
+    writer.writerow(header)
+    for row in rows:
+        writer.writerow(row)
+    return resp</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:36%">লাইন</th><th>না থাকলে</th></tr></thead>
+          <tbody>
+            <tr><td><code>charset=utf-8</code></td><td>বাংলা নাম মুজিবকে দেখায়</td></tr>
+            <tr><td><code>\ufeff</code> (BOM)</td><td>Excel-এ বাংলা অক্ষর ভাঙে — শুধু Excel-এ, LibreOffice-এ নয়</td></tr>
+            <tr><td><code>attachment</code></td><td>ব্রাউজারে কাঁচা টেক্সট খুলে যায়</td></tr>
+            <tr><td><code>csv.writer</code></td><td>নামে কমা থাকলে কলাম সরে যায় (<code>"Rahman, Jr."</code>)</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          ফাইলের নামেও তথ্য: <code>attendance-Class-8-2026-10-06-to-2026-11-05.csv</code> — খুলেই বোঝা যায় কী।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> BOM-টা চোখে দেখা যায় না, তাই লাইভে Excel-এ খুলে দেখান। "যে কোডটা দেখা যায় না, সেটাই সবচেয়ে বেশি ভুল হয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>তিনটি এক্সপোর্ট, তিনটি স্কোপ</h2>
+      <div class="sub">একই <code>_students_for()</code>/<code>_classes_for()</code> — স্ক্রিনে যা, CSV-তে তাই</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:20%">ফাইল</th><th style="width:26%">সোর্স</th><th>কলাম ও নিয়ম</th></tr></thead>
+      <tbody>
+        <tr><td><code>students.csv</code></td><td><code>_students_for()</code> + <code>q</code>/<code>status</code> ফিল্টার</td><td>ভর্তি নং · নাম · ক্লাস · অভিভাবক · ফোন · স্ট্যাটাস</td></tr>
+        <tr><td><code>attendance-…csv</code></td><td><code>_classes_for()</code> + ৩০ দিনের ডিফল্ট রেঞ্জ</td><td>মোট · উপস্থিত · অনুপস্থিত · শতাংশ</td></tr>
+        <tr><td><code>results-{exam}.csv</code></td><td><code>build_result_sheet(exam)</code></td><td>নম্বর · পূর্ণমান · % · গ্রেড · পাশ/ফেল</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        তিনটিই <code>@workspace_view(*TEACHING)</code> — ছাত্র CSV নামাতে পারেন না। UI-তে বাটন নেই, সার্ভারেও নিয়ম আছে।
+      </div></div>
+      <div><div class="call bad" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <code>export_results</code>-এ আলাদা করে <code>if role == "STUDENT": raise PermissionDenied</code> — বাড়তি সতর্কতা, কারণ <code>TEACHING</code>-এ STUDENT নেই।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "রিপোর্ট = আরেকটি দরজা" — এই বাক্যটাই ক্লাসের কেন্দ্র। প্রতিটি এক্সপোর্ট নতুন করে অনুমতি লিখলে একদিন কেউ ভুলে যাবে; তাই একই helper।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>স্ক্রিন আর CSV — একই পথ</h2>
+      <div class="sub">দুই আলাদা কুয়েরি মানে দুই রকম সত্য</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="20" y="70" width="180" height="56" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="110" y="92" text-anchor="middle" font-size="9" font-weight="700" fill="#312e81">_students_for()</text>
+          <text x="110" y="108" text-anchor="middle" font-size="7.8" fill="#4338ca">স্কোপ + ভূমিকা</text>
+          <text x="110" y="120" text-anchor="middle" font-size="7.4" fill="#4338ca">visible_students()</text>
+
+          <rect x="20" y="10" width="180" height="42" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2"/>
+          <text x="110" y="27" text-anchor="middle" font-size="8.6" fill="#334155">স্ক্রিন: ২৫ প্রতি পাতা</text>
+          <text x="110" y="41" text-anchor="middle" font-size="7.6" fill="#64748b">students/views.py</text>
+
+          <rect x="20" y="146" width="180" height="42" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.2"/>
+          <text x="110" y="163" text-anchor="middle" font-size="8.6" fill="#7c2d12">CSV: সব সারি</text>
+          <text x="110" y="177" text-anchor="middle" font-size="7.6" fill="#b45309">reports/views.py</text>
+
+          <rect x="400" y="60" width="230" height="76" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="515" y="84" text-anchor="middle" font-size="9" font-weight="700" fill="#115e59">একই queryset</text>
+          <text x="515" y="100" text-anchor="middle" font-size="8" fill="#115e59">ফিল্টার: q · status · class</text>
+          <text x="515" y="114" text-anchor="middle" font-size="8" fill="#115e59">তারপরই paginate বা writer</text>
+          <text x="515" y="128" text-anchor="middle" font-size="7.6" fill="#0f766e">নিয়ম: ফিল্টার আগে, ভাগ পরে</text>
+
+          <rect x="780" y="10" width="200" height="42" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2"/>
+          <text x="880" y="27" text-anchor="middle" font-size="8.6" fill="#334155">HTML টেবিল</text>
+          <text x="880" y="41" text-anchor="middle" font-size="7.6" fill="#64748b">|length = মোট</text>
+
+          <rect x="780" y="146" width="200" height="42" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.2"/>
+          <text x="880" y="163" text-anchor="middle" font-size="8.6" fill="#334155">CSV ফাইল</text>
+          <text x="880" y="177" text-anchor="middle" font-size="7.6" fill="#64748b">একই ৬ কলাম</text>
+
+          <g stroke="#94a3b8" stroke-width="1.2" fill="none">
+            <path d="M202,31 L300,31 L300,90 L396,90" marker-end="url(#a22)"/>
+            <path d="M202,167 L300,167 L300,110 L396,110" marker-end="url(#a22)"/>
+            <path d="M632,80 L700,80 L700,31 L776,31" marker-end="url(#a22)"/>
+            <path d="M632,116 L700,116 L700,167 L776,167" marker-end="url(#a22)"/>
+          </g>
+          <text x="500" y="196" text-anchor="middle" font-size="8" fill="#dc2626">বিপদ: CSV-তে আলাদা ফিল্টার লিখলে দুই জায়গায় দুই উত্তর</text>
+          <defs><marker id="a22" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:11pt;padding:3mm 4.4mm">
+      স্ক্রিনে ২৫টি দেখালেও CSV-তে <b>সব</b> যায় — কিন্তু দুটোই একই কুয়েরি থেকে, তাই "স্ক্রিনে যা দেখিনি CSV-তে তা এল" এমন বিভ্রান্তি হয় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "CSV-তে pagination থাকলে কী হয়?" উত্তর: ব্যবহারকারী প্রথম ২৫ জনের রিপোর্ট ভেবে বাকিদের বাদ দিয়ে ফেলেন — বিপজ্জনক নীরব ভুল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>শতাংশের হিসাব ডেটাবেসেই</h2>
+      <div class="sub">শর্তসহ <code>Count</code> — ৪০ জনের জন্য ৪০টি কুয়েরি নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:8pt;line-height:1.42">agg = (AttendanceRecord.objects
+       .filter(class_group=cls, date__range=(start, end))
+       .values("student__admission_no", "student__full_name")
+       .annotate(
+           total=Count("id"),
+           present=Count("id", filter=Q(status__in=["PRESENT", "LATE"])),
+           absent=Count("id", filter=Q(status="ABSENT")))
+       .order_by("student__full_name"))
+
+rows = [(a["student__admission_no"], a["student__full_name"],
+         a["total"], a["present"], a["absent"],
+         round(a["present"] * 100 / a["total"]) if a["total"] else 0)
+        for a in agg]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>values()</code> আগে</b>
+            <p style="font-size:9.8pt">গ্রুপিং হয় ছাত্র ধরে; না দিলে পুরো ক্লাসের একটাই সারি আসবে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>filter=Q(…)</code></b>
+            <p style="font-size:9.8pt">তিনটি সংখ্যা এক কুয়েরিতে — উপস্থিত, অনুপস্থিত, মোট।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">শতাংশ Python-এ</b>
+            <p style="font-size:9.8pt">SQL-এ ভাগ করলে <code>ZeroDivisionError</code> বা পূর্ণসংখ্যার ভাগ — তাই শেষ ধাপে, <code>if total else 0</code> দিয়ে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">বিকল্প</b>
+            <p style="font-size:9.8pt"><code>annotate</code> ছাড়া প্রতিটি ছাত্রে ৩টি কুয়েরি = ১২০ কুয়েরি (N+1)।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>django.db.connection.queries</code> চালিয়ে দুই সংস্করণের কুয়েরি সংখ্যা দেখান — ১ বনাম ১২০। সংখ্যাটাই এখানে যুক্তি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>রিপোর্টের ফিল্টার = ব্যবহারকারীর প্রশ্ন</h2>
+      <div class="sub">ডিফল্ট মান লিখে রাখা মানে ব্যবহারকারীর হয়ে ভেবে নেওয়া</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.42">q = (request.GET.get("q") or "").strip()
+if q:
+    qs = qs.filter(full_name__icontains=q)
+if request.GET.get("status"):
+    qs = qs.filter(status=request.GET["status"])
+
+today = timezone.localdate()
+start = (request.GET.get("from")
+         or (today - timedelta(days=30)).isoformat())
+end = request.GET.get("to") or today.isoformat()
+filter(class_group=cls, date__range=(start, end))
+
+cls = (_classes_for(request)
+       .filter(pk=request.GET.get("class")).first()
+       or _classes_for(request).first())</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:38%">নীতি</th><th>কারণ</th></tr></thead>
+          <tbody>
+            <tr><td>ডিফল্ট ৩০ দিন</td><td>খালি রিপোর্টের চেয়ে "গত মাস" বেশি কাজে লাগে</td></tr>
+            <tr><td><code>timezone.localdate()</code></td><td>সার্ভার UTC, স্কুল ঢাকা — তারিখ গড়মিল এড়ায়</td></tr>
+            <tr><td><code>?class=</code> না মিললে প্রথম ক্লাস</td><td>কখনো ভাঙা পর্দা নয়, তবে <b>ভুল ক্লাসও হতে পারে</b></td></tr>
+            <tr><td>ফিল্টার আগে, ভাগ পরে</td><td>নাহলে টোটাল আর সারি মেলে না</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+          <code>?class=999</code> (অন্যের ক্লাস) দিলে <code>_classes_for()</code>-এ না মিলে <b>প্রথম ক্লাস</b> দেখাবে — ৪০৩ নয়। ব্যবহারকারী বিভ্রান্ত হতে পারেন।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ কার্ডটা নিয়ে আলোচনা করুন: নীরব ফলব্যাক ভালো UX, কিন্তু ভুল রিপোর্টের ঝুঁকি। বিকল্প: "এই ক্লাসে আপনার প্রবেশাধিকার নেই" বার্তা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>মার্কশিট — একই ডেটা, দুই চেহারা</h2>
+      <div class="sub">HTML পর্দা · PDF (<code>reportlab</code>) · অনুমতি একই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">@workspace_view(*ALL_ROLES)
+def marksheet(request, slug, pk):
+    exam = get_object_or_404(Exam, pk=pk, workspace=request.workspace)
+    student = getattr(request.user, "student_profile", None)
+    if student:
+        if not exam.is_published:
+            raise PermissionDenied("Results are not published yet.")
+        mark = exam.marks.filter(student=student).first()
+        if mark is None:
+            raise PermissionDenied("You have no result for this exam.")
+        return _render_sheet(request, exam, [mark], own=True)
+    if not teacher_can_access_class(request.user, exam.class_group):
+        raise PermissionDenied("You are not assigned to this class.")
+    return _render_sheet(request, exam, exam.marks..., own=False)
+
+# ?format=pdf → render_marksheet_pdf(...)
+resp["Content-Disposition"] = 'inline; filename="marksheet-3.pdf"'</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">এক ভিউ, দুই ফরম্যাট</b>
+            <p style="font-size:9.8pt"><code>?format=pdf</code> — একই অনুমতি, একই সারি; শুধু আউটপুট বদলায়।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>inline</code> বনাম <code>attachment</code></b>
+            <p style="font-size:9.8pt">মার্কশিট ব্রাউজারে খোলা দরকার (প্রিন্ট), তাই <code>inline</code>; CSV নামা দরকার, তাই <code>attachment</code>।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">শিক্ষকের নিয়ম</b>
+            <p style="font-size:9.8pt">শুধু নিজের ক্লাসের — <code>teacher_can_access_class()</code>, নাহলে ৪০৩।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ছাত্রের নিয়ম</b>
+            <p style="font-size:9.8pt">প্রকাশিত হতে হবে + নিজের সারি। দুই শর্তের একটি বাদ পড়লে ফল ফাঁস।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">PDF লাইব্রেরি</b>
+            <p style="font-size:9.8pt"><code>reportlab</code> — টেবিল নিজে আঁকে (<code>TableStyle</code>), হেডার প্রতি পাতায় (<code>repeatRows=1</code>)।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> HTML বনাম PDF-এর পার্থক্য দেখান: ব্রাউজারের Ctrl+P-ও কাজ করে, কিন্তু প্রতিষ্ঠানের হেডার-লোগোসহ PDF আলাদা পণ্য — অভিভাবককে পাঠানোর জিনিস।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>রিপোর্টের পাঁচটি ফাঁদ</h2>
+      <div class="sub">প্রতিটির একটি করে বাস্তব চিহ্ন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:36%">ফাঁদ</th><th>চিহ্ন ও প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. অনুপস্থিতকে শূন্য গোনা</b></td><td>গড় কমে যায় → <code>obtained=None</code> রাখুন, আলাদা গোনা</td></tr>
+        <tr><td><b>২. <code>float</code> দিয়ে শতাংশ</b></td><td>৩২.৯৯ / ৩৩ সীমানায় দোলাচল → <code>Decimal</code> + <code>quantize</code></td></tr>
+        <tr><td><b>৩. CSV-তে pagination</b></td><td>অর্ধেক রিপোর্ট নীরবে যায় → রপ্তানিতে সব সারি</td></tr>
+        <tr><td><b>৪. মৃত কোড রিপোর্টে</b></td><td><code>class_summary()</code>-তে <code>for … if False else []</code> — কখনো চলে না, পড়তে বিভ্রান্তিকর</td></tr>
+        <tr><td><b>৫. এক্সপোর্টে আলাদা অনুমতি</b></td><td>নতুন রুটে স্কোপ ভুলে যাওয়া → একই <code>_students_for()</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4mm;font-size:11pt;padding:2.8mm 4.4mm">
+      চতুর্থটি দেখতে ছোট, কিন্তু ভয়ংকর: পরের ডেভেলপার ভাববেন ওই লুপ কিছু একটা করে — আর সেটাকে "ঠিক" করতে গিয়ে নতুন বাগ আনবেন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থটা লাইভে খুলে দেখান — <code>if False else []</code> লেখাটা কেউ বিশ্বাসই করবে না। শিক্ষা: "মৃত কোড মুছে ফেলা একটা ফিচার।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — একটি রিপোর্ট, চার শর্ত</h2>
+      <div class="sub">নিজের প্রজেক্টে একটি CSV রিপোর্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. স্কোপ (৫ মিনিট)</b>
+            <p style="font-size:10pt">একই helper থেকে কুয়েরি নিন — নতুন ফিল্টার লিখবেন না।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. শর্তসহ গণনা (৮ মিনিট)</b>
+            <p style="font-size:10pt"><code>values()</code> + <code>annotate(Count(..., filter=Q(...)))</code> — এক কুয়েরিতে ২টি সংখ্যা।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. CSV (৫ মিনিট)</b>
+            <p style="font-size:10pt">BOM + <code>charset</code> + <code>attachment</code>; বাংলা নাম দিয়ে Excel-এ খুলে যাচাই।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৪. সীমানা (২ মিনিট)</b>
+            <p style="font-size:10pt">০ সারি ও ০ দিয়ে ভাগ — দুটোই পরীক্ষা করুন।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>অনুপস্থিত ছাত্র গড়ে ঢুকলে কী ভুল হয়?</li>
+          <li class="g">CSV-তে BOM কেন দরকার?</li>
+          <li>রিপোর্টে আলাদা অনুমতি লিখলে কী ঝুঁকি?</li>
+          <li class="r">PDF আর HTML — কখন কোনটি?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের ভালো উত্তর: "PDF হলো যা পাঠানো যায়, HTML হলো যা ব্যবহার করা যায়।" অভিভাবকের কাছে PDF, শিক্ষকের কাছে পর্দা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>হিসাব একটি বিশুদ্ধ ফাংশনে</b></td><td><code>build_result_sheet()</code> · <code>grade_for()</code></td></tr>
+        <tr><td><b>অনুপস্থিত ≠ শূন্য</b></td><td><code>obtained=None</code> · <code>scored</code> তালিকা</td></tr>
+        <tr><td><b>টাকায় ও নম্বরে <code>Decimal</code></b></td><td><code>quantize(…, ROUND_HALF_UP)</code></td></tr>
+        <tr><td><b>CSV = BOM + charset + attachment</b></td><td><code>_csv_response()</code> · ৩টি এক্সপোর্ট</td></tr>
+        <tr><td><b>শর্তসহ গণনা এক কুয়েরিতে</b></td><td><code>Count("id", filter=Q(…))</code></td></tr>
+        <tr><td><b>স্ক্রিন ও রপ্তানি একই অনুমতি</b></td><td><code>_students_for()</code>/<code>_classes_for()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম ও শেষ সারি জোড়া লাগান: "হিসাব ঠিক থাকলেও ভুল মানুষকে দিলে রিপোর্ট ভুল।"</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৩</div>
+  <h2>পরের ক্লাস — "মাস শেষে টাকার হিসাব"</h2>
+  <p>বিলিং ও প্ল্যাটফর্ম: <code>Subscription</code> · <code>Invoice._next_number</code> · read-only গেট · ট্রায়াল · সাসপেন্ড · প্ল্যাটফর্ম কনসোল</p>
+</section>

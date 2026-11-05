@@ -1,0 +1,33 @@
+<section class="slide">
+  <div class="head"><span class="badge">সংযোগ</span>
+    <div><h2>ডেটাবেজ-সংযোগ: একবার খুলে রাখা, ৬০ সেকেন্ড</h2>
+      <div class="sub"><code>CONN_MAX_AGE=60</code> · <code>CONN_HEALTH_CHECKS=True</code> · psycopg 3</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:8.1pt;line-height:1.48;padding:3mm 3.6mm">"ENGINE": "django.db.backends.postgresql",
+"NAME": env("DB_NAME", "ims_dev"),
+"USER": env("DB_USER", "ims_user"),
+"HOST": env("DB_HOST", "127.0.0.1"),
+"PORT": env("DB_PORT", "5432"),
+"CONN_MAX_AGE": 60,
+"CONN_HEALTH_CHECKS": True,   # prod-এ</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">সেটিং</th><th style="width:60%">কেন</th></tr>
+          <tr><td>CONN_MAX_AGE ৬০</td><td>প্রতি রিকোয়েস্টে নতুন সংযোগ নয় — হ্যান্ডশেক বাঁচে</td></tr>
+          <tr><td>HEALTH_CHECKS</td><td>পুরনো সংযোগ মৃত হলে ব্যবহারের আগেই ধরা পড়ে</td></tr>
+          <tr><td>gunicorn workers ৩</td><td>worker প্রতি আলাদা সংযোগ-পুল; ৪টি worker মানে ৪০+ সংযোগ</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>সীমা:</b> পুলিং লাইব্রেরি (pgbouncer) নেই — worker বাড়ালে PostgreSQL-এর <code>max_connections</code>-এ আটকে যাবে।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>তিনটি পরিবেশ, একই কোড:</b> PostgreSQL (<code>dev</code>/<code>prod</code>) · SQLite (<code>sqlite</code> — শুধু ডেমো)। SQLite-তে <code>CONN_MAX_AGE</code>-এর অর্থ আলাদা, তাই ডেমোর গতি আর প্রোডের গতি কখনো এক নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের জিজ্ঞেস করুন: "worker ৩ থেকে ৩০ করলে কী ভাঙবে?" উত্তর: সংযোগের সংখ্যা — আর সেটি ডেটাবেজ-সার্ভারেই ধরা পড়ে, অ্যাপে নয়।
+</section>

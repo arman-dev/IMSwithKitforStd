@@ -1,0 +1,25 @@
+<section class="slide">
+  <div class="head"><span class="badge">সেশন</span>
+    <div><h2>সেশন ও কুকি — ছয়টি পতাকা, একটি কারণ</h2>
+      <div class="sub">প্রতিটি পতাকা একটি নির্দিষ্ট আক্রমণ ঠেকায়</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:34%">সেটিং (prod)</th><th style="width:30%">মান</th><th style="width:36%">যা ঠেকায়</th></tr>
+      <tr><td><code>SESSION_COOKIE_SECURE</code></td><td>True</td><td>HTTP-তে কুকি যাওয়া — নেটওয়ার্কে আটকানো</td></tr>
+      <tr><td><code>SESSION_COOKIE_HTTPONLY</code></td><td>True</td><td>JavaScript দিয়ে কুকি পড়া (XSS-এর ক্ষতি সীমিত)</td></tr>
+      <tr><td><code>SESSION_COOKIE_SAMESITE</code> · <code>CSRF_COOKIE_SAMESITE</code></td><td>Lax</td><td>অন্য সাইট থেকে আসা POST-এ কুকি পাঠানো</td></tr>
+      <tr><td><code>SECURE_SSL_REDIRECT</code></td><td>True</td><td>সব HTTP → HTTPS</td></tr>
+      <tr><td><code>SECURE_HSTS_SECONDS</code></td><td>৩০ দিন</td><td>ব্রাউজারকে "এই সাইট কেবল HTTPS" মনে রাখানো</td></tr>
+      <tr><td><code>X_FRAME_OPTIONS</code></td><td>DENY</td><td>অন্য সাইটে iframe-এ বসিয়ে ক্লিকজ্যাকিং</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>মেয়াদ ৮ ঘণ্টা</b> + <code>SESSION_SAVE_EVERY_REQUEST</code> — কাজ করলে মেয়াদ বাড়ে, ফেলে রাখলে শেষ হয়।
+      </div>
+      <div class="call warn" style="font-size:10pt;padding:2.5mm 3.9mm">
+        <b>যা নেই:</b> CSP হেডার নেই (<code>django-csp</code> ইনস্টল নয়) — তাই XSS ঘটলে ব্রাউজার-স্তরে বাধা নেই; ভরসা কেবল template autoescape।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীরা HSTS-এর মানে জানে না। ব্যাখ্যা: একবার HSTS পাঠালে ব্রাউজার ৩০ দিন HTTP-তেই সংযোগ করবে না — অর্থাৎ ভুল সেট করলে ফিরিয়ে আনা কঠিন।
+</section>

@@ -1,0 +1,456 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৮ · ক্লাস ৩৪</div>
+  <h1>কোডের ভেতরের দস্তাবেজ</h1>
+  <p class="sub">docstring · "কেন" মন্তব্য · URL মানচিত্র · CHANGELOG · ADR · CONTRIBUTING</p>
+  <div class="pill">IMS · ক্লাস ৩৪ · স্লাইড ১৬–৩০</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>কোডে দস্তাবেজ কতটা আছে?</h2>
+      <div class="sub">আজ গোনা সংখ্যা — ৮৭ ফাইল, ৫৭৬ def/class</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card" style="padding:3.4mm 4.4mm"><b style="font-size:12.2pt">৭৫টি docstring — ১৩.০%</b>
+        <p style="font-size:10.4pt">৫৭৬টি ফাংশন/ক্লাসের মধ্যে মাত্র ৭৫টির ব্যাখ্যা আছে। বাকিগুলো নামের ওপরই ভরসা করছে।</p></div>
+      <div class="card soft" style="padding:3.4mm 4.4mm"><b style="font-size:12.2pt">মডিউল-স্তরে ভালো</b>
+        <p style="font-size:10.4pt">প্রায় প্রতিটি অ্যাপের <code>models.py</code>/<code>views.py</code>-এর শুরুতে উদ্দেশ্য লেখা — যেমন "Exams, marks, grading and results (C112–C119)".</p></div>
+      <div class="card warn" style="padding:3.4mm 4.4mm"><b style="font-size:12.2pt">ফাংশন-স্তরে দুর্বল</b>
+        <p style="font-size:10.4pt">জটিল helper-গুলোর ব্যাখ্যা নেই — পঠনযোগ্যতা নামের ওপর নির্ভরশীল। এই ফাঁকটাই আজকের কাজ।</p></div>
+    </div>
+    <div class="call" style="margin-top:4mm;font-size:10.6pt;padding:2.8mm 4.2mm">
+      সংখ্যা বাড়ানোই লক্ষ্য নয় — <b>যেখানে নাম বলতে পারে না, সেখানেই</b> ব্যাখ্যা দরকার। সব ফাংশনে docstring দিলে তা আবার পড়া হয় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পরিমাপটি দেখান: <code>ast</code> দিয়ে ২০ লাইনের স্ক্রিপ্টেই এই সংখ্যা বের হয় — শিক্ষার্থীরা নিজের প্রজেক্টে চালাতে পারবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মডিউল-ডকস্ট্রিং</span>
+    <div><h2>ফাইলের শুরুতে তিনটি প্রশ্নের উত্তর</h2>
+      <div class="sub">এটি কী · নিয়ম কী · কেন এখানে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.44">"""One place that answers: 'what may this person
+see?' (production hardening, C126).
+
+Every list view asks these helpers instead of
+writing its own filter. That is how a role bug is
+fixed once instead of in nine views.
+
+    admin       -> everything in the workspace
+    coordinator -> only the departments / classes
+                   assigned to them
+    teacher     -> only classes assigned to teach
+    student     -> only their own record
+"""
+# apps/core/scoping.py</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">প্রথম লাইনে উদ্দেশ্য</b>
+            <p style="font-size:9.2pt">"এক জায়গা যেখানে উত্তর আছে: এই মানুষটি কী দেখতে পারে?"</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">তারপর নিয়ম</b>
+            <p style="font-size:9.2pt">চার ভূমিকার চারটি স্কোপ — টেবিলের মতো, চোখে পড়ে।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">শেষে "কেন"</b>
+            <p style="font-size:9.2pt">"নয়টি ভিউয়ে আলাদা করে লিখলে বাগ নয় জায়গায় ঠিক করতে হতো।"</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">যা লিখবেন না</b>
+            <p style="font-size:9.2pt">"এই ফাইলে স্কোপিং ফাংশন আছে" — সেটা ফাইলের নামেই আছে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই docstring-টি প্রজেক্টে সত্যিই আছে — পড়ে দেখান। তারপর জিজ্ঞেস করুন: "এটি না থাকলে নতুন ডেভেলপার কত সময় নষ্ট করত?"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">"কেন" মন্তব্য</span>
+    <div><h2>যেখানে কোড নিজেই বিভ্রান্তিকর</h2>
+      <div class="sub">অদ্ভুত দেখায় এমন লাইনের পাশে কারণ লিখুন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:7.8pt;line-height:1.44"># apps/billing/middleware.py
+# The membership that matters is for the workspace in
+# the URL -- the session one can belong to a different
+# institution entirely (admin of one, coordinator of
+# another), which is exactly how this branch was wrong
+# the first time.
+
+# apps/audit/models.py
+def log(...):
+    """Write one audit row. Never raises: logging must
+    not break a workflow."""</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">মূল্য</b>
+            <p style="font-size:9.2pt">এই মন্তব্য না থাকলে পরের কেউ "অপ্রয়োজনীয়" ভেবে সরিয়ে দিত — আর বাগটি ফিরে আসত।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">সূত্র</b>
+            <p style="font-size:9.2pt">"this is exactly how this branch was wrong the first time" — সত্যি ঘটে যাওয়া বাগের স্মৃতি।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">নিয়ম</b>
+            <p style="font-size:9.2pt">মন্তব্যে "কী" নয়, "কেন" — এবং সম্ভব হলে ঘটে যাওয়া সমস্যার কথা।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "সবচেয়ে দামি মন্তব্য সেই যেটি ভবিষ্যতের কাউকে একই বাগ করতে বাধা দেয়।" নিজের প্রজেক্টে এমন একটি খুঁজতে বলুন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ডকস্ট্রিং কখন</span>
+    <div><h2>কোথায় ব্যাখ্যা দরকার, কোথায় নয়</h2>
+      <div class="sub">নামই যদি বলে দেয়, docstring বাড়তি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">দরকার নেই</b>
+          <p style="font-size:9.6pt;line-height:1.6"><code>def can_manage_workspace(membership):</code><br>নামই বলছে — প্রতিষ্ঠান অ্যাডমিন কি না।<br><br><code>def visible_classes(user, workspace):</code><br>স্কোপিং ফাইলে আছে, উদ্দেশ্য স্পষ্ট।</p></div>
+      </div>
+      <div style="flex:1">
+        <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">দরকার আছে</b>
+          <p style="font-size:9.6pt;line-height:1.6"><code>def is_writable(workspace):</code> — কোন পাঁচ অবস্থায় সত্য, তা দ্রুত দেখা দরকার।<br><br><code>def _next_number(prefix):</code> — ফরম্যাট, প্রতিযোগিতা ও ব্যর্থতার নিয়ম ব্যাখ্যা দরকার।<br><br>যেখানে <b>নিয়ম</b> আছে (নিরাপত্তা, টাকা, তারিখ) — সেখানে ব্যাখ্যা।</p></div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      নিয়ম: <b>যে ফাংশনে ভুল হলে টাকা বা নিরাপত্তা ক্ষতিগ্রস্ত হয়</b> — সেখানে সবসময় ব্যাখ্যা। বাকিতে নাম ও টেস্টই যথেষ্ট।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এটি সময় বাঁচানোর নিয়ম: সব ফাংশনে docstring লিখতে গেলে কেউ কিছুই লিখবে না। অগ্রাধিকার দিন গুরুত্বপূর্ণ জায়গায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মানচিত্র</span>
+    <div><h2>URL মানচিত্র — ৮৫টি রুট, ১১ অ্যাপ</h2>
+      <div class="sub">নতুন ডেভেলপারের প্রথম প্রশ্ন: কোন পর্দা কোথায়?</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:22%">অ্যাপ</th><th style="width:12%">রুট</th><th>প্রধান পর্দা</th></tr></thead>
+      <tbody>
+        <tr><td><code>billing</code></td><td>১৮</td><td>প্ল্যান · পাবলিক প্রাইসিং · সাবস্ক্রিপশন · ইনভয়েস · প্লাটফর্ম কনসোল</td></tr>
+        <tr><td><code>academics</code></td><td>১৩</td><td>শিক্ষাবর্ষ · টার্ম · বিভাগ · ক্লাস · বিষয় · অ্যাসাইনমেন্ট</td></tr>
+        <tr><td><code>lessons</code></td><td>১৩</td><td>সিলেবাস · টপিক · হোমওয়ার্ক · জমা</td></tr>
+        <tr><td><code>accounts</code></td><td>৯</td><td>লগইন · রেজিস্ট্রেশন · প্রোফাইল · পাসওয়ার্ড</td></tr>
+        <tr><td><code>assessments</code></td><td>৯</td><td>পরীক্ষা · নম্বর এন্ট্রি · প্রকাশ · মার্কশিট</td></tr>
+        <tr><td><code>reports</code> · <code>students</code></td><td>৭ + ৭</td><td>রিপোর্ট · CSV/XLSX · ছাত্র তালিকা ও প্রোফাইল</td></tr>
+        <tr><td><code>attendance</code> · <code>audit</code> · <code>workspaces</code> · <code>core</code></td><td>৪ · ২ · ২ · ১</td><td>উপস্থিতি · অডিট · সুইচ/তৈরি · ড্যাশবোর্ড</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      এই ছকটি কোথাও লেখা নেই — <code>grep 'path('</code> চালিয়ে তৈরি হয়েছে। <code>docs/url-map.md</code> বানানো পরের কাজ; নতুনদের জন্য এটি সবচেয়ে দ্রুত মানচিত্র।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসেই ছকটি তৈরি করে দেখান: <code>for f in apps/*/urls.py; do echo $(dirname $f) $(grep -c 'path(' $f); done</code>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নামকরণ</span>
+    <div><h2>নামই যখন দস্তাবেজ</h2>
+      <div class="sub">ভালো নাম লাইন কমায়, খারাপ নাম মন্তব্য বাড়ায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:44%">IMS-এর নাম</th><th>কী বলে</th></tr></thead>
+      <tbody>
+        <tr><td><code>test_student_only_gets_published_homework</code></td><td>দাবিটাই নামে লেখা — ব্যর্থ হলে বোঝা যায়</td></tr>
+        <tr><td><code>test_server_refuses_the_third_student</code></td><td>সিট সীমার নিয়ম, ঠিক কোথায় ভাঙে</td></tr>
+        <tr><td><code>visible_homework</code> · <code>is_writable</code></td><td>ক্রিয়া + উদ্দেশ্য; বাড়তি ব্যাখ্যা লাগে না</td></tr>
+        <tr><td><code>views_platform.py</code></td><td>ফাইলটি প্লাটফর্ম-কনসোলের — ভাগ করা সহজ</td></tr>
+        <tr><td><code>seed_demo</code> · <code>billing_report</code> · <code>sync_domains</code></td><td>ম্যানেজমেন্ট কমান্ডের কাজ নামেই</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.2mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>পরীক্ষা:</b> নাম শুনে কাজ বোঝা যায়? না হলে নাম বদলান — মন্তব্য লেখার আগে।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>দুই অ্যাপে একই টেস্ট-নাম:</b> <code>test_teacher_without_assignment_sees_no_students</code> — রিপোর্টে গুলিয়ে যায় (ক্লাস ২৬-এ চিহ্নিত)।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের সবচেয়ে খারাপ তিনটি নাম লিখতে বলুন, তারপর নতুন নাম প্রস্তাব করতে — দ্রুত উন্নতি দেখা যায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">CHANGELOG</span>
+    <div><h2>রিলিজ নোট — এখনো নেই, তবে দরকার</h2>
+      <div class="sub">গ্রাহকের প্রথম প্রশ্ন: "নতুন কী এল?"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8pt;line-height:1.46"># CHANGELOG.md (প্রস্তাবিত)
+
+## 1.4.0 — 2026-12-01
+### যোগ হয়েছে
++ invitation workflow (F-10..12)
++ CSV student import
+
+### বদলেছে
+* academics tests 52 -> 90
+
+### মাইগ্রেশন
+! students 0004_add_invitation
+
+### ঠিক হয়েছে
+# marks entry rejected 0 as absent
+
+## 1.3.2 — 2026-11-20
+### ঠিক হয়েছে
+# CSS cache busting on redeploy</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">আজকের অবস্থা</b>
+            <p style="font-size:9.2pt">১৯টি কমিট আছে, <code>CHANGELOG.md</code> বা git tag নেই — "কোন সংস্করণে কী ছিল" প্রশ্নের উত্তর নেই।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কেন মাইগ্রেশন আলাদা লাইন</b>
+            <p style="font-size:9.2pt">রিলিজ নোট পড়ে অপারেটর ব্যাকআপ নেয় — মাইগ্রেশন উল্লেখ না থাকলে নেয় না।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কে লেখে</b>
+            <p style="font-size:9.2pt">যে রিলিজ করে — কারণ সে-ই জানে কী বদলেছে। পরে লিখতে গেলে ভুলে যাবে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "চেঞ্জলগ গ্রাহকের জন্য নয় শুধু, নিজের জন্যও — ছয় মাস পর নিজেই ভুলে যাবেন।" প্রথম এন্ট্রিটি ক্লাসেই লিখিয়ে নিন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ADR</span>
+    <div><h2><code>docs/adr/</code> — সিদ্ধান্তের স্থায়ী ঠিকানা</h2>
+      <div class="sub">এক সিদ্ধান্ত, এক ফাইল, কখনো সম্পাদনা নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 46%">
+        <pre style="font-size:8.2pt;line-height:1.48">docs/adr/
+  0001-modular-monolith.md
+  0002-custom-user-email-login.md
+  0003-billing-inside-the-app.md
+  0004-subscription-gate-middleware.md
+  0005-custom-domain-verified-only.md
+
+# প্রতিটির গঠন
+## প্রসঙ্গ
+## সিদ্ধান্ত
+## বাদ পড়া বিকল্প
+## পরিণতি
+## তারিখ ও অবস্থা (গৃহীত / বাতিল)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.2mm">
+          <div class="card soft" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">৫টি আসল সিদ্ধান্ত, ৫টি ফাইল</b>
+            <p style="font-size:9pt">প্রতিটির পক্ষে-বিপক্ষে যুক্তি কোডে ছড়িয়ে আছে — এক জায়গায় আনলেই নতুনদের সময় বাঁচে।</p></div>
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">সম্পাদনা করবেন না</b>
+            <p style="font-size:9pt">সিদ্ধান্ত বদলালে নতুন ADR লিখুন, পুরোনোটির অবস্থা "বাতিল" করুন — ইতিহাস রাখুন।</p></div>
+          <div class="card bad" style="padding:2.4mm 3.2mm"><b style="font-size:10.2pt">সংখ্যাই ক্রম</b>
+            <p style="font-size:9pt"><code>0004</code> থেকে বোঝা যায় কোনটি আগে — তারিখ মুখস্থ করতে হয় না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে <code>docs/adr/0001-modular-monolith.md</code> তৈরি করে দেখান — ২০ মিনিটের কাজ, কিন্তু বছরের জন্য।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">CONTRIBUTING</span>
+    <div><h2>দলে যোগ দেওয়ার এক পাতা</h2>
+      <div class="sub">নিয়ম লিখিত না হলে নিয়ম নেই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.48"># CONTRIBUTING.md
+
+## প্রথম দিন
+1. START_HERE.md পড়ে অ্যাপ চালান
+2. manage.py test -> ১০৩ সবুজ
+3. BUILD_STATUS.md পড়ুন
+
+## কাজ শুরু
+* শাখা: fix/marks-boundary
+* ছোট কমিট, বার্তায় "কী + কেন"
+* টেস্ট ছাড়া PR নয়
+
+## মাইগ্রেশন থাকলে
+* রিলিজ নোটে উল্লেখ করুন
+* রিভিউয়ারকে আলাদা করে বলুন
+
+## মার্জের শর্ত
+টেস্ট সবুজ + একজন রিভিউ + দস্তাবেজ হালনাগাদ</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">কেন দরকার</b>
+            <p style="font-size:9.2pt">"কেউ বলে দেবে" ধরে নিলে নতুন সদস্য ভুল করে, আর আপনি বিরক্ত হন — দুটোই এড়ানো যায়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">এক পাতা যথেষ্ট</b>
+            <p style="font-size:9.2pt">৫০ লাইনের বেশি লিখলে কেউ পড়ে না — আজকের তিনটি নিয়মই যথেষ্ট।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">আজ নেই</b>
+            <p style="font-size:9.2pt">প্রজেক্টে <code>CONTRIBUTING.md</code> বা <code>CHANGELOG.md</code> নেই — দুটিই প্রথম সপ্তাহের কাজ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের নিজের দলে "মার্জের শর্ত" তিনটি লিখতে বলুন — এটাই সবচেয়ে কাজে লাগা অংশ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ড্রিফট</span>
+    <div><h2>কোড আর দস্তাবেজ মিলিয়ে রাখার লুপ</h2>
+      <div class="sub">প্রতি রিলিজে একই চার ধাপ</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 132" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a34" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="6" y="26" width="226" height="66" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="119" y="50" text-anchor="middle" font-size="11.6" font-weight="700" fill="#312e81">কোড বদলাল</text>
+        <text x="119" y="70" text-anchor="middle" font-size="9.2" fill="#3730a3">ফিচার / বাগ / মাইগ্রেশন</text>
+        <text x="119" y="86" text-anchor="middle" font-size="8.8" fill="#64748b">ছোট কমিট</text>
+
+        <rect x="258" y="26" width="226" height="66" rx="9" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="371" y="50" text-anchor="middle" font-size="11.6" font-weight="700" fill="#155e75">টেস্ট সবুজ</text>
+        <text x="371" y="70" text-anchor="middle" font-size="9.2" fill="#0e7490">১০৩ · smoke · deploy</text>
+        <text x="371" y="86" text-anchor="middle" font-size="8.8" fill="#64748b">সংখ্যা আবার গুনুন</text>
+
+        <rect x="510" y="26" width="226" height="66" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="623" y="50" text-anchor="middle" font-size="11.6" font-weight="700" fill="#92400e">দস্তাবেজ</text>
+        <text x="623" y="70" text-anchor="middle" font-size="9.2" fill="#b45309">CHANGELOG · ADR · URL-map</text>
+        <text x="623" y="86" text-anchor="middle" font-size="8.8" fill="#64748b">স্ক্রিনশট / ম্যানুয়াল</text>
+
+        <rect x="762" y="26" width="232" height="66" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="878" y="50" text-anchor="middle" font-size="11.6" font-weight="700" fill="#166534">প্রমাণ</text>
+        <text x="878" y="70" text-anchor="middle" font-size="9.2" fill="#15803d">BUILD_STATUS হালনাগাদ</text>
+        <text x="878" y="86" text-anchor="middle" font-size="8.8" fill="#64748b">তারিখসহ সংখ্যা</text>
+
+        <line x1="234" y1="59" x2="252" y2="59" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a34)"/>
+        <line x1="486" y1="59" x2="504" y2="59" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a34)"/>
+        <line x1="738" y1="59" x2="756" y2="59" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a34)"/>
+        <path d="M878,94 C878,118 371,118 371,96" fill="none" stroke="#64748b" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#a34)"/>
+        <text x="500" y="128" text-anchor="middle" font-size="9.4" fill="#b91c1c">লুপ ভাঙলে ড্রিফট: কোড এগোয়, কাগজ দাঁড়িয়ে থাকে</text>
+      </svg>
+    </div>
+    <div class="cols" style="margin-top:2.4mm">
+      <div><div class="call" style="font-size:9.6pt;padding:2.4mm 3.6mm">
+        <b>যাচাইয়ের কমান্ড:</b> <code>makemigrations --check --dry-run</code> · <code>test</code> · <code>check --deploy</code> · <code>build_status.py</code>
+      </div></div>
+      <div><div class="call bad" style="font-size:9.6pt;padding:2.4mm 3.6mm">
+        <b>ফাঁক:</b> দস্তাবেজ হালনাগাদ এখনো হাতে — CI বা প্রি-কমিট হুক থাকলে ভুলে যাওয়া বন্ধ হতো।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই চার ধাপ রিলিজ-চেকলিস্টে বসিয়ে দিন — কাগজে থাকলে মনে থাকবে, মুখে থাকলে থাকবে না।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">কমান্ডের খাতা</span>
+    <div><h2>নয়টি স্ক্রিপ্ট, একটি ছক</h2>
+      <div class="sub">যে কেউ যেন চালাতে পারে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:8.8pt">
+      <thead><tr><th style="width:32%">কমান্ড</th><th style="width:26%">কী করে</th><th>কখন চালাবেন</th></tr></thead>
+      <tbody>
+        <tr><td><code>bash run.sh</code></td><td>SQLite ডেমো চালু (৮০০০)</td><td>প্রথমবার / ক্লাসে</td></tr>
+        <tr><td><code>bash run.sh --reset</code></td><td>ডেটাবেস নতুন করে বানায়</td><td>ডেমো ডেটা নষ্ট হলে</td></tr>
+        <tr><td><code>bash build.sh</code></td><td>install + collectstatic + migrate</td><td>হোস্টে রিলিজ</td></tr>
+        <tr><td><code>bash docs/deploy_check.sh</code></td><td>Gunicorn :8010 + ৫টি চেক</td><td>ডিপ্লয়ের আগে</td></tr>
+        <tr><td><code>ops/backup.sh</code> · <code>ops/restore.sh</code></td><td>ডাম্প · scratch-এ রিস্টোর</td><td>রাত ২টা · মাসে একবার</td></tr>
+        <tr><td><code>manage.py seed_demo</code> · <code>seed_plans</code></td><td>ডেমো ডেটা · প্ল্যান</td><td>কখনো প্রোডাকশনে নয় (ডেমো)</td></tr>
+        <tr><td><code>manage.py billing_report</code> · <code>sync_domains</code></td><td>বাণিজ্যিক রিপোর্ট · DNS ছক</td><td>প্রতিদিন সকালে · ডোমেইন যোগে</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3mm;font-size:9.8pt;padding:2.4mm 4mm">
+      প্রজেক্টে চারটি কাস্টম ম্যানেজমেন্ট কমান্ড: <code>seed_demo</code> · <code>seed_plans</code> · <code>billing_report</code> · <code>sync_domains</code> — প্রতিটির <code>--help</code> লেখা আছে, কে কখন চালাবে তা এই ছকে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে <code>python manage.py billing_report --help</code> চালিয়ে দেখান — স্ব-দস্তাবেজিত কমান্ডের সুবিধা।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">গঠন</span>
+    <div><h2><code>docs/</code> ফোল্ডার কেমন হবে</h2>
+      <div class="sub">আজ কী আছে, কাল কী যোগ হবে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 46%">
+        <pre style="font-size:8.2pt;line-height:1.46">docs/
+  adr/                      # নতুন
+    0001-modular-monolith.md
+  manual/
+    user-manual-bn.html
+  screenshots/     (৭৭ PNG)
+  catalogue_data.py
+  gen_feature_catalogue.py
+  gen_proof_pdf.py
+  gen_roadmap.py
+  build_status.py
+  deploy_check.sh
+  shoot.py
+  url-map.md               # নতুন
+  README.md                # নতুন: কোন ফাইল কীসের</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">docs/README.md কেন</b>
+            <p style="font-size:9.2pt">দশটি ফাইল থাকলে কেউ জানে না কোনটি পড়বে — একটি সূচি সব সমস্যা মেটায়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">স্ক্রিপ্ট আর দস্তাবেজ আলাদা</b>
+            <p style="font-size:9.2pt">যা চালাতে হয় আর যা পড়তে হয় — দুই ধরনের ফাইল একই ফোল্ডারে থাকলে নামে পার্থক্য রাখুন।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">যা ফেলে রাখবেন না</b>
+            <p style="font-size:9.2pt"><code>old/</code>, <code>backup/</code>, <code>final_v2/</code> — পুরোনো দস্তাবেজ মুছুন বা আর্কাইভে সরান।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই গঠনটি ক্লাসেই তৈরি করুন: <code>docs/adr/</code>, <code>docs/url-map.md</code>, <code>docs/README.md</code> — তিনটি ফাইল, বিশ মিনিট।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — কোডে দস্তাবেজ যোগ করুন</h2>
+      <div class="sub">চারটি কাজ, সবই কমিট করার মতো</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. একটি মডিউল-ডকস্ট্রিং</b>
+            <p style="font-size:9.8pt">নিজের সবচেয়ে জটিল ফাইলে: উদ্দেশ্য · নিয়ম · কেন এখানে।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. একটি "কেন" মন্তব্য</b>
+            <p style="font-size:9.8pt">যে লাইনটি অন্য কেউ "অপ্রয়োজনীয়" ভেবে মুছে দিতে পারে।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. CHANGELOG-এর প্রথম এন্ট্রি</b>
+            <p style="font-size:9.8pt">আজকের কাজ, মাইগ্রেশনসহ।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. একটি ADR</b>
+            <p style="font-size:9.8pt">নিজের প্রজেক্টের এক সিদ্ধান্ত, চার শিরোনামে।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>সব ফাংশনে docstring দরকার?</li>
+          <li class="g">ADR কেন সম্পাদনা করবেন না?</li>
+          <li>CHANGELOG-এ মাইগ্রেশন কেন আলাদা?</li>
+          <li class="r">URL মানচিত্র কে ব্যবহার করবে?</li>
+          <li class="g">দস্তাবেজ ড্রিফট ধরবেন কীভাবে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চারটি কাজই ছোট; ক্লাসেই করে ফেলা যায়। যেটি করা যায়নি, সেটি পরের ক্লাসের শুরুতে দেখে নিন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">ডেভেলপার-দস্তাবেজের সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:54%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>মডিউল-ডকস্ট্রিং: উদ্দেশ্য · নিয়ম · কেন</b></td><td><code>scoping.py</code> · <code>assessments/models.py</code></td></tr>
+        <tr><td><b>মন্তব্যে "কেন", "কী" নয়</b></td><td><code>middleware.py</code>-র সেশন-স্কোপ মন্তব্য</td></tr>
+        <tr><td><b>docstring যেখানে টাকা/নিরাপত্তা জড়িত</b></td><td>৭৫ / ৫৭৬ = ১৩% — ফাঁক চিহ্নিত</td></tr>
+        <tr><td><b>নামই প্রথম দস্তাবেজ</b></td><td><code>test_server_refuses_the_third_student</code></td></tr>
+        <tr><td><b>CHANGELOG + ADR + CONTRIBUTING</b></td><td>তিনটিই এখনো নেই — এই সপ্তাহের কাজ</td></tr>
+        <tr><td><b>প্রতি রিলিজে চার ধাপের লুপ</b></td><td>কোড → টেস্ট → দস্তাবেজ → প্রমাণ</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      পরের ক্লাস (৩৫): প্রমাণের দস্তাবেজ ও উপস্থাপন — স্ক্রিনশট, প্রমাণ-প্যাক, এবং পর্ব ৮-এর সমাপ্তি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষে একটি কাজ দিন: "আজ একটি ADR ফাইল তৈরি করুন" — ছোট কাজ, কিন্তু অভ্যাস তৈরি হয়।
+</section>

@@ -1,0 +1,37 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ২</span>
+    <div><h2>CustomDomainMiddleware — হোস্টই প্রতিষ্ঠানের পরিচয়</h2>
+      <div class="sub">school.example.com → সেই স্কুলের লোগো ও নাম, লগইন পাতাতেই</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">host = request.get_host().split(":")[0].lower()
+branding = (WorkspaceBranding.objects
+    .select_related("workspace")
+    .filter(custom_domain__iexact=host,
+            domain_verified=True,
+            workspace__is_active=True)
+    .first())
+
+if branding:
+    request.domain_workspace = branding.workspace
+    if host not in settings.ALLOWED_HOSTS:
+        settings.ALLOWED_HOSTS += [host]</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">বিবরণ</th><th style="width:56%">কেন এভাবে</th></tr>
+          <tr><td><code>domain_verified=True</code></td><td>যাচাই না হলে ডোমেইন ডাকনাম মাত্র — টাইপ করা হোস্ট বিশ্বাস নয়</td></tr>
+          <tr><td><code>iexact</code></td><td>DNS নাম case-insensitive; <code>Example.com</code> = <code>example.com</code></td></tr>
+          <tr><td><code>ALLOWED_HOSTS</code>-এ যোগ</td><td>ডোমেইনটি ব্যবহারকারীর নিজের, সার্ভার-তালিকায় আগে থেকে নেই</td></tr>
+          <tr><td><code>patch_vary_headers(["Host"])</code></td><td>একই URL, ভিন্ন স্কুল — ক্যাশে গুলিয়ে ফেলতে পারে না</td></tr>
+          <tr><td><code>OperationalError</code> ধরা</td><td>মাইগ্রেশনের আগে টেবিল না থাকলেও সাইট চলে</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>প্রমাণ:</b> <code>test_domain_cannot_be_stolen_by_a_second_institution</code> · <code>test_unverified_domain_is_ignored</code> · <code>test_verified_domain_shows_that_institution_on_the_login_page</code> — তিনটি টেস্ট এই মিডলওয়্যারের তিনটি নিয়ম।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>Vary: Host</code> বাদ দিলে কী হয় — জিজ্ঞেস করুন। উত্তর: এক স্কুলের লগইন পাতা ক্যাশে হয়ে আরেক স্কুলের ব্যবহারকারী সেটাই দেখতে পারে। ক্যাশের বাগ চোখে দেখা যায় না, তাই নিয়মটা লিখে রাখা।
+</section>

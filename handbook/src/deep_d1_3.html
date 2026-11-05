@@ -1,0 +1,20 @@
+<section class="slide">
+  <div class="head"><span class="badge">উৎস</span>
+    <div><h2>৩১ টেবিল কোথা থেকে এল</h2>
+      <div class="sub">টেবিল বানানো হয় না — বিদ্যালয়ের কাগজ থেকেই টেবিল বেরোয়</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:26%">বিদ্যালয়ে যা আছে</th><th style="width:26%">যে প্রশ্নটা জিজ্ঞেস করলাম</th><th style="width:24%">যে টেবিল হলো</th><th style="width:24%">কেন এটাই সঠিক</th></tr>
+      <tr><td>ভর্তি খাতা</td><td>"এই ছেলেটি কে, আলাদা করে চেনার উপায় কী?"</td><td>students.StudentProfile</td><td>নাম বদলাতে পারে, <code>admission_no</code> নয়</td></tr>
+      <tr><td>শ্রেণি খাতা</td><td>"ছাত্রটি কোন শ্রেণিতে, কোন সেশনে?"</td><td>students.Enrollment</td><td>শ্রেণি বদল ইতিহাস, মুছে ফেলা নয়</td></tr>
+      <tr><td>হাজিরা রেজিস্টার</td><td>"একই দিনে একই ক্লাসে দুবার লেখা যাবে?"</td><td>attendance.AttendanceRecord</td><td>প্রতিটি ঘর = এক সারি, unique দিয়ে আটকানো</td></tr>
+      <tr><td>নম্বরের তালিকা</td><td>"অনুপস্থিত আর শূন্য কি এক?"</td><td>assessments.Mark</td><td>তাই <code>is_absent</code> আলাদা কলাম</td></tr>
+      <tr><td>সিলেবাস ও ডায়েরি</td><td>"অধ্যায় → টপিক, কে শেষ করল?"</td><td>lessons.Chapter · Topic</td><td>দুই ধাপের গাছ, এক টেবিলে গুঁজে দিইনি</td></tr>
+      <tr><td>হিসাবের খাতা</td><td>"কোন প্ল্যানে কত টাকা, কত দিন?"</td><td>billing.Plan · Subscription</td><td>প্ল্যান বদলালেও পুরনো ইনভয়েস অটুট</td></tr>
+    </table>
+    <div class="call" style="margin-top:3.5mm;font-size:10.8pt;padding:2.8mm 4.2mm">
+      নিয়ম: <b>কাগজে যে ঘরটি আলাদা করে লেখা হয়, ডেটাবেজে সেটি আলাদা কলাম।</b> যে ঘর আলাদা লেখা হয় না, সেটি নতুন টেবিল।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে একটি হাজিরা রেজিস্টারের পাতা এঁকে দেখান — তারিখ, শ্রেণি, ৪০টি নাম। তারপর জিজ্ঞেস করুন: "এই পাতায় কতটি আলাদা তথ্য?" উত্তর ৪০ নয়, চারটি: তারিখ, শ্রেণি, বিষয় আর প্রতিটি ছাত্রের একটি অবস্থা।
+</section>

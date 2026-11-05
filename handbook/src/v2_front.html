@@ -1,0 +1,153 @@
+<section class="cover">
+  <div class="kicker">শিক্ষক হ্যান্ডবুক · নমুনা সংস্করণ</div>
+  <h1>IMS যেভাবে তৈরি হলো</h1>
+  <div class="sub">সিলেবাসের ধাপ ধরে ধরে — ডায়াগ্রাম, টেবিল আর স্ক্রিনশটে</div>
+  <div class="chips">
+    <span class="chip">BTEB · 28566</span>
+    <span class="chip">Web Development Project</span>
+    <span class="chip">১০ প্র্যাকটিক্যাল · ৭২ টপিক</span>
+    <span class="chip">ভিজ্যুয়াল সংস্করণ</span>
+  </div>
+  <div class="foot">
+    <b>এই নমুনায়:</b> সিলেবাস মানচিত্র + অধ্যায় ১ সম্পূর্ণ<br>
+    <b>প্রমাণ:</b> ১০৩ টেস্ট · ৫৫ পেজ × ৪ রোল smoke · ১৯ commit
+  </div>
+</section>
+
+<!-- ============ SYLLABUS MAP ============ -->
+<section class="chapter">
+<div class="ch-head">
+  <div class="ch-num">০</div>
+  <div class="ch-title">
+    <h2>সিলেবাস থেকে বই: পুরো মানচিত্র</h2>
+    <div class="ch-meta">১০টি প্র্যাকটিক্যাল · ৭২টি টপিক · প্রতিটি টপিকের জায়গা কোথায়</div>
+  </div>
+</div>
+
+<div class="diagram">
+<svg viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <!-- 10 stages -->
+  <g font-family="sans-serif">
+    <!-- row 1: 1-5 -->
+    <g>
+      <rect x="8" y="20" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="34" cy="46" r="12" fill="url(#g1)"/><text x="34" y="51" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">1</text>
+      <text x="54" y="51" font-size="12" font-weight="700" fill="#312e81">কনসেপ্ট</text>
+      <text x="20" y="72" font-size="10.5" fill="#475569">৬ টপিক</text>
+      <text x="20" y="90" font-size="10.5" fill="#475569">কনসেপ্ট পেপার</text>
+    </g>
+    <g>
+      <rect x="146" y="20" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="172" cy="46" r="12" fill="url(#g1)"/><text x="172" y="51" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">2</text>
+      <text x="192" y="51" font-size="12" font-weight="700" fill="#312e81">প্ল্যান</text>
+      <text x="158" y="72" font-size="10.5" fill="#475569">১০ টপিক</text>
+      <text x="158" y="90" font-size="10.5" fill="#475569">স্কোপ · বাজেট</text>
+    </g>
+    <g>
+      <rect x="284" y="20" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="310" cy="46" r="12" fill="url(#g1)"/><text x="310" y="51" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">3</text>
+      <text x="330" y="51" font-size="12" font-weight="700" fill="#312e81">ডিজাইন</text>
+      <text x="296" y="72" font-size="10.5" fill="#475569">৯ টপিক</text>
+      <text x="296" y="90" font-size="10.5" fill="#475569">ERD · DFD</text>
+    </g>
+    <g>
+      <rect x="422" y="20" width="126" height="86" rx="10" fill="#fff7ed" stroke="#fed7aa"/>
+      <circle cx="448" cy="46" r="12" fill="#ea580c"/><text x="448" y="51" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">4</text>
+      <text x="468" y="51" font-size="12" font-weight="700" fill="#9a3412">কোডিং</text>
+      <text x="434" y="72" font-size="10.5" fill="#9a3412">৮ টপিক · ৬ নম্বর</text>
+      <text x="434" y="90" font-size="10.5" fill="#9a3412">সবচেয়ে ভারী</text>
+    </g>
+    <g>
+      <rect x="560" y="20" width="132" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="586" cy="46" r="12" fill="url(#g1)"/><text x="586" y="51" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">5</text>
+      <text x="606" y="51" font-size="12" font-weight="700" fill="#312e81">টেস্টিং</text>
+      <text x="572" y="72" font-size="10.5" fill="#475569">৭ টপিক</text>
+      <text x="572" y="90" font-size="10.5" fill="#475569">unit · UAT</text>
+    </g>
+
+    <!-- arrows row1 -->
+    <path d="M136 63 L144 63" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M274 63 L282 63" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M412 63 L420 63" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M550 63 L558 63" stroke="#a5b4fc" stroke-width="2"/>
+
+    <!-- row 2: 6-10 -->
+    <g>
+      <rect x="8" y="132" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="34" cy="158" r="12" fill="url(#g1)"/><text x="34" y="163" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">6</text>
+      <text x="54" y="163" font-size="12" font-weight="700" fill="#312e81">ডিপ্লয়</text>
+      <text x="20" y="184" font-size="10.5" fill="#475569">৯ টপিক</text>
+      <text x="20" y="202" font-size="10.5" fill="#475569">হোস্টিং · সিকিউরিটি</text>
+    </g>
+    <g>
+      <rect x="146" y="132" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="172" cy="158" r="12" fill="url(#g1)"/><text x="172" y="163" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">7</text>
+      <text x="192" y="163" font-size="12" font-weight="700" fill="#312e81">মেইনটেন্যান্স</text>
+      <text x="158" y="184" font-size="10.5" fill="#475569">৬ টপিক</text>
+      <text x="158" y="202" font-size="10.5" fill="#475569">মনিটরিং · বাগ</text>
+    </g>
+    <g>
+      <rect x="284" y="132" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="310" cy="158" r="12" fill="url(#g1)"/><text x="310" y="163" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">8</text>
+      <text x="330" y="163" font-size="12" font-weight="700" fill="#312e81">ডকুমেন্ট</text>
+      <text x="296" y="184" font-size="10.5" fill="#475569">৮ টপিক</text>
+      <text x="296" y="202" font-size="10.5" fill="#475569">ম্যানুয়াল · স্লাইড</text>
+    </g>
+    <g>
+      <rect x="422" y="132" width="126" height="86" rx="10" fill="#eef2ff" stroke="#c7d2fe"/>
+      <circle cx="448" cy="158" r="12" fill="url(#g1)"/><text x="448" y="163" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">9</text>
+      <text x="468" y="163" font-size="12" font-weight="700" fill="#312e81">ভবিষ্যৎ</text>
+      <text x="434" y="184" font-size="10.5" fill="#475569">৩ টপিক</text>
+      <text x="434" y="202" font-size="10.5" fill="#475569">সীমাবদ্ধতা</text>
+    </g>
+    <g>
+      <rect x="560" y="132" width="132" height="86" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <circle cx="586" cy="158" r="12" fill="#059669"/><text x="586" y="163" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">10</text>
+      <text x="606" y="163" font-size="12" font-weight="700" fill="#065f46">উপস্থাপন</text>
+      <text x="572" y="184" font-size="10.5" fill="#065f46">৬ টপিক</text>
+      <text x="572" y="202" font-size="10.5" fill="#065f46">ডেমো · প্রশ্ন</text>
+    </g>
+    <!-- arrows row2 -->
+    <path d="M136 175 L144 175" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M274 175 L282 175" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M412 175 L420 175" stroke="#a5b4fc" stroke-width="2"/>
+    <path d="M550 175 L558 175" stroke="#a5b4fc" stroke-width="2"/>
+    <!-- wrap arrow 5 -> 6 -->
+    <path d="M626 110 C626 124, 70 118, 70 130" stroke="#c7d2fe" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+  </g>
+</svg>
+<div class="dcap">১০টি প্র্যাকটিক্যাল, একটার পর একটা — IMS-এ প্রতিটির প্রমাণ আছে</div>
+</div>
+
+<table>
+<thead><tr><th style="width:12mm">প্র্যা·</th><th style="width:44mm">নাম</th><th style="width:16mm">টপিক</th><th>IMS-এ কী আছে</th><th style="width:30mm">কী বানাতে হবে</th></tr></thead>
+<tbody>
+<tr><td class="num">১</td><td>কনসেপ্ট পেপার</td><td>৬</td><td>৫৭ ফাংশনের ক্যাটালগ, রেডিনেস স্টেটমেন্ট</td><td>কনসেপ্ট পেপার</td></tr>
+<tr><td class="num">২</td><td>প্ল্যান</td><td>১০</td><td>১৯ commit = আসল টাইমলাইন, ১১ অ্যাপ</td><td>Gantt, ADR, বাজেট</td></tr>
+<tr><td class="num">৩</td><td>ডিজাইন</td><td>৯</td><td>মডেল, ডিজাইন টোকেন, ৭৭ স্ক্রিনশট</td><td>ERD, DFD, wireframe</td></tr>
+<tr><td class="num">৪</td><td>কোডিং</td><td>৮</td><td><b>পুরো সিস্টেম চলে</b> — ৩১২ ফাইল</td><td>SEO, Trello বোর্ড</td></tr>
+<tr><td class="num">৫</td><td>টেস্টিং</td><td>৭</td><td>১০৩ টেস্ট + ৫৫ × ৪ smoke</td><td>UAT, pytest</td></tr>
+<tr><td class="num">৬</td><td>ডিপ্লয়</td><td>৯</td><td>prod সেটিংস, gunicorn, ব্যাকআপ</td><td><b>লাইভ হোস্টিং</b></td></tr>
+<tr><td class="num">৭</td><td>মেইনটেন্যান্স</td><td>৬</td><td>লগ, নিজের বাগের ইতিহাস</td><td>মনিটরিং</td></tr>
+<tr><td class="num">৮</td><td>ডকুমেন্ট</td><td>৮</td><td>৩২ পৃষ্ঠার বাংলা ম্যানুয়াল</td><td>ক্লোজার রিপোর্ট, স্লাইড</td></tr>
+<tr><td class="num">৯</td><td>ভবিষ্যৎ</td><td>৩</td><td>৭ ঘাটতির সৎ তালিকা</td><td>—</td></tr>
+<tr><td class="num">১০</td><td>উপস্থাপন</td><td>৬</td><td>এক কমান্ডে চলে এমন প্যাকেজ</td><td>ডেমো স্ক্রিপ্ট</td></tr>
+</tbody>
+</table>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">৭২</div><div class="l">সিলেবাসের টপিক</div></div>
+  <div class="kpi"><div class="v">৪০</div><div class="l">বইয়ের অধ্যায়</div></div>
+  <div class="kpi"><div class="v">৫৪/৫৭</div><div class="l">ফাংশন তৈরি</div></div>
+  <div class="kpi"><div class="v">১০৩</div><div class="l">স্বয়ংক্রিয় টেস্ট</div></div>
+</div>
+
+<div class="box proof"><span class="lab">প্রতিটি অধ্যায়ে যা থাকবে</span>
+ছবি · ডায়াগ্রাম · টেবিল · স্ক্রিনশট · সংক্ষিপ্ত লেখা। প্রতিটি অধ্যায়ের শেষে একটি ছোট টেবিল — "তুমি কী জমা দেবে, কী দেখে নম্বর"।
+</div>
+</section>

@@ -1,0 +1,40 @@
+<section class="slide">
+  <div class="head"><span class="badge">গার্ড</span>
+    <div><h2>prod.py চালুই হবে না — দুটি ভুল সেটিং পেলে</h2>
+      <div class="sub">সেটিং "ঢিলা করে" ডিপ্লয় ঠিক করার সংস্কৃতি বন্ধ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">$ SECRET_KEY=dev-insecure-key-... \
+  DJANGO_SETTINGS_MODULE=config.settings.prod \
+  python -c "import django; django.setup()"
+
+RuntimeError: Refusing to start: SECRET_KEY is the
+development default. Generate one with:
+python -c "import secrets; print(
+    secrets.token_urlsafe(50))"</pre>
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">$ ALLOWED_HOSTS='*' ... django.setup()
+
+RuntimeError: ALLOWED_HOSTS must list real
+hostnames in production; '*' is not allowed.</pre>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:10.4pt;font-weight:700;color:#065f46;margin-bottom:1.4mm">সঠিক সেটিং দিয়ে Django-র নিজের পরীক্ষা</div>
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm">$ SECRET_KEY=$(python -c "import secrets;
+    print(secrets.token_urlsafe(50))")
+$ ALLOWED_HOSTS=ims.example.com \
+  python manage.py check --deploy
+
+System check identified no issues
+(0 silenced).</pre>
+        <div class="call" style="margin-top:2mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>ফল:</b> <code>check --deploy</code>-এর কোনো নিরাপত্তা-সতর্কতা নেই — HSTS, cookie flags, SSL redirect সব সেট।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>সৎ নোট:</b> এই দুটি গার্ড কোডে লেখা, কিন্তু কোনো টেস্টে নেই — কেউ ভুলে গার্ড সরিয়ে দিলেকেবল CI নয়, কেউ ধরবে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দুই গার্ডের যুক্তি এক: "ডিপ্লয় কাজ করছে না" — এর সবচেয়ে সহজ সমাধান সেটিং ঢিলা করা, আর সেটাই সবচেয়ে বিপজ্জনক। এখানে সেই পথ বন্ধ।
+</section>

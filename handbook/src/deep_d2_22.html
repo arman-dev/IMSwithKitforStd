@@ -1,0 +1,31 @@
+<section class="slide">
+  <div class="head"><span class="badge">সেশন</span>
+    <div><h2>সেশন ও কুকি — ৮ ঘণ্টা, আর ৩টি পতাকা</h2>
+      <div class="sub">"কে লগইন করা আছে" আর "কোন স্কুলে আছে" — দুটোই সেশনে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">সেটিং</th><th style="width:48%">মান</th></tr>
+          <tr><td><code>SESSION_COOKIE_AGE</code></td><td>৮ ঘণ্টা (এক কর্মদিবস)</td></tr>
+          <tr><td><code>SESSION_SAVE_EVERY_REQUEST</code></td><td><code>True</code> — ব্যবহারে মেয়াদ বাড়ে</td></tr>
+          <tr><td><code>SESSION_EXPIRE_AT_BROWSER_CLOSE</code></td><td><code>False</code></td></tr>
+          <tr><td>প্রোডাকশনে</td><td><code>Secure</code> · <code>HttpOnly</code> · <code>SameSite=Lax</code></td></tr>
+        </table>
+        <div style="font-size:9.9pt;color:#334155;margin-top:2mm">সেশন-কী: <code>active_workspace_id</code> — কোন স্কুলে আছেন, সেটাই সেশনে থাকে।</div>
+      </div>
+      <div style="flex:1">
+        <div class="call warn" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>একটি আসল ফাঁদ:</b> সেশনের workspace আর URL-এর workspace আলাদা হতে পারে। এই পার্থক্যই একবার SubscriptionGate-এ বাগ তৈরি করেছিল (আগের স্লাইড)।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>কেন ৮ ঘণ্টা:</b> স্কুলে একটি শিফট ৬–৭ ঘণ্টা; মাঝপথে লগআউট হলে শিক্ষক হাজিরার মাঝখানে আটকে যাবেন। ৩০ দিন রাখলে শেয়ার্ড কম্পিউটারে ঝুঁকি।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>CSRF:</b> আলাদা কুকি, আলাদা টোকেন; ব্যর্থ হলে নিজের ভিউ <code>apps.core.views.csrf_failure</code> — কুৎসিত ডিফল্ট পাতা নয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেয়ার্ড কম্পিউটারের কথা বলুন — স্কুলের ল্যাবে একজন লগআউট না করে চলে গেলে পরেরজন তার নামে হাজিরা দিতে পারে। এটাই সেশন-মেয়াদের আসল প্রশ্ন, প্রযুক্তিগত নয়।
+</section>

@@ -1,0 +1,20 @@
+<section class="slide">
+  <div class="head"><span class="badge">সততা</span>
+    <div><h2>যা লেখা আছে, কিন্তু কখনো চালানো হয়নি</h2>
+      <div class="sub">প্ল্যান আর প্রমাণের পার্থক্য — এই স্লাইডটাই সেই পার্থক্য</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:34%">জিনিস</th><th style="width:22%">অবস্থা</th><th style="width:44%">প্রথমবার চালালে যা ভাঙতে পারে</th></tr>
+      <tr><td><code>ops/backup.sh</code></td><td>লেখা, চালানো হয়নি</td><td><code>pg_dump</code>-এর অনুমতি, <code>media/</code> না থাকলে ব্যর্থ</td></tr>
+      <tr><td><code>ops/restore.sh</code></td><td>লেখা, ড্রিল হয়নি</td><td>স্ক্র্যাচ DB-র অনুমতি; swap ধাপ হাতে</td></tr>
+      <tr><td><code>docs/deploy_check.sh</code></td><td>লেখা, দরকার <code>.env.production.local</code></td><td>ফাইলটি রিপোতে নেই — নতুনদের প্রথম বাধা</td></tr>
+      <tr><td>প্রোডাকশন ডিপ্লয়</td><td><b>কখনো হয়নি</b></td><td>DEPLOYMENT.md নিজেই স্বীকার করেছে</td></tr>
+      <tr><td>লোড-টেস্ট / EXPLAIN</td><td>হয়নি</td><td>ধীরতার প্রশ্নের উত্তর নেই</td></tr>
+      <tr><td>ট্যাগ-ভিত্তিক রিলিজ</td><td>শুধু একটি পুরনো ট্যাগ</td><td>"গত রিলিজে ফেরো" বলা যায় না</td></tr>
+    </table>
+    <div class="call warn" style="margin-top:3mm;font-size:10pt;padding:2.6mm 4mm">
+      এগুলো ব্যর্থতা নয় — <b>অসমাপ্ত কাজ</b>। পার্থক্য একটাই: অসমাপ্ত কাজের তালিকা থাকে, ব্যর্থতা লুকানো থাকে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন নিজের প্রজেক্টে এমন একটি তালিকা লিখতে — "যা লিখেছি কিন্তু চালাইনি"। বেশিরভাগের তালিকায় ডিপ্লয়, ব্যাকআপ আর টেস্ট থাকবে।
+</section>

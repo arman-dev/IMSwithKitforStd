@@ -1,0 +1,503 @@
+<!-- ===================== CLASS 25 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৫ · টেস্টিং · ক্লাস ২৫ / ৩৭</div>
+  <h1>কে কী দেখবে,<br>প্রমাণসহ</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৯ · টপিক ৯.২ (অনুমতির টেস্টিং)<br>৩টি helper · ৮টি স্কোপিং টেস্ট · ৬০টি URL × ৪ ভূমিকা</div>
+  <div class="pill">visible_classes · 403 বনাম 404 · smoke matrix</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>"এই পাতা কি ও দেখতে পারবে?"</h2>
+      <div class="sub">একটি প্রশ্ন নয়, দুটি — আর দুটির উত্তর দেয় দুটি আলাদা জিনিস</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:23pt;line-height:1.6">
+      ১. মেনুতে <b>দেখায়</b> কি? &nbsp;→&nbsp; <code>navigation.py</code><br>
+      ২. সার্ভার <b>খুলতে দেয়</b> কি? &nbsp;→&nbsp; <code>scoping.py</code> + decorator
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      দুটো আলাদা জিনিস, কিন্তু <b>একই সত্য</b> বলা চাই। ক্লাস ২৪-এর টেস্ট <code>test_no_role_sees_a_link_it_cannot_open</code>
+      ঠিক এই দুটোকে একসাথে বাঁধে — আজ দেখব ভেতরের কারিগরি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "মেনু লুকানো ভদ্রতা, অনুমতি নিরাপত্তা।" এই এক বাক্যেই পুরো ক্লাসের কাঠামো।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>এক অনুরোধ, চারটি দেয়াল</h2>
+      <div class="sub">প্রতিটি দেয়ালে আটকালে ফল আলাদা — ৩০২ · ৪০৪ · ৪০৩ · খালি তালিকা</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 152" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="8" width="230" height="64" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="115" y="30" text-anchor="middle" font-size="10" font-weight="700" fill="#312e81">অনুরোধ</text>
+          <text x="115" y="48" text-anchor="middle" font-size="8.4" fill="#4338ca">GET /w/x/students/</text>
+          <text x="115" y="63" text-anchor="middle" font-size="7.8" fill="#4338ca">লগইন করা ব্যবহারকারী</text>
+
+          <rect x="256" y="8" width="230" height="64" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.4"/>
+          <text x="371" y="26" text-anchor="middle" font-size="9.4" font-weight="700" fill="#0f172a">১. সদস্য?</text>
+          <text x="371" y="42" text-anchor="middle" font-size="8.2" fill="#475569">membership_for()</text>
+          <text x="371" y="56" text-anchor="middle" font-size="7.8" fill="#64748b">না হলে → 404</text>
+          <text x="371" y="68" text-anchor="middle" font-size="8" fill="#64748b">প্রতিষ্ঠানের অস্তিত্বও গোপন</text>
+
+          <rect x="512" y="8" width="230" height="64" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.4"/>
+          <text x="627" y="26" text-anchor="middle" font-size="9.4" font-weight="700" fill="#0f172a">২. ভূমিকা?</text>
+          <text x="627" y="42" text-anchor="middle" font-size="8.2" fill="#475569">roles tuple → decorator</text>
+          <text x="627" y="56" text-anchor="middle" font-size="7.8" fill="#64748b">না হলে → 403</text>
+          <text x="627" y="68" text-anchor="middle" font-size="8" fill="#64748b">"আপনার অনুমতি নেই"</text>
+
+          <rect x="768" y="8" width="230" height="64" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="883" y="26" text-anchor="middle" font-size="9.4" font-weight="700" fill="#115e59">৩. স্কোপ</text>
+          <text x="883" y="42" text-anchor="middle" font-size="8.2" fill="#0f766e">visible_classes / students</text>
+          <text x="883" y="56" text-anchor="middle" font-size="7.8" fill="#0f766e">না মিললে → খালি তালিকা</text>
+          <text x="883" y="68" text-anchor="middle" font-size="7.6" fill="#64748b">৪০৩ নয় — শুধু কম দেখায়</text>
+
+          <g stroke="#94a3b8" stroke-width="1.2" fill="none">
+            <path d="M232,40 L252,40" marker-end="url(#a25)"/>
+            <path d="M488,40 L508,40" marker-end="url(#a25)"/>
+            <path d="M744,40 L764,40" marker-end="url(#a25)"/>
+          </g>
+
+          <text x="0" y="98" font-size="9" fill="#334155">লগইন নেই → 302 লগইন পর্দা (এটি decorator-এর প্রথম কাজ, তাই ছকে আলাদা দেখানো হয়নি)</text>
+          <text x="0" y="118" font-size="9" fill="#dc2626">ভুল ক্রম মানে ভুল উত্তর: সদস্য নয় বলে ৪০৩ দিলে প্রতিষ্ঠানের অস্তিত্ব ফাঁস হয়</text>
+          <text x="0" y="138" font-size="9" fill="#64748b">স্কোপ আটকায় "কী দেখব", ৪০৩ আটকায় "কোন পাতায় ঢুকব" — তাই দুই ধরনের টেস্ট</text>
+          <defs><marker id="a25" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:10.8pt;padding:2.8mm 4.2mm">
+      এই চারটি দেয়ালই ক্লাস ১৭-এ লেখা হয়েছিল; আজকের কাজ সেগুলোকে <b>টেস্টে বেঁধে ফেলা</b> — যাতে ভবিষ্যতের পরিবর্তন নিয়ম ভাঙতে না পারে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে চার দেয়াল লিখুন, তারপর প্রতিটির পাশে ফল লিখুন (302/404/403/খালি)। ছাত্ররা এই ছক মুখস্থ নয়, বুঝে নেবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2><code>scoping.py</code> — একটি ফাইল, সব তালিকা</h2>
+      <div class="sub">"একবার ঠিক করলে নয়টি ভিউয়ে ঠিক" — ফাইলের নিজের মন্তব্য</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.4">def visible_classes(user, workspace, membership=None):
+    membership = membership or membership_for(user, workspace)
+    qs = ClassGroup.objects.filter(workspace=workspace,
+                                   is_archived=False)
+    if membership is None:
+        return qs.none()
+
+    if membership.role == Roles.ORG_ADMIN:
+        return qs
+
+    if membership.role == Roles.COORDINATOR:
+        scopes = CoordinatorScope.objects.filter(
+            workspace=workspace, user=user, is_active=True)
+        dept_ids = list(scopes.exclude(department=None)
+                        .values_list("department_id", flat=True))
+        class_ids = list(scopes.exclude(class_group=None)
+                         .values_list("class_group_id", flat=True))
+        return qs.filter(models_q(dept_ids, class_ids))
+
+    if membership.role == Roles.TEACHER:
+        return qs.filter(assignments__teacher=user,
+                         assignments__is_active=True).distinct()
+
+    if membership.role == Roles.STUDENT:
+        student = getattr(user, "student_profile", None)
+        if student is None:
+            return qs.none()
+        return qs.filter(enrollments__student=student,
+                         enrollments__is_active=True).distinct()
+    return qs.none()</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">সদস্য না হলে <code>none()</code></b>
+            <p style="font-size:9.4pt">খালি queryset — <code>None</code> নয়, কারণ কলকারী সবাই <code>.count()</code> ডাকে।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">শেষে <code>none()</code></b>
+            <p style="font-size:9.4pt">অজানা ভূমিকা = কিছু নয়। ডিফল্ট সব দেখানো বিপজ্জনক।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt"><code>membership=None</code> প্যারামিটার</b>
+            <p style="font-size:9.4pt">ভিউ ইতিমধ্যে মেম্বারশিপ জানে — দুবার কুয়েরি হয় না।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt"><code>distinct()</code></b>
+            <p style="font-size:9.4pt"><code>assignments</code> ও <code>enrollments</code> জয়েনে ডুপ্লিকেট সারি আসে — নাহলে এক ক্লাস দুইবার।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "শেষের <code>return qs.none()</code> না লিখলে কী হতো?" উত্তর: ভবিষ্যতের নতুন ভূমিকা সব ডেটা দেখতে পেত — নীরব বিপর্যয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>আটটি টেস্ট, আটটি সংখ্যা</h2>
+      <div class="sub"><code>core/tests.py → ScopingTests</code> — পর্দা নয়, queryset পরীক্ষা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:8.8pt">
+      <thead><tr><th style="width:44%">টেস্ট</th><th style="width:24%">প্রত্যাশা</th><th>দেখায়</th></tr></thead>
+      <tbody>
+        <tr><td><code>test_admin_sees_every_class_and_student</code></td><td>সব ক্লাস · সব ছাত্র</td><td>একমাত্র "সব দেখে" ভূমিকা</td></tr>
+        <tr><td><code>test_teacher_sees_only_assigned_classes</code></td><td><b>১</b>টি ক্লাস — "Class 8"</td><td>দ্বিতীয় শিক্ষকের "Class 9"</td></tr>
+        <tr><td><code>test_teacher_only_sees_students_of_their_own_classes</code></td><td>সেট সমান</td><td><code>set(pk)</code> তুলনা — ক্রম নয়</td></tr>
+        <tr><td><code>test_teacher_with_no_assignment_sees_no_students</code></td><td>০ · ০</td><td>নতুন সদস্য, শূন্য অনুমতি</td></tr>
+        <tr><td><code>test_coordinator_sees_only_their_scope</code></td><td>০ → তারপর ১</td><td>স্কোপ মুছে/যোগ করে</td></tr>
+        <tr><td><code>test_student_sees_only_own_record</code></td><td>১ — "Rafid Hasan"</td><td>নাম মিলিয়েও যাচাই</td></tr>
+        <tr><td><code>test_inactive_membership_sees_nothing</code></td><td>০ · ০</td><td><code>is_active=False</code></td></tr>
+        <tr><td><code>test_student_only_gets_published_homework</code></td><td><code>all(is_published)</code></td><td>প্রকাশ না হলে ফাঁস নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4mm">
+      সংখ্যা (১, ০, ২) ব্যবহার করা হয়েছে ইচ্ছাকৃতভাবে — "কিছু একটা আছে" নয়, <b>ঠিক কত</b> তা দাবি করা হয়েছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জোর দিন: <code>assertEqual(count(), 1)</code> অনেক শক্তিশালী <code>assertTrue(count() &gt; 0)</code>-এর চেয়ে। "সংখ্যা দিয়ে দাবি করুন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>কোঅর্ডিনেটরের স্কোপ — যোগ-বিয়োগে প্রমাণ</h2>
+      <div class="sub">"স্কোপ নেই" অবস্থাটাই সবচেয়ে বিপজ্জনক, তাই সেটাই আগে পরীক্ষা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">coord = self._user("coordinator@ims.local")
+# seed দিয়েছে Science ডিপার্টমেন্ট (Class 8)
+
+CoordinatorScope.objects.filter(workspace=self.ws,
+                                user=coord).delete()
+self.assertEqual(scoping.visible_classes(coord, self.ws).count(), 0,
+                 "a coordinator without a scope must see nothing")
+
+CoordinatorScope.objects.create(
+    workspace=self.ws, user=coord,
+    department=Department.objects.get(workspace=self.ws,
+                                      name="Science"))
+self.assertEqual([c.name for c in
+                  scoping.visible_classes(coord, self.ws)], ["Class 8"])</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">খালি অবস্থা আগে</b>
+            <p style="font-size:9.6pt">ভুল করে "সব দেখানো" বাগ ধরা পড়ে কেবল তখনই, যখন শূন্য প্রত্যাশা করা হয়।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">যোগ করার পর</b>
+            <p style="font-size:9.6pt">ডিপার্টমেন্ট দিলে ঠিক "Class 8" — নাম দিয়ে যাচাই, সংখ্যা দিয়ে নয়।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>models_q()</code></b>
+            <p style="font-size:9.6pt">ডিপার্টমেন্ট <b>অথবা</b> সরাসরি ক্লাস — দুটোই এক ফিল্টারে (<code>Q |=</code>)।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">তৃতীয় বার্তা</b>
+            <p style="font-size:9.6pt"><code>assertEqual(..., 0, "a coordinator without a scope…")</code> — ব্যর্থ হলে কারণ লেখা আসে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ কার্ডটি দেখান: assert-এ বার্তা দিলে ৬ মাস পর ব্যর্থতা পড়েও বোঝা যায় কী ভাঙল। "টেস্টকে ভবিষ্যতের নিজের কাছে চিঠি লিখুন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>ক্রস-ওয়ার্কস্পেস — দুই স্কুল, এক টেস্ট</h2>
+      <div class="sub">সবচেয়ে বিপজ্জনক ফাঁস: অন্য প্রতিষ্ঠানের সারি দেখা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">@classmethod
+def setUpTestData(cls):
+    cls.teacher = User.objects.create_user(email="t@example.com", ...)
+    cls.outsider = User.objects.create_user(email="o@example.com", ...)
+    cls.ws  = Workspace.objects.create(name="School A", owner=cls.teacher)
+    cls.ws2 = Workspace.objects.create(name="School B", owner=cls.outsider)
+    Membership.objects.create(user=cls.teacher, workspace=cls.ws, role=Roles.TEACHER)
+    Membership.objects.create(user=cls.outsider, workspace=cls.ws2, role=Roles.ORG_ADMIN)
+
+def test_other_workspace_cannot_open_the_student(self):
+    self.client.force_login(self.outsider)     # School B-র অ্যাডমিন
+    resp = self.client.get(reverse("students:detail",
+                kwargs={"slug": self.ws.slug, "pk": self.student.pk}))
+    self.assertEqual(resp.status_code, 404)    # 403 নয়
+</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন ৪০৪</b>
+            <p style="font-size:9.6pt">School B-র অ্যাডমিন School A-র সদস্য নন — তাই School A-র অস্তিত্বও জানানো হয় না।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">slug-ই প্রথম প্রাচীর</b>
+            <p style="font-size:9.6pt">ভুল slug দিলে <code>@workspace_view</code>-এ ৪০৪ — ভেতরের ভিউ পর্যন্ত পৌঁছায়ই না।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">আরও একটি</b>
+            <p style="font-size:9.6pt"><code>test_teacher_without_assignment_sees_no_students</code> — <code>assertNotContains(resp, "Rafid")</code>।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11pt">ফাঁক</b>
+            <p style="font-size:9.6pt">ক্রস-ওয়ার্কস্পেস টেস্ট কেবল students অ্যাপে; attendance · assessments-এ নেই।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "৪০৩ দিলে কী তথ্য ফাঁস হতো?" উত্তর: বোঝা যেত ওই আইডিতে একটি ছাত্র আছে — তাই ৪০৪।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>ডেটাবেসকে দিয়েও প্রমাণ</h2>
+      <div class="sub">কিছু নিয়ম ভিউয়ে নয়, constraint-এ — সেগুলোও টেস্ট হয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">def test_second_active_enrolment_is_blocked_by_the_database(self):
+    from django.db import IntegrityError, transaction
+    Enrollment.objects.create(workspace=self.ws, student=self.student,
+                              class_group=self.cls, is_active=True)
+    with self.assertRaises(IntegrityError):
+        with transaction.atomic():          # না থাকলে টেস্ট ভেঙে যায়
+            Enrollment.objects.create(workspace=self.ws,
+                                      student=self.student,
+                                      class_group=self.cls,
+                                      is_active=True)
+
+def test_ending_an_enrolment_keeps_history(self):
+    e.is_active = False; e.end_reason = "Transferred"; e.save()
+    e.refresh_from_db()
+    self.assertIsNotNone(e.ended_on)          # save() নিজে তারিখ বসায়
+    self.assertEqual(Enrollment.objects.filter(student=...).count(), 1)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>assertRaises</code> + <code>atomic</code></b>
+            <p style="font-size:9.6pt">IntegrityError-এর পর ট্রানজ্যাকশন ভাঙা থাকে — <code>atomic</code> ছাড়া পরের কুয়েরি ব্যর্থ।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">ইতিহাস ≠ মুছে ফেলা</b>
+            <p style="font-size:9.6pt">ভর্তি বন্ধ মানে সারি থাকবে, <code>ended_on</code> বসবে — সারি সংখ্যা ১-ই থাকে।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>refresh_from_db()</code></b>
+            <p style="font-size:9.6pt">DB-তে কী জমা হলো তা দেখতে বাধ্যতামূলক — মেমরির অবজেক্ট সত্য নয়।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন দরকার</b>
+            <p style="font-size:9.6pt">ভিউ বাইপাস করে শেল/ইমপোর্টে ডেটা ঢুকলেও constraint আটকাবে — টেস্ট সেই প্রতিশ্রুতির প্রমাণ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>transaction.atomic()</code> ছাড়া চালিয়ে দেখান — এরর আসবে "An error occurred in the current transaction"। এটাই বাস্তব ব্যথা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2><code>smoke_test.py</code> — ৬০টি URL × ৪ ভূমিকা</h2>
+      <div class="sub">আসল ডেমো ডেটাবেসে চলে · <code>TestCase</code> নয়, স্ক্রিপ্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:8pt;line-height:1.4">ALL   = {"ORG_ADMIN", "COORDINATOR", "TEACHER", "STUDENT"}
+STAFF = {"ORG_ADMIN", "COORDINATOR", "TEACHER"}
+OWNER = {"ORG_ADMIN"}
+
+PAGES = [
+    ("/",                                    ALL,   "dashboard redirect"),
+    (f"/w/{s}/students/",                    STAFF, "student list"),
+    (f"/w/{s}/students/{student.pk}/status/", {"ORG_ADMIN", "COORDINATOR"}, "change status"),
+    (f"/w/{s}/academics/scopes/",            OWNER, "coordinator scope"),
+    (f"/w/{s}/reports/export/results.csv?exam={exam.pk}", STAFF, "results csv"),
+    (f"/w/{s}/renew/",                       OWNER, "subscription (owner only)"),
+    ...
+]
+
+for url, allowed, note in PAGES:
+    expect_ok = role in allowed
+    acceptable = (200, 302) if expect_ok else (403,)
+    response = client.get(url)
+    if response.status_code not in acceptable:
+        wrong.append((url, response.status_code, acceptable[0]))</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">প্রশ্নটা ভিন্ন</b>
+            <p style="font-size:9.4pt">"পাতাটা কাজ করে?" নয় — "এই ভূমিকার জন্য এটি <b>অনুমোদিত</b> না <b>প্রত্যাখ্যাত</b>?"</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">তিনটি কোডই ব্যর্থতা</b>
+            <p style="font-size:9.4pt">৫০০, অথবা প্রত্যাশিত ৪০৩-এর জায়গায় ২০০ — দুটোই খারাপ।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">আউটপুট</b>
+            <p style="font-size:9.4pt"><code>STUDENT  57/60 as expected</code> — মিসম্যাচ থাকলে URL ও আশা-প্রাপ্তি ছাপে।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">সীমা</b>
+            <p style="font-size:9.4pt">কেবল স্ট্যাটাস দেখে — পর্দার ভেতরে অন্য স্কুলের নাম আছে কি না দেখে না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>python smoke_test.py</code> চালিয়ে আউটপুট দেখান — ৪ ভূমিকার সারি। তারপর একটি সারি ইচ্ছে করে ভেঙে দেখান কীভাবে মিসম্যাচ দেখায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>ম্যাট্রিক্সের ব্যতিক্রম — দুটি লাইন</h2>
+      <div class="sub">প্রতিটি ব্যতিক্রম একদিন বাগের উৎস; তাই স্পষ্ট করে লেখা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">if url in ("/", f"/w/{s}/results/"):
+    acceptable = (200, 302)
+
+# কেন?
+#  "/"         → সবার জন্য, শুধু গন্তব্য ভিন্ন
+#  "/results/" → staff: exam list · student: নিজের ফল
+#                 দুই ভূমিকাতেই ২০০ বা ৩০২ বৈধ
+
+# বাকি সব ক্ষেত্রে:
+acceptable = (200, 302) if expect_ok else (403,)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">ব্যতিক্রম লিখতে হয়</b>
+            <p style="font-size:9.6pt">নাহলে ভুল ব্যর্থতা (false alarm) আসে, আর মানুষ টেস্ট উপেক্ষা করতে শেখে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">তবু সীমা</b>
+            <p style="font-size:9.6pt">প্রতিটি ব্যতিক্রমের পাশে কারণ লেখা — কোডই ডকুমেন্টেশন।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">বিকল্প ডিজাইন</b>
+            <p style="font-size:9.6pt">পাতাগুলো আলাদা করলে (<code>/results/</code> staff ও student-এ ভিন্ন URL) ব্যতিক্রম লাগত না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "সব টেস্ট সবুজ রাখতে ব্যতিক্রম বাড়াবেন না" — প্রতিটি ব্যতিক্রমের দাম একদিনের বাগ-সন্ধান। ভালো ডিজাইন ব্যতিক্রম কমায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>মেনুর দিকটাও পরীক্ষা</h2>
+      <div class="sub"><code>test_each_role_is_offered_only_its_own_links</code> — HTML পড়ে, স্ট্যাটাস নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42">EXPECTED_LINKS = {
+  "teacher@ims.local": {
+    "must_show": ["Students", "Attendance", "Homework",
+                  "Materials", "Exams &amp; results"],
+    "must_hide": ["Audit log", "Workspace settings", "Grading",
+                  "Coordinator scope", "My oversight area",
+                  "My homework", "My results"],
+  },
+  "student@ims.local": {
+    "must_show": ["My homework", "My results", "Materials"],
+    "must_hide": ["Students", "Attendance", "Syllabus",
+                  "Lesson log", "Exams &amp; results", "Reports", ...],
+  },
+}
+
+html = self._sidebar_html(email)
+self.assertIn(label, html)        # must_show
+self.assertNotIn(label, html)     # must_hide</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">দুই তালিকা কেন</b>
+            <p style="font-size:9.6pt"><code>must_show</code> ছাড়া মেনু ফাঁকা হয়ে গেলেও টেস্ট পাশ করবে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">HTML-এ লেখা খোঁজা</b>
+            <p style="font-size:9.6pt">সাইডবারের HTML স্ট্রিং নিয়ে <code>assertIn</code> — DOM পার্সিং নয়, তাই দ্রুত।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">দুর্বলতা</b>
+            <p style="font-size:9.6pt">লেবেল লেখা বদলালে (অনুবাদ!) টেস্ট ভাঙবে — তাই লেবেল স্থির রাখা হয়।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">জোড়া</b>
+            <p style="font-size:9.6pt">এটি + <code>smoke_test</code> = মেনু ও সার্ভার দুই দিকেই প্রমাণ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "লেবেল যদি বাংলায় অনুবাদ করতেন?" — টেস্ট ভাঙবে। সমাধান: লেবেলের বদলে <code>url_name</code> বা HTML-এ <code>data-nav</code> অ্যাট্রিবিউট খোঁজা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>ম্যাট্রিক্সটি এক নজরে</h2>
+      <div class="sub">✓ = ২০০/৩০২ · ✗ = ৪০৩ — এই ছকটাই <code>smoke_test</code>-এর সারমর্ম</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:40%">পথ</th><th>ADMIN</th><th>COORD</th><th>TEACHER</th><th>STUDENT</th></tr></thead>
+      <tbody>
+        <tr><td><code>/w/x/students/</code></td><td>✓</td><td>✓</td><td>✓</td><td><b>✗</b></td></tr>
+        <tr><td><code>/w/x/students/&lt;pk&gt;/status/</code></td><td>✓</td><td>✓</td><td><b>✗</b></td><td><b>✗</b></td></tr>
+        <tr><td><code>/w/x/academics/scopes/</code></td><td>✓</td><td><b>✗</b></td><td><b>✗</b></td><td><b>✗</b></td></tr>
+        <tr><td><code>/w/x/attendance/</code></td><td>✓</td><td>✓</td><td>✓</td><td><b>✗</b></td></tr>
+        <tr><td><code>/w/x/reports/</code></td><td>✓</td><td>✓</td><td>✓</td><td><b>✗</b></td></tr>
+        <tr><td><code>/w/x/materials/</code></td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td><code>/w/x/renew/</code></td><td>✓</td><td><b>✗</b></td><td><b>✗</b></td><td><b>✗</b></td></tr>
+        <tr><td><code>/platform/</code></td><td>✓ (superuser)</td><td><b>✗</b></td><td><b>✗</b></td><td><b>✗</b></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>কলাম দেখুন, সারি নয়</b> — শিক্ষকের কলামে একটাই ✗ বেশি (status), শিক্ষার্থীর কলামে প্রায় সব।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        ম্যাট্রিক্সে ফাঁকা ঘর থাকলে সেটাই প্রশ্ন: "এই ভূমিকা এটি কেন দেখবে/দেখবে না?" উত্তর না থাকলে নকশাই অসম্পূর্ণ।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> নতুন ফিচার যোগ করলে এই ছকে একটি সারি যোগ করতে বলুন — তারপর ভাবতে হবে কে দেখবে। "ছকটাই ডিজাইনের যন্ত্র।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>অনুমতির টেস্টে পাঁচটি ফাঁক</h2>
+      <div class="sub">IMS-এ কোনটি আছে, কোনটি নেই — সৎ হিসাব</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:40%">ফাঁক</th><th>অবস্থা ও প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. শুধু helper পরীক্ষা, HTTP নয়</b></td><td><code>ScopingTests</code> সরাসরি ফাংশন ডাকে → ভিউ ভুল helper ব্যবহার করলে ধরা পড়বে না</td></tr>
+        <tr><td><b>২. পর্দার ভেতরের বিষয়বস্তু অপরীক্ষিত</b></td><td><code>assertNotContains</code> মাত্র ৫ বার → এক স্কুলের নাম অন্য পর্দায় থাকতে পারে</td></tr>
+        <tr><td><b>৩. ক্রস-ওয়ার্কস্পেস টেস্ট কম</b></td><td>students-এ আছে; attendance · assessments · lessons-এ নেই</td></tr>
+        <tr><td><b>৪. রিপোর্ট ও অডিটে শূন্য টেস্ট</b></td><td>CSV-তে স্কোপ ভুল হলে কেউ ধরবে না</td></tr>
+        <tr><td><b>৫. অ্যাডমিন = সব</b></td><td>ORG_ADMIN-এর কোনো সীমা নেই — ভুল ডিজাইন নয়, কিন্তু টেস্টে সীমাটা লেখা থাকা দরকার</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:3.8mm;font-size:10.8pt;padding:2.8mm 4.4mm">
+      প্রথমটি সবচেয়ে ধূর্ত: helper ঠিক, কিন্তু ভিউ অন্য helper ডাকছে — সব টেস্ট সবুজ, তবু ফাঁস।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম ফাঁকটা লাইভে দেখান: একটি ভিউয়ে helper বদলে দিন — কেউ ধরে না। তারপর বলুন: "তাই HTTP-স্তরের টেস্টও দরকার।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — নিজের স্কোপ লিখুন ও ভাঙুন</h2>
+      <div class="sub">তিনটি কাজ, তারপর চারটি প্রশ্ন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. helper (৭ মিনিট)</b>
+            <p style="font-size:10pt"><code>visible_&lt;entity&gt;(user, workspace)</code> — চার ভূমিকার শাখা, শেষে <code>none()</code>।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. চারটি টেস্ট (৮ মিনিট)</b>
+            <p style="font-size:10pt">admin = সব · teacher = ১ · student = নিজে · সদস্য নয় = ০।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. ইচ্ছাকৃত ফাঁস (৫ মিনিট)</b>
+            <p style="font-size:10pt">helper থেকে <code>none()</code> সরিয়ে দেখুন কোন টেস্ট লাল হয় — আর কোনগুলো হয় না।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>মেনু লুকানো কেন যথেষ্ট নয়?</li>
+          <li class="g">ক্রস-ওয়ার্কস্পেসে ৪০৩ নয়, ৪০৪ কেন?</li>
+          <li><code>count()==1</code> বনাম <code>count()&gt;0</code> — কোনটা ভালো?</li>
+          <li class="r">helper ঠিক, ভিউ ভুল — কীভাবে ধরবেন?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় কাজটাই আসল শিক্ষা — কিছু টেস্ট সবুজ থাকবে, কারণ তারা ওই শাখা ছোঁয়ই না। "কভারেজ মানে সংখ্যা নয়, শাখা।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>স্কোপ এক জায়গায়</b></td><td><code>scoping.py</code> — <code>visible_classes</code> · <code>visible_students</code> · <code>visible_homework</code></td></tr>
+        <tr><td><b>চার দেয়াল, চার উত্তর</b></td><td>302 · 404 · 403 · খালি তালিকা</td></tr>
+        <tr><td><b>সংখ্যা দিয়ে দাবি</b></td><td>১ · ০ · ২ — "কিছু আছে" নয়</td></tr>
+        <tr><td><b>ডেটাবেসের নিয়মও টেস্ট হয়</b></td><td><code>assertRaises(IntegrityError)</code> + <code>atomic</code></td></tr>
+        <tr><td><b>ভূমিকা × URL ম্যাট্রিক্স</b></td><td><code>smoke_test.py</code> — ৪ লগইন, ৬০ পথ</td></tr>
+        <tr><td><b>helper টেস্ট ≠ HTTP টেস্ট</b></td><td>ফাঁক ১ — ভিউ অন্য helper ডাকলে ধরা পড়ে না</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটা পরের ক্লাসের সূচনা: কভারেজ সংখ্যা যা দেখায়, আর যা লুকায়।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৬</div>
+  <h2>পরের ক্লাস — "সংখ্যাটা মিথ্যা বলে না, কিন্তু সব বলে না"</h2>
+  <p>কভারেজ ও যা বাকি: <code>coverage.py</code> · শাখা বনাম লাইন · ০ টেস্টের অ্যাপ · ফ্লেকি টেস্ট · টেস্ট পিরামিড</p>
+</section>

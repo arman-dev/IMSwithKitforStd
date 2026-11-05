@@ -1,0 +1,447 @@
+<!-- ===================== CLASS 6 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান · ক্লাস ৬ / ৩৭</div>
+  <h1>৫৭ ফাংশন,<br>এক তালিকা</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৩ · টপিক ৩.২ (ফাংশনাল রিকোয়্যারমেন্ট)<br>ফাংশন আইডি · অ্যাপ × ভূমিকা ম্যাপ · স্কোপ ফ্রিজে সই</div>
+  <div class="pill">১১টি অ্যাপ · ৫৭টি আইডি · ৬টি ভূমিকা</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>আপনার প্রজেক্টে কয়টা ফিচার? — সংখ্যাটা জানেন?</h2>
+      <div class="sub">হাত তুলুন: কে বলতে পারবেন — ঠিক কতটা?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:28pt;line-height:1.6">
+      "অনেকগুলো আছে" — এটা <span class="hl">সংখ্যা নয়</span>।<br>
+      আর সংখ্যা না জানলে <b>স্কোপও নেই</b>।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      আজকের ক্লাসের ফলাফল একটাই জিনিস: <b>একটা তালিকা</b> — যার প্রতিটি লাইনের
+      একটা <b>আইডি</b>, একটা <b>উদ্দেশ্য</b>, একটা <b>রুট</b>, আর একটা <b>মালিক-ভূমিকা</b>।<br>
+      তালিকা ছাড়া "প্রজেক্ট ৭০% শেষ" বলার কোনো মানে নেই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "আমার ২০টা ফিচার" বললে জিজ্ঞেস করুন — "নাম বলুন।" ১৪-তে থেমে যাবে। এই মুহূর্তটাই ক্লাসের সূচনা: মুখে বলা সংখ্যা সবসময় বেশি, তালিকায় কম।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>একটি ফিচারের চারটি অংশ — আর আইডির নিয়ম</h2>
+      <div class="sub">প্রজেক্টের ক্যাটালগে প্রতিটি ফিচার হুবহু এই গঠনে লেখা</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.2">
+<pre style="font-size:10pt;line-height:1.62">F-33  Attendance register (by period)
+role  : TEACHER
+route : /w/&lt;id&gt;/attendance/register/
+why   : একই দিনের সব পিরিয়ড এক পাতায় দেখা,
+        কে নিয়েছে আর কে নেয়নি বোঝা
+do    : ক্লাস · তারিখ · বিষয় বাছুন
+        পিরিয়ড অনুযায়ী তালিকা দেখুন
+data  : AttendanceRecord(student, class,
+        subject, date) — একটি সারি = এক দিন
+state : কোনো রেকর্ড নেই → খালি অবস্থার বার্তা
+        লকড টার্ম → সম্পাদনা বন্ধ</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:13pt">আইডির চারটি নিয়ম</b>
+          <p style="font-size:11.5pt;line-height:1.7">
+            <b>১.</b> নম্বর <b>কখনো পুনর্ব্যবহার নয়</b> — ফিচার বাদ গেলেও আইডি মরে যায়।<br>
+            <b>২.</b> <b>কখনো পুনঃক্রম নয়</b> — F-33 সবসময় রেজিস্টারই থাকবে।<br>
+            <b>৩.</b> না-তৈরি ফিচারও <b>আইডি পায়</b> — নইলে পরিকল্পনা আর প্রমাণ মেলানো যায় না।<br>
+            <b>৪.</b> আইডি <b>লেখায় ব্যবহার হয়</b> — কমিট, টেস্ট, ডকুমেন্ট, স্ক্রিনশটের নামে।
+          </p>
+        </div>
+        <div class="call warn" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          আইডি বদলালে পুরনো কমিট, পুরনো টেস্ট, পুরনো ডকুমেন্ট — সবের সংযোগ ছিঁড়ে যায়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩ নম্বর নিয়মটা প্রথমে অদ্ভুত লাগে — "যেটা বানাব না, তার আবার আইডি কেন?" উত্তর: কারণ স্কোপের প্রশ্নটা "কোনটা বানাব" নয়, "কোনটা বানাব না আর কেন" — বাদ দেওয়া ফিচারও হিসাবের অংশ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>১১টি অ্যাপে ৫৭টি ফিচার — কোথায় কত</h2>
+      <div class="sub">ব্লক লম্বা মানে ওই অ্যাপে কাজ বেশি — অর্থাৎ ওখানেই বাগও বেশি হবে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 760 213" xmlns="http://www.w3.org/2000/svg"><g font-size="11">
+<text x="0" y="17" fill="#1e1b4b" font-weight="700">academics</text>
+<rect x="160" y="4" width="576" height="15" rx="3" fill="#4f46e5"/>
+<text x="745" y="17" fill="#4f46e5" font-weight="700">৮</text>
+<text x="0" y="36" fill="#1e1b4b" font-weight="700">accounts</text>
+<rect x="160" y="23" width="504" height="15" rx="3" fill="#5b52e8"/>
+<text x="673" y="36" fill="#5b52e8" font-weight="700">৭</text>
+<text x="0" y="55" fill="#1e1b4b" font-weight="700">workspaces</text>
+<rect x="160" y="42" width="504" height="15" rx="3" fill="#6d5fe8"/>
+<text x="673" y="55" fill="#6d5fe8" font-weight="700">৭</text>
+<text x="0" y="74" fill="#1e1b4b" font-weight="700">lessons</text>
+<rect x="160" y="61" width="504" height="15" rx="3" fill="#7c6ce8"/>
+<text x="673" y="74" fill="#7c6ce8" font-weight="700">৭</text>
+<text x="0" y="93" fill="#1e1b4b" font-weight="700">assessments</text>
+<rect x="160" y="80" width="504" height="15" rx="3" fill="#8b78e8"/>
+<text x="673" y="93" fill="#8b78e8" font-weight="700">৭</text>
+<text x="0" y="112" fill="#1e1b4b" font-weight="700">attendance</text>
+<rect x="160" y="99" width="360" height="15" rx="3" fill="#0ea5e9"/>
+<text x="529" y="112" fill="#0ea5e9" font-weight="700">৫</text>
+<text x="0" y="131" fill="#1e1b4b" font-weight="700">core (ড্যাশবোর্ড)</text>
+<rect x="160" y="118" width="288" height="15" rx="3" fill="#059669"/>
+<text x="457" y="131" fill="#059669" font-weight="700">৪</text>
+<text x="0" y="150" fill="#1e1b4b" font-weight="700">students</text>
+<rect x="160" y="137" width="288" height="15" rx="3" fill="#10b981"/>
+<text x="457" y="150" fill="#10b981" font-weight="700">৪</text>
+<text x="0" y="169" fill="#1e1b4b" font-weight="700">reports</text>
+<rect x="160" y="156" width="288" height="15" rx="3" fill="#34d399"/>
+<text x="457" y="169" fill="#34d399" font-weight="700">৪</text>
+<text x="0" y="188" fill="#1e1b4b" font-weight="700">billing + সেটিংস</text>
+<rect x="160" y="175" width="216" height="15" rx="3" fill="#d97706"/>
+<text x="385" y="188" fill="#d97706" font-weight="700">৩</text>
+<text x="0" y="207" fill="#1e1b4b" font-weight="700">audit</text>
+<rect x="160" y="194" width="72" height="15" rx="3" fill="#dc2626"/>
+<text x="241" y="207" fill="#dc2626" font-weight="700">১</text>
+</g></svg>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:12pt;padding:3.5mm 5mm">
+      <b>academics-এ ৮টি</b> — অথচ এটা সিস্টেমের ভিত্তি। ভিত্তিতে ভুল হলে উপরের সবকিছু ভাঙে, তাই এই অ্যাপের টেস্ট সবচেয়ে বেশি চাই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের জিজ্ঞেস করুন — "কোন অ্যাপটা সবচেয়ে আগে বানাতে হবে?" উত্তর প্রায়ই "যেটা বেশি দেখা যায়"। আসল উত্তর: <b>যেটার উপর অন্য সব দাঁড়িয়ে</b> — academics। নইলে পরে সব মডেল বদলাতে হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>অ্যাপ × ভূমিকা — কে কোন ঘরে ঢোকে</h2>
+      <div class="sub">সংখ্যাগুলো ক্যাটালগ থেকে গোনা; খালি ঘর মানে "এই ভূমিকার জন্য কোনো ফিচার নেই"</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:22%">অ্যাপ</th><th>শিক্ষক</th><th>অ্যাডমিন</th><th>কোঅর্ডি.</th><th>শিক্ষার্থী</th><th>প্রশাসক</th><th>পাবলিক</th><th style="width:10%">মোট</th></tr></thead>
+      <tbody>
+        <tr><td><b>accounts</b></td><td class="num">২</td><td class="num">১</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">৪</td><td class="num"><b>৭</b></td></tr>
+        <tr><td><b>workspaces</b></td><td class="num">১</td><td class="num">৪</td><td class="num">—</td><td class="num">—</td><td class="num">২</td><td class="num">—</td><td class="num"><b>৭</b></td></tr>
+        <tr><td><b>core (ড্যাশবোর্ড)</b></td><td class="num">১</td><td class="num">—</td><td class="num">১</td><td class="num">১</td><td class="num">১</td><td class="num">—</td><td class="num"><b>৪</b></td></tr>
+        <tr><td><b>academics</b></td><td class="num">৩</td><td class="num">৫</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৮</b></td></tr>
+        <tr><td><b>students</b></td><td class="num">৪</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৪</b></td></tr>
+        <tr><td><b>attendance</b></td><td class="num">৪</td><td class="num">—</td><td class="num">১</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৫</b></td></tr>
+        <tr><td><b>lessons</b></td><td class="num">৬</td><td class="num">—</td><td class="num">—</td><td class="num">১</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৭</b></td></tr>
+        <tr><td><b>assessments</b></td><td class="num">৪</td><td class="num">১</td><td class="num">—</td><td class="num">২</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৭</b></td></tr>
+        <tr><td><b>reports</b></td><td class="num">৪</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৪</b></td></tr>
+        <tr><td><b>audit</b></td><td class="num">—</td><td class="num">১</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>১</b></td></tr>
+        <tr><td><b>billing + সেটিংস</b></td><td class="num">—</td><td class="num">৩</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num"><b>৩</b></td></tr>
+        <tr style="background:#eef2ff"><td><b>মোট</b></td><td class="num"><b>২৯</b></td><td class="num"><b>১৫</b></td><td class="num"><b>২</b></td><td class="num"><b>৪</b></td><td class="num"><b>৩</b></td><td class="num"><b>৪</b></td><td class="num"><b>৫৭</b></td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      এই গ্রিডটাই ক্লাস ৯-এর <b>পারমিশন ম্যাট্রিক্সের</b> ভিত্তি — শুধু উল্টো করে পড়তে হবে: "এই ঘরে কে আছে" থেকে "এই ঘরে কে থাকবে না"।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডান কলামের যোগফল ৫৭ — মিলছে কি না জিজ্ঞেস করুন। না মিললে বোঝা যায় কোনো ফিচার দুই ভূমিকায় গোনা হয়েছে, আর সেটাই পরে দ্বিগুণ কাজ হিসেবে ফিরে আসে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>ফ্রিজে সই — তিনটি বাক্স, চারটি শর্ত</h2>
+      <div class="sub">সই মানে "থাকবে না" বলা, শুধু "থাকবে" নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="border-color:#059669;background:#ecfdf5;padding:5mm">
+          <b style="font-size:13pt;color:#065f46">🧊 MVP — ৫টি স্লাইস</b>
+          <p style="font-size:11.5pt;color:#065f46;line-height:1.7">লগইন · প্রতিষ্ঠান ও ভূমিকা · শিক্ষার্থী ও ভর্তি · উপস্থিতি · নম্বর ও রিপোর্ট<br><b>≈ ৪৩টি ফিচার</b></p>
+        </div>
+        <div class="card" style="margin-top:4mm;padding:5mm">
+          <b style="font-size:13pt">🕐 v1.1</b>
+          <p style="font-size:11.5pt;line-height:1.7">আমন্ত্রণ · ব্যাকআপ · পূর্ণ এক্সপোর্ট · নোটিফিকেশন<br><b>৪–৫টি ফিচার</b></p>
+        </div>
+        <div class="card" style="margin-top:4mm;border-color:#cbd5e1;background:#f8fafc;padding:5mm">
+          <b style="font-size:13pt;color:#64748b">🚫 কখনো নয়</b>
+          <p style="font-size:11.5pt;color:#64748b;line-height:1.7">SMS গেটওয়ে · মোবাইল অ্যাপ · AI উপস্থিতি<br><b>কারণ লিখে রাখা</b></p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#818cf8">
+          <b style="font-size:13pt;color:#312e81">চারটি শর্ত — সইয়ের আগে</b>
+          <p style="font-size:11.5pt;line-height:1.8">
+            <b>১.</b> প্রতিটি ফিচারের <b>আইডি</b> আছে<br>
+            <b>২.</b> প্রতিটির <b>এক বাক্য উদ্দেশ্য</b> আছে<br>
+            <b>৩.</b> প্রতিটির <b>একটি ভূমিকা</b> আছে (দুই হলে ভাঙুন)<br>
+            <b>৪.</b> প্রতিটির <b>একটি রুট</b> আছে — না থাকলে সেটা ফিচার নয়, ইচ্ছা
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>স্কোপ ফ্রিজের আসল পরীক্ষা:</b> "কোনটা বাদ দিলে প্রজেক্ট মরবে না?" — এই প্রশ্নের উত্তর দিতে না পারলে ফ্রিজ হয়নি।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> স্লাইডে ৪৩ নম্বরটা ইচ্ছাকৃত — এটা স্ক্রিনশট-প্রমাণসহ ফিচারের সংখ্যা, আর ৫৭ মোট পরিকল্পনা। দুটো সংখ্যা গুলিয়ে ফেলা যাবে না; ক্লাস ১৩-এ এই পার্থক্যটাই ডেমোর সততা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>এক ফিচার, এক মালিক</h2>
+      <div class="sub">দুই ভূমিকার ফিচার মানে দুইবার পারমিশন যাচাই — তাই ভাঙতে হয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:26%">প্রলোভন</th><th style="width:30%">কেন ভাঙতে হয়</th><th>প্রজেক্টে যা করা হলো</th></tr></thead>
+      <tbody>
+        <tr><td>"উপস্থিতি শিক্ষক ও কোঅর্ডিনেটর — দুজনেই দেখবে"</td>
+          <td>দেখার নিয়ম দুজনের আলাদা: শিক্ষক নিজের ক্লাস, কোঅর্ডিনেটর পুরো বিভাগ</td>
+          <td><b>F-33</b> রেজিস্টার (শিক্ষক) আর <b>F-35</b> oversight (কোঅর্ডিনেটর) — আলাদা ফিচার</td></tr>
+        <tr><td>"ফলাফল শিক্ষক ও শিক্ষার্থী — একই পর্দা"</td>
+          <td>শিক্ষক হিসাব করেন, শিক্ষার্থী শুধু প্রকাশের পরে দেখে</td>
+          <td><b>F-46</b> হিসাব · <b>F-47</b> প্রকাশ · <b>F-48</b> আমার ফলাফল</td></tr>
+        <tr><td>"সেটিংস সবই এক পাতা"</td>
+          <td>গ্রেডিং আর ব্র্যান্ডিং সম্পূর্ণ আলাদা সিদ্ধান্ত</td>
+          <td><b>F-45</b> গ্রেড স্কেল · <b>F-30</b> প্রতিষ্ঠান ও ব্র্যান্ডিং · <b>F-55</b> উপস্থিতি নীতি</td></tr>
+        <tr><td>"ড্যাশবোর্ড একটাই, শুধু ডেটা বদলাবে"</td>
+          <td>চার ভূমিকার প্রশ্নই আলাদা — এক পর্দায় চার প্রশ্নের উত্তর হয় না</td>
+          <td><b>F-13</b> · <b>F-16</b> · <b>F-29</b> · <b>F-56</b> — চারটি ড্যাশবোর্ড</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      নিয়ম: <b>এক ফিচার = এক ভূমিকা = এক রুট = এক পরীক্ষা।</b> দ্বিতীয় ভূমিকা দরকার হলে সেটা নতুন ফিচার, পুরনোতে শর্ত নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় সারিটা সবচেয়ে বেশি কাজে লাগে — "সব সেটিংস এক জায়গায়" শুনতে সুন্দর, কিন্তু তার মানে একজনের হাতে গ্রেডিং আর ব্র্যান্ডিং দুটোই। ছাত্রদের বলুন: সুবিধা আর অধিকার আলাদা জিনিস।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>চার ধরনের ফিচার — দাম আলাদা</h2>
+      <div class="sub">তালিকা বানানোর সময়ই ধরন লিখে রাখুন, তখন সময়ের হিসাব নিজে থেকে আসবে</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card" style="border-color:#818cf8"><div class="ic">📋</div><b style="font-size:14pt">তালিকা (list)</b>
+        <p>প্রশ্ন: <b>কী আছে?</b><br>অংশ: ভিউ + ১ টেমপ্লেট + ১ টেস্ট<br>সময়: <b>আধা দিন</b><br><span style="font-size:10.5pt;color:#64748b">F-19 ছাত্র তালিকা</span></p></div>
+      <div class="card" style="border-color:#34d399"><div class="ic">📝</div><b style="font-size:14pt">ফর্ম (form)</b>
+        <p>প্রশ্ন: <b>কী লিখব?</b><br>অংশ: ফর্ম + ভ্যালিডেশন + ৪টি ভুল-অবস্থা<br>সময়: <b>১ দিন</b><br><span style="font-size:10.5pt;color:#64748b">F-31 হাজিরা</span></p></div>
+      <div class="card" style="border-color:#fbbf24"><div class="ic">📊</div><b style="font-size:14pt">রিপোর্ট (report)</b>
+        <p>প্রশ্ন: <b>কত?</b><br>অংশ: কোয়েরি + অ্যাগ্রিগেট + এক্সপোর্ট<br>সময়: <b>২ দিন</b><br><span style="font-size:10.5pt;color:#64748b">F-34 সারাংশ</span></p></div>
+      <div class="card" style="border-color:#f87171"><div class="ic">🧱</div><b style="font-size:14pt">মডেল (model)</b>
+        <p>প্রশ্ন: <b>কোথায় রাখব?</b><br>অংশ: মাইগ্রেশন + অ্যাডমিন + পুরনো ডেটার যত্ন<br>সময়: <b>৩ দিন</b><br><span style="font-size:10.5pt;color:#64748b">F-24 শিক্ষাবর্ষ</span></p></div>
+    </div>
+    <div class="call warn" style="margin-top:7mm;font-size:13pt;padding:4.5mm 5.5mm">
+      তালিকায় ৫৭টি লাইন দেখে "১০ দিনে হয়ে যাবে" ভাববেন না — <b>প্রতি লাইনের ধরন দেখুন</b>। নয়টি মডেল মানেই তিন সপ্তাহ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে একটা ছোট কাজ দিন: ৫৭টি ফিচারকে চার ধরনে ভাগ করতে বলুন (মোটামুটি)। যে দলে "মডেল" বেশি পড়বে, তার প্রজেক্টের সময়সূচি সবচেয়ে বেশি ভাঙবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>ডুপ্লিকেট ধরা — একই জিনিস দুই নামে</h2>
+      <div class="sub">তালিকা বড় হয় না, ফুলে যায় — আর ফোলা তালিকা কেউ পড়ে না</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:30%">দুটো লাইন যেমন দেখায়</th><th style="width:26%">আসল প্রশ্ন</th><th>সিদ্ধান্ত</th></tr></thead>
+      <tbody>
+        <tr><td>"আমার ক্লাস" · "ক্লাস ও সেকশন"</td><td>একই টেবিল, ভিন্ন দর্শক?</td><td><b>দুটোই রাখা</b> — F-17 শিক্ষকের দেখা, F-26 অ্যাডমিনের তৈরি</td></tr>
+        <tr><td>"হাজিরা নেওয়া" · "হাজিরা রেজিস্টার"</td><td>একই ডেটা, দুই কাজ?</td><td><b>দুটোই রাখা</b> — লেখা আর পড়া আলাদা কাজ (F-31 · F-33)</td></tr>
+        <tr><td>"ফলাফল" · "মার্কশিট PDF"</td><td>একটা অন্যটার রূপ?</td><td><b>আলাদা</b> — PDF-এর আলাদা রেন্ডারার ও আলাদা টেস্ট (F-48 · F-49)</td></tr>
+        <tr><td>"সারাংশ" · "ক্লাস সারাংশ"</td><td>একই রিপোর্ট?</td><td><b>এক করে ফেলা</b> — F-52 এক জায়গায়, ফিল্টার দিয়ে ভাগ</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:4mm 5mm">
+      পরীক্ষা: <b>একই রুট?</b> → একটাই ফিচার। <b>একই টেবিল কিন্তু ভিন্ন কাজ?</b> → দুটো ফিচার। শুধু নাম দেখে মিলিয়ে ফেলা যাবে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ সারিটা "এক করে ফেলা"-র উদাহরণ — সব সারি জোড়া লাগাতে হবে না। কখনো এক করলে ফিচার সরল হয়, কখনো দুই ভূমিকা এক হয়ে যায় আর পারমিশন অস্পষ্ট হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>যা ফ্রিজে ঢোকেনি — আর কেন</h2>
+      <div class="sub">"কখনো নয়" তালিকাটাই আপনাকে সেমিস্টারের মাঝে বাঁচাবে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:22%">ফিচার</th><th style="width:14%">বাক্স</th><th>কারণ (এক লাইনে)</th><th style="width:22%">কখন ফিরবে</th></tr></thead>
+      <tbody>
+        <tr><td>সদস্য আমন্ত্রণ</td><td style="color:#b45309"><b>v1.1</b></td><td>ইমেইল পাঠানোর সেটআপ দরকার; এখন অ্যাডমিন নিজে অ্যাকাউন্ট খুলে দেন</td><td>একই কাজ দুই জায়গায় হলে</td></tr>
+        <tr><td>ব্যাকআপ কনসোল</td><td style="color:#b45309"><b>v1.1</b></td><td>সার্ভারে cron + pg_dump যথেষ্ট; UI দরকার নেই</td><td>একাধিক প্রতিষ্ঠান এলে</td></tr>
+        <tr><td>পূর্ণ এক্সপোর্ট (XLSX)</td><td style="color:#b45309"><b>v1.1</b></td><td>CSV প্রথমে যথেষ্ট, বাংলা সমস্যা হলে XLSX</td><td>গ্রাহক চাইলে</td></tr>
+        <tr><td>SMS নোটিফিকেশন</td><td style="color:#64748b"><b>কখনো নয়</b></td><td>প্রতি SMS-এ টাকা লাগে; খরচ মডেল বদলে যাবে</td><td>প্ল্যানে আলাদা মূল্য যোগ হলে</td></tr>
+        <tr><td>মোবাইল অ্যাপ</td><td style="color:#64748b"><b>কখনো নয়</b></td><td>ওয়েবসাইট মোবাইলে কাজ করে; অ্যাপ একই কাজ দুইবার</td><td>অফলাইন দরকার হলে</td></tr>
+        <tr><td>AI উপস্থিতি (ছবি থেকে)</td><td style="color:#64748b"><b>কখনো নয়</b></td><td>গোপনীয়তা, নির্ভুলতা, খরচ — তিনটেই বাইরে</td><td>ক্যামেরা ও অনুমোদন থাকলে</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "কখন ফিরবে" কলামটা বাদ দেবেন না — এটি ঝুঁকি ব্যবস্থাপনা: ফিচার ফিরে আসবে, কিন্তু শর্ত পূরণ হলে। শর্ত ছাড়া ফেরা মানেই স্কোপ ফাটল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>তালিকা কোথায় থাকে — ক্যাটালগ ফাইলের গঠন</h2>
+      <div class="sub">একটি ফাইলে ৫৭টি ফিচার, প্রতিটির ছয়টি কী — <code>docs/catalogue_data.py</code></div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1.1">
+<pre style="font-size:9.6pt;line-height:1.6">FEATURES = [
+  dict(id="F-31", role="TEACHER",
+       name="Take attendance",
+       route="/w/&lt;id&gt;/attendance/take/",
+       status="built",
+       layout=SUBMIT,
+       purpose="Marks a whole class present/
+                absent/late/leave for one date",
+       actions=["Pick class, date, subject",
+                "Bulk buttons",
+                "Add a note", "Save"],
+       data="AttendanceRecord unique(student,
+             class, subject, date)",
+       states="Already taken today, future date
+               blocked, holiday warning",
+       cls="C099, C100"),
+  ...
+]
+
+ROLES = { "PUBLIC": "Anonymous visitor",
+          "TEACHER": "Individual teacher", ... }</pre>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:13pt">ছয়টি কী কেন</b>
+          <p style="font-size:11.5pt;line-height:1.7">
+            <b>id</b> — সংযোগের নাম<br>
+            <b>role</b> — কোন ভূমিকা<br>
+            <b>route</b> — কোথায় থাকে<br>
+            <b>purpose</b> — এক বাক্যে কেন<br>
+            <b>actions</b> — পর্দায় কী কী<br>
+            <b>data · states</b> — কোন টেবিল, কোন ভুল-অবস্থা
+          </p>
+        </div>
+        <div class="call" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          তালিকা <b>কোডে</b> রাখার কারণ: তালিকা থেকে ডকুমেন্ট, PDF, স্ক্রিনশট-চেক — সব একই সূত্র থেকে তৈরি হয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "Excel-এ তালিকা রাখলেই তো হয়" — এই প্রশ্ন আসবেই। উত্তর: Excel থেকে কোনো কিছু তৈরি করা যায় না; কোড থেকে PDF, চেক, টেস্ট — সবই যায়, আর সেটাই কমিট 5373b59-এ করা হয়েছে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>পরিকল্পনা আর প্রমাণ — দুই ফাইল, ইচ্ছাকৃত</h2>
+      <div class="sub">একই ফাইলে রাখলে স্ক্রিনশট বানাতে গিয়ে তালিকা বদলে যেত</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 195" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="ar7" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <rect x="0" y="20" width="300" height="110" rx="10" fill="#eef2ff" stroke="#818cf8"/>
+        <text x="150" y="48" text-anchor="middle" font-size="13.5" font-weight="700" fill="#312e81">catalogue_data.py</text>
+        <text x="150" y="72" text-anchor="middle" font-size="11.5" fill="#334155">৫৭টি ফিচারের পরিকল্পনা</text>
+        <text x="150" y="94" text-anchor="middle" font-size="11.5" fill="#334155">role · route · purpose · states</text>
+        <text x="150" y="116" text-anchor="middle" font-size="11" fill="#64748b">"this is the plan"</text>
+
+        <rect x="360" y="20" width="300" height="110" rx="10" fill="#ecfdf5" stroke="#34d399"/>
+        <text x="510" y="48" text-anchor="middle" font-size="13.5" font-weight="700" fill="#065f46">build_status.py</text>
+        <text x="510" y="72" text-anchor="middle" font-size="11.5" fill="#334155">৪৩টি স্ক্রিনশট-প্রমাণ</text>
+        <text x="510" y="94" text-anchor="middle" font-size="11.5" fill="#334155">+ ১১টি কোড-আছে, ছবি নেই</text>
+        <text x="510" y="116" text-anchor="middle" font-size="11" fill="#64748b">"this is the evidence"</text>
+
+        <line x1="304" y1="75" x2="356" y2="75" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar7)"/>
+        <text x="330" y="66" text-anchor="middle" font-size="10" fill="#4f46e5">তুলনা</text>
+
+        <rect x="720" y="20" width="280" height="110" rx="10" fill="#fffbeb" stroke="#fbbf24"/>
+        <text x="860" y="48" text-anchor="middle" font-size="13.5" font-weight="700" fill="#78350f">ফলাফল</text>
+        <text x="860" y="72" text-anchor="middle" font-size="11.5" fill="#78350f">৪৩ স্ক্রিনশটসহ</text>
+        <text x="860" y="94" text-anchor="middle" font-size="11.5" fill="#78350f">+ ১১ টেস্টে যাচাই · ৩ বাকি</text>
+        <text x="860" y="116" text-anchor="middle" font-size="11" fill="#92400e">= ৫৭, মিলে গেছে</text>
+        <line x1="664" y1="75" x2="716" y2="75" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar7)"/>
+
+        <text x="0" y="166" font-size="12" fill="#334155">ফাইলটির নিজের মন্তব্য: "Regenerating a screenshot list can never corrupt the feature specification."</text>
+        <text x="0" y="186" font-size="12" fill="#64748b">অর্থাৎ স্ক্রিনশট আবার তুললে পরিকল্পনা বদলাবে না — দুইটা আলাদা ফাইল থাকার এটাই কারণ।</text>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:12.5pt;padding:3.5mm 5mm">
+      এটাই ক্লাসের সবচেয়ে ব্যবহারিক পরামর্শ: <b>পরিকল্পনা আর প্রমাণ কখনো একই ফাইলে রাখবেন না।</b>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের প্রজেক্টে দুটো ফাইল বানাতে — <code>plan.md</code> আর <code>done.md</code>। প্রতি সপ্তাহে <code>done.md</code> আপডেট হবে, <code>plan.md</code> নয়। ক্লাস ১৩-এর ডেমোতে এই দুটো ফাইলই তাদের সততার প্রমাণ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>ফ্রিজ ভাঙার প্রক্রিয়া — চার লাইনের অনুরোধ</h2>
+      <div class="sub">ফ্রিজ মানে পরিবর্তন বন্ধ নয়; ফ্রিজ মানে পরিবর্তন লিখিত</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#818cf8">
+          <b style="font-size:13pt;color:#312e81">পরিবর্তনের অনুরোধ (CR)</b>
+          <p style="font-size:11.5pt;line-height:1.9">
+            <b>১. কী:</b> কোন ফিচার, কোন আইডি<br>
+            <b>২. কেন:</b> কোন ব্যবহারকারীর কোন বাক্য<br>
+            <b>৩. কী বদলাবে:</b> কোন ফিচার বাদ যাবে বা পিছাবে<br>
+            <b>৪. কে অনুমোদন:</b> নাম ও তারিখ
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>নিয়ম:</b> শুধু যোগ করা যায় না — কিছু বদলাতে হবে। স্কোপ বাড়ে না, শুধু অদল-বদল হয়।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#34d399">
+          <b style="font-size:13pt;color:#065f46">আসল উদাহরণ — কমার্শিয়াল লেয়ার</b>
+          <p style="font-size:11pt;line-height:1.65;margin-top:2mm">
+            <b>কী:</b> সাবস্ক্রিপশন, ট্রায়াল, হোয়াইট-লেবেল, প্ল্যাটফর্ম কনসোল<br>
+            <b>কেন:</b> "এক স্কুলের সফটওয়্যার নয়, প্ল্যাটফর্ম" — ক্লাস ১-এর সিদ্ধান্ত<br>
+            <b>কী বদলালো:</b> সাবস্ক্রিপশন ব্যক্তি থেকে <b>প্রতিষ্ঠানে</b> (<code>8a25724</code>)<br>
+            <b>খরচ:</b> ১ মাইগ্রেশন + বিলিং ভিউ + ৪ টেস্ট
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডে সততার প্রশ্ন তুলুন: প্রজেক্টেও স্কোপ বেড়েছিল — কমার্শিয়াল লেয়ারটা ফ্রিজের বাইরে ছিল। বলুন: "আমরাও ভুল করেছি; পার্থক্য একটাই — ভুলটা লিখে রাখা হয়েছে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>চারটি প্রশ্ন — নিজের তালিকা মিলিয়ে</h2>
+      <div class="sub">প্রতিটি উত্তর একটা সংখ্যা দিয়ে শেষ করুন</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;gap:6mm">
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>১.</b> আপনার প্রজেক্টে এখন কতটি ফিচার? সংখ্যাটা লিখুন — ২০-এর বেশি হলে ভাগ হয়নি, ফুলেছে।</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>২.</b> কোন ফিচারের <b>দুটো ভূমিকা</b> আছে? সেটা ভাঙলে কতটি হবে?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>৩.</b> আপনার "কখনো নয়" বাক্সে কয়টি ফিচার, আর প্রতিটির কারণ এক লাইনে লিখতে পারবেন?</p></div>
+    <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2"><p style="font-size:14pt;color:#7f1d1d">
+      <b>৪.</b> আপনার তালিকার কোন লাইনের <b>রুট নেই</b>? রুট না থাকলে সেটা ফিচার নয় — ইচ্ছা।</p></div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৪ নম্বরের উত্তর দিয়ে ক্লাস ৭ শুরু হবে — রুট 없는 লাইনগুলোই পরে "এটা তো হয়নি" বলে ধরা পড়ে, আর ডেমোর দিনে সবচেয়ে বিব্রতকর হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারসংক্ষেপ</span>
+    <div><h2>আজকের পাঁচটি শিক্ষা</h2>
+      <div class="sub">প্রতিটি দাবির পাশে তার প্রমাণ</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:52%">শিক্ষা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>ফিচার মানে আইডি + উদ্দেশ্য + রুট + ভূমিকা</b></td>
+          <td>F-33-এর ছয়টি কী হুবহু <code>catalogue_data.py</code> থেকে</td></tr>
+        <tr><td><b>এক ফিচার = এক ভূমিকা</b> — দ্বিতীয় ভূমিকা মানে নতুন ফিচার</td>
+          <td>উপস্থিতি ভাঙা হয়েছে: F-33 (শিক্ষক) · F-35 (কোঅর্ডিনেটর)</td></tr>
+        <tr><td><b>তালিকার দাম তার ধরনে</b> — list · form · report · model</td>
+          <td>৯টি মডেল-ধরনের ফিচার = প্রায় ৩ সপ্তাহের কাজ</td></tr>
+        <tr><td><b>"কখনো নয়" বাক্স + কারণ — সবচেয়ে দরকারি অংশ</b></td>
+          <td>SMS · অ্যাপ · AI — তিনটিরই কারণ ও ফেরার শর্ত লেখা</td></tr>
+        <tr><td><b>পরিকল্পনা আর প্রমাণ আলাদা ফাইল</b></td>
+          <td><code>catalogue_data.py</code> বনাম <code>build_status.py</code> → ৪৩ + ১১ + ৩ = ৫৭</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পাঁচটি লাইন একসাথে পড়ে দেখুন — এগুলোই পর্ব ৪-এর প্রতিটি স্লাইসের শিরোনাম হবে। ফিচার আইডি ছাড়া স্লাইস বানানো যায় না, কারণ স্লাইসের সীমা ফিচার দিয়েই টানা হয়।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">০৭</div>
+  <h2>পরের ক্লাস — "কেন এই স্ট্যাক"</h2>
+  <p>তিনটি বিকল্পের তুলনা · ADR লেখার নিয়ম · সিদ্ধান্ত লিখে রাখা</p>
+</section>

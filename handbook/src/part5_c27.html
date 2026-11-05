@@ -1,0 +1,650 @@
+<!-- ===================== CLASS 27 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৫ · টেস্টিং · ক্লাস ২৭ / ৩৭ · পর্বের শেষ ক্লাস</div>
+  <h1>টেস্ট আগে,<br>কোড পরে</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৯ · টপিক ৯.৪ (টেস্ট ডিজাইন ও TDD)<br>লাল-সবুজ-রিফ্যাক্টর · সমতুল্য শ্রেণি · ৭টি প্রশ্ন · প্রমাণ-খাতা</div>
+  <div class="pill">red · green · refactor</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>টেস্ট আগে লিখলে কী লাভ?</h2>
+      <div class="sub">হাত তুলুন: কে কখনো আগে টেস্ট লিখেছেন?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:23pt;line-height:1.6">
+      লাভ একটাই, কিন্তু বিশাল: <span class="hl">টেস্টটা ব্যর্থ হতে দেখা</span> — তারপর কোড লেখা।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      যে টেস্ট কখনো লাল হয়নি, সে টেস্ট আসলে কিছুই পরীক্ষা করছে কি না আপনি জানেন না।
+      আজ: চক্রটি, কখন কোন টেস্ট, আর কী টেস্ট করবেন <b>না</b>।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "সবুজ টেস্ট দেখে খুশি হবেন না — আগে লাল দেখুন।" এটাই TDD-র একমাত্র অলঙ্ঘনীয় নিয়ম।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>তিন ধাপের চক্র</h2>
+      <div class="sub">প্রতিটি চক্র ৫–১৫ মিনিট — বড় হলে ভেঙে ফেলুন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 170" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="26" width="280" height="86" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="1.6"/>
+          <text x="140" y="52" text-anchor="middle" font-size="11.4" font-weight="700" fill="#7f1d1d">১. লাল</text>
+          <text x="140" y="72" text-anchor="middle" font-size="9" fill="#b91c1c">একটি টেস্ট লিখুন যা ব্যর্থ হয়</text>
+          <text x="140" y="88" text-anchor="middle" font-size="8.6" fill="#b91c1c">কারণটা সঠিক কি না দেখুন</text>
+          <text x="140" y="103" text-anchor="middle" font-size="8.2" fill="#991b1b">"ফিচার নেই" — এটাই প্রত্যাশিত</text>
+
+          <rect x="340" y="26" width="280" height="86" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.6"/>
+          <text x="480" y="52" text-anchor="middle" font-size="11.4" font-weight="700" fill="#115e59">২. সবুজ</text>
+          <text x="480" y="72" text-anchor="middle" font-size="9" fill="#0f766e">সবচেয়ে সহজ কোড লিখুন</text>
+          <text x="480" y="88" text-anchor="middle" font-size="8.6" fill="#0f766e">সুন্দর নয়, শুধু কাজ করে</text>
+          <text x="480" y="103" text-anchor="middle" font-size="8.2" fill="#115e59">অতিরিক্ত কিছু যোগ করবেন না</text>
+
+          <rect x="680" y="26" width="280" height="86" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.6"/>
+          <text x="820" y="52" text-anchor="middle" font-size="11.4" font-weight="700" fill="#312e81">৩. রিফ্যাক্টর</text>
+          <text x="820" y="72" text-anchor="middle" font-size="9" fill="#3730a3">টেস্ট সবুজ রেখে কোড পরিষ্কার</text>
+          <text x="820" y="88" text-anchor="middle" font-size="8.6" fill="#3730a3">নাম বদল · ফাংশন ভাগ</text>
+          <text x="820" y="103" text-anchor="middle" font-size="8.2" fill="#4338ca">টেস্ট বদলাবেন না</text>
+
+          <g stroke="#94a3b8" stroke-width="1.3" fill="none">
+            <path d="M282,69 L336,69" marker-end="url(#a27)"/>
+            <path d="M622,69 L676,69" marker-end="url(#a27)"/>
+            <path d="M822,116 C822,150 140,150 140,116" marker-end="url(#a27)"/>
+          </g>
+          <text x="480" y="158" text-anchor="middle" font-size="8.4" fill="#64748b">প্রতি চক্রে একটি ছোট দাবি — বড় দাবি মানে বড় চক্র, আর বড় চক্র মানে ভাঙা ছন্দ</text>
+          <defs><marker id="a27" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5.5mm;font-size:10.8pt;padding:2.8mm 4.2mm">
+      IMS-এ সব কোড TDD-তে লেখা হয়নি — কিন্তু যেখানে বাগ হয়েছিল (সেশন স্কোপ, গেটের URL), সেখানেই আগে টেস্ট লেখা হয়েছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সততার সাথে বলুন: "প্রথম থেকেই TDD কঠিন।" বাস্তব পথ: বাগ পেলেই আগে টেস্ট, তারপর ঠিক। এটাই সবচেয়ে বেশি কাজে দেয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>একটি নতুন নিয়মে চক্রটি</h2>
+      <div class="sub">"মেয়াদ শেষ হলে প্রতিষ্ঠান পড়তে পারবে, লিখতে পারবে না"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42"># ---- ১. লাল: আগে টেস্ট (is_writable এখনো নেই)
+def test_expired_trial_goes_read_only_but_keeps_data(self):
+    sub = self.sub
+    sub.status = Subscription.Status.TRIAL
+    sub.trial_ends_on = timezone.localdate() - timedelta(days=1)
+    sub.save()
+    self.assertFalse(sub.is_writable)                       # AttributeError = লাল
+    self.assertEqual(AttendanceRecord.objects.filter(
+        workspace=self.ws).count(), 42)                     # ডেটা অটুট
+
+# ---- ২. সবুজ: সবচেয়ে ছোট কোড
+@property
+def is_writable(self):
+    if self.status != self.Status.TRIAL:
+        return False
+    end = self.trial_ends_on
+    return end is None or end >= timezone.localdate()
+
+# ---- ৩. রিফ্যাক্টর: বাকি চার অবস্থা যোগ (নতুন টেস্টে, একই ফাইলে)
+</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">প্রথমে <code>AttributeError</code></b>
+            <p style="font-size:9.6pt">সেটাও এক ধরনের লাল — প্রমাণ করে টেস্টটি সত্যিই নতুন কোড ডাকছে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">"ডেটা অটুট" একই টেস্টে</b>
+            <p style="font-size:9.6pt">নিয়মের সঙ্গে প্রতিশ্রুতিও পরীক্ষিত — নাহলে "read-only" মানে "মুছে ফেলা"ও হতে পারত।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">সহজ কোড আগে</b>
+            <p style="font-size:9.6pt">শুধু TRIAL হ্যান্ডল করে সবুজ করা — তারপর ACTIVE · PAST_DUE যোগ।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">আসল কোডে</b>
+            <p style="font-size:9.6pt">চূড়ান্ত সংস্করণে ৪টি শাখা — শেষে লেখা হয়েছিল, শুরুতে নয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ব্ল্যাকবোর্ডে তিন ধাপ আলাদা রঙে লিখুন, প্রতিবার টেস্ট চালানোর ফল লিখুন। ছোট চক্রের শক্তি তখনই বোঝা যায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>সমতুল্য শ্রেণি — সব মান নয়, প্রতিটি দল</h2>
+      <div class="sub">২,৫০০টি নম্বর পরীক্ষা নয়; প্রতিটি "ধরনের" একটি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:26%">ইনপুট</th><th style="width:38%">শ্রেণি</th><th>প্রতিনিধি মান</th></tr></thead>
+      <tbody>
+        <tr><td>নম্বর (০–১০০)</td><td>নেগেটিভ · শূন্য · ভেতরে · পূর্ণমান · বেশি</td><td>−১ · ০ · ৫৫ · ১০০ · ১০১</td></tr>
+        <tr><td>সিট (allowed = ৩০০)</td><td>কম · ঠিক · বেশি</td><td>২৯৯ · ৩০০ · ৩০১</td></tr>
+        <tr><td>পাস নম্বর ৩৩</td><td>নিচে · সমান · উপরে</td><td>৩২ · ৩৩ · ৩৪</td></tr>
+        <tr><td>মেয়াদ</td><td>গতকাল · আজ · কাল</td><td>শেষ হয়েছে · আজই শেষ · আগামীকাল</td></tr>
+        <tr><td>টেক্সট</td><td>খালি · স্পেস · খুব লম্বা</td><td><code>""</code> · <code>"   "</code> · ৪০০ অক্ষর</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        IMS-এ এই ছক মেনে লেখা: <code>test_marks_entry_rejects_out_of_range_value</code> · <code>test_server_refuses_the_third_student</code>।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        শূন্য ও খালি সবচেয়ে বেশি বাদ পড়ে — অথচ <code>ZeroDivisionError</code> ঠিক সেখানেই লুকিয়ে থাকে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছকটি বোর্ডে এঁকে ছাত্রদের নিজের ফিচারের জন্য পূরণ করতে বলুন — প্রতিটি দলের একটি মান। "শ্রেণি ভাবুন, সংখ্যা নয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>নেগেটিভ টেস্ট আগে</h2>
+      <div class="sub">"যা হবে না" প্রমাণ করা "যা হবে" প্রমাণের চেয়ে শক্ত</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45"># BUILD_STATUS.md-এর ভাষায়
+| Workspaces, memberships, roles, switching,
+  isolation | negative tests: 404 on foreign slug |
+| Result publication gate | student gets 403 before
+  publish, 200 after |
+| Teacher assignments | teacher without assignment
+  sees nothing |
+
+# কোডে সেই তিনটি
+self.assertEqual(resp.status_code, 404)          # অন্য স্কুল
+self.assertNotContains(resp, "Rafid")            # ছাত্র তালিকা ফাঁকা
+self.assertTrue(all(h.is_published for h in mine))  # হোমওয়ার্ক
+self.assertEqual(scoping.visible_classes(idle, ws).count(), 0)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন শক্ত</b>
+            <p style="font-size:9.6pt">"কাজ করে" টেস্ট পাশ করে কম কোডেও; "কাজ করে না" টেস্ট ব্যর্থ হয় বাড়তি কোডে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">নিরাপত্তার একমাত্র ভাষা</b>
+            <p style="font-size:9.6pt">ফাঁস প্রমাণ করতে হয় <code>assertNotContains</code> বা <code>count()==0</code> দিয়ে।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">পুরোনো বাগ থেকে</b>
+            <p style="font-size:9.6pt">প্রতিটি নেগেটিভ টেস্ট একদিনের বাস্তব ফাঁসের স্মৃতি — <code>test_no_role_sees_a_link_it_cannot_open</code>।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">অনুপাত</b>
+            <p style="font-size:9.6pt">১০৩ টেস্টে <code>assertRaises</code> ১২ · <code>assertNotContains</code> ৫ · <code>count()==0</code> বহুবার।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "নতুন ফিচারের জন্য প্রথম টেস্টটি লিখুন — 'কে এটা করতে পারবে না?'" এই এক লাইনেই বেশিরভাগ নিরাপত্তা-বাগ আটকায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>যা টেস্ট করবেন না</h2>
+      <div class="sub">ভুল জায়গায় টেস্ট লিখলে ভঙ্গুর স্যুট, আর কম ভরসা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:34%">যা নয়</th><th>কারণ ও বিকল্প</th></tr></thead>
+      <tbody>
+        <tr><td>Django-র নিজের কাজ</td><td><code>ForeignKey</code> cascade, <code>reverse()</code> — ফ্রেমওয়ার্কের টেস্ট আছে</td></tr>
+        <tr><td>HTML-এর হুবহু গঠন</td><td><code>&lt;div class="…"&gt;</code> বদলালেই ভাঙে → লেখা বা স্ট্যাটাস দেখুন</td></tr>
+        <tr><td>প্রাইভেট মেথড</td><td><code>_next_number</code> সরাসরি নয় — <code>Invoice.save()</code> দিয়ে প্রমাণ</td></tr>
+        <tr><td>তৃতীয় পক্ষের লাইব্রেরি</td><td><code>reportlab</code>-এর ফন্ট, <code>Pillow</code>-এর রিসাইজ — শুধু "PDF তৈরি হয়" দেখুন</td></tr>
+        <tr><td>লগের হুবহু বাক্য</td><td>বানান বদলালেই ২০টি টেস্ট লাল → <code>action</code> কোড দেখুন</td></tr>
+        <tr><td>নিজের লেখা টেস্ট নকল</td><td>একই জিনিস তিন জায়গায় — একটি টেস্ট, একটি দাবি</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        নিয়ম: টেস্ট করুন <b>আপনার সিদ্ধান্ত</b>, ফ্রেমওয়ার্কের নয়। "কে অনুমতি দেবে" আপনার সিদ্ধান্ত; "<code>reverse()</code> কী ফেরে" নয়।
+      </div></div>
+      <div><div class="call bad" style="font-size:10.2pt;padding:2.6mm 4mm">
+        IMS-এ <code>test_each_role_is_offered_only_its_own_links</code> লেবেল লেখার ওপর নির্ভরশীল — ভঙ্গুরতার স্বীকারোক্তি।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "কেন লগের বাক্য পরীক্ষা করা খারাপ?" উত্তর: বাক্য নয়, ঘটনাটাই চুক্তি — বাক্য বদলানো উচিত কাজ, টেস্ট ভাঙা নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>লাইভ ওয়ার্কথ্রু — <code>reports</code>-এর প্রথম টেস্ট</h2>
+      <div class="sub">৬ ধাপ, ৮ মিনিট — ক্লাস ২৬-এর ফাঁক বন্ধ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:8pt;line-height:1.4"># ১. ফাইল ও ক্লাস
+# apps/reports/tests.py
+class ExportScopeTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command("seed_demo", verbosity=0)
+        cls.ws = Workspace.objects.get(slug="sunrise-model-school")
+        slug = cls.ws.slug
+
+    # ২. প্রথম টেস্ট: ছাত্র CSV নামাতে পারবে না
+    def test_student_cannot_export_csv(self):
+        self.assertTrue(self.client.login(
+            email="student@ims.local", password="DemoPass!2026"))
+        url = reverse("reports:export_students",
+                      kwargs={"slug": slug})
+        self.assertEqual(self.client.get(url).status_code, 403)
+
+    # ৩. চালান → লাল? ৪. কোড ঠিক করুন → সবুজ
+    # ৫. দ্বিতীয় টেস্ট: CSV-র প্রথম বাইট BOM
+    # ৬. তৃতীয়: অন্য প্রতিষ্ঠানের নাম CSV-তে নেই</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ধাপ ১–২ কেন আগে</b>
+            <p style="font-size:9.4pt"><code>setUpTestData</code> + seed = ১০ সেকেন্ডে বাস্তব প্রতিষ্ঠান।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ফলাফল এখনই সবুজ</b>
+            <p style="font-size:9.4pt">ভিউয়ে <code>*TEACHING</code> আছে — তাই ৪০৩ আসবে। প্রথম টেস্ট সবুজ হওয়া মানে নিয়ম আগেই ঠিক ছিল; এখন সেটি <b>লক</b> হলো।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">BOM টেস্ট</b>
+            <p style="font-size:9.4pt"><code>resp.content.startswith(b"\xef\xbb\xbf")</code> — এটাই আসল প্রমাণ।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">সময়</b>
+            <p style="font-size:9.4pt">তিনটি টেস্ট ~৩০ মিনিটের কাজ; ক্লাসে প্রথমটি একসাথে লিখুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সবসময় লাল দেখতে পাবেন না — পুরোনো নিয়ম লক করাও টেস্টের কাজ। "সবুজ মানেও ভালো, যদি দাবিটা অর্থবহ হয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>টেস্ট-ডেটা: seed বনাম factory</h2>
+      <div class="sub">IMS বেছে নিয়েছে seed — দুই দিকেরই দাম আছে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:30%">দিক</th><th><code>seed_demo</code></th><th>factory (যেমন factory_boy)</th></tr></thead>
+          <tbody>
+            <tr><td>প্রস্তুতির গতি</td><td>১ লাইন</td><td>প্রতি টেস্টে কয়েক লাইন</td></tr>
+            <tr><td>পড়ার সহজতা</td><td>ডেটা লুকানো — <code>seed_demo</code> পড়তে হয়</td><td>টেস্টেই দেখা যায় কী বানানো হচ্ছে</td></tr>
+            <tr><td>সূক্ষ্ম নিয়ন্ত্রণ</td><td>কঠিন (সব কিছু আগেই আছে)</td><td>সহজ (ঠিক যা দরকার)</td></tr>
+            <tr><td>বাস্তবতা</td><td>উচ্চ — আসল অ্যাপের মতো</td><td>কম — শুধু প্রয়োজনীয় সারি</td></tr>
+            <tr><td>ভাঙার ঝুঁকি</td><td>seed বদলালে অনেক টেস্ট</td><td>ছোট, আলাদা</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:0 0 40%">
+        <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+          সেরা মিশ্রণ: <b>seed</b> দিয়ে বাস্তব জগৎ, <b>হাতে তৈরি</b> ছোট সারি দিয়ে সূক্ষ্ম নিয়ম (IMS-এ <code>EnrolmentTests</code> ঠিক এটাই করে)।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <code>seed_demo</code>-এর ভেতরের সংখ্যা (৪২টি অনুপস্থিতি, "Class 8") টেস্টে হার্ডকোড করা আছে — seed বদলালে ভাঙবে। বিকল্প: টেস্টে <code>seed</code> থেকে সংখ্যা পড়ে নেওয়া।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "কেন seed-এর সংখ্যা হার্ডকোড করলে ঝুঁকি?" উত্তর: fixture আর টেস্টের মধ্যে অদৃশ্য চুক্তি তৈরি হয় — এক পাশ বদলালে অন্যপাশ নীরবে ভাঙে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>রিফ্যাক্টর — টেস্ট হলো জাল</h2>
+      <div class="sub">ক্লাস ১৮-এর দুই mixin একসাথে করার নিরাপদ পথ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.42"># আগে: দুটি mixin, একই কাজ
+# apps/academics/forms.py  → BootstrapFormMixin
+# apps/billing/forms.py    → ImsFormMixin
+
+# রিফ্যাক্টরের ক্রম (টেস্ট আগে!)
+def test_forms_all_get_design_classes(self):     # ১. জাল পাতুন
+    f = StudentForm(workspace=self.ws).fields
+    self.assertIn("form-control", f["full_name"].widget.attrs["class"])
+    self.assertIn("form-select", f["class_group"].widget.attrs["class"])
+
+# ২. সবুজ দেখে নিন (এখনো দুই কপি)
+# ৩. একটিকে apps/core/forms.py-তে সরান, অন্যটি ইমপোর্ট করে
+# ৪. আবার পুরো স্যুট — ১০৩ টেস্ট সবুজ মানে আচরণ বদলায়নি</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">জাল আগে</b>
+            <p style="font-size:9.4pt">রিফ্যাক্টরের আগে টেস্ট না থাকলে "কাজ করছে" প্রমাণ করার উপায় নেই।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">আচরণ অপরিবর্তিত</b>
+            <p style="font-size:9.4pt">রিফ্যাক্টরের একমাত্র অনুমোদন: <b>কোনো টেস্ট বদলানো যাবে না</b>।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">এক ধাপে এক কাজ</b>
+            <p style="font-size:9.4pt">নাম বদল · সরানো · ভাগ করা — আলাদা কমিট, আলাদা স্যুট রান।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">সীমা</b>
+            <p style="font-size:9.4pt">টেস্ট নেই এমন জায়গায় রিফ্যাক্টর = অনুমান। আগে টেস্ট, পরে সাহস।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "টেস্ট ছাড়া রিফ্যাক্টর মানে চোখ বন্ধ করে সিঁড়ি ভাঙা।" এটাই সবচেয়ে কাজে লাগা রূপক।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>প্রমাণ-খাতা — <code>BUILD_STATUS.md</code></h2>
+      <div class="sub">দাবির পাশে প্রমাণ; আর যা হয়নি, তাও লেখা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8pt;line-height:1.4">| Area | Evidence |
+|---|---|
+| Custom user model, email login | 43 tests + screenshots |
+| Workspaces, roles, isolation | negative tests: 404 on foreign slug |
+| Result publication gate | 403 before publish, 200 after |
+| Marksheet + PDF | `%PDF` header asserted |
+
+## Verified numbers
+python manage.py test        ->  90 tests, 90 OK
+python smoke_test.py         ->  55 pages x 4 roles
+manage.py check --deploy     ->  no issues
+
+## Remaining work (not faked, not skipped)
+1. Invitation workflow
+2. Platform console
+4. Backup & restore console
+5. Security attack suite</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">"Evidence" কলাম</b>
+            <p style="font-size:9.6pt">প্রতিটি দাবির পাশে কী প্রমাণ করে — টেস্টের সংখ্যা, নেগেটিভ টেস্ট, স্ক্রিনশট।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">সংখ্যাগুলো চালিয়ে পাওয়া</b>
+            <p style="font-size:9.6pt">"৯০ টেস্ট OK" — কমান্ডের আউটপুট, অনুমান নয়। আজ ১০৩ (স্লাইস বাড়ায়)।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">"Remaining work"</b>
+            <p style="font-size:9.6pt">যা বাকি তা <b>লেখা</b> — লুকানো নয়। এটাই পেশাদারির চিহ্ন।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন দরকার</b>
+            <p style="font-size:9.6pt">নতুন ডেভেলপার (বা ভবিষ্যতের আপনি) ৫ মিনিটে অবস্থা বুঝে নিতে পারেন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> README-তে এখনো "13 tests" লেখা আছে (স্লাইস ১-এর স্ন্যাপশট) — ডকুমেন্টেশন পুরোনো হয়ে যাওয়ার বাস্তব উদাহরণ। "খাতা রাখলে তাজা রাখতে হবে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>নতুন ফিচারের সাতটি প্রশ্ন</h2>
+      <div class="sub">প্রতিটি প্রশ্ন = অন্তত একটি টেস্ট</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:44%">প্রশ্ন</th><th>টেস্টের ধরন</th></tr></thead>
+      <tbody>
+        <tr><td>১. কে এটি খুলতে পারবে?</td><td>ভূমিকা × URL ম্যাট্রিক্স (৪০৩)</td></tr>
+        <tr><td>২. অন্য প্রতিষ্ঠান কী দেখবে?</td><td>ক্রস-ওয়ার্কস্পেস ৪০৪</td></tr>
+        <tr><td>৩. ভুল ইনপুটে কী হয়?</td><td><code>assertRaises</code> বা <code>assertContains(..., "error")</code></td></tr>
+        <tr><td>৪. খালি অবস্থায় কী দেখায়?</td><td><code>{% empty %}</code> / <code>count()==0</code></td></tr>
+        <tr><td>৫. মেয়াদ শেষে কী হয়?</td><td><code>is_writable</code> · গেট</td></tr>
+        <tr><td>৬. দুইবার একই কাজ করলে?</td><td>ডুপ্লিকেট · <code>IntegrityError</code> · idempotent</td></tr>
+        <tr><td>৭. কে, কখন, কী করল?</td><td><code>AuditLog</code> সারি আছে কি না</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      সাতটিই এক টেস্টে ঠেসে দেবেন না — সাতটি আলাদা টেস্ট, প্রতিটির নামে প্রশ্নটির উত্তর।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছকটা প্রিন্ট করে দেওয়ার মতো — নতুন ফিচারের PR-এ এই সাতটি চেকবক্স রাখলে রিভিউ সহজ হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>পুরো স্যুট একসাথে — এক আদেশে প্রমাণ</h2>
+      <div class="sub">৫টি কমান্ড · ১০৩ টেস্ট · ৫১.৫ সেকেন্ড (SQLite)</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.4pt;line-height:1.5"># ১. পূর্ণ স্যুট (লোকাল, SQLite)
+python manage.py test --settings=config.settings.sqlite
+#   Ran 103 tests in 51.469s
+#   OK
+
+# ২. দ্রুত পুনরাবৃত্তি: ডিবি নতুন করে বানাবে না
+python manage.py test --settings=config.settings.sqlite --keepdb
+
+# ৩. সমান্তরাল (কোর অনুযায়ী প্রসেস)
+python manage.py test --settings=config.settings.sqlite --parallel 4
+
+# ৪. পাতা-স্তরের চোখ: ৫৫ পাতা × ৪ ভূমিকা
+python smoke_test.py
+
+# ৫. ডিপ্লয়-প্রস্তুতি: গোপনীয়তা, HSTS, ডিবাগ
+python manage.py check --deploy</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.2mm">
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.4pt">৫১.৫ সেকেন্ড মানে</b>
+            <p style="font-size:9.2pt">প্রতি টেস্ট গড়ে ০.৫ সেকেন্ড — কফি খেতে যাওয়ার দরকার নেই, তাই কেউ ফাঁকি দেবে না।</p></div>
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.4pt">--keepdb</b>
+            <p style="font-size:9.2pt">টেস্ট-ডিবি মুছে নতুন করে মাইগ্রেট করে না — বারবার চালানোর জন্য।</p></div>
+          <div class="card soft" style="padding:2.4mm 3.2mm"><b style="font-size:10.4pt">--parallel</b>
+            <p style="font-size:9.2pt">SQLite-এ লাভ কম, PostgreSQL-এ বেশি। প্রতিটি শ্রমিক আলাদা ডিবি পায়।</p></div>
+          <div class="card" style="padding:2.4mm 3.2mm"><b style="font-size:10.4pt">smoke_test আলাদা কেন</b>
+            <p style="font-size:9.2pt">seeded ডেটায় <b>প্রতিটি URL × প্রতিটি ভূমিকা</b>; ৫০০ হলেই ব্যর্থ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে ১ নম্বর কমান্ডটি চালিয়ে "Ran 103 tests … OK" লাইনটি দেখান — এটাই কোর্সের সবচেয়ে বড় প্রমাণ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১২</span>
+    <div><h2>মিউটেশন মহড়া — নিজের স্যুটকে আক্রমণ</h2>
+      <div class="sub">ইচ্ছাকৃত বাগ ঢুকিয়ে দেখুন টেস্ট ধরে কি না · আজ সত্যিই চালানো হয়েছে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:8%">#</th><th style="width:46%">ইচ্ছাকৃত পরিবর্তন</th><th>ফলাফল</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td><code>visible_homework</code> থেকে ছাত্রের <code>is_published=True</code> সরানো</td><td><b>০ টেস্ট লাল</b> — স্যুট টের পায়নি</td></tr>
+        <tr><td>B</td><td><code>visible_exams</code> থেকে একই ফিল্টার সরানো</td><td><b>০ টেস্ট লাল</b></td></tr>
+        <tr><td>C</td><td>শিক্ষকের <code>visible_classes</code> স্কোপ সরিয়ে সব ক্লাস দেওয়া</td><td><b>৩ টেস্ট লাল</b> — <code>test_teacher_sees_only_assigned_classes</code> · <code>test_teacher_with_no_assignment_sees_no_students</code> · <code>EnrolmentTests.test_teacher_without_assignment_sees_no_students</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call bad" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>০ লাল মানে "বাগ নেই" নয় — "টেস্ট নেই"</b><br>A-এর কারণ: seed-এ একটিও অপ্রকাশিত হোমওয়ার্ক নেই, তাই <code>all(...)</code> খালি তালিকায় সত্য।
+      </div></div>
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>C কেন ধরা পড়ল</b><br>কারণ প্রতিটি স্কোপ নিয়মের জন্য <b>প্রতিপক্ষ</b> (অ্যাসাইনমেন্ট নেই এমন শিক্ষক) fixture-এ আছেন।
+      </div></div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 4mm">
+      হাতের এই মহড়াই "মিউটেশন টেস্টিং"-এর হালকা রূপ; স্বয়ংক্রিয় করতে <code>mutmut</code> বা <code>cosmic-ray</code>, কিন্তু ৩টি মিউটেশন হাতে করলেই বোঝা যায় স্যুট কতটা শক্ত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> A আর B একসাথে দেখান — শিক্ষার্থীরা অবাক হবে যে ১০৩টি "OK" থাকা সত্ত্বেও দুটি নিরাপত্তা নিয়ম অরক্ষিত। এটাই এই ক্লাসের সবচেয়ে বড় শিক্ষা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১৩</span>
+    <div><h2>শূন্য-প্রমাণ টেস্ট — চার রূপ</h2>
+      <div class="sub">টেস্ট সবুজ, কিন্তু কিছুই প্রমাণ করছে না</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:38%">রূপ</th><th>উদাহরণ</th></tr></thead>
+          <tbody>
+            <tr><td>১. প্রতিপক্ষই নেই</td><td>seed-এ অপ্রকাশিত হোমওয়ার্ক নেই → A/B টেস্ট টের পায় না</td></tr>
+            <tr><td>২. সব মান একই</td><td>সব নম্বর ৭০–৯৮ → সীমানা (−১, ০, ১০১) কেউ ছোঁয় না</td></tr>
+            <tr><td>৩. ব্যতিক্রম গিলে ফেলা</td><td><code>try: … except: pass</code> — <code>assertRaises</code> কখনো ব্যর্থ হয় না</td></tr>
+            <tr><td>৪. মান যাচাই নেই</td><td>শুধু <code>status_code == 200</code>; পর্দায় কী আছে দেখা হয়নি</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:3mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          লক্ষণ: মিউটেশন চালালেই ধরা পড়ে — কোড ভাঙার পরও টেস্ট সবুজ।
+        </div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.44"># প্রতিকার: প্রতিপক্ষ নিজে বানান
+def test_student_never_sees_unpublished_homework(self):
+    hw = Homework.objects.filter(workspace=self.ws).first()
+    hw.is_published = False          # শত্রু সারি
+    hw.save()
+
+    seen = {h.title for h in
+            scoping.visible_homework(self.student, self.ws)}
+    self.assertNotIn(hw.title, seen)   # এখন লাল হবে
+
+# তারপর কোড ঠিক করুন → সবুজ
+# এই একটি টেস্টই A-মিউটেশন ধরে ফেলবে</pre>
+        <div class="call" style="margin-top:2.6mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          নিয়ম: <b>প্রতিটি নেগেটিভ টেস্টে একটি শত্রু সারি</b> নিজের হাতে তৈরি করুন — seed-এর ওপর ভরসা নয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে লিখুন: "সবুজ টেস্ট ≠ প্রমাণ। প্রমাণ = লাল হওয়ার ক্ষমতা।" এরপর ধাপ ১২-এর A মিউটেশনটি আবার চালিয়ে দেখান নতুন টেস্টটি লাল হয় কি না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১৪</span>
+    <div><h2>স্যুটের স্বাস্থ্য — ছয়টি সংকেত</h2>
+      <div class="sub">সংখ্যা নয়, লক্ষণ দেখুন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:22%">সংকেত</th><th style="width:44%">খারাপ লক্ষণ</th><th>IMS-এ আজ</th></tr></thead>
+      <tbody>
+        <tr><td>গতি</td><td>এক রানে ৫ মিনিটের বেশি → কেউ চালায় না</td><td>১০৩ টেস্ট · ৫১.৫ সেকেন্ড</td></tr>
+        <tr><td>নির্ধারিততা</td><td>প্রতিবার আলাদা ফল</td><td><code>random.seed(7)</code> + <code>setUpTestData</code></td></tr>
+        <tr><td>skip</td><td>“পরে ঠিক করব” জমে থাকা</td><td>০ skip</td></tr>
+        <tr><td>নাম</td><td>একই নাম দুই অ্যাপে → রিপোর্টে গুলিয়ে যায়</td><td><code>test_teacher_without_assignment_sees_no_students</code> দুই অ্যাপে আছে</td></tr>
+        <tr><td>ব্যর্থতার বার্তা</td><td>শুধু <code>False is not true</code></td><td><code>"unpublished homework leaked to a student"</code></td></tr>
+        <tr><td>নিরাপত্তা-আবরণ</td><td>এক স্তরে গার্ড, টেস্ট অন্য স্তরে</td><td>ভিউ-স্তরে পরীক্ষিত (৪০৩→২০০), হেল্পার-স্তরে নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4mm">
+      শেষ সারিটি সবচেয়ে সূক্ষ্ম: <b>প্রতিরক্ষা দুই স্তরে, প্রমাণ এক স্তরে</b> — তাই দ্বিতীয় স্তর নীরবে সরে গেলেও স্যুট খুশি থাকে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের স্যুটে এই ছয়টি সংকেত মিলিয়ে একটি স্কোর লিখতে — কোনটিতে সবচেয়ে দুর্বলতা, সেটাই পরের কাজ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১৫</span>
+    <div><h2>ক্লাসে ডেমো স্ক্রিপ্ট — ৮ মিনিট</h2>
+      <div class="sub">টার্মিনালে যা চালাবেন, পর্দায় যা দেখাবেন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:7%">মিনিট</th><th style="width:40%">কমান্ড</th><th>পর্দায় যা দেখাবেন</th></tr></thead>
+      <tbody>
+        <tr><td>০–১</td><td><code>manage.py test … --settings=config.settings.sqlite</code></td><td>শেষ দুই লাইন: <code>Ran 103 tests in 51.469s</code> · <code>OK</code></td></tr>
+        <tr><td>১–৩</td><td><code>--verbose 2</code> সহ একই কমান্ড, একটি অ্যাপ</td><td>টেস্টের নামগুলো — নামেই দাবি পড়া যায়</td></tr>
+        <tr><td>৩–৫</td><td>একটি টেস্ট ইচ্ছাকৃত ভাঙুন (<code>assertEqual</code> → <code>assertNotEqual</code>)</td><td>লাল আউটপুট, ব্যর্থতার বার্তা, কোন লাইনে</td></tr>
+        <tr><td>৫–৬</td><td>সেই টেস্টে <code>print()</code> বা <code>--pdb</code></td><td>ডিবাগার থেমে যাওয়া — <code>n</code>, <code>p variable</code></td></tr>
+        <tr><td>৬–৮</td><td><code>python smoke_test.py</code></td><td>৫৫ পাতা × ৪ ভূমিকা — সব ২০০/৪০৩, ৫০০ নেই</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>প্রস্তুতি (ক্লাসের আগে):</b> <code>bash run.sh --reset</code> একবার চালিয়ে seeded ডেটাবেস তৈরি রাখুন।
+      </div></div>
+      <div><div class="call warn" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>সতর্কতা:</b> <code>smoke_test.py</code> dev সেটিংসে চলে — PostgreSQL চালু না থাকলে প্রথমেই সংযোগ-ত্রুটি দেখাবে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাল আউটপুট দেখানোই সবচেয়ে জরুরি — শিক্ষার্থীরা প্রথমবার দেখে ভয় পায়, তাই ভাঙা-ঠিক করা একসাথে করুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১৬</span>
+    <div><h2>নিজের প্রকল্পের টেস্ট-অডিট — ৮টি প্রশ্ন</h2>
+      <div class="sub">প্রতিটির উত্তর "না" মানে একটি কাজ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:52%">প্রশ্ন</th><th>যদি উত্তর "না" হয়</th></tr></thead>
+      <tbody>
+        <tr><td>১. পুরো স্যুট ২ মিনিটে চলে?</td><td>ধীর টেস্ট ভাগ করুন, <code>setUpTestData</code> ব্যবহার করুন</td></tr>
+        <tr><td>২. একটি টেস্ট ইচ্ছাকৃত ভেঙে লাল দেখেছেন?</td><td>প্রথমে সেটাই করুন — না হলে সবুজের ওপর ভরসা নেই</td></tr>
+        <tr><td>৩. প্রতিটি ভূমিকার জন্য একটি ৪০৩ টেস্ট আছে?</td><td>ভূমিকা × URL ম্যাট্রিক্স লিখুন</td></tr>
+        <tr><td>৪. ক্রস-ওয়ার্কস্পেস ৪০৪ টেস্ট আছে?</td><td>দ্বিতীয় প্রতিষ্ঠান বানিয়ে একটি টেস্ট</td></tr>
+        <tr><td>৫. নেগেটিভ টেস্টে প্রতিপক্ষ সারি নিজে বানানো?</td><td>seed-এর ওপর ভরসা বাদ দিন</td></tr>
+        <tr><td>৬. কোনো skip জমে আছে?</td><td>ঠিক করুন বা মুছুন — skip মানে অদৃশ্য ঋণ</td></tr>
+        <tr><td>৭. নাম দেখেই দাবি বোঝা যায়?</td><td><code>test_&lt;what&gt;_&lt;when&gt;_&lt;expected&gt;</code></td></tr>
+        <tr><td>৮. সবুজ স্যুটের পরেও <code>check --deploy</code> চালিয়েছেন?</td><td>টেস্ট আর ডিপ্লয়-চেক আলাদা কাজ করে</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ছকটি হোমওয়ার্ক হিসেবে দিন — নিজের প্রজেক্টের আটটি উত্তর লিখে আনলে পরের ক্লাসে সরাসরি আলোচনা করা যাবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পর্ব ৫ সমাপ্তি</span>
+    <div><h2>চার ক্লাসে যা শেখা হলো</h2>
+      <div class="sub">৭০ স্লাইড · ১০৩ টেস্ট · ৭টি ফাঁক · ৩টি মিউটেশন মহড়া</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:24%">ক্লাস</th><th style="width:36%">মূল ধারণা</th><th>দখল</th></tr></thead>
+      <tbody>
+        <tr><td>২৪ · টেস্টের ভিত্তি</td><td>Arrange–Act–Assert · <code>setUpTestData</code> · <code>subTest</code></td><td>একটি টেস্ট লেখা</td></tr>
+        <tr><td>২৫ · অনুমতি ও স্কোপ</td><td><code>scoping.py</code> · ৪০৩/৪০৪ · <code>smoke_test</code></td><td>কে কী দেখবে</td></tr>
+        <tr><td>২৬ · কভারেজ ও ফাঁক</td><td>শাখা কভারেজ · পিরামিড · ফ্লেকি · CI</td><td>কতটা আস্থা রাখা যায়</td></tr>
+        <tr><td>২৭ · ডিজাইন ও TDD</td><td>লাল-সবুজ-রিফ্যাক্টর · সমতুল্য শ্রেণি</td><td>কী টেস্ট করবেন, কী নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>চিহ্নিত ফাঁক:</b> reports ০ · audit ০ · আপলোড ০ · ক্রস-ওয়ার্কস্পেস কেবল students-এ · CI নেই · কভারেজ মাপা হয়নি · helper টেস্ট ≠ HTTP টেস্ট
+      </div></div>
+      <div><div class="call warn" style="font-size:10.2pt;padding:2.6mm 4mm">
+        পরের পর্বে (ডিপ্লয়) এই ফাঁকগুলোই <b>ঝুঁকি</b> হয়ে ফিরে আসে — কারণ সার্ভারে ভুল হলে টেস্ট নয়, ব্যবহারকারী প্রথম জানেন।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের প্রজেক্টে এই সাতটি ফাঁকের কোনটি আছে তা লিখতে — পরের ক্লাসে সেটাই আলোচনা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">এই পর্বের পুরো সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:52%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>লাল না দেখলে সবুজের দাম নেই</b></td><td>TDD চক্র · ৩ ধাপ</td></tr>
+        <tr><td><b>শ্রেণি ভাবুন, সংখ্যা নয়</b></td><td>৩২ · ৩৩ · ৩৪ · ২৯৯ · ৩০০ · ৩০১</td></tr>
+        <tr><td><b>নেগেটিভ টেস্ট আগে</b></td><td><code>404 foreign slug</code> · <code>403 before publish</code></td></tr>
+        <tr><td><b>আপনার সিদ্ধান্ত টেস্ট করুন</b></td><td>লেবেল/HTML নয় — আচরণ</td></tr>
+        <tr><td><b>রিফ্যাক্টরের একমাত্র অনুমোদন: সবুজ</b></td><td>১০৩ টেস্ট · কোনো টেস্ট বদল নয়</td></tr>
+        <tr><td><b>ফাঁক লিখে রাখুন</b></td><td><code>BUILD_STATUS.md</code> — "not faked, not skipped"</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটি আবার বলুন: "সৎ খাতা রাখা নিজের প্রতি সম্মান" — যা হয়নি তা লেখাও পেশাদারির অংশ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — এক চক্র সম্পূর্ণ করুন</h2>
+      <div class="sub">লাল থেকে সবুজ পর্যন্ত, এক বসায়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. দাবি লিখুন (৩ মিনিট)</b>
+            <p style="font-size:10pt">একটি বাক্যে: "…হলে …হবে না" — সমতুল্য শ্রেণির ৩টি মান লিখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. লাল (৫ মিনিট)</b>
+            <p style="font-size:10pt">টেস্ট লিখে চালান — ব্যর্থতার কারণটি কি প্রত্যাশিত?</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. সবুজ (৭ মিনিট)</b>
+            <p style="font-size:10pt">সবচেয়ে সহজ কোড; বাড়তি কিছু নয়।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৪. রিফ্যাক্টর (৫ মিনিট)</b>
+            <p style="font-size:10pt">নাম পরিষ্কার করুন — টেস্ট বদলানো চলবে না।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>TDD ধীর করে না — কেন?</li>
+          <li class="g">কোন টেস্টটি আপনি লিখবেন না?</li>
+          <li>রিফ্যাক্টরে টেস্ট বদলাতে হলে?</li>
+          <li class="r">প্রমাণ-খাতা কে পড়ে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় প্রশ্নের সঠিক উত্তর: "টেস্ট বদলাতে হলে আচরণ বদলেছে — তাই সেটি রিফ্যাক্টর নয়, নতুন ফিচার।" আলাদা কমিট করুন।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৮</div>
+  <h2>পর্ব ৬ শুরু — "ল্যাপটপ থেকে সার্ভার পর্যন্ত"</h2>
+  <p>ডিপ্লয়মেন্ট: <code>prod.py</code> · gunicorn · nginx · <code>collectstatic</code> · মাইগ্রেশন · <code>check --deploy</code> · ব্যাকআপ</p>
+</section>

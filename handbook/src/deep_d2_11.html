@@ -1,0 +1,23 @@
+<section class="slide">
+  <div class="head"><span class="badge">দরজা</span>
+    <div><h2>১০টি মিডলওয়্যার, ক্রম অনুযায়ী</h2>
+      <div class="sub">উপরে থেকে নিচে — ভেতরে যাওয়ার সময় এই ক্রমে, ফেরার সময় উল্টো</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:6%">#</th><th style="width:37%">মিডলওয়্যার</th><th style="width:57%">এক লাইনে কাজ</th></tr>
+      <tr><td>১–৭</td><td><code>Security</code> · <code>Session</code> · <code>Common</code> · <code>CSRF</code> · <code>Auth</code> · <code>Messages</code> · <code>XFrame</code></td><td>Django-র নিজের সাতটি — নিরাপত্তা, সেশন, <code>request.user</code>, মেসেজ, ক্লিকজ্যাকিং</td></tr>
+      <tr><td>৮</td><td><code>billing.CustomDomainMiddleware</code></td><td>হোস্ট দেখে প্রতিষ্ঠান চেনে; <code>Vary: Host</code> বসায়</td></tr>
+      <tr><td>৯</td><td><code>workspaces.CurrentWorkspaceMiddleware</code></td><td>সেশন/সদস্যতা দেখে <code>request.workspace</code> ঠিক করে</td></tr>
+      <tr><td>১০</td><td><code>billing.SubscriptionGateMiddleware</code></td><td>সাবস্ক্রিপশন শেষ হলে লিখতে দেয় না, পড়তে দেয়</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3.4mm;gap:5mm">
+      <div class="call" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>প্রোডাকশনে ১১:</b> <code>prod.py</code> তালিকার <b>শুরুতে</b> <code>WhiteNoiseMiddleware</code> যোগ করে — নাহলে স্ট্যাটিক ফাইল পাওয়া যেত না।
+      </div>
+      <div class="call bad" style="font-size:10.2pt;padding:2.6mm 4mm">
+        <b>ক্রম ভাঙলে:</b> Auth-এর আগে workspace মিডলওয়্যার বসলে <code>request.user</code> নেই → সবাই অ্যানোনিমাস, কিন্তু এরর নেই — শুধু ৪০৪।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে তালিকাটি নম্বর দিয়ে লিখুন এবং তীর দিন নিচের দিকে। তারপর জিজ্ঞেস করুন: "উল্টো পথে ফেরার সময় কোনটি আগে চলে?" — সেটাই response-এ হেডার যোগ করার জায়গা।
+</section>

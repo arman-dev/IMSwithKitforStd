@@ -1,0 +1,28 @@
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত ৪</span>
+    <div><h2>কিছু মুছলে কী হয় — ৭০টি FK-র তিন রকম উত্তর</h2>
+      <div class="sub">CASCADE ৪৮ · SET_NULL ১৬ · PROTECT ৬ — আর ৪টি OneToOne</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4.5mm">
+      <div class="card" style="border-color:#f43f5e;background:#fef2f2;padding:4mm 4.4mm">
+        <b style="font-size:13.5pt;color:#991b1b">CASCADE · ৪৮</b>
+        <p style="font-size:10.2pt">প্যারেন্ট গেলে সন্তানও যায়। <b>কেবল তখনই</b>, যখন সন্তানের স্বাধীন অস্তিত্ব নেই।</p>
+        <p style="font-size:9.8pt;color:#7f1d1d">ClassGroup মুছলে তার Exam, AttendanceRecord, Homework — সব। বিদ্যালয় মুছলে পুরো স্কুলের ডেটা।</p>
+      </div>
+      <div class="card" style="border-color:#d97706;background:#fffbeb;padding:4mm 4.4mm">
+        <b style="font-size:13.5pt;color:#92400e">SET_NULL · ১৬</b>
+        <p style="font-size:10.2pt">রেফারেন্স মুছে যায়, তথ্য থাকে — "কে করেছিল" ঘরটি ফাঁকা হয়।</p>
+        <p style="font-size:9.8pt;color:#78350f">১৬টির মধ্যে <b>১২টিই ইউজার</b>: <code>recorded_by</code>, <code>entered_by</code>, <code>published_by</code>, <code>reviewed_by</code> …</p>
+      </div>
+      <div class="card" style="border-color:#059669;background:#ecfdf5;padding:4mm 4.4mm">
+        <b style="font-size:13.5pt;color:#065f46">PROTECT · ৬</b>
+        <p style="font-size:10.2pt">মুছতেই দেওয়া হয় না — <code>ProtectedError</code> ওঠে। রক্ষা করতে চাইলে <b>আগে</b> সিদ্ধান্ত নিতে হয়।</p>
+        <p style="font-size:9.8pt;color:#065f46">টার্ম, প্ল্যান, ইনভয়েস, স্কুলের মালিক — এই চার ধরনের জিনিস।</p>
+      </div>
+    </div>
+    <div class="call" style="margin-top:4mm;font-size:10.4pt;padding:2.6mm 4mm">
+      নিয়ম: <b>যে সম্পর্কে অর্থ হারায়, সেখানে CASCADE; যে সম্পর্কে কেবল দায়িত্ব হারায়, সেখানে SET_NULL; যে সম্পর্কে হিসাব ভাঙে, সেখানে PROTECT।</b>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের সবসময় CASCADE লিখতে অভ্যাস। তিনটি উদাহরণ জিজ্ঞেস করুন: "শিক্ষক চাকরি ছাড়লে তার নেওয়া হাজিরা মুছবে?" — না, তাই SET_NULL। "টার্ম মুছলে তার ক্লাস?" — না, PROTECT।
+</section>

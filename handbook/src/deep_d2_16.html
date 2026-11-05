@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">ঠিকানা</span>
+    <div><h2>২৫৩টি URL — কে কোথায় থাকে</h2>
+      <div class="sub"><code>get_resolver()</code> দিয়ে গোনা · admin ১৬৭ · অ্যাপ ৮৫ · media ১</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.2">
+        <table class="tight">
+          <tr><th style="width:46%">নেমস্পেস</th><th style="width:18%">রুট</th><th style="width:36%">উদাহরণ</th></tr>
+          <tr><td><code>billing</code></td><td class="num">১৮</td><td>pricing · renew · console</td></tr>
+          <tr><td><code>academics</code></td><td class="num">১৩</td><td>class_list · term_create</td></tr>
+          <tr><td><code>lessons</code></td><td class="num">১৩</td><td>syllabus · homework_detail</td></tr>
+          <tr><td><code>accounts</code></td><td class="num">৯</td><td>login · signup · password_reset</td></tr>
+          <tr><td><code>assessments</code></td><td class="num">৯</td><td>exam_detail · marksheet</td></tr>
+          <tr><td><code>students</code> · <code>reports</code></td><td class="num">৭ · ৭</td><td>student_list · export_students</td></tr>
+          <tr><td><code>attendance</code></td><td class="num">৪</td><td>take · register · summary</td></tr>
+          <tr><td><code>workspaces</code> · <code>audit</code> · <code>dashboard</code></td><td class="num">২ · ২ · ১</td><td>switch · log_list · home</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>১১টি <code>include()</code>, সবই <code>""</code>-এ:</b> <code>config/urls.py</code>-তে প্রতিটি অ্যাপের নিজের ফাইল, কিন্তু prefix নেই — পথের প্রথম অংশ প্রতিটি অ্যাপ নিজেই ঠিক করে।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>ফল:</b> কে কোন পথ দখল করছে, তা এক নজরে দেখতে <code>config/urls.py</code> যথেষ্ট নয় — ১১টি ফাইল খুলতে হয়। এটি জেনে রাখা দুর্বলতা (<code>docs/url-map.md</code> নেই)।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>সৎ ফাঁক:</b> ১৬৭টি admin URL কোনো ডিজাইন নয় — Django-র admin নিজেই বানায়। তাই "৮৫টি রুট" বলাটাই সৎ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "একই পথ দুই অ্যাপে লিখলে কী হয়?" উত্তর: আগে <code>include</code> করা অ্যাপটি জেতে — তাই ক্রমও একটা সিদ্ধান্ত।
+</section>

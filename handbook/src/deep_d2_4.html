@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্ট্যাক</span>
+    <div><h2>৯টি প্যাকেজ — প্রতিটির একটি কাজ</h2>
+      <div class="sub">সবগুলো ভার্সন পিন করা · <code>requirements.txt</code> + <code>requirements-prod.txt</code></div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">প্যাকেজ</th><th style="width:56%">কী কাজে</th></tr>
+          <tr><td><code>Django==6.1.2</code></td><td>ওয়েব ফ্রেমওয়ার্ক · ORM · টেমপ্লেট · admin</td></tr>
+          <tr><td><code>psycopg[binary]==3.3.6</code></td><td>PostgreSQL ড্রাইভার (v3, binary wheel)</td></tr>
+          <tr><td><code>python-dotenv==1.2.4</code></td><td><code>.env</code> পড়া — কোডে সিক্রেট নয়</td></tr>
+          <tr><td><code>Pillow==12.3.0</code></td><td>লোগো/ছবি যাচাই (<code>ImageField</code>)</td></tr>
+          <tr><td><code>openpyxl==3.1.5</code></td><td>CSV/Excel এক্সপোর্ট</td></tr>
+          <tr><td><code>reportlab==5.1.0</code></td><td>রেজাল্ট-শিট PDF</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">শুধু প্রোডাকশনে</th><th style="width:56%">কী কাজে</th></tr>
+          <tr><td><code>gunicorn==23.0.0</code></td><td>WSGI সার্ভার — <code>runserver</code> নয়</td></tr>
+          <tr><td><code>whitenoise==6.11.0</code></td><td>স্ট্যাটিক ফাইল অ্যাপ থেকেই সার্ভ</td></tr>
+          <tr><td><code>dj-database-url==3.0.1</code></td><td><code>DATABASE_URL</code> পার্সার — <b>এখনো ব্যবহৃত হয়নি</b></td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.6mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>সৎ ফাঁক:</b> <code>dj-database-url</code> ইনস্টল করা আছে আর <code>.env.example</code>-এ <code>DATABASE_URL</code> লেখা আছে, কিন্তু কোডে কোথাও তা পড়া হয় না — <code>base.py</code> আলাদা <code>DB_NAME/DB_USER/…</code> ব্যবহার করে।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      সব ভার্সন <b>ঠিক</b> লেখা (<code>==</code>), <code>&gt;=</code> নয়। কারণ: "কাল অন্য ভার্সনে চলে গেল" — এই ব্যাখ্যা কোনো ডেমোতে কেউ মানে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ বাক্যটি জোর দিন। শিক্ষার্থীদের অভ্যাস থাকে <code>pip install django</code> আর <code>pip freeze</code> না করা — ছয় মাস পরে নিজের প্রজেক্টই আর চলে না।
+</section>

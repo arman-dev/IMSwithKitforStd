@@ -1,0 +1,32 @@
+<section class="slide">
+  <div class="head"><span class="badge">পর্দা</span>
+    <div><h2>৭৫টি টেমপ্লেট — সব এক জায়গায়</h2>
+      <div class="sub"><code>templates/</code> · অ্যাপের ভেতরে শূন্য টেমপ্লেট · <code>APP_DIRS=True</code> তবু ব্যবহার হয়নি</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:56%">ফোল্ডার</th><th style="width:44%">কী</th></tr>
+          <tr><td><code>templates/app_base.html</code></td><td>অ্যাপের শেল (সাইডবার + টপবার)</td></tr>
+          <tr><td><code>templates/&lt;app&gt;/…</code></td><td>প্রতি অ্যাপের পাতা</td></tr>
+          <tr><td><code>templates/partials/</code></td><td>পুনর্ব্যবহারযোগ্য টুকরো</td></tr>
+          <tr><td><code>templates/platform/</code></td><td>প্ল্যাটফর্ম কনসোল</td></tr>
+          <tr><td><code>templates/public/</code></td><td>মার্কেটিং পাতা (pricing, signup)</td></tr>
+          <tr><td><code>templates/registration/</code></td><td>লগইন, পাসওয়ার্ড রিসেট</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>কেন কেন্দ্রীভূত:</b> ১১টি অ্যাপে টেমপ্লেট ছড়িয়ে দিলে <code>{% extends "app_base.html" %}</code> খুঁজতে ১১টি ফোল্ডার লাগত; আর একই নামের দুই টেমপ্লেট সংঘর্ষ করত।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>দাম:</b> অ্যাপ আলাদা করে সরানো এখন কঠিন — টেমপ্লেট তার বাইরে থাকে। মডুলারিটি এখানে ফোল্ডার-স্তরে, প্যাকেজ-স্তরে নয়।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>প্রমাণ:</b> <code>find apps -name "*.html"</code> → <b>০</b> · <code>find templates -name "*.html"</code> → <b>৭৫</b>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দুই পদ্ধতিরই দাম আছে — অ্যাপ-ভেতরে টেমপ্লেট মানে অ্যাপ সরানো সহজ, কেন্দ্রীভূত মানে ভাগ করা শেল সহজ। এখানে দ্বিতীয়টি বেছেছেন, কারণ শেল-ই বড় কাজ।
+</section>

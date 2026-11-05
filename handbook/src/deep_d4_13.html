@@ -1,0 +1,26 @@
+<section class="slide">
+  <div class="head"><span class="badge">জীবনচক্র</span>
+    <div><h2>স্কুল চালু থেকে বন্ধ — চারটি অবস্থা</h2>
+      <div class="sub">কোনো অবস্থাতেই ডেটা মোছা হয় না</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:20%">অবস্থা</th><th style="width:28%">স্কুল যা দেখে</th><th style="width:26%">কী চলে</th><th style="width:26%">কী বন্ধ</th></tr>
+      <tr><td>ট্রায়াল</td><td>নীল ব্যানার + দিন-গণনা</td><td>সব</td><td>—</td></tr>
+      <tr><td>মেয়াদোত্তীর্ণ / past due</td><td>"Read-only mode"</td><td>পড়া + এক্সপোর্ট</td><td>সব লেখা</td></tr>
+      <tr><td>স্থগিত (প্ল্যাটফর্ম থেকে)</td><td>"Account suspended" + কারণ</td><td>পড়া</td><td>সব লেখা</td></tr>
+      <tr><td>বাতিল</td><td>পড়া</td><td>এক্সপোর্ট</td><td>সব লেখা</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>কারিগরি রূপ:</b> <code>SubscriptionGateMiddleware</code> কেবল <code>SAFE_METHODS</code> ছাড়া বাকি সব থামায়; <code>ALLOW_PREFIXES</code> লগইন, রিনিউ, প্ল্যাটফর্ম ও স্ট্যাটিক খোলা রাখে।
+      </div>
+      <div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যা এখনো নেই:</b> UI-তে "স্কুল মুছুন" বাটন নেই। কেউ চাইলে <code>backup.sh</code> চালিয়ে Django admin থেকে workspace মুছতে হয় — অর্থাৎ মুছে ফেলা একটি <b>হাতে করা</b> অপারেশন, নকশা নয়।
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.4mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      নীতি: <b>অর্থ না দিলে ডেটা জিম্মি হয় না।</b> স্কুল তার রেকর্ড এক্সপোর্ট করে নিয়ে যেতে পারে — এটি চুক্তির নয়, কোডের নিয়ম।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি নৈতিক সিদ্ধান্তের — "না দেওয়া মানে ডেটা আটকে রাখা নয়"। শিক্ষার্থীদের জিজ্ঞেস করুন: "এক স্কুল যদি সিস্টেম বদলাতে চায়, তার ডেটা নেওয়ার অধিকার আছে কি?"
+</section>

@@ -1,0 +1,25 @@
+<section class="slide">
+  <div class="head"><span class="badge">PROTECT</span>
+    <div><h2>যে ছয়টি জিনিস ভুল করে মুছে ফেলা যাবে না</h2>
+      <div class="sub">প্রতিটির পেছনে একটি বাস্তব দুঃস্বপ্ন</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:32%">FK</th><th style="width:30%">মুছতে গেলে</th><th style="width:38%">কেন এটাই সঠিক</th></tr>
+      <tr><td><code>Workspace.owner</code> → User</td><td><code>ProtectedError</code></td><td>মালিকহীন স্কুল = কেউ ঢুকতে পারে না, কেউ মেটাতে পারে না</td></tr>
+      <tr><td><code>ClassGroup.term</code> → AcademicTerm</td><td>আটকে যায়</td><td>সেশন মুছলে তার ক্লাস, হাজিরা, পরীক্ষা — সব অনাথ</td></tr>
+      <tr><td><code>Exam.term</code> → AcademicTerm</td><td>আটকে যায়</td><td>ফলাফল কোন সেশনের, তার প্রমাণ হারায়</td></tr>
+      <tr><td><code>Subscription.plan</code> → Plan</td><td>আটকে যায়</td><td>বিলিং ইতিহাসে দামের ভিত্তি অদৃশ্য হয়ে যায়</td></tr>
+      <tr><td><code>Invoice.workspace</code> → Workspace</td><td>আটকে যায়</td><td>টাকা নেওয়ার রেকর্ড কখনো "মুছে ফেলা" যায় না</td></tr>
+      <tr><td><code>Invoice.plan</code> → Plan</td><td>আটকে যায়</td><td>কোন প্ল্যানে কত টাকা — ইনভয়েস নিজেই সত্য বলে</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call warn" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>দাম:</b> প্ল্যানের দাম বদলাতে চাইলে পুরনো প্ল্যান মুছবেন না — নতুন প্ল্যান বানিয়ে <code>is_active=False</code> করুন।
+      </div>
+      <div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>টেস্ট:</b> এই ছয়টির একটিও আলাদা টেস্টে লেখা নেই — <code>PROTECT</code> Django-র নিজের আচরণ, তাই বাড়তি টেস্ট লেখা হয়নি।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "কেন মালিক PROTECT, অথচ হাজিরা-লেখক SET_NULL?" — এই প্রশ্নটিই পাঠের মূল। উত্তর: মালিক ছাড়া স্কুল চলে না; হাজিরা-লেখক ছাড়া হাজিরা চলে।
+</section>

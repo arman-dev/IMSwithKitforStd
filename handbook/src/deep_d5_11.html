@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">পর্দার আকার</span>
+    <div><h2>দুটি breakpoint — আর একটি অসম্পূর্ণ সিদ্ধান্ত</h2>
+      <div class="sub">৯০০px · ৮২০px — মোবাইলে কী লুকায়, কী থাকে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:30%">breakpoint</th><th style="width:70%">কী বদলায়</th></tr>
+          <tr><td><code>max-width:900px</code></td><td>লগইন পাতার দুই কলাম এক কলাম হয়; বাঁ দিকের পিচ-প্যানেল <b>লুকায়</b></td></tr>
+          <tr><td><code>max-width:820px</code></td><td>অ্যাপ-শেল এক কলাম; <b>সাইডবার লুকায়</b>, কনটেন্ট পুরো প্রস্থ</td></tr>
+          <tr><td>Bootstrap গ্রিড</td><td>KPI কার্ড <code>auto-fit minmax(190px,1fr)</code> — নিজে থেকে ভাঁজ হয়</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>অসম্পূর্ণ:</b> মোবাইলে সাইডবার লুকালে <b>নেভিগেশনের কোনো বিকল্প নেই</b> — হ্যামবার্গার মেনু নেই। শিক্ষক ফোনে হাজিরা নিতে গেলে অন্য পাতায় যাওয়ার পথ নেই।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="call warn" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>কেন এটা গুরুত্বপূর্ণ:</b> বাংলাদেশে অনেক শিক্ষকের একমাত্র ডিভাইস ফোন। ডেস্কটপে-কেবল ডিজাইন মানে অর্ধেক ব্যবহারকারী বাদ।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>যা ভালো কাজ করে:</b> ১০টি টেমপ্লেটে টেবিল <code>table-responsive</code>-এ মোড়া — ফোনে টেবিল ভাঙে না, কেবল ডানে-বাঁয়ে সরাতে হয়।
+        </div>
+        <div style="font-size:9.6pt;color:#334155;margin-top:2mm"><b>সংশোধনের পথ:</b> একই মিডিয়া-কোয়েরিতে একটি বাটন + অফ-ক্যানভাস সাইডবার — CSS-এ ২০ লাইনের কাজ।</div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ফোনে ডেমো খুলে দেখান — সাইডবার নেই। শিক্ষার্থীদের জিজ্ঞেস করুন: "এখন অন্য পাতায় যাবেন কীভাবে?" হাতে-কলমে দেখা ফাঁক কখনো ভোলা যায় না।
+</section>

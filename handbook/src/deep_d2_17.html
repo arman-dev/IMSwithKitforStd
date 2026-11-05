@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">নাম</span>
+    <div><h2>প্রতিটি ঠিকানার একটি নাম — <code>reverse()</code></h2>
+      <div class="sub">টেমপ্লেটে <code>{% url %}</code>, কোডে <code>reverse()</code>, কখনো হাতে লেখা পথ নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8.1pt;line-height:1.5;padding:3mm 3.6mm"># apps/attendance/urls.py
+app_name = "attendance"
+urlpatterns = [
+    path("w/<slug:slug>/attendance/",
+         views.take, name="take"),
+    path("w/<slug:slug>/attendance/summary/",
+         views.summary, name="summary"),
+]</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">প্রতিটি ভেতরের পথেই <code>w/&lt;slug&gt;/</code> — অর্থাৎ প্রতিটি রুট নিজেই বলে "কোন স্কুল"।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">যেখানে</th><th style="width:60%">কীভাবে</th></tr>
+          <tr><td>টেমপ্লেট</td><td><code>{% url 'attendance:take' slug=ws.slug %}</code></td></tr>
+          <tr><td>ভিউ</td><td><code>redirect("attendance:summary", slug=…)</code></td></tr>
+          <tr><td>রিডাইরেক্ট</td><td><code>reverse("billing:renew", kwargs=…)</code></td></tr>
+          <tr><td>মিডলওয়্যার</td><td><code>reverse(...)</code> — হার্ডকোড নয়, কারণ গেট সঠিক ঠিকানায় পাঠায়</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>লাভ:</b> পথ বদলালে এক জায়গায় বদলায় — ভাঙা লিংকের সন্ধানে ৭৫ টেমপ্লেট ঘুরতে হয় না।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>কিন্তু:</b> <code>w/&lt;slug&gt;/</code> হাতে লেখা প্রতিটি ভিউতে — অর্থাৎ স্কুল-সহ পথ আর স্কুল-ছাড়া পথ একসাথে আছে (<code>/platform/</code>, <code>/accounts/</code>, <code>/pricing/</code>)। কেন, সেটি পরের স্লাইড।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> একটি ভাঙা লিংকের গল্প বলুন: URL হাতে লেখা থাকলে এক অক্ষর বদলালেই ৪০৪, আর টেস্ট না থাকলে ধরা পড়ে ব্যবহারকারীর কাছে। <code>reverse()</code> সেই ভুলটাই অসম্ভব করে।
+</section>

@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="head"><span class="badge">রিহার্সাল</span>
+    <div><h2><code>deploy_check.sh</code> — ৩০ লাইনে প্রোডাকশন মহড়া</h2>
+      <div class="sub">আসল gunicorn, আসল <code>prod</code> সেটিংস, তারপর ৫টি অনুরোধ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">export DJANGO_SETTINGS_MODULE=config.settings.prod
+python manage.py collectstatic --noinput
+gunicorn config.wsgi:application \
+    --bind 127.0.0.1:8010 --workers 2 --daemon
+sleep 3
+
+check "login page"         /accounts/login/      # 200
+check "static css"         /static/css/ims.css   # 200
+check "unknown page"       /does-not-exist       # 404
+check "workspace anon"     /w/sunrise…/          # 302</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">যা যাচাই হয়</th><th style="width:48%">কেন এটিই</th></tr>
+          <tr><td>লগইন পাতা ২০০</td><td>অ্যাপ উঠেছে কি না</td></tr>
+          <tr><td>স্ট্যাটিক CSS ২০০</td><td>WhiteNoise ঠিক কাজ করছে</td></tr>
+          <tr><td>অচেনা URL → ৪০৪</td><td>নিজের এরর-পাতা, ডিফল্ট নয়</td></tr>
+          <tr><td>অ্যানোনিমাস workspace → ৩০২</td><td>টেন্যান্সি-রিডাইরেক্ট জীবিত</td></tr>
+          <tr><td>নিরাপত্তা-হেডার grep</td><td>prod.py-র পতাকাগুলো সত্যিই বেরোচ্ছে</td></tr>
+        </table>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>ফাঁক:</b> স্ক্রিপ্টটি <code>.env.production.local</code> ফাইল দাবি করে, যা রিপোতে নেই — তাই নতুন কেউ চালাতে গেলে নিজে বানাতে হয়। আর স্ক্রিপ্ট নিজে কোনো টেস্টে চলে না।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>ধারণাটাই মূল:</b> "ডিপ্লয়ের আগে ডিপ্লয়ের মহড়া"। <code>runserver</code>-এ কাজ করা মানে প্রোডাকশনে কাজ করা নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "runserver আর gunicorn-এ কী পার্থক্য?" — runserver ডেভেলপমেন্টের জন্য, স্ট্যাটিক নিজে দেয়, DEBUG-নির্ভর আচরণ আছে; gunicorn প্রোডাকশনের, WhiteNoise ছাড়া স্ট্যাটিক নেই।
+</section>

@@ -1,0 +1,31 @@
+<section class="slide">
+  <div class="head"><span class="badge">উদাহরণ</span>
+    <div><h2>IMS আসলে কী</h2>
+      <div class="sub">একটি মাল্টি-টেন্যান্ট স্কুল ম্যানেজমেন্ট সিস্টেম — Django ৫ + PostgreSQL</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:52%">যা আছে</th><th style="width:20%">সংখ্যা</th><th style="width:28%">অর্থ</th></tr>
+          <tr><td>Django অ্যাপ</td><td><b>১১</b></td><td>এক অ্যাপ = এক দায়িত্ব</td></tr>
+          <tr><td>মডেল / কলাম</td><td><b>৩১ / ৩০১</b></td><td>ডেটাবেসের আকৃতি</td></tr>
+          <tr><td>URL রুট (অ্যাপ)</td><td><b>৮৫</b></td><td>+ <code>config</code>-এ ১২</td></tr>
+          <tr><td>টেমপ্লেট</td><td><b>৭৫</b></td><td>পর্দা</td></tr>
+          <tr><td>টেস্ট</td><td><b>১০৩</b></td><td>ভরসার ভিত্তি</td></tr>
+          <tr><td>মাইগ্রেশন</td><td><b>১২</b></td><td>স্কিমার ইতিহাস</td></tr>
+          <tr><td>কোড / টেস্ট</td><td><b>৫,৪৮০ / ১,৩৫৩</b> লাইন</td><td>আনুপাত ৪ : ১</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>মাল্টি-টেন্যান্ট মানে:</b> একই ডেটাবেসে অনেক স্কুল; প্রতিটি সারিতে <code>institution</code> — আর প্রতিটি কুয়েরিতে সেটি ফিল্টার করা <b>বাধ্যতামূলক</b>। এই একটি নিয়ম থেকেই নিরাপত্তার পুরো অধ্যায় (D3) দাঁড়ায়।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>কেন এই প্রজেক্ট:</b> ছোট খেলনা নয়, কিন্তু এক কোডবেসেই auth, permission, রিপোর্ট, বিলিং, ব্যাকআপ — কোর্সের ৩৭টি বিষয়ের প্রতিটির আসল ঠিকানা এখানে আছে।
+        </div>
+        <div style="font-size:8.4pt;color:#64748b;margin-top:1.6mm">৫,৪৮০ লাইন কোড — একটা সেমিস্টারে পড়ার মাপে, কারণ সবই একই ছাঁচে লেখা।</div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সংখ্যাগুলো মুখস্থ করানোর জন্য নয় — দেখানোর জন্য যে "৩১টি মডেল" মানে ৩১টি সিদ্ধান্ত। প্রথম ক্লাসেই বলুন: আমরা এই ৩১টির পেছনের কারণগুলো পড়ব।
+</section>

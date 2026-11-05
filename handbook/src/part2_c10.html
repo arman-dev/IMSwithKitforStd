@@ -1,0 +1,459 @@
+<!-- ===================== CLASS 10 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান · ক্লাস ১০ / ৩৭</div>
+  <h1>কত দিনে<br>শেষ হবে</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৩ · টপিক ৩.৬ (শিডিউল ও বাজেট)<br>নির্ভরতার ক্রম · ১২ সপ্তাহের গ্যান্ট · বাফার</div>
+  <div class="pill">৫ স্লাইস · ১২ সপ্তাহ · ১,৭৫০ লাইন/সপ্তাহ</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>"১২ সপ্তাহে হয়ে যাবে" — এই বাক্যের সমস্যা কী?</h2>
+      <div class="sub">হাত তুলুন: আপনার প্রজেক্টের শিডিউল কি কাগজে আছে, নাকি মাথায়?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:27pt;line-height:1.6">
+      শিডিউল মানে <span class="hl">তারিখের তালিকা নয়</span>।<br>
+      শিডিউল মানে <b>কোন কাজ কোন কাজের পরে</b>।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      কারণ কাজগুলো <b>এলোমেলো নয়</b> — উপস্থিতি নেওয়ার পর্দা বানানো যায় না, যতক্ষণ ক্লাস আর শিক্ষার্থীর টেবিল না দাঁড়ায়।
+      তাই আগে <b>নির্ভরতার ক্রম</b>, তারপর তারিখ। উল্টো করলে শিডিউল সুন্দর হয়, কিন্তু কাজ আটকে থাকে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "আমার প্রজেক্ট ৪ সপ্তাহে হবে" বললে জিজ্ঞেস করুন: "প্রথম সপ্তাহের শেষে ঠিক কী চলবে?" উত্তর যদি "সব কিছু শুরু করেছি" হয়, তাহলে সপ্তাহ শেষে কিছুই চলবে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>নির্ভরতার ক্রম — কোন কাজ কীসের পরে</h2>
+      <div class="sub">তির মানে "আগে এটা, তারপর ওটা" — উল্টো করলে সময় নষ্ট, শুধু নয়, কাজ ভাঙে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 165" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="ar11" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <g font-size="10.5">
+          <rect x="0" y="30" width="150" height="56" rx="9" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+          <text x="75" y="52" text-anchor="middle" font-weight="700" fill="#065f46">প্রতিষ্ঠান</text>
+          <text x="75" y="70" text-anchor="middle" font-size="10" fill="#047857">workspace · সদস্য</text>
+
+          <rect x="178" y="30" width="150" height="56" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="253" y="52" text-anchor="middle" font-weight="700" fill="#312e81">কাঠামো</text>
+          <text x="253" y="70" text-anchor="middle" font-size="10" fill="#475569">বছর → ক্লাস → বিষয়</text>
+
+          <rect x="356" y="30" width="150" height="56" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="431" y="52" text-anchor="middle" font-weight="700" fill="#312e81">শিক্ষার্থী</text>
+          <text x="431" y="70" text-anchor="middle" font-size="10" fill="#475569">তৈরি + ভর্তি</text>
+
+          <rect x="534" y="30" width="150" height="56" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="609" y="52" text-anchor="middle" font-weight="700" fill="#312e81">উপস্থিতি</text>
+          <text x="609" y="70" text-anchor="middle" font-size="10" fill="#475569">দিনের ঘটনা</text>
+
+          <rect x="712" y="30" width="150" height="56" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="787" y="52" text-anchor="middle" font-weight="700" fill="#312e81">নম্বর</text>
+          <text x="787" y="70" text-anchor="middle" font-size="10" fill="#475569">পরীক্ষা · হিসাব</text>
+
+          <rect x="860" y="30" width="140" height="56" rx="9" fill="#f5f3ff" stroke="#a78bfa"/>
+          <text x="930" y="52" text-anchor="middle" font-weight="700" fill="#5b21b6">রিপোর্ট</text>
+          <text x="930" y="70" text-anchor="middle" font-size="10" fill="#6d28d9">সবটার সারাংশ</text>
+
+          <line x1="152" y1="58" x2="176" y2="58" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar11)"/>
+          <line x1="330" y1="58" x2="354" y2="58" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar11)"/>
+          <line x1="508" y1="58" x2="532" y2="58" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar11)"/>
+          <line x1="686" y1="58" x2="710" y2="58" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar11)"/>
+          <line x1="864" y1="58" x2="888" y2="58" stroke="#4f46e5" stroke-width="2" marker-end="url(#ar11)"/>
+
+          <rect x="0" y="106" width="1000" height="46" rx="8" fill="#fef2f2" stroke="#f87171"/>
+          <text x="18" y="126" font-size="11.5" fill="#7f1d1d" font-weight="700">উল্টো করার পরিণাম:</text>
+          <text x="180" y="126" font-size="11.5" fill="#991b1b">নম্বরের পর্দা আগে বানালে শিক্ষার্থীর টেবিল পরে বদলাতে হয় → প্রতিটি পর্দা আবার বদলাতে হয়।</text>
+          <text x="18" y="145" font-size="11.5" fill="#991b1b">উপস্থিতি আগে বানালে ক্লাসের কাঠামো পরে বদলালে সব রেকর্ড নতুন করে মেলাতে হয়।</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:12.5pt;padding:3.5mm 5mm">
+      স্লাইড ১-এর ক্রমটাই আসল: <b>ভিত্তি → কাঠামো → মানুষ → দৈনন্দিন → ফল → সারাংশ</b>। তারিখ বসানোর আগে এই ক্রমটা ঠিক করুন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ব্ল্যাকবোর্ডে এই ছয়টি বাক্স আঁকুন, তারপর ছাত্রদের নিজের প্রজেক্টের কাজগুলোতে বসাতে বলুন। বেশিরভাগ দেখবে তারা "পর্দা বানানো" দিয়ে শুরু করতে চেয়েছিল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>১২ সপ্তাহ — আসল গ্যান্ট চার্ট</h2>
+      <div class="sub">প্রতিটি সপ্তাহের শেষে সিস্টেম চলে, টেস্ট সবুজ — এটাই শিডিউলের একমাত্র শর্ত</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 150" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="10">
+          <g fill="#64748b" font-weight="700">
+            <text x="235" y="12" text-anchor="middle">১</text><text x="295" y="12" text-anchor="middle">২</text>
+            <text x="355" y="12" text-anchor="middle">৩</text><text x="415" y="12" text-anchor="middle">৪</text>
+            <text x="475" y="12" text-anchor="middle">৫</text><text x="535" y="12" text-anchor="middle">৬</text>
+            <text x="595" y="12" text-anchor="middle">৭</text><text x="655" y="12" text-anchor="middle">৮</text>
+            <text x="715" y="12" text-anchor="middle">৯</text><text x="775" y="12" text-anchor="middle">১০</text>
+            <text x="835" y="12" text-anchor="middle">১১</text><text x="895" y="12" text-anchor="middle">১২</text>
+          </g>
+          <text x="930" y="12" fill="#94a3b8">প্রমাণ</text>
+
+          <text x="0" y="36" font-weight="700" fill="#1e1b4b">স্লাইস ১</text>
+          <rect x="210" y="26" width="115" height="14" rx="3" fill="#4f46e5"/>
+          <text x="930" y="36" fill="#059669" font-weight="700">১৩ টেস্ট</text>
+
+          <text x="0" y="58" font-weight="700" fill="#1e1b4b">ক্যাটালগ</text>
+          <rect x="330" y="48" width="55" height="14" rx="3" fill="#7c3aed"/>
+          <text x="930" y="58" fill="#b45309" font-weight="700">৫৭ ফিচার</text>
+
+          <text x="0" y="80" font-weight="700" fill="#1e1b4b">স্লাইস ২</text>
+          <rect x="390" y="70" width="115" height="14" rx="3" fill="#6366f1"/>
+          <text x="930" y="80" fill="#059669" font-weight="700">অ্যাডমিন-দৃশ্য</text>
+
+          <text x="0" y="102" font-weight="700" fill="#1e1b4b">স্লাইস ৩–৪</text>
+          <rect x="510" y="92" width="230" height="14" rx="3" fill="#818cf8"/>
+          <text x="930" y="102" fill="#059669" font-weight="700">শিক্ষক+শিক্ষার্থী</text>
+
+          <text x="0" y="124" font-weight="700" fill="#1e1b4b">স্লাইস ৫</text>
+          <rect x="750" y="114" width="85" height="14" rx="3" fill="#c7d2fe"/>
+          <text x="930" y="124" fill="#059669" font-weight="700">১০৩ টেস্ট</text>
+
+          <text x="0" y="146" font-weight="700" fill="#7f1d1d">প্যাকেজিং + বাফার</text>
+          <rect x="840" y="136" width="78" height="14" rx="3" fill="#fecaca" stroke="#f87171"/>
+          <text x="930" y="146" fill="#7f1d1d" font-weight="700">run.sh · ২৫%</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> গ্যান্ট চার্টে "স্লাইস" শব্দটা জোর দিন — ফিচারের তালিকা নয়, চলমান সিস্টেমের টুকরো। প্রতিটি স্লাইস শেষে ডেমো দেওয়া যায়, এটাই শিডিউলের আসল নিরাপত্তা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>প্রতিটি স্লাইসে ঠিক কী থাকে</h2>
+      <div class="sub">এক স্লাইস = এক সম্পূর্ণ ব্যবহারযোগ্য সিস্টেম, অর্ধেক পর্দা নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:11%">স্লাইস</th><th style="width:26%">কী যোগ হয়</th><th>শেষে ব্যবহারকারী কী করতে পারে</th><th style="width:15%">প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>১</b></td><td>লগইন · প্রতিষ্ঠান · সদস্যতা · ভূমিকা · ৪টি ড্যাশবোর্ড</td>
+          <td>লগইন করে নিজের প্রতিষ্ঠানে ঢুকে নিজের ভূমিকার ড্যাশবোর্ড দেখতে পারে</td><td>১৩ টেস্ট</td></tr>
+        <tr><td><b>২</b></td><td>বছর · টার্ম · বিভাগ · ক্লাস · বিষয় · শিক্ষক-বরাদ্দ · শিক্ষার্থী · ভর্তি</td>
+          <td>প্রতিষ্ঠানের পূর্ণ কাঠামো দাঁড়ায়, শিক্ষার্থী ক্লাসে যুক্ত হয়</td><td>৪৮ পর্দা × ৪ ভূমিকা</td></tr>
+        <tr><td><b>৩</b></td><td>উপস্থিতি · সিলেবাস · পাঠ-লগ · হোমওয়ার্ক</td>
+          <td>শিক্ষক প্রতিদিনের কাজ করতে পারে — হাজিরা থেকে হোমওয়ার্ক</td><td>শিক্ষকের পূর্ণ দিন</td></tr>
+        <tr><td><b>৪</b></td><td>পরীক্ষা · নম্বর · গ্রেড · হিসাব · প্রকাশ · মার্কশিট PDF</td>
+          <td>নম্বর থেকে ফলাফল পর্যন্ত পুরো পথ — প্রকাশের পরে শিক্ষার্থী দেখে</td><td>মার্কশিট PDF</td></tr>
+        <tr><td><b>৫</b></td><td>রিপোর্ট · সারাংশ · এক্সপোর্ট · অডিট লগ · পলিসি</td>
+          <td>প্রতিষ্ঠান চালানোর সিদ্ধান্ত নেওয়ার মতো তথ্য</td><td>১০৩ টেস্ট</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      লক্ষ্য করুন: স্লাইস ১-এ <b>শিক্ষার্থী নেই</b>, স্লাইস ২-এ <b>হাজিরা নেই</b> — তবু প্রতিটি স্লাইস শেষে সিস্টেম চলে। এটাই "চলমান টুকরো" হওয়ার শর্ত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের জিজ্ঞেস করুন — "তোমার স্লাইস ১-এ কী থাকবে?" উত্তর যদি "৬টি ফিচার" হয়, জিজ্ঞেস করুন "শেষে ব্যবহারকারী ঠিক কী করতে পারবে?" — উত্তর না এলে স্লাইসটা ভাঙতে হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>গতির হিসাব — আসল সংখ্যা দিয়ে</h2>
+      <div class="sub">৯,৩২২ লাইন কোড ÷ ১২ সপ্তাহ — কিন্তু এই ভাগটা একা মিথ্যা বলে</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><div class="ic">📄</div><b style="font-size:14pt">৯,৩২২ লাইন</b>
+        <p>Python (মাইগ্রেশন বাদ)</p></div>
+      <div class="card soft"><div class="ic">🖼️</div><b style="font-size:14pt">৩,২৬৫ লাইন</b>
+        <p>HTML (৭৫ টেমপ্লেট)</p></div>
+      <div class="card soft"><div class="ic">🧪</div><b style="font-size:14pt">১০৩ টেস্ট</b>
+        <p>১১টি অ্যাপে</p></div>
+      <div class="card soft"><div class="ic">🗓️</div><b style="font-size:14pt">১২ সপ্তাহ</b>
+        <p>× ৫ দিন × ৪ ঘণ্টা = ২৪০ ঘণ্টা</p></div>
+    </div>
+    <table class="tight" style="margin-top:6mm">
+      <thead><tr><th style="width:34%">হিসাব</th><th>ফল</th><th style="width:26%">কেন বিভ্রান্তিকর</th></tr></thead>
+      <tbody>
+        <tr><td>মোট লাইন ÷ মোট ঘণ্টা</td><td><b>প্রতি ঘণ্টায় ~৫২ লাইন</b></td><td>শেষ সপ্তাহে ৪০০ লাইন, প্রথম সপ্তাহে ২০ — গড় কিছুই বলে না</td></tr>
+        <tr><td>স্লাইস ÷ সপ্তাহ</td><td><b>প্রতি ২.৪ সপ্তাহে ১ স্লাইস</b></td><td>প্রথম স্লাইস ছোট, দ্বিতীয় স্লাইস সবচেয়ে বড়</td></tr>
+        <tr><td>টেস্ট ÷ সপ্তাহ</td><td><b>সপ্তাহে ~৯টি</b></td><td>বাস্তবে সপ্তাহে ০, তারপর একদিনে ৩০</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:4mm;font-size:12px;padding:3.5mm 5mm">
+      <b>যেটা কাজে দেয়:</b> "গত সপ্তাহে আমি কতগুলো স্লাইস-শর্ত শেষ করেছি" — শেষ <b>৩ সপ্তাহের</b> গড় দিয়ে বাকি সময় হিসাব করুন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন প্রতি সপ্তাহে এক লাইনে লিখতে: "এই সপ্তাহে কী কাজ করল, কী আটকে আছে"। তিন সপ্তাহ পরে ওই তিন লাইনই তাদের সবচেয়ে নির্ভুল শিডিউল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>বাফার — কেন ২৫%, আর কোথায় রাখবেন</h2>
+      <div class="sub">বাফার "অলসতার জায়গা" নয় — অজানা জিনিসের দাম</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:6mm">
+      <div style="flex:1">
+        <div class="card" style="padding:5mm;border-color:#f87171">
+          <b style="font-size:13pt;color:#7f1d1d">বাফার কোথায় রাখা ভুল</b>
+          <p style="font-size:11.5pt;color:#7f1d1d;line-height:1.7">
+            ✓ শেষে ৩ সপ্তাহ খালি রাখা — "পরে ঠিক করে নেব"<br>
+            ✗ তখন প্রথম ৯ সপ্তাহেই সব দেরি জমে যায়<br>
+            ✗ আর শেষে বাফারটা কাজে লাগে <b>দেরি ঢাকতে</b>, নতুন কিছু শিখতে নয়
+          </p>
+        </div>
+        <div class="card" style="margin-top:4mm;padding:5mm;border-color:#059669">
+          <b style="font-size:13pt;color:#065f46">সঠিক নিয়ম</b>
+          <p style="font-size:11.5pt;color:#065f46;line-height:1.7">
+            প্রতিটি স্লাইসের ভেতরেই বাফার — অর্থাৎ স্লাইস ১-এর কাজ ৪ দিনে ধরুন, ৫ দিনের ঘরে;<br>
+            স্লাইস ২-এর কাজ ৮ দিনে ধরুন, ১০ দিনের ঘরে।<br>
+            <b>দেরি হলে স্লাইসেই ধরা পড়ে</b>, শেষে নয়।
+          </p>
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="card" style="padding:5mm">
+          <b style="font-size:12.5pt">২৫% কোথা থেকে</b>
+          <p style="font-size:11pt;line-height:1.7;margin-top:2mm">
+            IMS-এর আসল টাইমলাইনে <b>৯,৩২২ লাইন কোড ২ কর্মদিবসে</b> লেখা হয়েছে — কিন্তু এর মধ্যে <b>৪টি বাগ সংশোধন</b> আছে (CSRF, বিলিং, workspace, রেনেম)।<br><br>
+            অর্থাৎ "লেখার সময়" আর "ঠিক করার সময়" — মিলিয়ে ২৫–৪০%।
+          </p>
+        </div>
+        <div class="call bad" style="margin-top:4mm;font-size:11.5pt;padding:3.5mm 4.5mm">
+          <b>ভয়ংকর হিসাব:</b> ৫৭ ফিচার ÷ ১২ সপ্তাহ = সপ্তাহে ৫টি। কাগজে ঠিক, বাস্তবে অসম্ভব — কারণ ফিচারগুলো সমান নয়।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "বাফার মানে অলসতা নয়" — এই বাক্যটা ক্লাসে দুবার বলুন। ছাত্ররা বাফার রাখে না কারণ মনে করে অধ্যাপক কম পরিশ্রম দেখবেন; আসলে বাফারহীন শিডিউলই সবচেয়ে বেশি মিথ্যা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>সমালোচনামূলক পথ — কোন কাজ দেরি হলে সব দেরি</h2>
+      <div class="sub">Critical path: সব কাজ সমান নয়, কয়েকটা পুরো প্রজেক্ট টেনে নেয়</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 205" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="10.5">
+          <!-- critical chain -->
+          <rect x="0" y="20" width="140" height="46" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="70" y="40" text-anchor="middle" font-weight="700" fill="#991b1b">কাঠামো</text>
+          <text x="70" y="56" text-anchor="middle" font-size="9.5" fill="#b91c1c">৪ দিন</text>
+
+          <rect x="180" y="20" width="140" height="46" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="250" y="40" text-anchor="middle" font-weight="700" fill="#991b1b">শিক্ষার্থী+ভর্তি</text>
+          <text x="250" y="56" text-anchor="middle" font-size="9.5" fill="#b91c1c">৫ দিন</text>
+
+          <rect x="360" y="20" width="140" height="46" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="430" y="40" text-anchor="middle" font-weight="700" fill="#991b1b">উপস্থিতি</text>
+          <text x="430" y="56" text-anchor="middle" font-size="9.5" fill="#b91c1c">৪ দিন</text>
+
+          <rect x="540" y="20" width="140" height="46" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="610" y="40" text-anchor="middle" font-weight="700" fill="#991b1b">নম্বর+ফল</text>
+          <text x="610" y="56" text-anchor="middle" font-size="9.5" fill="#b91c1c">৬ দিন</text>
+
+          <rect x="720" y="20" width="140" height="46" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="790" y="40" text-anchor="middle" font-weight="700" fill="#991b1b">রিপোর্ট</text>
+          <text x="790" y="56" text-anchor="middle" font-size="9.5" fill="#b91c1c">৩ দিন</text>
+
+          <text x="880" y="40" font-size="11.5" font-weight="700" fill="#dc2626">= ২২ দিন</text>
+          <text x="880" y="57" font-size="9.5" fill="#991b1b">কমপক্ষে</text>
+
+          <line x1="142" y1="43" x2="178" y2="43" stroke="#dc2626" stroke-width="2.5"/>
+          <line x1="322" y1="43" x2="358" y2="43" stroke="#dc2626" stroke-width="2.5"/>
+          <line x1="502" y1="43" x2="538" y2="43" stroke="#dc2626" stroke-width="2.5"/>
+          <line x1="682" y1="43" x2="718" y2="43" stroke="#dc2626" stroke-width="2.5"/>
+
+          <!-- parallel non-critical -->
+          <text x="0" y="104" font-size="11" font-weight="700" fill="#065f46">সমান্তরালে চলতে পারে (দেরি হলেও ক্ষতি নেই):</text>
+          <rect x="0" y="116" width="130" height="34" rx="7" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="65" y="137" text-anchor="middle" font-size="10" fill="#065f46">রিপোর্ট এক্সপোর্ট</text>
+          <rect x="146" y="116" width="120" height="34" rx="7" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="206" y="137" text-anchor="middle" font-size="10" fill="#065f46">অডিট লগ</text>
+          <rect x="282" y="116" width="150" height="34" rx="7" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="357" y="137" text-anchor="middle" font-size="10" fill="#065f46">ব্র্যান্ডিং / হোয়াইট-লেবেল</text>
+          <rect x="448" y="116" width="130" height="34" rx="7" fill="#ecfdf5" stroke="#34d399"/>
+          <text x="513" y="137" text-anchor="middle" font-size="10" fill="#065f46">ব্যাকআপ কনসোল</text>
+
+          <text x="0" y="172" font-size="11.5" fill="#334155">সমালোচনামূলক পথের মোট = ২২ দিন (কাজের দিন) → প্রায় ৫ সপ্তাহ। বাকি কাজ এই পথের ফাঁকে চলে।</text>
+          <text x="0" y="192" font-size="11.5" fill="#64748b">নিয়ম: সমালোচনামূলক পথে একজন মানুষ কাজ করবে — দুই জন দিলে দুই জন একে অন্যের কাজে বাধা দেয়।</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের জিজ্ঞেস করুন — "তোমার সবচেয়ে বেশি দেরি হওয়া কাজ কোনটা, আর তার পরে কোন কাজ আটকে আছে?" উত্তরই তাদের সমালোচনামূলক পথ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>শিডিউলের চারটি ফাঁদ</h2>
+      <div class="sub">প্রতিটি ফাঁদের একটা লক্ষণ আছে — শুরুতেই ধরা যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:26%">ফাঁদ</th><th style="width:30%">লক্ষণ</th><th>প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. ছাত্র-ঘণ্টা ধরে নেওয়া</b></td><td>"দিনে ৮ ঘণ্টা কাজ করব" — ৩ দিনও হয়নি</td>
+          <td>দিনে <b>৩–৪ ঘণ্টা</b> ধরে হিসাব করুন; বাকিটা ক্লাস, পড়া, জীবন</td></tr>
+        <tr><td><b>২. সব কাজ সমান ধরা</b></td><td>"৫৭ ফিচার ÷ ১২ সপ্তাহ"</td>
+          <td>ধরন অনুযায়ী ভাগ: list আধা দিন · form ১ দিন · report ২ দিন · model ৩ দিন</td></tr>
+        <tr><td><b>৩. পর্দা দিয়ে শুরু</b></td><td>প্রথম সপ্তাহে সুন্দর ড্যাশবোর্ড, ডেটাবেস পরে</td>
+          <td>নির্ভরতার ক্রম মানুন: ভিত্তি → কাঠামো → মানুষ → ঘটনা → ফল</td></tr>
+        <tr><td><b>৪. শেষ সপ্তাহে ডিপ্লয়</b></td><td>১১তম সপ্তাহেও কোথাও চালু হয়নি</td>
+          <td><b>৮ম সপ্তাহেই</b> ডিপ্লয় করুন — সস্তায়, কুৎসিতভাবে, কিন্তু চালু</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      চতুর্থ ফাঁদটা সবচেয়ে মারাত্মক: শেষ সপ্তাহে ডিপ্লয় করতে গেলে প্রথমবারই দেখা যায় <code>DEBUG=False</code>-এ সাইট ভাঙে — ঠিক করার সময় তখন আর নেই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রজেক্টে এই ফাঁদ এড়ানো হয়েছে — দিন ১-এই <code>run.sh</code> আর <code>sqlite</code> settings তৈরি। ছাত্রদের বলুন ৮ম সপ্তাহের ডিপ্লয়টা ক্যালেন্ডারে এখনই লিখে ফেলতে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>বাজেট — টাকা আর সময় একসাথে</h2>
+      <div class="sub">ক্লাস ৩-এর ফিজিবিলিটি এখানে শিডিউলে মিশে যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:28%">খাত</th><th style="width:20%">পরিমাণ</th><th>নোট</th></tr></thead>
+      <tbody>
+        <tr><td>সময় (প্রধান খরচ)</td><td><b>২৪০ ঘণ্টা</b></td><td>১২ সপ্তাহ × ৫ দিন × ৪ ঘণ্টা</td></tr>
+        <tr><td>ডেমো সার্ভার</td><td>৳০ – ৳১,৮০০/মাস</td><td>ডেমোর জন্য ফ্রি টিয়ারও চলে; প্রোডাকশনে VPS</td></tr>
+        <tr><td>ডোমেইন</td><td>৳১,২০০/বছর</td><td>ডেমোতে সাবডোমেইনই যথেষ্ট</td></tr>
+        <tr><td>ইমেইল</td><td>৳০</td><td>প্রথমে কনসোল ব্যাকএন্ড (ডেমোতে দেখা যায়)</td></tr>
+        <tr><td>PDF / Excel</td><td>৳০</td><td>লাইব্রেরি ওপেন সোর্স</td></tr>
+        <tr style="background:#fffbeb"><td><b>মোট নগদ খরচ (ডেমো)</b></td><td><b>৳০ – ৳৩,০০০</b></td><td>আসল বিনিয়োগ সময়, টাকা নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      এই কারণেই শিক্ষার্থী-প্রজেক্টে বাজেট আলোচনা হয় <b>সময়</b> দিয়ে, টাকা দিয়ে নয়। সময়ই একমাত্র খরচ যা ফেরত পাওয়া যায় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কেউ "সার্ভারে টাকা লাগবে" বললে বোঝান: ৳১,৮০০ মাসিক মানে সেমিস্টার জুড়ে ৳৭,২০০ — একটি ল্যাপটপের ১%। তাই অর্থ সমস্যা নয়, সময়ই আসল সীমা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯ · প্রমাণ</span>
+    <div><h2>শিডিউলের রিপোর্টিং — সপ্তাহে এক টেবিল</h2>
+      <div class="sub">কেউ জিজ্ঞেস করলে ৩০ সেকেন্ডে উত্তর দেওয়ার মতো ফরম্যাট</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:12%">সপ্তাহ</th><th style="width:30%">লক্ষ্য ছিল</th><th style="width:26%">যা শেষ হলো</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="num">৭</td><td>উপস্থিতি + সিলেবাস</td><td>উপস্থিতি শেষ, সিলেবাস অর্ধেক</td><td><code>30_attendance_take.png</code> · ৫ টেস্ট</td></tr>
+        <tr><td class="num">৮</td><td>সিলেবাস + হোমওয়ার্ক</td><td>দুটোই শেষ</td><td><code>36_syllabus_detail.png</code> · ৪ টেস্ট</td></tr>
+        <tr><td class="num">৯</td><td>পরীক্ষা সেটআপ</td><td>লক্ষ্যের বেশি — নম্বর এন্ট্রিও</td><td><code>43_marks_entry.png</code> · ১১ টেস্ট</td></tr>
+        <tr><td class="num">১০</td><td>ফলাফল + PDF</td><td>বাকি — PDF রেন্ডারার জটিল</td><td><code>44_marksheet.png</code> (আংশিক)</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      দশম সপ্তাহের সারিটাই সবচেয়ে দরকারি — এখানে সৎভাবে <b>"বাকি"</b> লেখা আছে। যে রিপোর্টে কখনো "বাকি" থাকে না, সেটা রিপোর্ট নয়, বিজ্ঞাপন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের প্রতিটি সারিতে স্ক্রিনশটের নাম বা টেস্টের নাম লিখতে বাধ্য করুন। প্রমাণ কলাম না থাকলে শিডিউল রিপোর্টিং আত্মপ্রশংসায় পরিণত হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>দেরি হলে কী করবেন — পাঁচটি ক্রম</h2>
+      <div class="sub">দেরি হবে, সেটা ধরে নিন; প্রশ্ন হলো কোনটা আগে ছাড়বেন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 180" xmlns="http://www.w3.org/2000/svg">
+        <g font-size="10.5">
+          <rect x="0" y="14" width="185" height="72" rx="9" fill="#ecfdf5" stroke="#34d399" stroke-width="2"/>
+          <text x="14" y="36" font-weight="700" fill="#065f46">১. আগে বাদ দিন</text>
+          <text x="14" y="56" font-size="10" fill="#047857">v1.1-এর কাজ</text>
+          <text x="14" y="72" font-size="10" fill="#047857">আমন্ত্রণ · ব্যাকআপ · এক্সপোর্ট</text>
+
+          <rect x="200" y="14" width="185" height="72" rx="9" fill="#eef2ff" stroke="#818cf8"/>
+          <text x="214" y="36" font-weight="700" fill="#312e81">২. সরল করুন</text>
+          <text x="214" y="56" font-size="10" fill="#475569">PDF বাদ, প্রিন্ট-ভিউ দিন</text>
+          <text x="214" y="72" font-size="10" fill="#475569">এক্সেল বাদ, CSV দিন</text>
+
+          <rect x="400" y="14" width="185" height="72" rx="9" fill="#fffbeb" stroke="#fbbf24"/>
+          <text x="414" y="36" font-weight="700" fill="#78350f">৩. কম লোক দেখান</text>
+          <text x="414" y="56" font-size="10" fill="#92400e">কোঅর্ডিনেটর ভূমিকা</text>
+          <text x="414" y="72" font-size="10" fill="#92400e">v1.1-এ সরান</text>
+
+          <rect x="600" y="14" width="185" height="72" rx="9" fill="#fef2f2" stroke="#f87171"/>
+          <text x="614" y="36" font-weight="700" fill="#991b1b">৪. কখনোই বাদ দেবেন না</text>
+          <text x="614" y="56" font-size="10" fill="#b91c1c">লগইন · টেন্যান্ট · ভূমিকা</text>
+          <text x="614" y="72" font-size="10" fill="#b91c1c">অডিট · প্রকাশের নিয়ম</text>
+
+          <rect x="800" y="14" width="200" height="72" rx="9" fill="#f5f3ff" stroke="#a78bfa"/>
+          <text x="814" y="36" font-weight="700" fill="#5b21b6">৫. দিন শেষে</text>
+          <text x="814" y="56" font-size="10" fill="#6d28d9">ডেমো ডেটা তৈরি করুন</text>
+          <text x="814" y="72" font-size="10" fill="#6d28d9">খালি সিস্টেম দেখাবেন না</text>
+
+          <text x="0" y="118" font-size="11.5" fill="#334155">এই ক্রমটাই সঠিক কারণ ১–৩ বাদ দিলেও সিস্টেম নিরাপদ থাকে, আর ৪ বাদ দিলে সিস্টেম ঝুঁকিপূর্ণ হয়ে যায়।</text>
+          <text x="0" y="142" font-size="11.5" fill="#64748b">সবচেয়ে খারাপ সিদ্ধান্ত: সময় বাঁচাতে টেন্যান্ট যাচাই বা পারমিশন বাদ দেওয়া — সেটা সময় বাঁচায় না, বিশ্বাস হারায়।</text>
+          <text x="0" y="166" font-size="11.5" fill="#64748b">দ্বিতীয় খারাপ: খালি ডেটাবেস নিয়ে ডেমো দেওয়া — "কিছু নেই" আর "কিছু কাজ করে না" দেখতে একই লাগে।</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই পাঁচটি ক্রম বোর্ডে লিখে রাখুন, সেমিস্টারের শেষে কেউ "আরও দুই সপ্তাহ লাগবে" বললে ওই লেখাটাই আপনাকে সাহায্য করবে — কোনটা ছাড়তে হবে তা নিয়ে বিতর্ক কমবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ক্লাসের কাজ</span>
+    <div><h2>নিজের ১২ সপ্তাহের শিডিউল — ২৫ মিনিট</h2>
+      <div class="sub">ফলাফল: একটি টেবিল, যার প্রতিটি সপ্তাহে একটা প্রমাণ</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft"><b>১. স্লাইস ভাগ করুন</b><p>৪–৫টি স্লাইস, প্রতিটির শেষে সিস্টেম চলে।</p></div>
+      <div class="card soft"><b>২. ক্রম ঠিক করুন</b><p>ভিত্তি → কাঠামো → মানুষ → ঘটনা → ফল।</p></div>
+      <div class="card soft"><b>৩. সপ্তাহ বসান</b><p>প্রতি স্লাইসে ২৫% বাফার — বেশি নয়, কমও নয়।</p></div>
+      <div class="card soft"><b>৪. প্রমাণ লিখুন</b><p>প্রতি সপ্তাহে একটা টেস্টের নাম বা স্ক্রিনশটের নাম।</p></div>
+      <div class="card soft"><b>৫. ৮ম সপ্তাহে ডিপ্লয়</b><p>ক্যালেন্ডারে তারিখ লিখুন — এখনই।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:7mm;font-size:13pt;padding:4.5mm 5.5mm">
+      <b>যাচাই:</b> আপনার শিডিউলে কি এমন কোনো সপ্তাহ আছে যার শেষে <b>কিছুই চলে না</b>? থাকলে ওই সপ্তাহটাই ভুল করে সাজানো হয়েছে — স্লাইস ভাঙুন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষে ২ জনের শিডিউল বোর্ডে দেখুন — যার প্রতি সপ্তাহে প্রমাণ লেখা আছে, তার শিডিউল বাস্তবে টিকবে; যার শুধু কাজের নাম আছে, সে তৃতীয় সপ্তাহেই পিছিয়ে পড়বে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>চারটি প্রশ্ন — শিডিউল নিয়ে</h2>
+      <div class="sub">পর্ব ২ শেষ হচ্ছে — উত্তরগুলো পর্ব ৩-এ কাজে লাগবে</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center;gap:6mm">
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>১.</b> আপনার <b>স্লাইস ১</b>-এ কী থাকবে, আর শেষে ব্যবহারকারী ঠিক কী করতে পারবে?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>২.</b> আপনার <b>সমালোচনামূলক পথ</b> কোন কাজগুলো দিয়ে যায়? দেরি হলে কী আটকাবে?</p></div>
+    <div class="card soft" style="padding:5mm"><p style="font-size:14pt;color:#1e1b4b">
+      <b>৩.</b> আপনার শিডিউলে <b>বাফার</b> কত? সেটা প্রতিটি স্লাইসের ভেতরে, না শুধু শেষে?</p></div>
+    <div class="card" style="padding:5mm;border-color:#dc2626;background:#fef2f2"><p style="font-size:14pt;color:#7f1d1d">
+      <b>৪.</b> দেরি হলে আপনি <b>প্রথমে</b> কোনটা ছাড়বেন? যদি উত্তর "পারমিশন যাচাই" হয় — শিডিউলটা নতুন করে ভাবুন।</p></div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৪ নম্বর উত্তরই পর্ব ২-এর শেষ পরীক্ষা — সেটা ঠিক থাকলে ছাত্র বুঝেছে "কী ছাড়া যায়, কী ছাড়া যায় না"। পরের পর্বে এই বোধটাই ডিজাইনের ভিত্তি হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারসংক্ষেপ</span>
+    <div><h2>আজকের পাঁচটি শিক্ষা</h2>
+      <div class="sub">প্রতিটি দাবির পাশে তার প্রমাণ</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:52%">শিক্ষা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>শিডিউল আগে নির্ভরতা, পরে তারিখ</b></td>
+          <td>ভিত্তি → কাঠামো → মানুষ → ঘটনা → ফল → সারাংশ</td></tr>
+        <tr><td><b>স্লাইস মানে চলমান সিস্টেম</b>, কাজের তালিকা নয়</td>
+          <td>৫ স্লাইস · প্রতিটির শেষে ডেমো দেওয়া যায়</td></tr>
+        <tr><td><b>গড় হিসাব মিথ্যা বলে</b> — শেষ ৩ সপ্তাহের গতি ধরুন</td>
+          <td>৯,৩২২ লাইন ÷ ২৪০ ঘণ্টা = ৫২ লাইন/ঘণ্টা — বাস্তবে অসম</td></tr>
+        <tr><td><b>বাফার প্রতিটি স্লাইসের ভেতরে</b>, শেষে নয়</td>
+          <td>২ দিনের কাজ ৫ দিনের ঘরে — দেরি স্লাইসেই ধরা পড়ে</td></tr>
+        <tr><td><b>দেরি হলে ছাড়ার ক্রম আগেই ঠিক করা</b></td>
+          <td>v1.1 → সরলীকরণ → কম লোক · কখনোই নয়: টেন্যান্ট/ভূমিকা</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই পাঁচটি লাইনে পর্ব ২ শেষ হচ্ছে। বলুন: "পর্ব ৩-এ আমরা এই শিডিউল ধরে ডিজাইন শুরু করব — ERD, wireframe, আর সিস্টেম ডিজাইন।"</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">পর্ব ৩</div>
+  <h2>ক্লাস ১১ — "ডেটা কীভাবে ভাবে"</h2>
+  <p>ডিজাইন পর্ব: সিস্টেম ডিজাইন · রিকোয়েস্ট ফ্লো · wireframe · DFD · ERD</p>
+</section>

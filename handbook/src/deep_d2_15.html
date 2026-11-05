@@ -1,0 +1,39 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেস ৩</span>
+    <div><h2>SubscriptionGateMiddleware — লিখা বন্ধ, ডেটা অটুট</h2>
+      <div class="sub">পড়া কখনো বন্ধ হয় না; মুছে ফেলা কখনোই হয় না</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:46%">নিয়ম</th><th style="width:54%">বাস্তবে</th></tr>
+          <tr><td><code>SAFE_METHODS</code></td><td>GET/HEAD/OPTIONS/TRACE কখনো ব্লক হয় না</td></tr>
+          <tr><td><code>ALLOW_PREFIXES</code></td><td><code>/accounts/</code> <code>/renew/</code> <code>/platform/</code> <code>/static/</code> <code>/media/</code> <code>/admin/</code> <code>/healthz</code> <code>/workspaces/</code></td></tr>
+          <tr><td>ORG_ADMIN</td><td><code>/renew/?blocked=1</code>-এ পাঠানো হয়</td></tr>
+          <tr><td>অন্য সবাই</td><td>ড্যাশবোর্ডে ফেরত + বার্তা: "আপনার কাজ হারায়নি"</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.4mm;font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>প্রথমে ভুল ছিল:</b> মিডলওয়্যার সেশনের workspace দেখত, URL-এর নয়। এক শিক্ষক নিজের ব্যক্তিগত স্পেসে থাকা অবস্থায় মেয়াদোত্তীর্ণ স্কুলে POST করলে গেট পাশ করে যেত। সমাধান: <code>_workspace_in_url()</code> — পথ থেকে slug পড়া।
+        </div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">if request.method in SAFE_METHODS:
+    return self.get_response(request)
+
+workspace = (self._workspace_in_url(request)
+             or getattr(request, "workspace", None))
+if workspace is None or any(
+        path.startswith(p) for p in ALLOW_PREFIXES):
+    return self.get_response(request)
+
+if is_writable(workspace):
+    return self.get_response(request)
+# ... রিনিউ পাতায় পাঠানো</pre>
+        <div style="font-size:9.7pt;color:#334155;margin-top:1.6mm">
+          <b>সুপারইউজার ছাড় নেই:</b> প্ল্যাটফর্ম-অ্যাডমিনও যদি ওই স্কুলের অ্যাডমিন হন, তবু লিখতে পারবেন না — কেবল <code>/platform/</code> খোলা।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানে দুটি নীতি একসাথে: (১) বিলিং মানে ডেটা জিম্মি নয়, (২) অনুমতি URL দেখে, সেশন দেখে নয়। দ্বিতীয়টি না থাকলে এক স্কুল অন্য স্কুলের মেয়াদে ব্লক হয়ে যেত।
+</section>

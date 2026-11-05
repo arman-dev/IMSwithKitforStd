@@ -1,0 +1,34 @@
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম ৩</span>
+    <div><h2><code>CheckConstraint</code> — মিথ্যা তথ্য ঢোকার পথ বন্ধ</h2>
+      <div class="sub">২টি check; বাকি সব নিয়ম <code>clean()</code>-এ — কেন এই ভাগ</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <div style="font-size:11pt;font-weight:700;color:#312e81;margin-bottom:1.5mm">ডেটাবেজে (২টি)</div>
+        <pre style="font-size:8.2pt;line-height:1.5;padding:3mm 3.6mm"># assessments · নাম: grade_band_min_le_max
+Q(min_percent__lte=F("max_percent"))
+
+# academics · নাম: coordinator_scope_needs_a_target
+~(Q(department__isnull=True) &
+  Q(class_group__isnull=True))</pre>
+        <div style="font-size:10pt;color:#334155;margin-top:1.4mm">একটি সারির <b>নিজের</b> দুটি কলাম তুলনা — JOIN বা অন্য টেবিল লাগে না।</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:11pt;font-weight:700;color:#78350f;margin-bottom:1.5mm">অ্যাপ্লিকেশনে (<code>clean()</code>)</div>
+        <table class="tight">
+          <tr><td><code>ends_on &gt; starts_on</code></td><td>AcademicYear · Term</td></tr>
+          <tr><td><code>pass_marks ≤ full_marks</code></td><td>Subject · Exam</td></tr>
+          <tr><td>মার্ক ≤ full_marks · ঋণাত্মক নয়</td><td>Mark</td></tr>
+          <tr><td>অনুপস্থিত ছাত্রের নম্বর নেই</td><td>Mark</td></tr>
+          <tr><td>প্যারেন্ট অন্য workspace-এর নয়</td><td>ClassGroup · Term</td></tr>
+          <tr><td>ভবিষ্যতের তারিখে হাজিরা নয়</td><td>AttendanceRecord</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+      <b>সৎ ফাঁক:</b> উপরের ছয়টি নিয়ম কেবল ফর্ম/ভিউ দিয়ে গেলে চলে; সরাসরি <code>.objects.create()</code> বা শেল দিয়ে গেলে <code>clean()</code> ডাকা হয় না। এই ছয়টির একটিও ডেটাবেজ-স্তরে নেই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই ফাঁকটি লুকাবেন না — জিজ্ঞেস করুন "কোন নিয়মটা ডেটাবেজে রাখা উচিত ছিল?" উত্তর: <code>pass_marks ≤ full_marks</code> (নিজের দুই কলাম, তাই সহজে সম্ভব ছিল) আর প্যারেন্ট-ওয়ার্কস্পেস মিল (অন্য টেবিল, তাই কঠিন)।
+</section>

@@ -1,0 +1,540 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৬ · ক্লাস ২৯</div>
+  <h1>সার্ভার চালু রাখা</h1>
+  <p class="sub">লগ · অডিট · ব্যাকআপ ও রিস্টোর · মাইগ্রেশন · রোলব্যাক · মনিটরিং</p>
+  <div class="pill">IMS · ক্লাস ২৯ · স্লাইড ২০–৩৮</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>ডিপ্লয় একদিনের কাজ, পরিচালনা প্রতিদিনের</h2>
+      <div class="sub">কেন "চালু হয়েছে" মানে "শেষ" নয়</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:4mm">
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:12.6pt">প্রথম দিন</b>
+        <p style="font-size:10.8pt">কেউ ভুল করে, তবু কাজ চলে। তৃতীয় সপ্তাহে: ডেটা বাড়ে, ধীর হয়, একবার ৫০০ আসে, কেউ জিজ্ঞেস করে "গত মাসে কে মার্কস বদলেছিল?"</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:12.6pt">যে তিনটি প্রশ্ন আসবেই</b>
+        <p style="font-size:10.8pt">১. কী ভেঙেছে? (লগ) ২. কে কী করেছিল? (অডিট) ৩. কিছু হারিয়েছে কি? (ব্যাকআপ)</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:12.6pt">আর একটি</b>
+        <p style="font-size:10.8pt">৪. এখন ঠিক করব কীভাবে, আর ফেরাব কীভাবে? (মাইগ্রেশন ও রোলব্যাক)</p></div>
+    </div>
+    <div class="call warn" style="margin-top:4.4mm;font-size:11pt;padding:3mm 4.4mm">
+      ডিপ্লয়মেন্ট ক্লাসে শিখেছেন "কীভাবে চালু করতে হয়"; এই ক্লাসে শিখবেন <b>কীভাবে টিকে থাকে</b> — এবং প্রথম নিয়ম: যা মাপা হয় না, তা রক্ষা করা যায় না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "আপনার অ্যাপে এই চারটি প্রশ্নের উত্তর কোথায় আছে?" বেশিরভাগের উত্তর "কোথাও নেই" — এটাই এই ক্লাসের কারণ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ছন্দ</span>
+    <div><h2>দৈনিক · সাপ্তাহিক · মাসিক</h2>
+      <div class="sub">পরিচালনার কাজ ভাগ করে নিন — সব একদিনে নয়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:14%">কখন</th><th style="width:38%">কাজ</th><th>IMS-এ কী দিয়ে</th></tr></thead>
+      <tbody>
+        <tr><td>প্রতিদিন</td><td>ত্রুটি দেখুন · ব্যাকআপ চলেছে কি না দেখুন</td><td>হোস্টের লগ · <code>ops/backup.sh</code> (ক্রন)</td></tr>
+        <tr><td>প্রতিদিন</td><td>বাণিজ্যিক অবস্থা</td><td><code>manage.py billing_report</code></td></tr>
+        <tr><td>সাপ্তাহিক</td><td>ডিস্ক, ধীর কোয়েরি, বাড়তে থাকা টেবিল</td><td>ডেটাবেস প্রদানকারীর ড্যাশবোর্ড</td></tr>
+        <tr><td>সাপ্তাহিক</td><td>একটি রিস্টোর পরীক্ষা (scratch ডিবি)</td><td><code>ops/restore.sh</code></td></tr>
+        <tr><td>মাসিক</td><td>নির্ভরশীল প্যাকেজ আপডেট ও <code>check</code></td><td><code>pip list --outdated</code> · <code>test</code> · <code>check --deploy</code></td></tr>
+        <tr><td>প্রতি রিলিজে</td><td>ব্যাকআপ → মাইগ্রেশন → ধোঁয়া পরীক্ষা</td><td><code>build.sh</code> · <code>tests</code> · <code>smoke_test</code></td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      নিয়ম: <b>প্রতিটি কাজের একটি কমান্ড থাকতে হবে</b> — মনে রাখার মতো কাজ নয়, চালানোর মতো কাজ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছোট প্রতিষ্ঠানে এই ছকটি একজনেরই কাজ — তাই যত ছোট হোক, লিখিত থাকতে হবে; ছুটিতে অন্য কেউ চালাবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">লগ</span>
+    <div><h2>লগ কোথায় যায়</h2>
+      <div class="sub">IMS-এ কেবল কনসোল — সেটাই যথেষ্ট, যদি আপনি দেখেন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.2pt;line-height:1.44"># base.py
+LOGGING = {
+  "handlers": {"console": {"class":
+      "logging.StreamHandler", ...}},
+  "root": {"handlers": ["console"],
+           "level": env("LOG_LEVEL", "INFO")},
+  "loggers": {
+    "django.request":  {"level": "WARNING", ...},
+    "django.security": {"level": "WARNING", ...},
+  },
+}
+
+# prod.py — একই কাঠামো, তবে ফরম্যাটে
+# [{asctime}] {levelname} {name} {process:d}: {message}
+# # প্রসেস আইডি থাকে => কোন শ্রমিক ব্যর্থ
+# # হয়েছে তা বোঝা যায়</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">stdout কেন</b>
+            <p style="font-size:9.2pt">কনটেইনার যুগে হোস্ট stdout সংগ্রহ করে — ফাইলে লিখলে রিডিপ্লয়ে হারায়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">দুই বিশেষ লগার</b>
+            <p style="font-size:9.2pt"><code>django.request</code> = ৫০০ ও ৪xx; <code>django.security</code> = CSRF, হোস্ট, সন্দেহজনক অনুরোধ।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">যা এখানে নেই</b>
+            <p style="font-size:9.2pt">ফাইল হ্যান্ডলার নেই, Sentry নেই, APM নেই — <code>requirements-prod.txt</code>-এ কোনো মনিটরিং প্যাকেজ নেই।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">প্রথম সংযোজন</b>
+            <p style="font-size:9.2pt"><code>LOG_LEVEL=INFO</code> রাখুন; এরর খুঁজতে হোস্টের লগ ভিউয়ারে <code>ERROR</code> ফিল্টার করুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সৎ কথা বলুন: পেশাদার সেটআপে Sentry-জাতীয় সেবা থাকে; IMS-এ নেই। শিক্ষার্থীদের প্রশ্ন করুন — "কী হারাচ্ছি এতে?" উত্তর: পাওয়া যায় না কোন ব্যবহারকারী কোন পৃষ্ঠায় ব্যর্থ হয়েছেন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পড়া</span>
+    <div><h2>লগে কী খুঁজবেন</h2>
+      <div class="sub">চারটি প্যাটার্ন, চারটি প্রশ্ন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:30%">যা খুঁজছেন</th><th style="width:34%">লগে দেখতে হবে</th><th>তারপর</th></tr></thead>
+      <tbody>
+        <tr><td>৫০০ এরর</td><td><code>ERROR django.request Internal Server Error: /w/…</code></td><td>ট্রেসব্যাক, সময়, প্রসেস আইডি</td></tr>
+        <tr><td>হঠাৎ ৪০৩ ঝাঁপ</td><td><code>WARNING django.request Forbidden</code> বারবার</td><td>ভূমিকা/স্কোপ বদল হয়েছে কি না</td></tr>
+        <tr><td>CSRF ব্যর্থতা</td><td><code>WARNING django.security.csrf</code></td><td>ডোমেইন বা প্রক্সি হেডার</td></tr>
+        <tr><td>ধীর অনুরোধ</td><td>দেখা যায় না — সময় মাপা হয় না</td><td>এখানেই ফাঁক: পরে যোগ করতে হবে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>সোনার নিয়ম:</b> লগে ব্যক্তিগত তথ্য নয় — <code>AuditLog</code> মডেলের ডকুমেন্টেশনেই লেখা: "never store passwords, reset tokens or secrets"।
+      </div></div>
+      <div><div class="call bad" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>ফাঁদ:</b> শিক্ষকের ইমেইল বা ছাত্রের নম্বর লগে ছাপালে সেটি সবার দেখার জায়গায় চলে যায় — সম্মতি ছাড়াই।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ সারিটি জোর দিয়ে বলুন — "যা মাপি না, তা জানি না।" পারফরম্যান্স সমস্যা ধরার একমাত্র উপায় সময় মাপা।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অডিট</span>
+    <div><h2>অ্যাপ্লিকেশন লগ ≠ অডিট ট্রেইল</h2>
+      <div class="sub">একটি ডেভেলপারের জন্য, অন্যটি প্রতিষ্ঠানের জন্য</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">দিক</th><th style="width:38%">লগ (stdout)</th><th>AuditLog (ডেটাবেস)</th></tr></thead>
+      <tbody>
+        <tr><td>প্রশ্ন</td><td>"কী ভেঙেছে?"</td><td>"কে, কখন, কী বদলাল?"</td></tr>
+        <tr><td>থাকে কোথায়</td><td>হোস্টের লগ সংরক্ষণে (দিন-সপ্তাহ)</td><td>ডেটাবেসে — ব্যাকআপের সঙ্গে</td></tr>
+        <tr><td>কে পড়ে</td><td>ডেভেলপার/অপারেটর</td><td>প্রতিষ্ঠানের অ্যাডমিন (<code>OWNERS</code>)</td></tr>
+        <tr><td>রেকর্ড</td><td>অগঠিত লেখা</td><td>গঠিত: <code>action</code>, <code>object_type</code>, <code>before</code>, <code>after</code>, <code>reason</code>, <code>ip_address</code></td></tr>
+        <tr><td>না থাকলে</td><td>অন্ধ তদন্ত</td><td>বিশ্বাস হারানো — "আমার নম্বর কে বদলাল?"</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.6mm">
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>IMS-এ ২৩ ধরনের অ্যাকশন</b> লগ হয়: <code>students.create</code> · <code>attendance.correct</code> · <code>assessments.publish</code> · <code>homework.review</code> …
+      </div></div>
+      <div><div class="call" style="font-size:10pt;padding:2.6mm 4mm">
+        <b>নকশার সিদ্ধান্ত:</b> <code>log()</code> কখনো এরর তোলে না — অডিট ব্যর্থ হয়ে কাজ আটকাবে না, তবে ফাঁক থেকে যেতে পারে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "অডিট লেখা ব্যর্থ হলে কাজ থামানো উচিত?" ভালো আলোচনা: থামালে ব্যবহারকারী ক্ষতিগ্রস্ত, না থামালে প্রমাণ হারায় — IMS দ্বিতীয়টি বেছেছে, সচেতনভাবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">খোঁজা</span>
+    <div><h2>অডিট ট্রেইল পড়া</h2>
+      <div class="sub">পর্দায় ফিল্টার, কোডে সাধারণ ORM</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.44">@workspace_view(*OWNERS)
+def audit_list(request, slug):
+    qs = AuditLog.objects.filter(
+        workspace=request.workspace).select_related("actor")
+    if request.GET.get("action"):
+        qs = qs.filter(action__startswith=
+                       request.GET["action"])
+    if request.GET.get("actor"):
+        qs = qs.filter(actor_id=request.GET["actor"])
+    page = Paginator(qs, 40).get_page(
+        request.GET.get("page"))
+    actions = (AuditLog.objects
+               .filter(workspace=request.workspace)
+               .values_list("action", flat=True)
+               .distinct().order_by("action"))</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেবল OWNERS</b>
+            <p style="font-size:9.2pt">শিক্ষক বা ছাত্র নিজের বিরুদ্ধে লেখা রেকর্ড পড়তে পারে না — <code>@workspace_view(*OWNERS)</code>।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ইনডেক্স আগেই</b>
+            <p style="font-size:9.2pt"><code>(workspace, -created_at)</code> আর <code>action</code>-এ ইনডেক্স — তালিকা বাড়লেও ধীর হবে না।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">আজকের মাপা অবস্থা</b>
+            <p style="font-size:9.2pt"><code>AuditLog.objects.count()</code> = <b>০</b> — কারণ <code>seed_demo</code> কোনো কাজ করে না। বাস্তবে শিক্ষক যা করবেন, তা-ই জমবে।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">তদন্তের ছন্দ</b>
+            <p style="font-size:9.2pt">অ্যাকশন দিয়ে ফিল্টার → সময় দেখুন → <code>before</code>/<code>after</code> মিলিয়ে দেখুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডেমোতে ০ সারি দেখে হতাশ হবেন না — ক্লাসেই একটি মার্কস সংশোধন করুন, তারপর আবার তালিকা খুলুন: নতুন সারি হাজির।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ব্যাকআপ</span>
+    <div><h2>ব্যাকআপ = দুইটি জিনিস</h2>
+      <div class="sub">ডেটাবেস + আপলোড করা ফাইল</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.46">#!/usr/bin/env bash
+set -euo pipefail
+STAMP=$(date +%Y%m%d-%H%M%S)
+DEST="${BACKUP_DIR:-./backups}"
+mkdir -p "$DEST"
+
+pg_dump -Fc -f "$DEST/ims-$STAMP.dump"          # ডেটাবেস
+tar -czf "$DEST/media-$STAMP.tar.gz" media/ \
+    2>/dev/null || true                          # লোগো/ফাইল
+
+find "$DEST" -name '*.dump'   -mtime +14 -delete
+find "$DEST" -name '*.tar.gz' -mtime +14 -delete
+
+# cron: রাত ২টায়
+# 0 2 * * * BACKUP_DIR=/var/backups/ims \
+#   bash /srv/ims/ops/backup.sh</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন <code>-Fc</code></b>
+            <p style="font-size:9.2pt">কাস্টম ফরম্যাট = সংকুচিত + টেবিল বাছাই করে রিস্টোর করা যায়।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">media আলাদা কেন</b>
+            <p style="font-size:9.2pt">PostgreSQL-এ লোগো নেই — সেটি ফাইলে; ব্যাকআপ না করলে রিস্টোরে ফাঁকা লোগো।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">১৪ দিন কেন</b>
+            <p style="font-size:9.2pt">"গত সপ্তাহে ভুল হয়েছিল" ধরার জন্য যথেষ্ট; তার বেশি রাখলে ডিস্ক ভরে যায়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">ব্যাকআপ কোথায় রাখবেন না</b>
+            <p style="font-size:9.2pt">একই সার্ভারে — সার্ভার গেলে ব্যাকআপও যায়। আলাদা জায়গা বা অবজেক্ট স্টোরেজ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "ডেটাবেসের ব্যাকআপ আছে কিন্তু media নেই — কী হারাবেন?" উত্তর: সব লোগো, আপলোড করা পড়ার উপকরণ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রিস্টোর</span>
+    <div><h2>আগে scratch-এ, তারপর আসল</h2>
+      <div class="sub">জীবন্ত ডেটাবেসের ওপর কখনো রিস্টোর নয়</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a29" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="10" y="42" width="200" height="66" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="110" y="68" text-anchor="middle" font-size="12.4" font-weight="700" fill="#312e81">ims-STAMP.dump</text>
+        <text x="110" y="90" text-anchor="middle" font-size="10" fill="#3730a3">pg_dump -Fc ফাইল</text>
+
+        <rect x="252" y="42" width="212" height="66" rx="9" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="358" y="64" text-anchor="middle" font-size="12.4" font-weight="700" fill="#155e75">ims_restore_check</text>
+        <text x="358" y="84" text-anchor="middle" font-size="10" fill="#0e7490">scratch ডেটাবেস</text>
+        <text x="358" y="100" text-anchor="middle" font-size="9.4" fill="#64748b">pg_restore -d …</text>
+
+        <rect x="506" y="42" width="222" height="66" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="617" y="64" text-anchor="middle" font-size="12.4" font-weight="700" fill="#166534">সারি গুনুন</text>
+        <text x="617" y="84" text-anchor="middle" font-size="9.8" fill="#15803d">students · attendance</text>
+        <text x="617" y="100" text-anchor="middle" font-size="9.8" fill="#15803d">marks · audit</text>
+
+        <rect x="770" y="42" width="220" height="66" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="880" y="64" text-anchor="middle" font-size="12.4" font-weight="700" fill="#92400e">তবেই আসল ডিবি</text>
+        <text x="880" y="84" text-anchor="middle" font-size="9.8" fill="#b45309">createdb ims_prod</text>
+        <text x="880" y="100" text-anchor="middle" font-size="9.8" fill="#b45309">pg_restore -d ims_prod</text>
+
+        <line x1="212" y1="75" x2="246" y2="75" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a29)"/>
+        <line x1="466" y1="75" x2="500" y2="75" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a29)"/>
+        <line x1="730" y1="75" x2="764" y2="75" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a29)"/>
+        <text x="500" y="132" text-anchor="middle" font-size="10.2" fill="#b91c1c">সংখ্যা মিলছে না? এখানেই থামুন — আসল ডেটাবেসে হাত দেবেন না।</text>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:10.6pt;padding:2.8mm 4.4mm">
+      <b>"A backup you have never restored is not a backup."</b> — DEPLOYMENT.md §6। প্রতিটি রিস্টোর একই সঙ্গে ব্যাকআপের <b>পরীক্ষা</b>।
+    </div>
+    <div class="call warn" style="margin-top:2.8mm;font-size:10.2pt;padding:2.6mm 4.2mm">
+      scratch ডেটাবেস রাখা যায় না বলে মুছে ফেলুন, তবে <b>রিস্টোরের সময় ও সারি-সংখ্যা লিখে রাখুন</b> — পরের বার তুলনা করার জন্য।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "রিস্টোর শিখতে সঙ্কটের জন্য অপেক্ষা করবেন না।" মাসে একবার scratch-এ রিস্টোর করুন — ৫ মিনিটের কাজ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মাইগ্রেশন</span>
+    <div><h2>স্কিমা বদলানো — সবচেয়ে ঝুঁকির কাজ</h2>
+      <div class="sub">ক্রম, ব্যাকআপ, আর অপরিবর্তনীয়তার নিয়ম</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:8%">#</th><th style="width:42%">ধাপ</th><th>কেন</th></tr></thead>
+      <tbody>
+        <tr><td>১</td><td><code>ops/backup.sh</code> হাতে একবার</td><td>মাইগ্রেশন ব্যর্থ হলে ফেরার পথ থাকতে হবে</td></tr>
+        <tr><td>২</td><td><code>makemigrations</code> → ফাইল পড়া</td><td>ORM যা বানিয়েছে, তা-ই তো চেয়েছিলেন?</td></tr>
+        <tr><td>৩</td><td>প্রথমে যোগ করুন, পরে সরান</td><td>পুরোনো কোড চলাকালীন নতুন কলাম দরকার হয়</td></tr>
+        <tr><td>৪</td><td><code>migrate --noinput</code> (release step)</td><td>নতুন কোড চালু হওয়ার আগে স্কিমা তৈরি</td></tr>
+        <tr><td>৫</td><td><code>python manage.py test</code> + ধোঁয়া পরীক্ষা</td><td>মাইগ্রেশনই সবচেয়ে বড় অদৃশ্য ভাঙার জায়গা</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>দুই ধাপের পদ্ধতি:</b> প্রথম রিলিজে নতুন কলাম (nullable), দ্বিতীয় রিলিজে পুরোনো কলাম বাদ — এতে রোলব্যাক নিরাপদ থাকে।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>ফাঁদ:</b> <code>migrate</code> স্বয়ংক্রিয়ভাবে ডেটা ফেরায় না — কলাম মুছে ফেললে সেটি <b>চিরতরে</b> যায়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩ নম্বর ধাপটি পেশাদার অভ্যাস — "expand then contract"। শিক্ষার্থীদের বলুন বড় স্কিমা বদল সবসময় দুই রিলিজে ভাগ করতে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রোলব্যাক</span>
+    <div><h2>"ফিরিয়ে নিন" — দুই রকম, দুই সমস্যা</h2>
+      <div class="sub">কোড ফেরানো সহজ, ডেটা ফেরানো কঠিন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3mm 4mm"><b style="font-size:11.4pt">কোড রোলব্যাক</b>
+            <p style="font-size:10pt">আগের রিলিজে ফেরানো — হোস্টের "Rollback to previous deploy"। দ্রুত, নিরাপদ, কারণ পুরোনো কোড আগেও চলেছে।</p></div>
+          <div class="card bad" style="padding:3mm 4mm"><b style="font-size:11.4pt">স্কিমা রোলব্যাক</b>
+            <p style="font-size:10pt"><code>migrate app 0007</code> — টেবিল/কলাম ফেরে, কিন্তু নতুন রিলিজে লেখা <b>ডেটা ফেরে না</b>।</p></div>
+          <div class="card warn" style="padding:3mm 4mm"><b style="font-size:11.4pt">ডেটা রোলব্যাক</b>
+            <p style="font-size:10pt">শুধু ব্যাকআপ থেকে। তাই রিলিজের আগে ব্যাকআপ নেওয়া = রোলব্যাকের একমাত্র পথ।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:40%">পরিস্থিতি</th><th>প্রতিক্রিয়া</th></tr></thead>
+          <tbody>
+            <tr><td>নতুন পাতা ৫০০ দিচ্ছে</td><td>কোড রোলব্যাক</td></tr>
+            <tr><td>মার্কস ভুল দেখাচ্ছে</td><td>কোড ঠিক + অডিট দেখুন</td></tr>
+            <tr><td>মাইগ্রেশন অর্ধেক চলেছে</td><td>ব্যাকআপ রিস্টোর (scratch পরীক্ষা করে)</td></tr>
+            <tr><td>ভুল ডেটা লেখা হয়েছে অনেক আগে</td><td>অডিট <code>before</code>/<code>after</code> দিয়ে হাতে সংশোধন</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.6mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          নিয়ম: রোলব্যাক করার আগে <b>বর্তমান অবস্থার ব্যাকআপ</b> নিন — নইলে ভুল ঠিক করতে গিয়ে আরও ডেটা হারাবেন।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডের মূল কথা: "কোডের সংস্করণ আছে, ডেটার নেই।" তাই রিলিজ-পূর্ব ব্যাকআপকে অভ্যাসে পরিণত করুন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">মনিটরিং</span>
+    <div><h2>কী মাপবেন — ছয়টি সংখ্যা</h2>
+      <div class="sub">আর IMS-এ এখন কী নেই, সেটাও স্পষ্ট</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:26%">মাপ</th><th style="width:36%">কেন</th><th>সস্তা উপায়</th></tr></thead>
+      <tbody>
+        <tr><td>uptime</td><td>সাইট খোলা আছে কি না</td><td>বাইরের পিং সেবা (৫ মিনিট পরপর)</td></tr>
+        <tr><td>৫০০ রেট</td><td>ব্যবহারকারী ভাঙা পর্দা দেখছে কি না</td><td>লগে <code>ERROR</code> সারি গোনা</td></tr>
+        <tr><td>উত্তর-সময় (p95)</td><td>ধীর হচ্ছে কি না</td><td>হোস্টের ড্যাশবোর্ড</td></tr>
+        <tr><td>ডেটাবেস সংযোগ</td><td>শ্রমিক × <code>CONN_MAX_AGE</code> সীমা ছাড়াচ্ছে?</td><td>ডেটাবেস প্রদানকারীর গ্রাফ</td></tr>
+        <tr><td>ডিস্ক</td><td>ব্যাকআপ ও <code>media/</code> ভরছে</td><td>হোস্টের অ্যালার্ট</td></tr>
+        <tr><td>ব্যাকআপ সফলতা</td><td>নীরবে ব্যর্থ হওয়া সবচেয়ে বিপজ্জনক</td><td>স্ক্রিপ্ট শেষে ইমেইল/cron mail</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      <b>সৎ হিসাব:</b> IMS-এ Sentry/APM/uptime বোর্ড নেই — ৬টির মধ্যে কেবল হোস্টের ডিফল্ট মেট্রিক আছে। সবচেয়ে সস্তা তিনটি আগে যোগ করুন: বাইরের পিং, লগ-অ্যালার্ট, ব্যাকআপ-ইমেইল।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "নীরব ব্যর্থতা" শব্দটি ব্যাখ্যা করুন: cron কাজ করেছে কিন্তু pg_dump ব্যর্থ — কোনো কেউ জানে না, তিন মাস পর জানা যায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">বাণিজ্যিক</span>
+    <div><h2>সাবস্ক্রিপশন চালানো — একটি কমান্ড</h2>
+      <div class="sub">আজ সত্যি চালানো আউটপুট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 48%">
+        <pre style="font-size:8.2pt;line-height:1.46">$ python manage.py billing_report
+Commercial report 2026-11-05
+  active institutions : 1
+  on trial            : 1
+  MRR                 : ৳6,500   ARR ৳78,000
+  student seats       : 10
+
+No unpaid invoices.</pre>
+        <div class="call" style="margin-top:2.6mm;font-size:9.6pt;padding:2.4mm 3.6mm">
+          স্ক্রিপ্ট লেখার উদ্দেশ্যই ছিল: <b>সকালের স্ট্যান্ড-আপে পেস্ট করা</b> অথবা cron-এ চালিয়ে ইমেইল করা।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কী দেখায়</b>
+            <p style="font-size:9.2pt">সক্রিয় প্রতিষ্ঠান · ট্রায়ালে কত · MRR/ARR · মোট সিট · ৭ দিনে শেষ হওয়া ট্রায়াল · unpaid ইনভয়েস</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">মেয়াদ শেষে কী হয়</b>
+            <p style="font-size:9.2pt"><code>SubscriptionGateMiddleware</code> লেখা আটকায়, পড়া চালু রাখে — ডেটা কখনো মুছে যায় না।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কে কী দেখে</b>
+            <p style="font-size:9.2pt">অ্যাডমিন → রিনিউ পর্দায় রিডাইরেক্ট;<br>বাকিরা → "ask your administrator" বার্তা, কোনো বিলিং তথ্য নয়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">এখনো হাতে</b>
+            <p style="font-size:9.2pt">অনলাইন পেমেন্ট নেই — bKash/ব্যাংক ট্রানজেকশন আইডি হাতে এন্ট্রি, ইচ্ছাকৃতভাবে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম দিনেই <code>billing_report</code> চালান — বাস্তব সংখ্যা দেখলে "SaaS চালানো" বিমূর্ত থাকে না।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ইন্সিডেন্ট</span>
+    <div><h2>কিছু ভেঙেছে — পাঁচ ধাপ</h2>
+      <div class="sub">শৃঙ্খলা, তারপর দক্ষতা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:8%">#</th><th style="width:30%">ধাপ</th><th>কাজ</th></tr></thead>
+      <tbody>
+        <tr><td>১</td><td>থামান ও জানান</td><td>প্রভাব বোঝা: কে আটকে, কী হারাচ্ছে। ব্যবহারকারীকে সৎ বার্তা দিন।</td></tr>
+        <tr><td>২</td><td>পুনরুৎপাদন</td><td>কোন URL, কোন ভূমিকা, কোন সময় — লগে সেই মুহূর্ত খুঁজুন।</td></tr>
+        <tr><td>৩</td><td>সীমিত করুন</td><td>দরকার হলে ফিচার বন্ধ/রোলব্যাক — ডেটা বাঁচানো আগে, কারণ পরে।</td></tr>
+        <tr><td>৪</td><td>ঠিক করুন + টেস্ট</td><td>প্রথমে ব্যর্থ টেস্ট (ক্লাস ২৭-এর লাল-সবুজ), তারপর সমাধান।</td></tr>
+        <tr><td>৫</td><td>লিখে রাখুন</td><td>কী ঘটল, কেন, কী বদলাল — পরের জন যেন একই ফাঁদে না পড়ে।</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>দোষ নয়, কারণ:</b> "কে ভুল করল" নয় — "কোন নিয়ম অনুপস্থিত ছিল" এই প্রশ্নেই আসল উত্তর মেলে।
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সময় লিখুন:</b> টাইমস্ট্যাম্প ছাড়া লগ অর্থহীন — সার্ভারের সময় অঞ্চল <code>Asia/Dhaka</code> কিনা নিশ্চিত করুন।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে একটি কাল্পনিক ইন্সিডেন্ট বানিয়ে পাঁচ ধাপ হাঁটুন: "শিক্ষক মার্কস সংরক্ষণ করতে পারছেন না, ৫০৩ আসছে।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">৫০০ পাতা</span>
+    <div><h2>ব্যবহারকারী যা দেখে, আর ডেটা যা ভোগে</h2>
+      <div class="sub">ভদ্র বার্তা, লেনদেন অটুট — তবে একটি প্রতিশ্রুতি এখনো অপূর্ণ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.46">Something went wrong on our side
+The error has been written to the application
+log with a reference number. No data was
+lost and nothing you entered was half-saved
+— every write is wrapped in a database
+transaction.
+
+If it keeps happening, contact the
+administrator with the time it occurred.
+
+[Try the dashboard again]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">যা সত্যি</b>
+            <p style="font-size:9.2pt">DEBUG=False-এ ডেটা ফাঁস হয় না; লেখা <code>transaction.atomic</code>-এ মোড়া, তাই অর্ধেক লেখা থাকে না।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">যা এখনো সত্যি নয়</b>
+            <p style="font-size:9.2pt">"reference number" লেখা আছে, কিন্তু কোডে এমন কোনো আইডি তৈরি হয় <b>না</b> — ভবিষ্যতের কাজ।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">কেন গুরুত্বপূর্ণ</b>
+            <p style="font-size:9.2pt">ব্যবহারকারী সময় বললে আপনি লগে খুঁজতে পারেন — আইডি থাকলে খোঁজা সেকেন্ডের কাজ হতো।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">শিক্ষা</b>
+            <p style="font-size:9.2pt">বার্তা যত সুন্দর, প্রতিশ্রুতি তত যাচাইযোগ্য হতে হবে — নইলে ভরসা ভাঙে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি সততার উদাহরণ হিসেবে ব্যবহার করুন — কোড আর লেখা মিলছে না, সেটি লিখে রাখাই পেশাদারির প্রথম ধাপ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পরিবর্তন</span>
+    <div><h2>পরিবর্তন ব্যবস্থাপনা — ছোট অভ্যাস, বড় রক্ষা</h2>
+      <div class="sub">প্রতিটি রিলিজ নিজের গল্প বলুক</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:32%">অভ্যাস</th><th>কেন</th></tr></thead>
+      <tbody>
+        <tr><td>এক কমিট = এক পরিবর্তন</td><td>রোলব্যাক করতে হলে ছোট টুকরো ফেরানো সহজ</td></tr>
+        <tr><td>কমিট বার্তায় "কী + কেন"</td><td>"fix" লিখলে ছয় মাস পর কিছুই বোঝা যায় না</td></tr>
+        <tr><td>রিলিজ নোট: কী বদলাল, কী মাইগ্রেশন</td><td>কেউ জিজ্ঞেস করলে এক জায়গায় উত্তর</td></tr>
+        <tr><td>বড় বদলের আগে <code>--dry-run</code>/<code>sqlmigrate</code></td><td>চালানোর আগে SQL দেখে নেওয়া</td></tr>
+        <tr><td>রিলিজের আগে ব্যাকআপ, পরে ধোঁয়া পরীক্ষা</td><td>ফেরার পথ আর প্রমাণ — দুটোই দরকার</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>IMS থেকে:</b> ১৯টি কমিট, প্রতিটি একটি শ্রেণি-কাজের সীমানা; <code>BUILD_STATUS.md</code>-এ প্রমাণের খাতা।
+      </div></div>
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যা এখনো নেই:</b> CI পাইপলাইন — রিলিজের আগে স্বয়ংক্রিয় টেস্ট এখনো হাতে চালাতে হয়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "ভবিষ্যতের আপনি অচেনা মানুষ — তাকে চিঠি লিখে রাখুন।" কমিট বার্তা সেই চিঠি।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — পরিচালনার চার হাতে-কলমে কাজ</h2>
+      <div class="sub">প্রতিটি কাজ ৫ মিনিট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">১. অডিট জন্ম দিন</b>
+            <p style="font-size:10pt">একটি নম্বর সংশোধন করুন → <code>audit_list</code> খুলে নতুন সারি দেখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">২. ব্যাকআপ নিন</b>
+            <p style="font-size:10pt"><code>BACKUP_DIR=/tmp/bk bash ops/backup.sh</code> → ফাইলের আকার দেখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">৩. রিস্টোর পরীক্ষা করুন</b>
+            <p style="font-size:10pt">scratch ডিবিতে রিস্টোর → চারটি টেবিলের সারি গুনে মিলিয়ে দেখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.4pt">৪. বাণিজ্যিক ছবি তুলুন</b>
+            <p style="font-size:10pt"><code>billing_report</code> চালিয়ে সংখ্যাগুলো নিজের ভাষায় ব্যাখ্যা করুন।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>লগ আর অডিট — কোনটি কতদিন রাখবেন?</li>
+          <li class="g">ব্যাকআপ একই সার্ভারে রাখলে?</li>
+          <li>migrate ফেরানো কি সবসময় সম্ভব?</li>
+          <li class="r">ব্যাকআপ নীরবে ব্যর্থ হলে বুঝবেন কীভাবে?</li>
+          <li class="g">৫০০ পাতার প্রতিশ্রুতি রক্ষা করবেন কীভাবে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় প্রশ্নের উত্তর: "নতুন রিলিজে লেখা ডেটা ফেরে না — তাই ব্যাকআপই আসল রোলব্যাক।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">পরিচালনার পুরো সারাংশ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:54%">নীতি</th><th>প্রমাণ / কমান্ড</th></tr></thead>
+      <tbody>
+        <tr><td><b>যা মাপা হয় না, রক্ষা করা যায় না</b></td><td>লগে ৫০০ · p95 · ব্যাকআপ সফলতা</td></tr>
+        <tr><td><b>লগ ডেভেলপারের, অডিট প্রতিষ্ঠানের</b></td><td>২৩ অ্যাকশন · <code>AuditLog</code> · <code>OWNERS</code></td></tr>
+        <tr><td><b>ব্যাকআপ = ডেটাবেস + <code>media/</code></b></td><td><code>pg_dump -Fc</code> · <code>tar -czf</code> · ১৪ দিন</td></tr>
+        <tr><td><b>রিস্টোর না করা ব্যাকআপ ব্যাকআপ নয়</b></td><td><code>ops/restore.sh</code> → scratch ডিবি</td></tr>
+        <tr><td><b>কোডের সংস্করণ আছে, ডেটার নেই</b></td><td>রিলিজ-পূর্ব ব্যাকআপ</td></tr>
+        <tr><td><b>ইন্সিডেন্টে শৃঙ্খলা, দোষ নয়</b></td><td>৫ ধাপ · লাল টেস্ট আগে</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.4mm;font-size:10.4pt;padding:2.6mm 4.2mm">
+      পরের ক্লাস (৩০): ডিপ্লয়মেন্ট পর্বের শেষ ধাপ — পূর্ণাঙ্গ রিহার্সাল, সম্পূর্ণ go-live, আর পর্ব ৭-এর সূচনা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাস শেষে প্রত্যেককে একটি কাজ দিন: "আপনার প্রজেক্টে একটি ব্যাকআপ স্ক্রিপ্ট লিখুন এবং একবার রিস্টোর করে দেখান।"
+</section>
+
+<section class="slide divider">
+  <div class="n">৩০</div>
+  <h2>পূর্ণাঙ্গ রিহার্সাল ও go-live</h2>
+  <p>শেষ তিনটি দরজা · DNS · প্রথম ব্যবহারকারী · ফোনে পাওয়া প্রথম কল</p>
+</section>

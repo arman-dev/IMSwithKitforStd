@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">লগইন</span>
+    <div><h2>লগইনে তিনটি ভালো সিদ্ধান্ত, একটি বড় ফাঁক</h2>
+      <div class="sub"><code>IMSLoginView</code> · ৯ লাইন কোড, বড় প্রভাব</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.06">
+        <pre style="font-size:8.1pt;line-height:1.5;padding:3mm 3.6mm">def form_valid(self, form):
+    # আগের সেশনের workspace মুছে ফেলো:
+    # এই ব্রাউজারে অন্য কেউ লগইন করেছিল
+    self.request.session.pop(SESSION_KEY, None)
+    response = super().form_valid(form)
+    messages.success(self.request, "Welcome back!")
+    return response</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:38%">সিদ্ধান্ত</th><th style="width:62%">কেন</th></tr>
+          <tr><td>সেশন-কী মুছে ফেলা</td><td>শেয়ার্ড কম্পিউটার: আগের ব্যবহারকারীর স্কুলে নতুন ব্যবহারকারী ঢুকে যেত না</td></tr>
+          <tr><td><code>redirect_authenticated_user</code></td><td>লগইন থাকা অবস্থায় লগইন পাতায় গেলে ড্যাশবোর্ডে ফেরত</td></tr>
+          <tr><td>Django-র <code>login()</code></td><td>সেশন-কী ঘোরায় (session fixation ঠেকায়) — নিজে লিখতে হয় না</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.8pt;padding:2.4mm 3.6mm">
+          <b>বড় ফাঁক:</b> সফল বা ব্যর্থ লগইন — কোনোটিই <code>AuditLog</code>-এ যায় না। "কে কখন ঢুকল" প্রশ্নের উত্তর ডেটাবেজে নেই, কেবল সার্ভার লগে (যা ঘুরিয়ে ফেলা যায়)।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> সেশন-কী মুছে ফেলার লাইনটি সবচেয়ে বড় শিক্ষা — ছোট কোড, বড় ঝুঁকি বন্ধ। জিজ্ঞেস করুন: "এটি না থাকলে কী হতো?" উত্তর: ল্যাবে একজন লগআউট না করে গেলে পরেরজন তার স্কুলে ঢুকে যেত।
+</section>

@@ -1,0 +1,35 @@
+<section class="slide">
+  <div class="head"><span class="badge">স্তর ৪</span>
+    <div><h2>ভূমিকা ঠিক, বস্তু ভুল — সবচেয়ে সূক্ষ্ম ফাঁক</h2>
+      <div class="sub">শিক্ষক একজন, কিন্তু ক্লাস ৪০টি; ডেকোরেটর কেবল প্রথমটি জানে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.02">
+        <pre style="font-size:8pt;line-height:1.45;padding:3mm 3.4mm">@workspace_view(*TEACHING)
+def exam_detail(request, slug, pk):
+    exam = get_object_or_404(Exam, pk=pk,
+                             workspace=request.workspace)
+    if not teacher_can_access_class(request.user,
+                                    exam.class_group):
+        raise PermissionDenied(
+            "You are not assigned to this class.")</pre>
+        <div style="font-size:9.7pt;color:#334155;margin-top:1.5mm">একই তিন লাইন ভিউতে যেখানে ক্লাস/ছাত্র/পরীক্ষা জড়িত — নাহলে পরিধি বাইরে যাওয়া যায়।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">স্তর</th><th style="width:66%">যা জানে</th></tr>
+          <tr><td>১. সদস্যতা</td><td>ইউজার এই স্কুলের সদস্য</td></tr>
+          <tr><td>২. ভূমিকা</td><td>তার ভূমিকা এই কাজটি করতে পারে</td></tr>
+          <tr><td>৩. বস্তু</td><td>এই নির্দিষ্ট ক্লাস/ছাত্র তার পরিধিতে</td></tr>
+        </table>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>ফাঁদ:</b> ২ নম্বর পাশ করলেই সব ক্লাস খুলে যায় — যদি ৩ নম্বর না থাকে। শিক্ষক ৭ম শ্রেণির, কিন্তু URL-এ ৯ম শ্রেণির <code>pk</code> বসালে দেখতে পাবেন।
+        </div>
+        <div class="call" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>প্রমাণ:</b> <code>test_teacher_sees_only_assigned_classes</code> · <code>test_teacher_only_sees_students_of_their_own_classes</code> · <code>test_teacher_with_no_assignment_sees_no_students</code>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এটি IDOR (insecure direct object reference) — নামটি বলুন, কারণ ইন্টারভিউতে জিজ্ঞেস করা হয়। উদাহরণ: নিজের রেজাল্ট পাতার URL-এ অন্যের <code>pk</code> বসানো।
+</section>

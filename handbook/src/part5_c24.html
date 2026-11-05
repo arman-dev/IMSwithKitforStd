@@ -1,0 +1,454 @@
+<!-- ===================== CLASS 24 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৫ · টেস্টিং · ক্লাস ২৪ / ৩৭</div>
+  <h1>যা পরীক্ষা করা<br>হয়নি, তা নেই</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৯ · টপিক ৯.১ (ইউনিট টেস্টিং)<br>১০৩টি টেস্ট · ১,৩৫৩ লাইন · ২২টি টেস্ট ক্লাস · ১৬টি <code>setUpTestData</code></div>
+  <div class="pill">TestCase · setUpTestData · subTest</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>এক ঘণ্টা বেশি লাগিয়ে টেস্ট লিখব কেন?</h2>
+      <div class="sub">হাত তুলুন: কে কখনো টেস্ট লিখেছেন? কে চালিয়েছেন?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:23pt;line-height:1.6">
+      কারণ একটি বাগ <span class="hl">দুবার</span> আসে না — যদি একবার লিখে রাখেন "এটা কাজ করে"।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      IMS-এ <b>১০৩টি টেস্ট</b> আছে — সবচেয়ে বেশি বিলিংয়ে (৩৬), তারপর core-এ (১৯)।
+      আজ শিখব এই টেস্টগুলোর গঠন, আর কেন কিছু ফাইলে <b>শূন্য</b> টেস্ট আছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "টেস্ট লেখা সময় নয়, সময় বাঁচানো।" কিন্তু প্রথম সপ্তাহে ব্যয়টা বেশি লাগে — এটা স্বীকার করুন, নাহলে ছাত্ররা বিশ্বাস করবে না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>১০৩টি টেস্ট, ১১টি অ্যাপ</h2>
+      <div class="sub">প্রতি অ্যাপে একটি <code>tests.py</code> — মোট ১,৩৫৩ লাইন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:44%">অ্যাপ</th><th>টেস্ট</th><th>লাইন</th></tr></thead>
+          <tbody>
+            <tr><td>billing</td><td><b>৩৬</b></td><td>৪৩৬</td></tr>
+            <tr><td>core</td><td>১৯</td><td>২৪৯</td></tr>
+            <tr><td>assessments</td><td>১১</td><td>১৫৫</td></tr>
+            <tr><td>workspaces</td><td>১০</td><td>১১৮</td></tr>
+            <tr><td>accounts</td><td>৯</td><td>১১৪</td></tr>
+            <tr><td>students</td><td>৫</td><td>৬৮</td></tr>
+            <tr><td>attendance</td><td>৫</td><td>৮৫</td></tr>
+            <tr><td>academics · lessons</td><td>৪ · ৪</td><td>৫২ · ৭৬</td></tr>
+            <tr><td><b>reports · audit</b></td><td><b>০ · ০</b></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+          বিলিংয়ে সবচেয়ে বেশি টেস্ট কেন? টাকা ভুল হলে ফেরানো কঠিন — আর নিয়মগুলোই জটিল (মেয়াদ · সিট · ইনভয়েস · গেট)।
+        </div>
+        <div class="call bad" style="margin-top:2.6mm;font-size:10.4pt;padding:2.6mm 4mm">
+          শূন্য টেস্ট = অন্ধ জায়গা: <code>reports/</code>-এর CSV আর <code>audit/</code>-এর পর্দা।
+          কোড আছে, ভরসা নেই।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>python manage.py test apps</code> চালিয়ে ১০৩টি টেস্টের আউটপুট দেখান — সংখ্যাটা একবার চোখে দেখলে আর ভুল হয় না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>একটি টেস্টের গঠন — তিন ধাপ</h2>
+      <div class="sub">Arrange · Act · Assert — নাম মনে রাখলেই যথেষ্ট</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 150" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="14" width="310" height="94" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="155" y="42" text-anchor="middle" font-size="11.4" font-weight="700" fill="#312e81">১. Arrange</text>
+          <text x="155" y="66" text-anchor="middle" font-size="9.6" fill="#3730a3">ওয়ার্কস্পেস · ব্যবহারকারী · ডেটা</text>
+          <text x="155" y="84" text-anchor="middle" font-size="9.6" fill="#3730a3">setUpTestData বা seed_demo</text>
+          <text x="155" y="98" text-anchor="middle" font-size="8.8" fill="#4338ca">"দৃশ্যটা তৈরি করো"</text>
+
+          <rect x="344" y="14" width="310" height="94" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="499" y="42" text-anchor="middle" font-size="11.4" font-weight="700" fill="#115e59">২. Act</text>
+          <text x="499" y="66" text-anchor="middle" font-size="9.6" fill="#115e59">একটি অনুরোধ — login · GET · POST</text>
+          <text x="499" y="84" text-anchor="middle" font-size="9.6" fill="#115e59">self.client.post(url, {...})</text>
+          <text x="499" y="98" text-anchor="middle" font-size="8.8" fill="#0f766e">"একটাই কাজ করো"</text>
+
+          <rect x="688" y="14" width="310" height="94" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.4"/>
+          <text x="843" y="42" text-anchor="middle" font-size="11.4" font-weight="700" fill="#7c2d12">৩. Assert</text>
+          <text x="843" y="66" text-anchor="middle" font-size="9.6" fill="#92400e">স্ট্যাটাস কোড · ডেটাবেস সারি · লেখা</text>
+          <text x="843" y="84" text-anchor="middle" font-size="9.6" fill="#92400e">assertEqual · assertContains</text>
+          <text x="843" y="98" text-anchor="middle" font-size="8.8" fill="#b45309">"একটাই সত্য দাবি করো"</text>
+
+          <g stroke="#94a3b8" stroke-width="1.2" fill="none">
+            <path d="M312,60 L340,60" marker-end="url(#a24)"/>
+            <path d="M656,60 L684,60" marker-end="url(#a24)"/>
+          </g>
+          <text x="500" y="136" text-anchor="middle" font-size="9" fill="#64748b">এক টেস্টে একটির বেশি Act নয় — নাহলে ব্যর্থ হলে বোঝা যায় না কোনটা ভেঙেছে</text>
+          <defs><marker id="a24" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5.5mm;font-size:11pt;padding:3mm 4.4mm">
+      ভালো টেস্টের নাম পড়েই বোঝা যায় দৃশ্যটা: <code>test_expired_trial_goes_read_only_but_keeps_data</code> — তিনটি দাবি এক নামে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে একটি খালি টেস্ট লিখুন তিন ভাগে ভাগ করে, তারপর কোডে পূরণ করুন। ছাত্ররা নিজের প্রজেক্টে একই ছক মানবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2><code>setUpTestData</code> বনাম <code>setUp</code></h2>
+      <div class="sub">১৬টি ক্লাস-স্তরের প্রস্তুতি · ২০টি মেথড-স্তরের</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45">@classmethod
+def setUpTestData(cls):
+    call_command("seed_demo", verbosity=0)   # একবার, পুরো ক্লাসের জন্য
+
+def setUp(self):
+    self.client.force_login(self.teacher)    # প্রতিটি টেস্টের আগে
+
+# পার্থক্য মনে রাখার নিয়ম
+# setUpTestData → একবার চলে, তারপর প্রতিটি টেস্টের
+#                 শেষে Django নিজেই রোলব্যাক করে
+# setUp         → প্রতিটি টেস্টের আগে চলে (কোনো রোলব্যাক নেই)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:34%">প্রশ্ন</th><th>উত্তর</th></tr></thead>
+          <tbody>
+            <tr><td>ডেটা কতবার তৈরি হয়?</td><td><code>setUpTestData</code>-য় একবার</td></tr>
+            <tr><td>টেস্ট ডেটা বদলালে?</td><td>প্রতিটি টেস্ট শেষে রোলব্যাক — পরের টেস্ট পরিষ্কার</td></tr>
+            <tr><td>কেন <code>@classmethod</code></td><td>ইনস্ট্যান্স নেই, তাই <code>cls</code> দিয়ে ডেটা রাখতে হয়</td></tr>
+            <tr><td>দুর্বলতা</td><td><code>self</code> ব্যবহার করা যায় না — শেয়ারড অবজেক্ট বদলাবেন না</td></tr>
+          </tbody>
+        </table>
+        <div class="call warn" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          বড় <code>seed_demo</code> একবার চালালে ৩৬টি বিলিং টেস্ট দ্রুত চলে — এটাই IMS-এর গতি-কৌশল।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভে একটি টেস্টে ডেটা বদলে পরের টেস্ট চালান — দেখা যাবে বদল টেকেনি। রোলব্যাকের ধারণাটা এখানেই বাস্তব হয়ে ওঠে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2><code>seed_demo</code> — ২৮১ লাইনের দৃশ্য</h2>
+      <div class="sub">একটি প্রতিষ্ঠান, চার ভূমিকা, ছাত্র-ক্লাস-পরীক্ষা-হাজিরা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.42">@classmethod
+def setUpTestData(cls):
+    call_command("seed_demo", verbosity=0)
+
+SLUG = "sunrise-model-school"
+PASSWORD = "DemoPass!2026"
+
+LOGINS = [("admin@ims.local", "ORG_ADMIN"),
+          ("coordinator@ims.local", "COORDINATOR"),
+          ("teacher@ims.local", "TEACHER"),
+          ("student@ims.local", "STUDENT")]
+
+def _login(self, email):
+    self.assertTrue(self.client.login(
+        email=email, password=PASSWORD))
+    self.client.get(reverse("workspaces:switch"),
+        {"to": <institution workspace>.pk})</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন seed, কেন হাতে তৈরি নয়</b>
+            <p style="font-size:9.6pt">হাতে ৩০টি সারি বানালে টেস্ট পড়া কঠিন হয়; seed আসল ডেটার মতোই বাস্তব।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">idempotent</b>
+            <p style="font-size:9.6pt">দুবার চালালেও ভাঙে না — তাই টেস্ট আর ডেমো দুই জায়গায় একই কমান্ড।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">চার লগইন</b>
+            <p style="font-size:9.6pt">একই ওয়ার্কস্পেসে চারটি ভূমিকা — তাই অনুমতির টেস্ট লেখা সহজ।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11pt">ঝুঁকি</b>
+            <p style="font-size:9.6pt">seed বদলালে অনেক টেস্ট একসাথে ভাঙতে পারে — তাই slug ও পাসওয়ার্ড ধ্রুবক।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "টেস্টের ডেটাও প্রোডাক্টের অংশ।" seed_demo ভাঙলে ডেমো আর টেস্ট দুটোই ভাঙে — তাই এটি যত্নে রাখা হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>লগইনের তিন পদ্ধতি</h2>
+      <div class="sub"><code>login()</code> ৩০ বার ব্যবহৃত · <code>force_login()</code> দ্রুত · <code>reverse()</code> ৩৪ বার</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:28%">পদ্ধতি</th><th style="width:26%">কী করে</th><th>কখন</th></tr></thead>
+      <tbody>
+        <tr><td><code>self.client.login(email=…, password=…)</code></td><td>সত্যিকারের লগইন প্রবাহ</td><td>লগইন নিজেই পরীক্ষার বিষয় হলে</td></tr>
+        <tr><td><code>self.client.force_login(user)</code></td><td>সেশন বানিয়ে দেয়</td><td>শুধু অনুমতি/পর্দা দেখতে চাইলে — দ্রুত</td></tr>
+        <tr><td><code>self.client.get(reverse("…"))</code></td><td>URL নাম থেকে পথ</td><td>সবসময় — হার্ডকোড করা URL নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <code>reverse()</code> ব্যবহার করলে URL বদলালে টেস্ট ভাঙে না — শুধু এক জায়গায় ঠিক করতে হয়।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <code>force_login</code> বেশি ব্যবহার করলে লগইন-সংক্রান্ত বাগ ধরা পড়ে না — তাই দুটোই দরকার।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন: "টেস্টে <code>/w/sunrise-model-school/students/</code> হার্ডকোড করলে কী হয়?" উত্তর: slug বদলালে ২০টি টেস্ট ভাঙবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>কোন assert কখন — সংখ্যায় দেখুন</h2>
+      <div class="sub">১২৯টি <code>assertEqual</code> · ১৭টি <code>assertContains</code> · ১২টি <code>assertRaises</code></div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:30%">assert</th><th style="width:14%">কতবার</th><th>কী প্রমাণ করে</th></tr></thead>
+      <tbody>
+        <tr><td><code>assertEqual</code></td><td>১২৯</td><td>মান সমান — স্ট্যাটাস, সংখ্যা, স্ট্রিং</td></tr>
+        <tr><td><code>assertTrue</code> / <code>assertFalse</code></td><td>২৯ / ৮</td><td>একটি শর্ত সত্য/মিথ্যা (<code>check_password</code>, <code>is_late</code>)</td></tr>
+        <tr><td><code>assertContains</code></td><td>১৭</td><td>পর্দায় লেখাটি সত্যিই দেখা যায়</td></tr>
+        <tr><td><code>assertNotContains</code></td><td>৫</td><td>যা দেখা যাবে না, তা সত্যিই দেখা যায় না</td></tr>
+        <tr><td><code>assertRaises</code></td><td>১২</td><td>ভুল ইনপুটে <code>ValidationError</code>/<code>PermissionDenied</code></td></tr>
+        <tr><td><code>assertRedirects</code></td><td><b>১</b></td><td>— খুব কম; বাকিরা শুধু স্ট্যাটাস ৩০২ দেখে</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:3.4mm;font-size:10.6pt;padding:2.6mm 4.2mm">
+      <code>assertEqual(response.status_code, 302)</code> বলে না <b>কোথায়</b> গেল। <code>assertRedirects</code> একটাই ব্যবহার — বাকি জায়গায় গন্তব্য অপরীক্ষিত।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "৩০২ মানে কিছু একটা হয়েছে, কিন্তু কোথায়?" — এই ফাঁকটা দেখিয়ে ছাত্রদের নিজের টেস্টে <code>assertRedirects</code> ব্যবহার করতে বলুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>চার ভূমিকা, একটি টেস্ট — <code>subTest</code></h2>
+      <div class="sub">লুপের ভেতরে টেস্ট, কিন্তু ব্যর্থতা আলাদা করে রিপোর্ট হয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">def test_each_role_is_offered_only_its_own_links(self):
+    for email, rules in EXPECTED_LINKS.items():
+        with self.subTest(role=email):
+            html = self._sidebar_html(email)
+            for label in rules["must_show"]:
+                self.assertIn(label, html)
+            for label in rules["must_hide"]:
+                self.assertNotIn(label, html)
+
+# ৪ ভূমিকা × (দেখতে হবে + দেখাবে না) — এক টেস্টে
+# ব্যর্থ হলে: "role='student@ims.local'" লেখা আসে</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কেন subTest</b>
+            <p style="font-size:9.6pt">লুপে সাধারণ assert দিলে প্রথম ব্যর্থতায় বাকি তিনটি ভূমিকা অপরীক্ষিত থেকে যায়।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">রিপোর্ট</b>
+            <p style="font-size:9.6pt">একই টেস্টে ৪টি আলাদা ফল — কোন ভূমিকা ভেঙেছে স্পষ্ট দেখা যায়।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">কোথায় ব্যবহৃত</b>
+            <p style="font-size:9.6pt">core-এ ৫ বার (ভূমিকা ও পর্দা), billing-এ ১ বার।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">সীমা</b>
+            <p style="font-size:9.6pt">এক টেস্টে ২০টি subTest থাকলে ব্যর্থতার তালিকা লম্বা হয় — ৪–৬ এর মধ্যে রাখুন।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ইচ্ছে করে একটি ভূমিকার EXPECTED_LINKS ভেঙে দেখান — আউটপুটে শুধু ওই ভূমিকাটি লাল হবে, বাকিরা সবুজ। এটাই subTest-এর পুরো মূল্য।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>৪০৩ বনাম ৪০৪ — টেস্টেই সিদ্ধান্ত</h2>
+      <div class="sub"><code>test_non_member_gets_404_not_403</code> — কেন এটা জরুরি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">def test_non_member_gets_404_not_403(self):
+    other = User.objects.create_user(
+        email="outsider@example.com", password="x", full_name="Out")
+    self.client.force_login(other)
+    resp = self.client.get(f"/w/{SLUG}/students/")
+    self.assertEqual(resp.status_code, 404)
+
+def test_teacher_cannot_open_administration_pages(self):
+    self._login("teacher@ims.local")
+    for name in ("audit list", "settings", "grading"):
+        with self.subTest(page=name):
+            resp = self.client.get(reverse(f"…:{name}", kwargs={...}))
+            self.assertEqual(resp.status_code, 403)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9pt">
+          <thead><tr><th style="width:32%">পরিস্থিতি</th><th>সঠিক উত্তর</th></tr></thead>
+          <tbody>
+            <tr><td>সদস্যই নন</td><td><b>৪০৪</b> — প্রতিষ্ঠানটির অস্তিত্বই জানানো হয় না</td></tr>
+            <tr><td>সদস্য, কিন্তু ভূমিকা নয়</td><td><b>৪০৩</b> — "আপনার অনুমতি নেই"</td></tr>
+            <tr><td>লগইন নেই</td><td>লগইনে রিডাইরেক্ট (৩০২)</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+          ভুল হলে তথ্য ফাঁস: ৪০৩ বললে বোঝা যায় "এই ঠিকানায় একটা প্রতিষ্ঠান আছে"।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.8pt;padding:2.2mm 3.6mm">
+          এই দুটি টেস্টই পর্ব ৪-এর ক্লাস ১৭-এর নিয়মগুলোকে লক করে রেখেছে — নিয়ম বদলালে টেস্ট লাল হবে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "এক টেস্টে ৪০৩, আরেকটায় ৪০৪ — কেন আলাদা?" উত্তর: কারণ দুটো আলাদা ব্যবসায়িক সিদ্ধান্ত, আর টেস্ট হলো সেই সিদ্ধান্তের দলিল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>টেস্ট চালানো — তিনটি কমান্ড</h2>
+      <div class="sub">সব · এক অ্যাপ · এক টেস্ট</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.4pt;line-height:1.45"># সব টেস্ট
+python manage.py test apps
+
+# এক অ্যাপ
+python manage.py test apps.billing
+
+# একটি ক্লাস
+python manage.py test apps.core.tests.RoleInterfaceTests
+
+# একটি টেস্ট
+python manage.py test apps.billing.tests.ScopeTests.test_server_refuses_the_third_student
+
+# দ্রুত পুনরাবৃত্তি (ডেটাবেস ফেলে দেয় না)
+python manage.py test apps --keepdb -v 2
+
+# আসল স্কুলের মতো স্মোক টেস্ট (রোল × URL ম্যাট্রিক্স)
+python smoke_test.py</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>--keepdb</code></b>
+            <p style="font-size:9.6pt">টেস্ট-ডেটাবেস তৈরি করতে ২–৫ সেকেন্ড বাঁচে; বারবার চালালে বড় পার্থক্য।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt"><code>-v 2</code></b>
+            <p style="font-size:9.6pt">প্রতিটি টেস্টের নাম দেখায় — কোনটি ধীর, তা চোখে পড়ে।</p></div>
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">smoke_test.py আলাদা কেন</b>
+            <p style="font-size:9.6pt">এটি <code>TestCase</code> নয় — আসল ডেমো ডেটাবেসে ৪টি লগইন দিয়ে <b>৬০টি URL</b> ঘোরে।</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:11pt">প্রতিদিনের অভ্যাস</b>
+            <p style="font-size:9.6pt">কোড লেখার আগে নয়, লেখার পরে অন্তত একবার পুরো স্যুট — নাহলে ফাঁক জমে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>--keepdb</code> ছাড়া ও সাথে দুইবার চালিয়ে সময়ের পার্থক্য দেখান — গতি নিজেই যুক্তি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>টেস্টের নামই ডকুমেন্টেশন</h2>
+      <div class="sub">ভালো নাম পড়লে কোড না দেখেই স্পেসিফিকেশন বোঝা যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:56%">নাম</th><th>যা বলে</th></tr></thead>
+      <tbody>
+        <tr><td><code>test_expired_trial_goes_read_only_but_keeps_data</code></td><td>নিয়ম + সীমা + প্রতিশ্রুতি</td></tr>
+        <tr><td><code>test_early_renewal_extends_instead_of_resetting</code></td><td>ব্যবসায়িক সদিচ্ছা</td></tr>
+        <tr><td><code>test_student_cannot_see_another_students_marksheet</code></td><td>গোপনীয়তার সীমা</td></tr>
+        <tr><td><code>test_no_role_sees_a_link_it_cannot_open</code></td><td>দুই পক্ষ (মেনু ও সার্ভার) এক</td></tr>
+        <tr><td><code>test_personal_workspace_is_never_gated</code></td><td>ব্যতিক্রমটি স্পষ্ট</td></tr>
+        <tr><td><code>test_domain_cannot_be_stolen_by_a_second_institution</code></td><td>আক্রমণের নাম ধরে টেস্ট</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call" style="font-size:10.4pt;padding:2.6mm 4mm">
+        ছক: <code>test_&lt;অবস্থা&gt;_&lt;প্রত্যাশিত আচরণ&gt;</code> — শর্ত আগে, ফলাফল পরে।
+      </div></div>
+      <div><div class="call bad" style="font-size:10.4pt;padding:2.6mm 4mm">
+        খারাপ নাম: <code>test_1</code>, <code>test_works</code>, <code>test_student</code> — ব্যর্থ হলে কিছুই বলে না।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>python manage.py test apps -v 2</code>-এর আউটপুট প্রিন্ট করান — পুরো তালিকাটাই এক পাতার স্পেসিফিকেশন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>পাঁচটি টেস্ট-বিরোধী অভ্যাস</h2>
+      <div class="sub">প্রতিটির প্রতিকার এক লাইনে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:38%">অভ্যাস</th><th>পরিণতি ও প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. এক টেস্টে অনেক assert</b></td><td>প্রথমটাই ফেল করলে বাকি দাবি অজানা → subTest বা ভাগ করুন</td></tr>
+        <tr><td><b>২. <code>setUpTestData</code>-র ডেটা বদলানো</b></td><td>পরের টেস্ট অপ্রত্যাশিত → শেয়ারড অবজেক্ট অপরিবর্তিত রাখুন</td></tr>
+        <tr><td><b>৩. শুধু স্ট্যাটাস ৩০২ দেখা</b></td><td>ভুল জায়গায় রিডাইরেক্টও পাশ → <code>assertRedirects</code></td></tr>
+        <tr><td><b>৪. <code>force_login</code>-এ ভরসা</b></td><td>লগইনের বাগ চাপা পড়ে → অন্তত একটি সত্যিকারের <code>login()</code></td></tr>
+        <tr><td><b>৫. সময়-নির্ভর টেস্ট</b></td><td><code>timezone.localdate()</code> আসল তারিখ দেয় → <code>freeze_time</code> বা আপেক্ষিক তারিখ</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4mm;font-size:11pt;padding:2.8mm 4.4mm">
+      পঞ্চমটি IMS-এ <b>এখনো কোথাও ব্যবহৃত হয়নি</b> — মেয়াদ-সংক্রান্ত টেস্টগুলো আপেক্ষিক তারিখ (<code>today ± timedelta</code>) দিয়ে লেখা, তাই আজ-কাল ভাঙে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পঞ্চমটার স্বাদ দিন: একটি টেস্টে <code>trial_ends_on = date(2026,11,5)</code> লিখে দেখান — আগামীকালই লাল হবে। "টেস্ট ক্যালেন্ডার পড়তে পারে না।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — নিজের প্রথম তিন টেস্ট</h2>
+      <div class="sub">একটি মডেল, একটি ভিউ, একটি অনুমতি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. মডেলের নিয়ম (৭ মিনিট)</b>
+            <p style="font-size:10pt">একটি <code>clean()</code> বা property — সত্য/মিথ্যা দুই ক্ষেত্রেই assert।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. ভিউয়ের উত্তর (৭ মিনিট)</b>
+            <p style="font-size:10pt"><code>force_login</code> + <code>reverse</code> + স্ট্যাটাস ও <code>assertRedirects</code>।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. অনুমতি (৬ মিনিট)</b>
+            <p style="font-size:10pt">ভুল ভূমিকায় ৪০৩, অ-সদস্যে ৪০৪ — দুটোই এক টেস্টে <code>subTest</code> দিয়ে।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>টেস্ট লেখা সময় নষ্ট নাকি সঞ্চয়?</li>
+          <li class="g"><code>setUpTestData</code> কেন <code>classmethod</code>?</li>
+          <li>৩০২ দেখলেই যথেষ্ট নয় কেন?</li>
+          <li class="r">seed ভাঙলে কী হয়?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের উত্তর: "একবারে ৩০টি টেস্ট লাল — আর তখন বোঝা যায় না কোড ভেঙেছে, নাকি seed।" তাই fixture-ও কোডের মতো যত্নের।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>এক টেস্ট, এক দাবি</b></td><td>১০৩ টেস্ট · ১,৩৫৩ লাইন · ২২ ক্লাস</td></tr>
+        <tr><td><b>প্রস্তুতি একবার, টেস্ট আলাদা</b></td><td>১৬ <code>setUpTestData</code> · <code>seed_demo</code> ২৮১ লাইন</td></tr>
+        <tr><td><b>URL নাম দিয়ে, হার্ডকোড নয়</b></td><td><code>reverse()</code> ৩৪ বার</td></tr>
+        <tr><td><b>লুপে <code>subTest</code></b></td><td><code>EXPECTED_LINKS</code> — ৪ ভূমিকা, এক টেস্ট</td></tr>
+        <tr><td><b>৪০৩ বনাম ৪০৪ পরীক্ষিত</b></td><td><code>test_non_member_gets_404_not_403</code></td></tr>
+        <tr><td><b>যা পরীক্ষা হয়নি, তা অজানা</b></td><td><b>reports ০ · audit ০</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটা বারবার ফিরিয়ে আনুন — পরের ক্লাসেই এর বিস্তারিত: কোন ফাঁক কীভাবে বন্ধ করা যায়।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২৫</div>
+  <h2>পরের ক্লাস — "কে কী দেখবে, প্রমাণসহ"</h2>
+  <p>অনুমতি ও স্কোপের টেস্ট: <code>scoping.py</code> · ভূমিকা-ভিত্তিক ম্যাট্রিক্স · <code>smoke_test.py</code> · ক্রস-ওয়ার্কস্পেস ফাঁস</p>
+</section>

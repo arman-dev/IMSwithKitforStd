@@ -1,0 +1,33 @@
+<section class="slide">
+  <div class="head"><span class="badge">নির্ভরতা</span>
+    <div><h2>নিজের ৮ KB বনাম Bootstrap-এর ৫৩৪ KB</h2>
+      <div class="sub">কী কিনছি, কী ফেলে দিচ্ছি — এবং দুটোর সংঘর্ষ কোথায়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.8mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:38%">ফাইল</th><th style="width:22%">আকার</th><th style="width:40%">কী কাজে</th></tr>
+          <tr><td><code>ims.css</code></td><td>৭,৯৯০ B</td><td>নিজের ৫৯ ক্লাস</td></tr>
+          <tr><td><code>bootstrap.min.css</code></td><td>২৩২,৭৫৮ B</td><td>গ্রিড, ইউটিলিটি, <code>alert</code>, <code>table-responsive</code></td></tr>
+          <tr><td><code>bootstrap.bundle.min.js</code></td><td>৮০,৬৭৩ B</td><td>ড্রপডাউন, ট্যাব, মোডাল</td></tr>
+          <tr><td><code>bootstrap-icons.css</code> + ফন্ট</td><td>৮৫,৭৬০ + ১,৩০,৩৯৬ B</td><td>আইকন</td></tr>
+        </table>
+        <div class="call" style="margin-top:2mm;font-size:9.4pt;padding:2.2mm 3.2mm">
+          <b>অনুপাত:</b> নিজের কোড মোটের ১.৫%। কিন্তু পর্দায় যা দেখা যায় তার বেশিরভাগই নিজের কোড — কারণ Bootstrap-এর ব্যবহার মূলত কাঠামোয়, চেহারায় নয়।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="call warn" style="font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>সংঘর্ষ:</b> Bootstrap নিজেও <code>.alert</code>, <code>.badge</code>, <code>.table</code> সংজ্ঞায়িত করে। <code>ims.css</code> পরে লোড হয়, তাই নিজের নিয়ম জেতে — কিন্তু লোডের ক্রম বদলালে চেহারা বদলে যাবে।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>বিকল্প যা ভাবা হয়নি:</b> Bootstrap-এর শুধু গ্রিড+ইউটিলিটি বেছে নিয়ে (কাস্টম বিল্ড) ২৩২ KB থেকে ~৪০ KB-তে নামা যেত। করা হয়নি, তাই এখন পুরোটা যায়।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.5pt;padding:2.3mm 3.4mm">
+          <b>সৎ ফাঁক:</b> কোনো মিনিফিকেশন বা ফিঙ্গারপ্রিন্টিং নেই — ফাইল বদলালেও ব্রাউজারের ক্যাশ একই থাকে, ব্যবহারকারী পুরনো CSS দেখতে পারে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানেই "ফ্রেমওয়ার্ক বনাম নিজের CSS" বিতর্কের আসল উত্তর: দুইটাই ঠিক, কিন্তু লোডের ক্রম ও ভার্সন লিখে রাখা বাধ্যতামূলক। না লিখলে ছয় মাস পর কেউ জানবে না কোনটা কার উপরে।
+</section>

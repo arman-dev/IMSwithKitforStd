@@ -1,0 +1,21 @@
+<section class="slide">
+  <div class="head"><span class="badge">কেন</span>
+    <div><h2>workspace ঠিক করা <b>ডেকোরেটরের</b> কাজ নয় — মিডলওয়্যারের</h2>
+      <div class="sub">একবার ঠিক করলে ৫২টি ভিউ আর ভাবতে হয় না</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:24%">প্রশ্ন</th><th style="width:38%">ডেকোরেটরে করলে</th><th style="width:38%">মিডলওয়্যারে করলে (যা করা হয়েছে)</th></tr>
+      <tr><td>কত জায়গায় লিখতে হয়</td><td>প্রতিটি ভিউতে, অথবা প্রতিটি ভিউতে ডেকোরেটর লাগাতে হয়</td><td>একবার, <code>MIDDLEWARE</code>-এ</td></tr>
+      <tr><td>ভুলে যাওয়ার সম্ভাবনা</td><td>নতুন ভিউ যোগ করলে ডেকোরেটর বাদ পড়তে পারে</td><td>শূন্য — সব রিকোয়েস্ট একই পথে যায়</td></tr>
+      <tr><td>টেমপ্লেটে পাওয়া যায়?</td><td>না, কনটেক্সট আলাদা করে পাঠাতে হয়</td><td>হ্যাঁ, <code>request.workspace</code> কনটেক্সট প্রসেসরে যায়</td></tr>
+      <tr><td>প্রতি রিকোয়েস্টে খরচ</td><td>একই কোয়েরি, তবু প্রতিটি ভিউতে আলাদা</td><td>একটি indexed কোয়েরি, একবার</td></tr>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10.2pt;padding:2.6mm 4mm">
+      তবে <b>ভূমিকা-যাচাই এখনো ডেকোরেটরে</b> (<code>@workspace_view(*TEACHING)</code>) — কারণ "কে কী করতে পারবে" ভিউ-ভিত্তিক সিদ্ধান্ত, আর "কে কোন স্কুলে" রিকোয়েস্ট-ভিত্তিক।
+    </div>
+    <div class="call" style="margin-top:2.4mm;font-size:10.2pt;padding:2.6mm 4mm">
+      এই ভাগটাই মূল শিক্ষা: <b>প্রেক্ষাপট (context) মিডলওয়্যারে, অনুমতি (permission) ডেকোরেটরে।</b>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন নিজের প্রজেক্টে একটি ভিউ বানিয়ে দেখতে — ডেকোরেটর ছাড়া। তারপর জিজ্ঞেস করুন "এটি কোন স্কুলের ডেটা দেখছে?" উত্তর না থাকলেই বুঝবে মিডলওয়্যার কেন দরকার।
+</section>

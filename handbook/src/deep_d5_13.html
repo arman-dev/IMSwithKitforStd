@@ -1,0 +1,31 @@
+<section class="slide">
+  <div class="head"><span class="badge">আইকন</span>
+    <div><h2>আইকন ও ছবি — পাঁচটি নিয়ম</h2>
+      <div class="sub">Bootstrap Icons vendor-এ; কোনো ছবি CDN থেকে নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:36%">নিয়ম</th><th style="width:64%">কারণ</th></tr>
+          <tr><td>আইকন কেবল শোভা নয়, সংকেত</td><td><code>bi-people</code> খালি ছাত্র-তালিকায়, <code>bi-grid-3x3</code> হাজিরায়</td></tr>
+          <tr><td>ইমোজি নয়</td><td>ফন্ট-নির্ভর, প্ল্যাটফর্মে বদলায়, রঙ নিয়ন্ত্রণহীন</td></tr>
+          <tr><td>লোগো ৩৪/৩৮px</td><td>সাইডবার ৩৪px, লগইন প্যানেল ৩৮px — দুই জায়গায় দুই আকার, একটাই অনুপাত</td></tr>
+          <tr><td>লোগো না থাকলে অক্ষর</td><td><code>brand.initial</code> — প্রথম অক্ষর বৃত্তে; নতুন স্কুলও পূর্ণ দেখায়</td></tr>
+          <tr><td><code>object-fit: contain</code></td><td>স্কুলের লোগো লম্বা/চওড়া যা-ই হোক, কাটা পড়ে না</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.7pt;padding:2.4mm 3.6mm">
+          <b>ছবি কোথা থেকে:</b> শুধু ব্যবহারকারীর আপলোড (<code>media/</code>) — কোনো স্টক ছবি বা আইকন-ফন্ট CDN-এ নেই। ফলে নেট বন্ধ থাকলেও পর্দা সম্পূর্ণ।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>দাম:</b> vendor ফোল্ডারে ৫৩৪ KB — নিজের সার্ভার থেকেই যায়; প্রথম লোডে CDN-এর চেয়ে ধীর, কিন্তু নির্ভরযোগ্য।
+        </div>
+        <div class="call bad" style="margin-top:2.2mm;font-size:9.7pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> আইকন-ফন্টের ভার্সন কোথাও লেখা নেই; আপডেট করতে গেলে জানতে হবে কোন সংস্করণ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ইমোজি নয়" নিয়মটি ব্যাখ্যা করুন: একই ইমোজি Windows-এ রঙিন, পুরনো ফোনে সাদা-কালো — ব্র্যান্ডের অংশ হিসেবে ব্যবহার করা যায় না।
+</section>

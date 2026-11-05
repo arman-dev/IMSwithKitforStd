@@ -1,0 +1,497 @@
+<!-- ===================== CLASS 12 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৩ · ডিজাইন · ক্লাস ১২ / ৩৭</div>
+  <h1>স্ক্রিন আগে,<br>কোড পরে</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৪ · টপিক ৪.১ (সিস্টেম ডিজাইন)<br>wireframe · ৪টি খোলস · ১৫টি টোকেন · খালি অবস্থা · white-label</div>
+  <div class="pill">৭৫ টেমপ্লেট · ৪ খোলস · ৬ partial</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>৭৫টি পর্দা লিখতে কতটা HTML লাগে?</h2>
+      <div class="sub">হাত তুলুন: ৭৫টি ফাইল মানে ৭৫ বার sidebar লিখতে হয়েছে?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:26pt;line-height:1.6">
+      <span class="hl">একবার</span> sidebar লিখলে ৪৪টি পর্দায় দেখা যায়।<br>
+      বাকিটা <b>খোলস (shell)</b> — পর্দা নয়, কাঠামো।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      এই ক্লাসের বিষয় UI সাজানো, রং বাছাই নয়। কোন জিনিস <b>একবার</b> লিখে সব জায়গায় ব্যবহার করবেন,
+      আর কোনটা পর্দাভেদে বদলাবে — এই সিদ্ধান্তটাই ডিজাইন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৭৫ সংখ্যাটা বোর্ডে লিখুন, নিচে ৪। বলুন: "পার্থক্যটা ৭১ নয় — পার্থক্যটা হলো ৪টি কাঠামো, যার ভেতরে ৭৫টি ঘর।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>চারটি খোলস — পুরো সিস্টেম এতেই ঢোকে</h2>
+      <div class="sub">সবগুলো <code>base.html</code> থেকে আসে: শুধু <code>&lt;head&gt;</code> আর <code>&lt;body&gt;</code> ব্লক</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 165" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="24" width="238" height="96" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+          <text x="116" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">base.html</text>
+          <text x="116" y="66" text-anchor="middle" font-size="9.2" fill="#475569">head + body ব্লক · টোকেন</text>
+          <text x="116" y="82" text-anchor="middle" font-size="9.2" fill="#475569">লগইন ৬ + এরর পাতা ৩</text>
+          <text x="116" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">৯ পাতা</text>
+
+          <rect x="254" y="24" width="238" height="96" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.6"/>
+          <text x="373" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#312e81">app_base.html</text>
+          <text x="373" y="66" text-anchor="middle" font-size="9.2" fill="#3730a3">sidebar + topbar + content</text>
+          <text x="373" y="82" text-anchor="middle" font-size="9.2" fill="#3730a3">আসল অ্যাপের সব পর্দা</text>
+          <text x="373" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">৪৪ পাতা</text>
+
+          <rect x="508" y="24" width="238" height="96" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+          <text x="627" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">platform/base.html</text>
+          <text x="627" y="66" text-anchor="middle" font-size="9.2" fill="#475569">৬টি ট্যাব · নিজের রং</text>
+          <text x="627" y="82" text-anchor="middle" font-size="9.2" fill="#475569">প্ল্যাটফর্ম অ্যাডমিনের ঘর</text>
+          <text x="627" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">৮ পাতা</text>
+
+          <rect x="762" y="24" width="238" height="96" rx="8" fill="#f8fafc" stroke="#94a3b8"/>
+          <text x="881" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="#334155">public/base_public.html</text>
+          <text x="881" y="66" text-anchor="middle" font-size="9.2" fill="#475569">লগইনের আগের জগৎ</text>
+          <text x="881" y="82" text-anchor="middle" font-size="9.2" fill="#475569">দাম · ট্রায়াল সাইনআপ</text>
+          <text x="881" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#4f46e5">২ পাতা</text>
+
+          <text x="0" y="146" font-size="9.5" fill="#64748b">৬টি partial টুকরো: sidebar · topbar · messages · billing_banner · field · cookie_guard — এগুলো খোলসের ভেতরে বসে।</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:12.5pt;padding:3.5mm 5mm">
+      হোয়াইট-লেবেল: একই <code>app_base.html</code>, কিন্তু ব্র্যান্ড রং ভেরিয়েবল থেকে — তাই ভিন্ন প্রতিষ্ঠানে ভিন্ন রঙ, কোড এক।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চারটি বক্স বোর্ডে আঁকুন, তারপর বলুন: "নতুন পর্দা বানানোর সময় প্রশ্ন একটাই — এটা কোন খোলসে?" উত্তরটা না জানলে কোড দুবার লেখা হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>খোলসের ভেতরে কী কী ঢোকে</h2>
+      <div class="sub"><code>templates/app_base.html</code> — মোট ১১ লাইন, আর ৪৪টি পর্দার কাঠামো তৈরি</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 58%">
+        <pre style="font-size:9pt;line-height:1.5">{% extends "base.html" %}
+{% block body %}
+&lt;div class="ims-shell"&gt;
+  {% include "partials/sidebar.html" %}
+  &lt;div class="ims-main"&gt;
+    {% include "partials/topbar.html" %}
+    &lt;div class="ims-content"&gt;
+      {% include "partials/messages.html" %}
+      {% include "partials/billing_banner.html" %}
+      {% block content %}{% endblock %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+{% endblock %}</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.6pt">
+          <thead><tr><th>অংশ</th><th>দায়িত্ব</th></tr></thead>
+          <tbody>
+            <tr><td>sidebar</td><td>ভূমিকা অনুযায়ী মেনু</td></tr>
+            <tr><td>topbar</td><td>শিরোনাম · workspace পিল · প্রোফাইল</td></tr>
+            <tr><td>messages</td><td>সেভ / এরর বার্তা</td></tr>
+            <tr><td>billing_banner</td><td>ট্রায়াল · read-only · সিট</td></tr>
+            <tr><td><code>block content</code></td><td><b>একমাত্র</b> যা পর্দা বদলায়</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:12pt;padding:3.5mm 5mm">
+      নিয়ম: পর্দা লিখলে <b>শুধু <code>content</code> ব্লক</b> লেখা হয়। কেউ sidebar নিজে আঁকলে সেটা বাগের শুরু — দুবার রক্ষণাবেক্ষণ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন নিজের প্রজেক্টে একই ফাইল বানাতে — ১০ লাইনে। যে প্রজেক্টে প্রতিটি পেজে আলাদা মেনু লেখা, সেখানে নতুন মেনু আইটেম যোগ করতে ৩০টি ফাইল ছুঁতে হয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>ওয়্যারফ্রেম — বক্স আর মাপ, রং পরে</h2>
+      <div class="sub">IMS-এর আসল মাপ: sidebar ২৬৪px · topbar ৫২px · content সর্বোচ্চ ১২৮০px · কার্ড রেডিয়াস ১৪px</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 225" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="8" width="1000" height="205" rx="6" fill="#fff" stroke="#cbd5e1"/>
+          <rect x="0" y="8" width="206" height="205" fill="#0f172a"/>
+          <rect x="14" y="22" width="30" height="20" rx="5" fill="#4f46e5"/>
+          <text x="52" y="37" font-size="9" fill="#e2e8f0">ব্র্যান্ড নাম</text>
+          <rect x="14" y="58" width="178" height="15" rx="4" fill="#1e293b"/>
+          <rect x="14" y="78" width="178" height="15" rx="4" fill="#4f46e5"/>
+          <rect x="14" y="98" width="178" height="15" rx="4" fill="#1e293b"/>
+          <rect x="14" y="118" width="178" height="15" rx="4" fill="#1e293b"/>
+          <text x="103" y="200" text-anchor="middle" font-size="9" fill="#64748b">264px · স্থির</text>
+
+          <rect x="206" y="8" width="794" height="38" fill="#eef2ff"/>
+          <text x="220" y="32" font-size="9.5" fill="#3730a3">topbar · ৫২px · শিরোনাম + workspace পিল + অ্যাভাটার</text>
+          <rect x="880" y="17" width="106" height="17" rx="8.5" fill="#c7d2fe"/>
+          <text x="933" y="29" text-anchor="middle" font-size="8" fill="#312e81">ইনস্টিটিউট · ভূমিকা</text>
+
+          <rect x="206" y="46" width="794" height="167" fill="#f6f7fb"/>
+          <rect x="220" y="56" width="185" height="32" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <rect x="415" y="56" width="185" height="32" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <rect x="610" y="56" width="185" height="32" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <rect x="805" y="56" width="185" height="32" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <text x="230" y="70" font-size="8" fill="#94a3b8">KPI কার্ড × ৪</text>
+          <text x="230" y="82" font-size="8" fill="#475569">সংখ্যা · লেবেল · আইকন</text>
+
+          <rect x="220" y="98" width="370" height="86" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <text x="232" y="114" font-size="8.5" fill="#475569">প্রধান কার্ড · রেডিয়াস ১৪px · ছায়া</text>
+          <rect x="232" y="122" width="346" height="9" rx="3" fill="#eef2ff"/>
+          <rect x="232" y="138" width="346" height="9" rx="3" fill="#f1f5f9"/>
+          <rect x="232" y="154" width="346" height="9" rx="3" fill="#f1f5f9"/>
+
+          <rect x="600" y="98" width="390" height="86" rx="6" fill="#fff" stroke="#e2e8f0"/>
+          <text x="612" y="114" font-size="8.5" fill="#475569">সাইড কার্ড · খালি অবস্থা / সাম্প্রতিক</text>
+          <rect x="612" y="122" width="366" height="9" rx="3" fill="#f1f5f9"/>
+          <rect x="612" y="138" width="366" height="9" rx="3" fill="#f1f5f9"/>
+          <text x="220" y="200" font-size="9" fill="#64748b">ims-content · প্যাডিং ২৪px · সর্বোচ্চ প্রস্থ ১২৮০px</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:11.5pt;padding:3mm 5mm">
+      মাপ আগে ঠিক করুন, রং পরে। রং আগে ঠিক করলে লেআউট বদলালে সব রং আবার বদলাতে হয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কাগজে ৫ মিনিটের কাজ দিন — শুধু বক্স আর সংখ্যা, কোনো রং নয়। যে দল মাপ লেখে না, তাদের ওয়্যারফ্রেম কোডিংয়ের সময় বদলে যাবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>১৫টি টোকেন — রং কোথাও হার্ডকোড নয়</h2>
+      <div class="sub"><code>static/css/ims.css</code> — <code>:root</code>-এ ১৫টি ভেরিয়েবল, বাকি ১০০ লাইন শুধু সেগুলো ব্যবহার করে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:26%">শ্রেণি</th><th style="width:40%">টোকেন</th><th>কেন লাগে</th></tr></thead>
+      <tbody>
+        <tr><td>রং (৯)</td><td><code>primary</code> · <code>primary-dark</code> · <code>primary-soft</code></td><td>ব্র্যান্ড বদলালে এখানেই</td></tr>
+        <tr><td></td><td><code>ink</code> · <code>ink-2</code> · <code>muted</code> · <code>line</code> · <code>bg</code> · <code>surface</code></td><td>লেখা ও পৃষ্ঠতলের ধাপ</td></tr>
+        <tr><td>অবস্থা (৩)</td><td><code>success</code> · <code>warning</code> · <code>danger</code></td><td>একই অর্থে সব জায়গায় একই রং</td></tr>
+        <tr><td>আকৃতি (২)</td><td><code>radius</code> · <code>radius-sm</code></td><td>১৪px কার্ড, ১০px বাটন — মিশ্রণ নয়</td></tr>
+        <tr><td>গভীরতা (১)</td><td><code>shadow</code></td><td>দুই স্তরের ছায়া, একটাই ডেফিনিশন</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:5mm">
+      <div><div class="call good" style="background:#ecfdf5;font-size:11.5pt;padding:3mm 4.5mm">
+        <b>টোকেন থাকলে:</b> ১ লাইনে ব্র্যান্ড রং — <code>--ims-brand</code>।
+      </div></div>
+      <div><div class="call bad" style="font-size:11.5pt;padding:3mm 4.5mm">
+        <b>টোকেন না থাকলে:</b> ৭৫টি ফাইলে #4f46e5 খুঁজে বদলাতে হয় — একটা বাদ পড়বেই।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের ১০টি রঙের নাম জিজ্ঞেস করুন — বেশিরভাগের উত্তর ভিন্ন হবে। বলুন: "আপনার নিজের প্রজেক্টে একই সবুজ কতবার লেখা আছে? grep করে দেখুন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>ভূমিকা অনুযায়ী পর্দা — এক ভিউ, তিন রূপ</h2>
+      <div class="sub"><code>apps/reports/views.py</code> — <code>dashboard()</code> এক, কিন্তু টেমপ্লেট আলাদা</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:22%">কে</th><th style="width:26%">কোন টেমপ্লেট</th><th>পর্দায় কী থাকে</th></tr></thead>
+      <tbody>
+        <tr><td><b>STUDENT</b></td><td><code>reports/dashboard_student</code></td><td>উপস্থিতি % · প্রকাশিত পরীক্ষা · খোলা হোমওয়ার্ক · জমা দেওয়ার সংখ্যা</td></tr>
+        <tr><td><b>TEACHER</b> / <b>COORDINATOR</b> / <b>ORG_ADMIN</b></td><td><code>reports/dashboard_staff</code></td><td>৪টি KPI — শিক্ষার্থী · আজকের উপস্থিতি · অপ্রকাশিত পরীক্ষা · পর্যালোচনার অপেক্ষায়</td></tr>
+        <tr><td>তাঁদের মধ্যে ম্যানেজার</td><td>একই টেমপ্লেট</td><td>+ সদস্য সংখ্যা · অডিট লগ · উপস্থিতি নীতি</td></tr>
+        <tr><td><b>PLATFORM_ADMIN</b></td><td><code>core/dashboard_platform</code></td><td>মোট প্রতিষ্ঠান · ব্যবহারকারী · ইনভয়েস</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:5mm;font-size:12pt;padding:3.5mm 5mm">
+      <b>আসল ফাঁদ:</b> <code>core/</code> ফোল্ডারে ৪টি ড্যাশবোর্ড টেমপ্লেট আছে (<code>dashboard_teacher</code>, <code>_student</code>, <code>_coordinator</code>, <code>_institution</code>) —
+      কোনো ভিউ সেগুলো রেন্ডার করে না। পুরোনো স্কেলিটন, এখনো ফাইলে পড়ে আছে। <b>মৃত টেমপ্লেট = বিভ্রান্তি:</b> নতুন ডেভেলপার ওটাই এডিট করে বাগ খুঁজবে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই লাইনটা বলুন: "কোড আছে মানে কোড চলে না।" নিজের প্রজেক্টে শেখার নিয়ম — যে ফাইল কোথাও ব্যবহৃত হয় না, সেটা মুছুন, নাহলে ভবিষ্যতে আপনি নিজেই ভুল ফাইল খুলবেন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>একটি মেনু-তালিকা, তিনটি ব্যবহার</h2>
+      <div class="sub"><code>apps/core/navigation.py</code> — ৫টি গ্রুপ · ২২টি আইটেম · ভূমিকা-ফিল্টার</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 55%">
+        <pre style="font-size:8.8pt;line-height:1.5">NAV = [
+  {"title": None, "items": [
+     _item("Dashboard", "bi-speedometer2",
+           "reports:dashboard",
+           STAFF_ROLES + (Roles.STUDENT,))]},
+  {"title": "Teaching", "items": [
+     _item("Students", "bi-people",
+           "students:list", STAFF_ROLES),
+     _item("Attendance", "bi-calendar-check",
+           "attendance:take", STAFF_ROLES), ...]},
+  ...
+]
+def navigation_for(request):
+    role = request.membership.role
+    # ভূমিকা না মিললে আইটেম বাদ
+    if role not in item["roles"]: continue
+    url = reverse(item["url_name"], kwargs={"slug": slug})
+    ...</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.4pt">
+          <thead><tr><th>গ্রুপ</th><th>আইটেম</th><th>কে</th></tr></thead>
+          <tbody>
+            <tr><td>(শিরোনামহীন)</td><td>Dashboard</td><td>সবাই</td></tr>
+            <tr><td>Teaching</td><td>১০</td><td>STAFF</td></tr>
+            <tr><td>My learning</td><td>৩</td><td>STUDENT</td></tr>
+            <tr><td>Administration</td><td>৬</td><td>ORG_ADMIN</td></tr>
+            <tr><td>Account</td><td>২</td><td>সবাই</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:3.5mm;font-size:10.5pt;padding:2.6mm 3.6mm">
+          তিনটি ব্যবহার: <b>sidebar রেন্ডার</b> · <b>ড্যাশবোর্ড হাইলাইট</b> · <b>টেস্ট</b> ("এ ভূমিকা ওই লিংক দেখবে না")।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:11.3pt;padding:2.8mm 4.6mm">
+      মেনু <b>দেখানো</b> নিয়ন্ত্রণ করে, <b>অনুমতি</b> নয়। সার্ভার প্রতিটি অনুরোধ আলাদা করে যাচাই করে — লিংক লুকানো মানে নিরাপত্তা নয় (ক্লাস ৯ দেখুন)।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটি জোর দিন — ছাত্ররা মনে করে লিংক লুকালেই কাজ শেষ। বলুন: "URL হাতে টাইপ করলে কী হয়? সেটাই আসল প্রশ্ন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>একই পর্দা, ভূমিকা অনুযায়ী ছোট ছোট পার্থক্য</h2>
+      <div class="sub">পুরো পর্দা বদলানো ব্যয়বহুল — তাই টেমপ্লেটের ভেতরে শর্ত</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:30%">শর্ত</th><th style="width:30%">কী বদলায়</th><th>কেন</th></tr></thead>
+      <tbody>
+        <tr><td><code>{% if nav_role == "ORG_ADMIN" %}</code></td><td>ট্রায়াল ব্যানারে "প্ল্যান বাছুন" লিংক</td><td>শিক্ষক নবায়ন করতে পারেন না → লিংক দিলে ৪০৩</td></tr>
+        <tr><td><code>{% if platform_console %}</code></td><td>sidebar-এ Platform গ্রুপ</td><td>সাধারণ ব্যবহারকারীর কাছে অদৃশ্য</td></tr>
+        <tr><td><code>{% if brand.logo %}</code></td><td>লোগো, নাহলে আইকন</td><td>ব্র্যান্ডিং সবসময় পূর্ণ নয়</td></tr>
+        <tr><td><code>{% if subscription.is_writable %}</code></td><td>ব্যানারের ধরন</td><td>read-only অবস্থায় ভিন্ন বার্তা</td></tr>
+        <tr><td><code>{% if e.is_published %}</code></td><td>Published / Draft ব্যাজ</td><td>অপ্রকাশিত নম্বর শিক্ষার্থীর কাছে নেই</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:5mm;font-size:12pt;padding:3.5mm 5mm">
+      নিয়ম: শর্ত মানে <b>"না দেখানো"</b>, কখনো <b>"না করা"</b> নয়। প্রতিটি শর্তের সমান্তরাল সার্ভার-চেক থাকতেই হবে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> একটা উদাহরণ দিন: "ব্যানারে নবায়ন লিংক সবাইকে দিলে শিক্ষক ক্লিক করবেন, ৪০৩ পাবেন — আর ভাববেন সিস্টেম নষ্ট। শর্তটা ভদ্রতার জন্য, নিরাপত্তার জন্য নয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>খালি অবস্থা — শূন্য মানে ভাঙা নয়</h2>
+      <div class="sub">৩৩টি টেমপ্লেটে ৪১টি <code>ims-empty</code> · ১৬টি <code>{% empty %}</code> ব্লক</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 46%">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th>কোথায়</th><th>কী লেখা</th></tr></thead>
+          <tbody>
+            <tr><td>classes</td><td>"No classes match this filter."</td></tr>
+            <tr><td>students</td><td>"No students enrolled yet."</td></tr>
+            <tr><td>attendance</td><td>"No attendance recorded this month."</td></tr>
+            <tr><td>exams</td><td>"No marks entered yet."</td></tr>
+            <tr><td>materials</td><td>"No materials uploaded yet."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.5mm">
+          <div class="card soft" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">১. আইকন</b>
+            <p style="font-size:10.5pt">বোঝায় এটা তালিকা, এরর নয় — <code>bi-people</code>, <code>bi-award</code>।</p></div>
+          <div class="card soft" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">২. এক বাক্য</b>
+            <p style="font-size:10.5pt">কী নেই, আর <b>কেন</b> নেই — "this month", "match this filter"।</p></div>
+          <div class="card soft" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">৩. পরের ধাপ</b>
+            <p style="font-size:10.5pt">সেরাটা: "Create an academic year first, then a term." — পথ দেখায়।</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call bad" style="margin-top:4.5mm;font-size:11.5pt;padding:3mm 4.6mm">
+      সাধারণ ভুল: শূন্য তালিকায় <b>সাদা স্ক্রিন</b>। ব্যবহারকারী ভাবেন সাইট আটকে গেছে — আসলে প্রশ্নটা ছিল "এখানে কিছু নেই, এখন কী করব?"
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে ৩০ সেকেন্ডের কাজ দিন: নিজের প্রজেক্টের যে তালিকায় এখনো ডেটা নেই, তার জন্য এক বাক্য লিখুন। এটাই সবচেয়ে সস্তা উন্নতি।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>ফর্মের এক টুকরো — ৪৩টি ফর্ম, এক প্যাটার্ন</h2>
+      <div class="sub"><code>templates/partials/field.html</code> — ৬ লাইন, প্রতিটি ফিল্ডের অভিন্ন চেহারা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:9pt;line-height:1.55">&lt;div class="mb-3"&gt;
+  &lt;label class="form-label"&gt;
+    {{ field.label }}
+    {% if field.field.required %}
+      &lt;span class="text-danger"&gt;*&lt;/span&gt;
+    {% endif %}&lt;/label&gt;
+  {{ field }}
+  {% if field.help_text %}
+    &lt;div class="ims-hint"&gt;{{ field.help_text }}&lt;/div&gt;
+  {% endif %}
+  {% for error in field.errors %}
+    &lt;div class="ims-error"&gt;{{ error }}&lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.5mm">
+          <div class="card" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">লেবেল + বাধ্যতামূলক</b>
+            <p style="font-size:10.5pt">তারকা চিহ্ন সবসময় একই জায়গায় — চোখে পড়ে।</p></div>
+          <div class="card" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">সহায়ক লেখা</b>
+            <p style="font-size:10.5pt"><code>help_text</code> ফিল্ডের নিচে, ছোট ও ধূসর — প্লেসহোল্ডারে নয়।</p></div>
+          <div class="card" style="padding:4mm 4.5mm"><b style="font-size:12.5pt">এরর ফিল্ডের ঘরে</b>
+            <p style="font-size:10.5pt">উপরের সারাংশে নয় — ব্যবহারকারী ঠিক কোন ঘর ঠিক করবেন দেখতে পান।</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:4.5mm;font-size:11.5pt;padding:3mm 4.6mm">
+      একই কারণে লগইন পাতার নিচে <code>ims-slice-note</code> বক্সে ডেমো লগইন লেখা থাকে — কাগজে লিখে দেওয়ার দরকার নেই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "একটা প্যাটার্ন বানান, তারপর প্রতিটি পেজে সেটাই include করুন। ২০টি ফর্ম হাতে সাজালে ২০টি ভিন্ন উচ্চতা, ভিন্ন এরর-রং — আর ব্যবহারকারী ভাববেন সাইটটা ভাঙা।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>ব্র্যান্ডিং — এক প্রতিষ্ঠানের রং, সবার কোডে</h2>
+      <div class="sub"><code>BrandingForm</code>-এ ৭টি ঘর · <code>base.html</code>-এ একটাই ভেরিয়েবল</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 47%">
+        <pre style="font-size:8.8pt;line-height:1.55">:root {
+  --ims-brand: {{ brand.color|default:"#4f46e5" }};
+}
+.btn-ims,
+.ims-nav.is-active,
+.ims-auth__submit { background: var(--ims-brand); }
+.ims-sidebar {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--ims-brand) 22%, #0b1220),
+    #0b1220);
+}
+a { color: var(--ims-brand); }</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th>ঘর</th><th>কোথায় দেখা যায়</th></tr></thead>
+          <tbody>
+            <tr><td><code>display_name</code></td><td>sidebar · লগইন শিরোনাম</td></tr>
+            <tr><td><code>primary_color</code></td><td>বাটন · সক্রিয় মেনু · sidebar</td></tr>
+            <tr><td><code>tagline</code></td><td>লগইনের বড় লেখা</td></tr>
+            <tr><td><code>logo</code></td><td>sidebar ও লগইন</td></tr>
+            <tr><td><code>login_message</code></td><td>লগইনের নির্দেশনা</td></tr>
+            <tr><td><code>support_email</code> · <code>phone</code></td><td>সহায়তার তথ্য</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:3.2mm;font-size:10.3pt;padding:2.6mm 3.6mm">
+          সেটিংস <b>ডেটাবেসে</b>, কোডে নয় — তাই একই কোডবেসে ১০টি প্রতিষ্ঠান, ১০টি রং।
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:11.3pt;padding:2.8mm 4.6mm">
+      ফাঁদ: ব্যবহারকারী নিজের পছন্দের রং বাছেন — হালকা হলুদে সাদা লেখা পড়া যায় না। সেটিংসে <b>অন্ধকার রঙের তালিকা</b>, আর প্রিভিউ কার্ড রাখতেই হয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ব্র্যান্ডিং পাতার "Preview" কার্ডটাই আসল শিক্ষা — সেভ করার আগেই ব্যবহারকারী ফলাফল দেখেন। বলুন: "যেখানে ব্যবহারকারী ভুল করতে পারেন, সেখানে আগেই ফলাফল দেখান।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>বার্তা ও গার্ড — ফর্মের আগেই সতর্কবার্তা</h2>
+      <div class="sub">দুই partial: <code>billing_banner</code> (৪ অবস্থা) · <code>cookie_guard</code> (১৫ লাইন JS)</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:22%">অবস্থা</th><th style="width:16%">রং</th><th>ব্যবহারকারীকে যা বলা হয়</th></tr></thead>
+      <tbody>
+        <tr><td>TRIAL</td><td>নীল</td><td>কত দিন বাকি · কোন প্ল্যান · "প্ল্যান বাছুন"</td></tr>
+        <tr><td>মেয়াদ শেষ (read-only)</td><td>কমলা</td><td>"আপনার ডেটা নিরাপদ ও এক্সপোর্টযোগ্য — নবায়ন করুন"</td></tr>
+        <tr><td>SUSPENDED</td><td>কমলা</td><td>কারণ · "ডেটা রাখা আছে, পড়া যায়"</td></tr>
+        <tr><td>সিট ৯০%+</td><td>কমলা</td><td>"৪৫০/৫০০ সিট ব্যবহৃত" · আপগ্রেড</td></tr>
+        <tr><td>কুকি বন্ধ</td><td>হলুদ</td><td>"এই ভিউতে লগইন ব্যর্থ হবে — সাধারণ ট্যাবে খুলুন"</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4.5mm">
+      <div><div class="call" style="font-size:11pt;padding:3mm 4.4mm">
+        <b>বার্তার নিয়ম:</b> কী হয়েছে → কেন → এখন কী করব। তিনটি ছাড়া বার্তা নয়।
+      </div></div>
+      <div><div class="call warn" style="font-size:11pt;padding:3mm 4.4mm">
+        <b>গার্ড কেন:</b> cookieless iframe-এ লগইন বারবার ব্যর্থ হয় — ব্যবহারকারী ৫ মিনিট টাইপ করার <b>আগেই</b> জানানো হয়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "আপনার ডেটা নিরাপদ" কথাটা কেন লেখা — জিজ্ঞেস করুন। উত্তর: ভয় পাওয়া ব্যবহারকারী সাপোর্টে ফোন করে; আশ্বস্ত করা ব্যবহারকারী নবায়ন করে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন</span>
+    <div><h2>২০ মিনিট — নিজের প্রজেক্টের তিনটি খোলস</h2>
+      <div class="sub">কাগজে, তারপর কোডে — এই ক্রমেই</div></div></div>
+  <div class="body">
+    <div class="cards" style="flex-direction:column;gap:3.5mm">
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">১. খোলস আলাদা করুন (৫ মিনিট)</b>
+        <p style="font-size:11pt">আপনার সিস্টেমে কত ধরনের পর্দা? (লগইন · অ্যাপ · পাবলিক · অ্যাডমিন) প্রতিটির জন্য <b>একটি</b> base ফাইল ঠিক করুন।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">২. ওয়্যারফ্রেম আঁকুন (৭ মিনিট)</b>
+        <p style="font-size:11pt">প্রধান পর্দার বক্স + মাপ (px)। রং নয়, ছবি নয় — শুধু আয়তক্ষেত্র আর সংখ্যা।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">৩. তিনটি খালি অবস্থা লিখুন (৫ মিনিট)</b>
+        <p style="font-size:11pt">যে তালিকা এখনো শূন্য, তার জন্য এক বাক্য — কী নেই, কেন নেই, এখন কী করব।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">৪. টোকেন তালিকা (৩ মিনিট)</b>
+        <p style="font-size:11pt">১০–১৫টি ভেরিয়েবল লিখুন — রং, মাপ, ছায়া। তারপর নিজের CSS-এ grep করুন কতগুলো হার্ডকোড রং আছে।</p></div>
+    </div>
+    <div class="call" style="margin-top:4mm;font-size:11.5pt;padding:3mm 4.6mm">
+      যাচাই: আপনার প্রজেক্টে একটা নতুন পর্দা যোগ করতে কয়টি ফাইল ছুঁতে হলো? ১ হলে ডিজাইন ঠিক, ৫ হলে খোলস ভাঙা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ প্রশ্নটাই মূল্যায়নের আসল মাপকাঠি — ফাইল সংখ্যা গুনে হাত তুলতে বলুন। যার উত্তর ৫, তার কাজ পরের সপ্তাহে হালকা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>ক্লাসে আলোচনার চার প্রশ্ন</h2>
+      <div class="sub">উত্তর এক বাক্যে — ব্যাখ্যা বাড়াবেন না</div></div></div>
+  <div class="body">
+    <ul class="pts">
+      <li>শিক্ষকের ড্যাশবোর্ড আর প্রতিষ্ঠান প্রধানের ড্যাশবোর্ড — এক টেমপ্লেটে হবে, নাকি দুটো? কোন তথ্য ভিন্ন?</li>
+      <li class="g">খালি অবস্থায় "কোনো ডেটা নেই" লেখা কি যথেষ্ট? ব্যবহারকারী এরপর কী চান?</li>
+      <li>ব্র্যান্ড রং ব্যবহারকারী বদলাতে পারলে কোন রং নিষিদ্ধ করবেন, আর কীভাবে?</li>
+      <li class="r">মেনুতে লিংক লুকানো কি নিরাপত্তা? এক লাইনে যুক্তি দিন।</li>
+    </ul>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের উত্তরেই ক্লাসের সারমর্ম — "না, লুকানো মানে শুধু দেখা যায় না; অনুমতি সার্ভারে।" এই উত্তর না এলে ক্লাস ৯-এর অংশ আবার বলুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:52%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>কাঠামো একবার, পর্দা বহুবার</b></td>
+          <td>৪টি খোলসে ৭৫টি টেমপ্লেট · <code>app_base.html</code> ১১ লাইন</td></tr>
+        <tr><td><b>মাপ আগে, রং পরে</b></td>
+          <td>wireframe: ২৬৪ / ৫২ / ১২৮০ / ১৪px · ১৫টি টোকেন</td></tr>
+        <tr><td><b>ভূমিকা = ভিন্ন পর্দা, ভিন্ন তথ্য</b></td>
+          <td>STUDENT · STAFF · PLATFORM — তিন ড্যাশবোর্ড, এক ভিউ</td></tr>
+        <tr><td><b>শূন্য অবস্থাও একটা পর্দা</b></td>
+          <td>৩৩ ফাইলে ৪১টি <code>ims-empty</code> · "এখন কী করব" লেখা</td></tr>
+        <tr><td><b>টেমপ্লেট শর্ত = ভদ্রতা, অনুমতি নয়</b></td>
+          <td>nav_role শর্ত + সার্ভার-চেক · লুকানো লিংক ≠ সুরক্ষা</td></tr>
+        <tr><td><b>মৃত কোড সরান</b></td>
+          <td>৪টি অপ্রয়োজনীয় ড্যাশবোর্ড টেমপ্লেট এখনো পড়ে আছে</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ সারিটা নিজের প্রজেক্টেও প্রযোজ্য — বলুন: "আজ রাতে ২০ মিনিট লাগবে, নিজের রিপোতে এমন মৃত টেমপ্লেট খুঁজে মুছে ফেলুন।"</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">১৩</div>
+  <h2>পরের ক্লাস — "ডেটা কোথায় যায়"</h2>
+  <p>DFD: Level 0 · Level 1 · ডেটা স্টোর · বাহ্যিক সত্তা · প্রসেসের নামকরণ</p>
+</section>

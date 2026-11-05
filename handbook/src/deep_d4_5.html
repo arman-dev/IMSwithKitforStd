@@ -1,0 +1,36 @@
+<section class="slide">
+  <div class="head"><span class="badge">চেকলিস্ট</span>
+    <div><h2>গো-লাইভের ১৩টি দফা</h2>
+      <div class="sub"><code>DEPLOYMENT.md</code>-তে লেখা — প্রতিটির পেছনে একটি বাস্তব দুঃস্বপ্ন</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:4.6mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:56%">দফা</th><th style="width:44%">না করলে</th></tr>
+          <tr><td>SECRET_KEY ৫০+ র‍্যান্ডম, সিক্রেট স্টোরে</td><td>সেশন/টোকেন জাল করা যায়</td></tr>
+          <tr><td>ALLOWED_HOSTS ও CSRF origins আসল ডোমেইন</td><td>prod.py শুরুই হবে না (ভালো)</td></tr>
+          <tr><td>HTTPS কাজ করে, http রিডাইরেক্ট</td><td>কুকি খোলা পথে যায়</td></tr>
+          <tr><td>"Forgot password" একবার পুরো চালানো</td><td>SMTP ভুল, ব্যবহারকারী আটকে</td></tr>
+          <tr><td><code>check --deploy</code> → ০ সমস্যা</td><td>কোন সেটিং বাদ, অজানা</td></tr>
+          <tr><td>ব্যাকআপ চালেছে + রিস্টোর ড্রিল হয়েছে</td><td>ব্যাকআপ অস্তিত্ব প্রমাণহীন</td></tr>
+          <tr><td>ডেমো ডেটা মুছে, <code>DemoPass!2026</code> নেই</td><td>সবাই জানে পাসওয়ার্ড</td></tr>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:56%">দফা</th><th style="width:44%">না করলে</th></tr>
+          <tr><td>host-এ <code>runserver</code> নয়, gunicorn</td><td>ডেভেলপমেন্ট সার্ভার সর্বজনীন</td></tr>
+          <tr><td>অন্য কেউ শিক্ষক ও ছাত্র হয়ে ঢুকে বলেছে "শুধু নিজেরটাই দেখি"</td><td>অনুমতি কোডে ঠিক, চোখে দেখা হয়নি</td></tr>
+          <tr><td><code>seed_plans</code> চালানো, দাম মিলছে</td><td>প্রাইসিং পাতায় মিথ্যা দাম</td></tr>
+          <tr><td>প্ল্যাটফর্ম অ্যাডমিন আসল মানুষের</td><td><code>admin@ims.local</code> চিরকাল অ্যাডমিন</td></tr>
+          <tr><td><code>media/</code> স্থায়ী ভলিউমে</td><td>রিডিপ্লয়ে লোগো মুছে যায়</td></tr>
+          <tr><td><code>billing_report</code> দৈনিক</td><td>প্রথম ট্রায়াল শেষ হওয়া কেউ দেখে না</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      নবম দফাটি সবচেয়ে কম ব্যবহৃত, সবচেয়ে দরকারি: <b>অন্য একজন মানুষ ঢুকে বলবে "আমি শুধু নিজেরটাই দেখি"</b> — এটাই অনুমতির আসল পরীক্ষা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চেকলিস্ট মুখস্থ করাবেন না — শিক্ষার্থীদের নিজের প্রজেক্টের জন্য ১০টি দফার তালিকা লিখতে বলুন। তালিকা লেখার অভ্যাসই আসল শেখা।
+</section>

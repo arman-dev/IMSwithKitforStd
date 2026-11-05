@@ -1,0 +1,38 @@
+<section class="slide">
+  <div class="head"><span class="badge">ড্রিল</span>
+    <div><h2><code>restore.sh</code> — ব্যাকআপ ফেরানোর নিরাপদ পথ</h2>
+      <div class="sub">আসল ডেটাবেজে কখনো সরাসরি রিস্টোর নয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.08">
+        <pre style="font-size:8pt;line-height:1.5;padding:3mm 3.4mm">dropdb --if-exists "$SCRATCH"
+createdb "$SCRATCH"
+pg_restore -d "$SCRATCH" "$DUMP"
+
+psql -d "$SCRATCH" -c "select 'students', count(*)
+   from students_studentprofile
+ union all select 'attendance', count(*)
+   from attendance_attendancerecord
+ union all select 'marks', count(*)
+   from assessments_mark
+ union all select 'audit', count(*)
+   from audit_auditlog;"</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">নীতি</th><th style="width:56%">কারণ</th></tr>
+          <tr><td>স্ক্র্যাচ ডেটাবেজে প্রথমে</td><td>ভাঙা ডাম্প চালালে আসল ডেটা যায় না</td></tr>
+          <tr><td>৪টি টেবিলের সংখ্যা ছাপা</td><td>"ফেরানো হয়েছে" নয়, "কত সারি ফিরল" — যাচাইযোগ্য</td></tr>
+          <tr><td>swap কমান্ড মানুষ চালাবে</td><td>শেষ সিদ্ধান্ত স্বয়ংক্রিয় নয় — কারণ সেটি অপূরণীয়</td></tr>
+        </table>
+        <div class="call" style="margin-top:2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          <b>সৎ ফাঁক:</b> ড্রিলের ফল কোথাও লিপিবদ্ধ হয় না — কে, কবে, কত সারি ফিরে পেল, তার কোনো রেকর্ড নেই। মাসিক ড্রিল এক লাইনের কাজ, তবু হয় না।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:2.6mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>মূলমন্ত্র:</b> যে ব্যাকআপ কখনো ফেরানো হয়নি, সেটি ব্যাকআপ কি না জানা নেই — এমনকি ফাইলটি থাকলেও।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের ছোট কাজ দিন: নিজের ডেমো-ডেটাবেজের একটি ডাম্প নিয়ে স্ক্র্যাচে ফিরিয়ে ৪টি সংখ্যা মেলাতে। যারা একবার করেছে, তারাই আসলে জানে।
+</section>

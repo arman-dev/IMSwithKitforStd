@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">রুটিন</span>
+    <div><h2>প্রতিদিনের ১০ মিনিট — চারটি কাজ</h2>
+      <div class="sub">অপস মানে বীরত্ব নয়, অভ্যাস</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.02">
+        <pre style="font-size:7.9pt;line-height:1.45;padding:3mm 3.4mm">0 9 * * * cd /srv/ims && .venv/bin/python \
+  manage.py billing_report | mail -s "IMS" you@x.com
+
+0 2 * * * cd /srv/ims && BACKUP_DIR=/var/backups/ims \
+  bash ops/backup.sh</pre>
+        <div style="font-size:9.5pt;color:#334155;margin-top:1.5mm">প্রথম লাইনটি <code>LAUNCH_PLAYBOOK.md</code>-তে লেখা আছে; দ্বিতীয়টি লেখা নেই — কিন্তু দরকার।</div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:44%">কাজ</th><th style="width:56%">কী দেখবেন</th></tr>
+          <tr><td><code>billing_report</code></td><td>সক্রিয় স্কুল, MRR, ৭ দিনে শেষ হওয়া ট্রায়াল, unpaid ইনভয়েস</td></tr>
+          <tr><td>ব্যাকআপের ফাইল</td><td>আজকের ডাম্প আছে? আকার গতকালের মতো?</td></tr>
+          <tr><td>এরর-লগ</td><td>গত ২৪ ঘণ্টায় নতুন ৫০০?</td></tr>
+          <tr><td>ট্রায়াল-শেষ রিপোর্ট</td><td>স্কুলকে মনে করানো — রিনিউয়ের আসল কাজ</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.6mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+      <b>প্রথম ট্রায়াল-শেষ হাতে করতে হবে:</b> স্বয়ংক্রিয় রিমাইন্ডার নেই — ১৪ দিন পর স্কুল চুপচাপ read-only হয়ে যাবে, আর কেউ টের পাবে না। <code>LAUNCH_PLAYBOOK</code> এটাই স্বীকার করেছে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্রন-লাইনটি বোর্ডে লিখুন। "প্রতিদিন একটি ইমেইল" — এটাই সবচেয়ে সস্তা মনিটরিং, যা আজও কাজ করছে।
+</section>

@@ -1,0 +1,364 @@
+<section class="slide cover">
+  <div class="k">পর্ব ৮ · ক্লাস ৩৫</div>
+  <h1>প্রমাণ দেখানো</h1>
+  <p class="sub">প্রমাণ-প্যাক · তিনটি PDF · ডেমো স্ক্রিপ্ট · এক-পাতার সারসংক্ষেপ · রিপোজিটরি স্বাস্থ্য</p>
+  <div class="pill">IMS · ক্লাস ৩৫ · স্লাইড ৩১–৪৪</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু</span>
+    <div><h2>"আমরা বানিয়েছি" — প্রমাণ কোথায়?</h2>
+      <div class="sub">তিনটি PDF, ১৩৩ পাতা, ১১.৫ মেগাবাইট</div></div></div>
+  <div class="body">
+    <div class="cards" style="gap:3.4mm">
+      <div class="card soft" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">Build_Proof.pdf</b>
+        <p style="font-size:10.4pt"><b>৩২ পাতা · ৩.৮৭ MB</b> — কোন ফিচার, কোন টেস্ট, কোন কমান্ডের আউটপুট।</p></div>
+      <div class="card soft" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">IMS_Feature_Catalogue.pdf</b>
+        <p style="font-size:10.4pt"><b>৭০ পাতা · ৪.৮৭ MB</b> — ৫৭ ফিচার, প্রতিটির স্ক্রিনশট ও অবস্থা।</p></div>
+      <div class="card soft" style="padding:3.4mm 4.4mm"><b style="font-size:12pt">IMS_User_Manual_BN.pdf</b>
+        <p style="font-size:10.4pt"><b>৩১ পাতা · ২.৮৪ MB</b> — বাংলায় ব্যবহারবিধি, ব্যবহারকারীর হাতে দেওয়ার মতো।</p></div>
+    </div>
+    <div class="call warn" style="margin-top:4mm;font-size:10.6pt;padding:2.8mm 4.2mm">
+      এই তিনটি কেউ হাতে লেখেনি — <code>docs/gen_proof_pdf.py</code>, <code>gen_feature_catalogue.py</code> আর <code>manual/print_manual.py</code> তৈরি করে। তাই সংখ্যা বদলালে প্রমাণও বদলায়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে তিনটি PDF খুলে দেখান — বিশেষ করে স্ক্রিনশটের পাতা, যেখানে ফিচারের নামের নিচে আসল পর্দা। "এটাই প্রমাণ, কথা নয়।"
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">প্রমাণ-প্যাক</span>
+    <div><h2>চার স্তরের প্রমাণ</h2>
+      <div class="sub">দাবি → ছবি → টেস্ট → কমান্ড</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 96" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a35" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+          <path d="M0,0 L10,4 L0,8 z" fill="#4338ca"/></marker></defs>
+        <rect x="6" y="20" width="216" height="56" rx="9" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="114" y="44" text-anchor="middle" font-size="11.6" font-weight="700" fill="#312e81">১. দাবি</text>
+        <text x="114" y="62" text-anchor="middle" font-size="9" fill="#3730a3">ফিচার নম্বর ও বাক্য</text>
+
+        <rect x="252" y="20" width="216" height="56" rx="9" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+        <text x="360" y="44" text-anchor="middle" font-size="11.6" font-weight="700" fill="#155e75">২. ছবি</text>
+        <text x="360" y="62" text-anchor="middle" font-size="9" fill="#0e7490">৭৭ স্ক্রিনশট</text>
+
+        <rect x="498" y="20" width="216" height="56" rx="9" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+        <text x="606" y="44" text-anchor="middle" font-size="11.6" font-weight="700" fill="#166534">৩. টেস্ট</text>
+        <text x="606" y="62" text-anchor="middle" font-size="9" fill="#15803d">নিয়ম কাজ করে</text>
+
+        <rect x="744" y="20" width="250" height="56" rx="9" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+        <text x="869" y="44" text-anchor="middle" font-size="11.6" font-weight="700" fill="#92400e">৪. কমান্ড</text>
+        <text x="869" y="62" text-anchor="middle" font-size="9" fill="#b45309">Ran 103 tests · OK</text>
+
+        <line x1="224" y1="48" x2="246" y2="48" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a35)"/>
+        <line x1="470" y1="48" x2="492" y2="48" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a35)"/>
+        <line x1="716" y1="48" x2="738" y2="48" stroke="#4338ca" stroke-width="2.2" marker-end="url(#a35)"/>
+      </svg>
+    </div>
+    <table class="tight" style="font-size:8.8pt;margin-top:2mm">
+      <thead><tr><th style="width:16%">স্তর</th><th style="width:32%">কী দেখায়</th><th>IMS-এ কোথায়</th></tr></thead>
+      <tbody>
+        <tr><td>১. দাবি</td><td>"মার্কস প্রকাশের আগে শিক্ষার্থী দেখতে পায় না"</td><td><code>catalogue_data.py</code> F-নম্বর</td></tr>
+        <tr><td>২. ছবি</td><td>পর্দাটি সত্যিই আছে</td><td><code>docs/screenshots/</code> — ৭৭ PNG</td></tr>
+        <tr><td>৩. টেস্ট</td><td>নিয়মটি সত্যিই কাজ করে</td><td><code>test_results_are_invisible_until_published</code> (৪০৩ → ২০০)</td></tr>
+        <tr><td>৪. কমান্ড</td><td>পুরো সিস্টেম একসাথে চলে</td><td><code>Ran 103 tests … OK</code> · <code>55 pages × 4 roles</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>একটি দাবি, তিনটি প্রমাণ</b> — ছবি ছাড়া বিশ্বাস হয় না, টেস্ট ছাড়া ভরসা হয় না, কমান্ড ছাড়া পুরোটা দেখা যায় না।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>যেটি নেই:</b> পারফরম্যান্স ও লোড-টেস্টের প্রমাণ — "৮০০ ছাত্রে কেমন চলে" এখনো মাপা হয়নি।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন নিজের প্রজেক্টে এই চার স্তরের একটি ছক বানাতে — কোথায় প্রমাণ নেই, সাথে সাথে দেখা যাবে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">Build_Proof</span>
+    <div><h2>৩২ পাতার প্রমাণ-নথি</h2>
+      <div class="sub">কীভাবে সাজানো, কীভাবে পড়া</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.6mm">
+          <div class="card soft" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কাঠামো</b>
+            <p style="font-size:9.4pt">ভূমিকা → ফিচার-অবস্থা সারণি → স্ক্রিনশট প্রমাণ → টেস্ট ও কমান্ড আউটপুট → সীমা ও বাকি কাজ</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">তৈরি হয় কীভাবে</b>
+            <p style="font-size:9.4pt"><code>docs/gen_proof_pdf.py</code> (১৯ KB) — reportlab দিয়ে, ছবি ও সংখ্যা একসাথে</p></div>
+          <div class="card bad" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কে পড়ে</b>
+            <p style="font-size:9.4pt">গ্রাহক, শিক্ষক, মূল্যায়নকারী — যে কেউ "সত্যিই হয়েছে?" জিজ্ঞেস করে</p></div>
+          <div class="card" style="padding:2.8mm 3.6mm"><b style="font-size:10.8pt">কেন PDF</b>
+            <p style="font-size:9.4pt">পাঠানোর জন্য সহজ, প্রিন্ট করা যায়, রূপ বদলায় না — দস্তাবেজের "ছবি"</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 42%">
+        <pre style="font-size:8.2pt;line-height:1.46">Build_Proof.pdf — ৩২ পাতা
+
+১.  শিরোনাম + তারিখ
+২.  প্রযুক্তি ও সংখ্যা
+৩.  ফিচার-অবস্থা সারণি
+৪–২০. ফিচার + স্ক্রিনশট
+২১. টেস্ট ফলাফল
+২২. smoke_test ফলাফল
+২৩. check --deploy
+২৪. সীমা (যা নেই)
+২৫–৩২. পরিশিষ্ট</pre>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "কমান্ডের আউটপুট কপি-পেস্ট নয়, স্ক্রিপ্ট থেকে" — এটাই নথিটিকে বিশ্বাসযোগ্য করে। ক্লাসে <code>gen_proof_pdf.py</code> চালিয়ে দেখান।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ক্যাটালগ</span>
+    <div><h2>৭০ পাতার ফিচার ক্যাটালগ</h2>
+      <div class="sub">৫৭টি ফিচার — কোনটি তৈরি, কোনটি বাকি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">অংশ</th><th style="width:34%">বিষয়</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>F-01 … F-09</td><td>অ্যাকাউন্ট ও প্রতিষ্ঠান</td><td>লগইন, রেজিস্ট্রেশন, ওয়ার্কস্পেস সুইচ</td></tr>
+        <tr><td>F-10 … F-15</td><td>ভূমিকা ও আমন্ত্রণ (আংশিক)</td><td>ভূমিকা আছে, ইনভাইট নেই</td></tr>
+        <tr><td>F-16 … F-30</td><td>একাডেমিক কাঠামো</td><td>ক্লাস, বিষয়, শিক্ষাবর্ষ, টার্ম</td></tr>
+        <tr><td>F-31 … F-45</td><td>উপস্থিতি, পাঠ, হোমওয়ার্ক</td><td>নেওয়া, সংশোধন, জমা, রিভিউ</td></tr>
+        <tr><td>F-46 … F-57</td><td>মূল্যায়ন, রিপোর্ট, বিলিং</td><td>নম্বর, প্রকাশ-গেট, CSV/XLSX/PDF, প্ল্যান</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>দুই ফাইলের ভূমিকা:</b> <code>catalogue_data.py</code> (৩১ KB) = পরিকল্পনা · <code>build_status.py</code> = প্রমাণের মানচিত্র (৫৪টি ফিচারের ছবি)।</div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সৎ অবস্থা:</b> ৫৭-এর ৫৪টির ছবি-প্রমাণ; বাকি তিনটি লিখিত আছে, তৈরি নয় — ক্যাটালগেই সেভাবেই আছে।</div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্যাটালগের একটি পাতা খুলে দেখান — ফিচারের বর্ণনা, অবস্থা আর স্ক্রিনশট একই পাতায়। এতে "কতটা হয়েছে" প্রশ্নের উত্তর এক নজরে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ব্যবহারবিধি</span>
+    <div><h2>৩১ পাতার বাংলা ম্যানুয়াল</h2>
+      <div class="sub">HTML থেকে PDF — এক উৎস, দুই রূপ</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.2pt;line-height:1.48">docs/manual/
+  user-manual-bn.html     # মূল (৮ অধ্যায়)
+  print_manual.py         # PDF বানায়
+
+# চালানোর নিয়ম
+python docs/manual/print_manual.py
+#  -> docs/IMS_User_Manual_BN.pdf  (৩১ পাতা)
+
+# কেন HTML মূল
+#  ব্রাউজারে পড়া যায়, PDF-এ ছাপা যায়,
+#  ভবিষ্যতে ওয়েব-সহায়তাও একই ফাইল থেকে</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">ভূমিকা ধরে অধ্যায়</b>
+            <p style="font-size:9.2pt">অ্যাডমিন · কোঅর্ডিনেটর · শিক্ষক · শিক্ষার্থী · প্লাটফর্ম — প্রত্যেকে নিজের অংশ পড়ে।</p></div>
+          <div class="card" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">প্রশ্ন-উত্তর অংশ আছে</b>
+            <p style="font-size:9.2pt">"লগইন হচ্ছে না", "মার্কস সংরক্ষণ হচ্ছে না" — সাপোর্ট কল কমানোর সবচেয়ে সস্তা উপায়।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.4pt">ফাঁক</b>
+            <p style="font-size:9.2pt">UI বদলালে HTML-এর ছবি ও লেখা হাতে বদলাতে হয় — ম্যানুয়ালের কোনো স্বয়ংক্রিয় পরীক্ষা নেই।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন ম্যানুয়ালের একটি অধ্যায় পড়ে দেখতে — তারপর জিজ্ঞেস করুন: "কোথায় আটকে গেলেন?" সেই জায়গাটাই লেখার কাজ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">নিয়ম</span>
+    <div><h2>স্ক্রিনশট-প্রমাণের পাঁচ শর্ত</h2>
+      <div class="sub">ছবি সহজে মিথ্যা বলে — তাই নিয়ম</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:30%">শর্ত</th><th>কারণ</th></tr></thead>
+      <tbody>
+        <tr><td>আসল অ্যাপ থেকে, আসল ডেটায়</td><td>হাতে বানানো মকআপ একদিনে ধরা পড়ে</td></tr>
+        <tr><td>তারিখ লেখা থাকুক</td><td>"এখনো আছে?" প্রশ্নের উত্তর পাওয়া যায়</td></tr>
+        <tr><td>এক ছবি, এক দাবি</td><td>এক ছবিতে পাঁচ ফিচার দেখালে কিছুই প্রমাণ হয় না</td></tr>
+        <tr><td>ঝাপসা / কাটা নয়</td><td>পড়া না গেলে প্রমাণ নয়, সাজসজ্জা</td></tr>
+        <tr><td>গোপন তথ্য থাকবে না</td><td>ডেমো পাসওয়ার্ড, আসল ছাত্রের নাম-ফোন নয়</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.2mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>IMS-এ ডেটা:</b> <code>seed_demo</code> নাম (Rafid Hasan, Sunrise Model School) — কাল্পনিক, তাই ছবি দেখানো নিরাপদ।
+      </div></div>
+      <div><div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সতর্কতা:</b> আসল প্রতিষ্ঠানের ডেটা দিয়ে ডেমো করলে আগে অনুমতি নিন, নইলে স্ক্রিনশটেই গোপনীয়তা ভাঙে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পঞ্চম শর্তটি বাস্তবে সবচেয়ে বেশি ভাঙা হয় — ক্লাসে একটি পুরোনো স্ক্রিনশটে ডেমো পাসওয়ার্ড দেখা যায় কি না খুঁজতে বলুন।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ডেমো</span>
+    <div><h2>১০ মিনিটের উপস্থাপনা স্ক্রিপ্ট</h2>
+      <div class="sub">পাঁচ ধাপ — প্রতিটির একটি প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:10%">মিনিট</th><th style="width:34%">কী করবেন</th><th>যা প্রমাণ হয়</th></tr></thead>
+      <tbody>
+        <tr><td>০–১</td><td>লগইন, চার ভূমিকার ড্যাশবোর্ড</td><td>এক অ্যাপ, চার রকম পর্দা</td></tr>
+        <tr><td>১–৩</td><td>শিক্ষক: উপস্থিতি নিন → সংশোধন করুন</td><td>নীতি + অডিটে জমা</td></tr>
+        <tr><td>৩–৬</td><td>নম্বর এন্ট্রি → প্রকাশ → শিক্ষার্থীর পর্দায়</td><td>প্রকাশ-গেট (৪০৩ → ২০০)</td></tr>
+        <tr><td>৬–৮</td><td>রিপোর্ট কার্ড PDF + CSV রফতানি</td><td>আসল নথি, আসল ফরম্যাট</td></tr>
+        <tr><td>৮–১০</td><td>অডিট লগ + সাবস্ক্রিপশন ব্যানার</td><td>জবাবদিহি + বাণিজ্যিক নিয়ম</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      নিয়ম: ডেমোতে <b>নতুন কিছু বানাবেন না</b> — আগেই তৈরি ডেটা ব্যবহার করুন। আর প্রতিটি ধাপে এক বাক্যে বলুন "এতে কী প্রমাণ হচ্ছে"।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে দুই জনকে ১০ মিনিটের ডেমো করতে দিন — সময় কমিয়ে ৫ মিনিটে নামিয়ে আনতে বলুন; এতে অপ্রয়োজনীয় অংশ বাদ পড়ে।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">এক পাতা</span>
+    <div><h2>গ্রাহকের জন্য এক-পাতার সারসংক্ষেপ</h2>
+      <div class="sub">কেউ ২০ পাতার নথি পড়ে না</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.4mm">
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">১. এটি কী</b>
+            <p style="font-size:9.2pt">একটি প্রতিষ্ঠানের উপস্থিতি, নম্বর, রিপোর্ট কার্ড ও সিলেবাস — এক জায়গায়।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">২. কে কী পাবে</b>
+            <p style="font-size:9.2pt">চার ভূমিকা — অ্যাডমিন, কোঅর্ডিনেটর, শিক্ষক, শিক্ষার্থী।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">৩. প্রমাণ</b>
+            <p style="font-size:9.2pt">১০৩ টেস্ট · ৫৫ পাতা × ৪ ভূমিকা · ৭৭ স্ক্রিনশট · ৩২ পাতার প্রমাণ-নথি।</p></div>
+          <div class="card soft" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">৪. দাম ও শর্ত</b>
+            <p style="font-size:9.2pt">৳১,৫০০ / ৳৩,৫০০ / ৳৬,৫০০ — ১৪ দিনের ট্রায়াল, সিট-সীমা, মেয়াদ শেষে read-only।</p></div>
+          <div class="card bad" style="padding:2.6mm 3.4mm"><b style="font-size:10.6pt">৫. যা এখনো নেই</b>
+            <p style="font-size:9.2pt">ইনভাইট · CSV আমদানি · অনলাইন পেমেন্ট — সৎভাবে লেখা।</p></div>
+        </div>
+      </div>
+      <div style="flex:0 0 34%">
+        <div class="call" style="font-size:9.4pt;padding:2.6mm 3.6mm">
+          <b>কেন ৫ নম্বর থাকবে:</b> যা নেই তা আগেই বলা থাকলে পরে অভিযোগ আসে না — আর ভরসা বাড়ে।
+        </div>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.4pt;padding:2.6mm 3.6mm">
+          <b>দৈর্ঘ্য:</b> এক A4 পাতা; তার বেশি হলে কেউ শেষ পর্যন্ত পড়ে না।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের এক-পাতার সারসংক্ষেপ লিখিয়ে নিন — সবচেয়ে কঠিন কাজ, কারণ সব বাদ দিয়ে মূল কথাটি রাখতে হয়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">রিপোজিটরি</span>
+    <div><h2>প্রথম নজরে যা দেখা যায়</h2>
+      <div class="sub">কেউ রিপো খুললে ৩০ সেকেন্ডে কী বোঝে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:32%">ফাইল</th><th style="width:14%">আছে?</th><th>কেন দরকার</th></tr></thead>
+      <tbody>
+        <tr><td><code>README.md</code></td><td>আছে (বাসি)</td><td>প্রথম পরিচয় — হালনাগাদ করা জরুরি</td></tr>
+        <tr><td><code>START_HERE.md</code></td><td>আছে</td><td>চালানোর পথ, দুই বিকল্প</td></tr>
+        <tr><td><code>.gitignore</code></td><td>আছে</td><td><code>.env</code>, <code>media/</code>, <code>backups/</code>, <code>__pycache__</code> বাদ</td></tr>
+        <tr><td><code>.env.example</code> · <code>.env.production.example</code></td><td>আছে</td><td>কী কী মান লাগবে, গোপন মান ছাড়া</td></tr>
+        <tr><td><code>Procfile</code> · <code>build.sh</code></td><td>আছে</td><td>হোস্ট কীভাবে চালাবে</td></tr>
+        <tr><td><code>docs/</code></td><td>আছে</td><td>প্রমাণ, ম্যানুয়াল, স্ক্রিনশট, জেনারেটর</td></tr>
+        <tr><td><code>CHANGELOG.md</code> · <code>CONTRIBUTING.md</code> · <code>LICENSE</code></td><td><b>নেই</b></td><td>সংস্করণ-ইতিহাস, দলের নিয়ম, ব্যবহারের শর্ত</td></tr>
+      </tbody>
+    </table>
+    <div class="call" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      প্রথম চারটি সারি ঠিক থাকলে রিপো "পেশাদার" দেখায়; শেষ সারি বাকি থাকলে দীর্ঘমেয়াদে সমস্যা — বিশেষ করে লাইসেন্স, কারণ ব্যবহারের শর্ত ছাড়া কোড share করা ঝুঁকি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইসেন্স নিয়ে সতর্ক করুন: প্রতিষ্ঠানের কোড কখনো ওপেন রিপোতে দেবেন না; ব্যক্তিগত প্রজেক্টে MIT/Apache-2.0 সাধারণ পছন্দ।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">যাচাই</span>
+    <div><h2>কেউ প্রশ্ন করলে কোন প্রমাণ দেখাবেন</h2>
+      <div class="sub">ছয়টি প্রশ্ন, ছয়টি উত্তর — তৈরি রাখুন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:40%">প্রশ্ন</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>"কোড কাজ করে?"</td><td><code>Ran 103 tests in 51.469s · OK</code></td></tr>
+        <tr><td>"পাতাগুলো ভাঙে না?"</td><td><code>smoke_test.py</code> — ৫৫ পাতা × ৪ ভূমিকা</td></tr>
+        <tr><td>"সার্ভারে চলবে?"</td><td><code>check --deploy</code> → no issues · <code>deploy_check.sh</code></td></tr>
+        <tr><td>"ডেটা নিরাপদ?"</td><td>স্কোপিং টেস্ট · ৪০৪ ক্রস-ওয়ার্কস্পেস · <code>AuditLog</code></td></tr>
+        <tr><td>"ভুল হলে?"</td><td>রোলব্যাক + <code>ops/backup.sh</code> + restore ড্রিল</td></tr>
+        <tr><td>"আমাদের স্কুলে চলবে?"</td><td>২০ মিনিটের অনবোর্ডিং (LAUNCH_PLAYBOOK §4) + রিপোর্ট কার্ড</td></tr>
+      </tbody>
+    </table>
+    <div class="call warn" style="margin-top:3.2mm;font-size:10pt;padding:2.6mm 4mm">
+      প্রস্তুতি: এই ছয়টি কমান্ডের আউটপুট এক ফোল্ডারে রেখে দিন (<code>docs/proof/</code>) — প্রশ্নের মুহূর্তে খুঁজতে হবে না।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাসে প্রতিটি কমান্ড একবার চালিয়ে আউটপুট সংরক্ষণ করুন — এটাই "প্রমাণ-ফোল্ডার" বানানোর সবচেয়ে সহজ উপায়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">পর্ব ৮ সমাপ্তি</span>
+    <div><h2>তিন ক্লাসে যা শেখা হলো</h2>
+      <div class="sub">৪৪ স্লাইড · ছয়টি দস্তাবেজ · তিনটি প্রমাণ-নথি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:22%">ক্লাস</th><th style="width:40%">মূল ধারণা</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td>৩৩ · কে পড়বে</td><td>চার পাঠক · ব্যবহারবিধি · স্ক্রিনশট</td><td>৯০০ লাইন · ৭৭ PNG · ৫৭ ফিচার</td></tr>
+        <tr><td>৩৪ · কোডের ভেতরে</td><td>docstring · "কেন" মন্তব্য · CHANGELOG · ADR</td><td>৭৫/৫৭৬ docstring · ৮৫ রুট</td></tr>
+        <tr><td>৩৫ · প্রমাণ দেখানো</td><td>চার স্তরের প্রমাণ · ডেমো · এক-পাতা</td><td>৩২+৭০+৩১ পাতা · ১১.৫ MB</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:3.4mm">
+      <div><div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সৎ ফাঁক:</b> ADR ফোল্ডার · CHANGELOG · CONTRIBUTING · LICENSE · <code>docs/url-map.md</code> · <code>rebuild_docs.sh</code> · লোড-টেস্টের প্রমাণ
+      </div></div>
+      <div><div class="call warn" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        পর্ব ৯-এ: ভবিষ্যৎ — কোন ফিচার আগে, কীভাবে অনুমান করবেন, আর কোথায় থামবেন।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ফাঁকের তালিকা থেকে প্রত্যেককে দুটি বেছে নিয়ে পরের সপ্তাহে করতে বলুন — ছোট, তবু শেষ হয়।
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — প্রমাণ-প্যাক বানান</h2>
+      <div class="sub">নিজের প্রজেক্টের জন্য চারটি জিনিস</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">১. প্রমাণ ফোল্ডার</b>
+            <p style="font-size:9.8pt">চারটি কমান্ডের আউটপুট → <code>docs/proof/</code></p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">২. দাবি-ছবি-টেস্ট ছক</b>
+            <p style="font-size:9.8pt">পাঁচটি ফিচার → ছবি → টেস্টের নাম</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৩. ৫ মিনিটের ডেমো</b>
+            <p style="font-size:9.8pt">লিখিত স্ক্রিপ্ট, প্রতিটি ধাপে "কী প্রমাণ হচ্ছে"</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.2pt">৪. এক-পাতার সারসংক্ষেপ</b>
+            <p style="font-size:9.8pt">পাঁচটি শিরোনাম, এক A4</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11pt">
+          <li>দাবির সঙ্গে কয়টি প্রমাণ?</li>
+          <li class="g">স্ক্রিনশটে কী থাকবে না?</li>
+          <li>এক-পাতায় কী বাদ দেবেন?</li>
+          <li class="r">"চলবে?" প্রশ্নের প্রথম উত্তর?</li>
+          <li class="g">লাইসেন্স না থাকলে কী ঝুঁকি?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের উত্তর: টেস্টের সংখ্যা ও `smoke_test` — তারপর অনবোর্ডিং। "কথা নয়, আউটপুট।"
+</section>
+
+<section class="slide divider">
+  <div class="n">৩৬</div>
+  <h2>পর্ব ৯ — ভবিষ্যৎ</h2>
+  <p>কোন ফিচার আগে · অনুমান বনাম প্রমাণ · ব্যবহারকারীর কাছ থেকে শেখা · কখন থামবেন</p>
+</section>

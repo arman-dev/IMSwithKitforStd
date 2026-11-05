@@ -1,0 +1,583 @@
+<!-- ===================== CLASS 14 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৩ · ডিজাইন · ক্লাস ১৪ / ৩৭</div>
+  <h1>কোন ডেটা<br>কার সাথে থাকে</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৪ · টপিক ৪.৩ (ডেটাবেস ডিজাইন)<br>ERD: ৩১ টেবিল · ৭৫ সম্পর্ক · কার্ডিনালিটি</div>
+  <div class="pill">৭০টি FK · ৪টি 1:1 · ১টি M:N</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>একজন শিক্ষার্থী চারটি শ্রেণিতে ছিল — কোন টেবিলে লেখা থাকে?</h2>
+      <div class="sub">হাত তুলুন: শিক্ষার্থীর টেবিলে? নাকি আলাদা টেবিলে?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:26pt;line-height:1.6">
+      ৩১টি টেবিল, <span class="hl">৭৫টি সম্পর্ক</span>। সম্পর্কটা না বুঝে কোড লিখলে<br>
+      শ্রেণি বদলানোর সময় পুরোনো ইতিহাস <b>হারিয়ে যায়</b>।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      IMS-এ উত্তরটি হলো <code>Enrollment</code> — শিক্ষার্থী আর শ্রেণির মাঝখানের টেবিল। আজকের ক্লাসে কেন উত্তরটা
+      শিক্ষার্থীর টেবিলে <b>হতে পারে না</b>, সেটাই মূল আলোচনা।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বেশিরভাগের উত্তর আসবে "শিক্ষার্থীর টেবিলে class_id"। বলুন: "তাহলে গত বছরের শ্রেণি কোথায় থাকল? মুছে গেল?" — এই একটি প্রশ্নেই আজকের ক্লাস দাঁড়িয়ে যায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>ERD পড়ার তিনটি চিহ্ন</h2>
+      <div class="sub">বাক্স = টেবিল · রেখা = সম্পর্ক · রেখার মাথার লেখা = কতজন</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 160" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a14" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <g font-family="NotoBn">
+          <rect x="8" y="10" width="150" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="83" y="28" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">শিক্ষার্থী</text>
+          <text x="83" y="44" text-anchor="middle" font-size="8.2" fill="#3730a3">id · নাম · ভর্তি নম্বর</text>
+          <line x1="158" y1="32" x2="292" y2="32" stroke="#4f46e5" stroke-width="1.4" marker-end="url(#a14)"/>
+          <text x="226" y="24" text-anchor="middle" font-size="9" fill="#4f46e5">1 : N</text>
+          <text x="226" y="48" text-anchor="middle" font-size="8.2" fill="#64748b">একজন → বহু ভর্তি</text>
+          <rect x="296" y="10" width="150" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="371" y="28" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">ভর্তি (Enrollment)</text>
+          <text x="371" y="44" text-anchor="middle" font-size="8.2" fill="#3730a3">শিক্ষার্থী + শ্রেণি + সক্রিয়তা</text>
+
+          <rect x="560" y="10" width="150" height="44" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="635" y="28" text-anchor="middle" font-size="9.6" font-weight="700" fill="#115e59">Workspace</text>
+          <text x="635" y="44" text-anchor="middle" font-size="8.2" fill="#115e59">প্রতিষ্ঠান</text>
+          <line x1="712" y1="32" x2="836" y2="32" stroke="#0f766e" stroke-width="1.4"/>
+          <line x1="836" y1="32" x2="712" y2="32" stroke="#0f766e" stroke-width="1.4" marker-end="url(#a14)"/>
+          <text x="774" y="24" text-anchor="middle" font-size="9" fill="#0f766e">1 : 1</text>
+          <rect x="840" y="10" width="150" height="44" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.4"/>
+          <text x="915" y="28" text-anchor="middle" font-size="9.6" font-weight="700" fill="#115e59">Subscription</text>
+          <text x="915" y="44" text-anchor="middle" font-size="8.2" fill="#115e59">এক প্রতিষ্ঠান, এক সাবস্ক্রিপশন</text>
+
+          <rect x="8" y="100" width="150" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="83" y="118" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">LessonLog</text>
+          <text x="83" y="134" text-anchor="middle" font-size="8.2" fill="#3730a3">এক দিনের পাঠ</text>
+          <line x1="158" y1="122" x2="292" y2="122" stroke="#7c3aed" stroke-width="2.4"/>
+          <line x1="292" y1="122" x2="158" y2="122" stroke="#7c3aed" stroke-width="2.4"/>
+          <text x="226" y="114" text-anchor="middle" font-size="9" fill="#6d28d9">M : N</text>
+          <text x="226" y="138" text-anchor="middle" font-size="8.2" fill="#64748b">দুই পাশেই বহু</text>
+          <rect x="296" y="100" width="150" height="44" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+          <text x="371" y="118" text-anchor="middle" font-size="9.6" font-weight="700" fill="#4c1d95">Topic</text>
+          <text x="371" y="134" text-anchor="middle" font-size="8.2" fill="#5b21b6">সিলেবাসের টপিক</text>
+
+          <text x="470" y="60" font-size="8.6" fill="#64748b">রেখার দুই মাথায় সংখ্যা লেখা হয়</text>
+          <text x="470" y="76" font-size="8.6" fill="#64748b">— না লিখলে ছবিটা অর্ধেক।</text>
+          <text x="470" y="150" font-size="8.6" fill="#64748b">IMS-এ M:N মাত্র একটিই: LessonLog ⇄ Topic</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:12pt;padding:3.2mm 4.8mm">
+      কার্ডিনালিটি পড়ার নিয়ম: <b>"এক X-এর অধীনে কতজন Y?"</b> — উত্তর ১ হলে 1:1, বহু হলে 1:N, আর দুই দিকেই বহু হলে M:N।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের দিয়ে প্রশ্নটাই উচ্চারণ করান: "এক শ্রেণিতে কতজন ছাত্র?" (বহু) "একজন ছাত্র কত শ্রেণিতে?" (বহু, সময়ের সাথে) — তাই মাঝখানে টেবিল।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>৭৫টি সম্পর্কের হিসাব</h2>
+      <div class="sub"><code>grep "ForeignKey\|OneToOneField\|ManyToManyField" apps/*/models.py</code> — হাতে গোনা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <table class="tight" style="font-size:9.4pt">
+          <thead><tr><th>অ্যাপ</th><th>FK</th><th>1:1</th><th>M:N</th><th>মোট</th></tr></thead>
+          <tbody>
+            <tr><td>lessons</td><td>২১</td><td>—</td><td>১</td><td><b>২২</b></td></tr>
+            <tr><td>academics</td><td>১৭</td><td>—</td><td>—</td><td><b>১৭</b></td></tr>
+            <tr><td>assessments</td><td>১০</td><td>—</td><td>—</td><td><b>১০</b></td></tr>
+            <tr><td>attendance</td><td>৬</td><td>১</td><td>—</td><td><b>৭</b></td></tr>
+            <tr><td>billing</td><td>৬</td><td>১</td><td>—</td><td><b>৭</b></td></tr>
+            <tr><td>students</td><td>৫</td><td>১</td><td>—</td><td><b>৬</b></td></tr>
+            <tr><td>workspaces</td><td>৩</td><td>১</td><td>—</td><td><b>৪</b></td></tr>
+            <tr><td>audit</td><td>২</td><td>—</td><td>—</td><td><b>২</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:12pt;padding:3.4mm 4.4mm">
+          মোট <b>৭৫</b>: ৭০টি FK · ৪টি 1:1 · ১টি M:N।<br>
+          ৩১টি টেবিলের মধ্যে <b>২৩টি</b> সরাসরি প্রতিষ্ঠান-স্কোপড।
+        </div>
+        <div class="call warn" style="margin-top:3.4mm;font-size:11.2pt;padding:3mm 4.2mm">
+          <b>lessons</b>-এ সবচেয়ে বেশি সম্পর্ক (২২) — কারণ এক পাঠে টপিক, হোমওয়ার্ক, জমা, উপকরণ, শ্রেণি, বিষয়, শিক্ষক —
+          সাতটি জিনিস একসাথে জড়ায়। ডিজাইনে সবচেয়ে কঠিন অ্যাপও এটাই।
+        </div>
+      </div>
+    </div>
+    <div class="call bad" style="margin-top:4mm;font-size:11.4pt;padding:2.8mm 4.6mm">
+      অডিটে মাত্র ২টি সম্পর্ক — তবু প্রতিটি প্রসেস সেখানে লেখে। সম্পর্ক কম মানে গুরুত্ব কম নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে ৭৫ লিখুন, নিচে ২৩। বলুন: "৭৫ সম্পর্কের মধ্যে ২৩টি প্রতিষ্ঠানকে ধরে রাখে — বাকিগুলো ভেতরের গল্প।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>ERD — প্রথম ভাগ: প্রতিষ্ঠান, মানুষ ও ভূমিকা</h2>
+      <div class="sub">চারটি টেবিলেই প্রতিষ্ঠানের সীমা তৈরি হয়: Workspace · Membership · ClassGroup · Enrollment</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 268" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a14b" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <g font-family="NotoBn">
+          <rect x="380" y="6" width="230" height="50" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.8"/>
+          <text x="495" y="26" text-anchor="middle" font-size="10.4" font-weight="700" fill="#115e59">Workspace</text>
+          <text x="495" y="44" text-anchor="middle" font-size="8.2" fill="#115e59">slug · kind · owner · is_active</text>
+
+          <rect x="60" y="92" width="190" height="48" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="155" y="110" text-anchor="middle" font-size="9.8" font-weight="700" fill="#312e81">Membership</text>
+          <text x="155" y="128" text-anchor="middle" font-size="8" fill="#3730a3">user + workspace + role</text>
+
+          <rect x="290" y="92" width="190" height="48" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="385" y="110" text-anchor="middle" font-size="9.8" font-weight="700" fill="#312e81">ClassGroup</text>
+          <text x="385" y="128" text-anchor="middle" font-size="8" fill="#3730a3">term · department · section</text>
+
+          <rect x="520" y="92" width="190" height="48" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="615" y="110" text-anchor="middle" font-size="9.8" font-weight="700" fill="#312e81">StudentProfile</text>
+          <text x="615" y="128" text-anchor="middle" font-size="8" fill="#3730a3">admission_no · account</text>
+
+          <rect x="750" y="92" width="190" height="48" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="845" y="110" text-anchor="middle" font-size="9.8" font-weight="700" fill="#312e81">Exam</text>
+          <text x="845" y="128" text-anchor="middle" font-size="8" fill="#3730a3">class · subject · term</text>
+
+          <rect x="60" y="196" width="190" height="48" rx="6" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+          <text x="155" y="214" text-anchor="middle" font-size="9.8" font-weight="700" fill="#7c2d12">User</text>
+          <text x="155" y="232" text-anchor="middle" font-size="8" fill="#92400e">email (unique) · full_name</text>
+
+          <rect x="290" y="196" width="190" height="48" rx="6" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+          <text x="385" y="214" text-anchor="middle" font-size="9.8" font-weight="700" fill="#7c2d12">TeacherAssignment</text>
+          <text x="385" y="232" text-anchor="middle" font-size="8" fill="#92400e">teacher + class + subject + term</text>
+
+          <rect x="520" y="196" width="190" height="48" rx="6" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+          <text x="615" y="214" text-anchor="middle" font-size="9.8" font-weight="700" fill="#7c2d12">Enrollment</text>
+          <text x="615" y="232" text-anchor="middle" font-size="8" fill="#92400e">student + class + is_active</text>
+
+          <rect x="750" y="196" width="190" height="48" rx="6" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+          <text x="845" y="214" text-anchor="middle" font-size="9.8" font-weight="700" fill="#7c2d12">Mark</text>
+          <text x="845" y="232" text-anchor="middle" font-size="8" fill="#92400e">exam + student + obtained</text>
+
+          <line x1="430" y1="56" x2="170" y2="90" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="470" y1="56" x2="385" y2="90" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="525" y1="56" x2="613" y2="90" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="570" y1="56" x2="843" y2="90" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <text x="262" y="70" font-size="8.4" fill="#4f46e5">1:N</text>
+          <text x="424" y="74" font-size="8.4" fill="#4f46e5">1:N</text>
+          <text x="588" y="70" font-size="8.4" fill="#4f46e5">1:N</text>
+          <text x="722" y="70" font-size="8.4" fill="#4f46e5">1:N</text>
+
+          <line x1="155" y1="192" x2="155" y2="146" stroke="#d97706" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="385" y1="192" x2="385" y2="146" stroke="#d97706" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="615" y1="192" x2="615" y2="146" stroke="#d97706" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <line x1="845" y1="192" x2="845" y2="146" stroke="#d97706" stroke-width="1.3" marker-end="url(#a14b)"/>
+          <text x="166" y="172" font-size="8.4" fill="#b45309">N:1</text>
+          <text x="396" y="172" font-size="8.4" fill="#b45309">N:1</text>
+          <text x="626" y="172" font-size="8.4" fill="#b45309">N:1</text>
+          <text x="856" y="172" font-size="8.4" fill="#b45309">N:1</text>
+
+          <line x1="480" y1="140" x2="480" y2="168" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <line x1="480" y1="168" x2="608" y2="168" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="4 3"/>
+          <line x1="608" y1="168" x2="608" y2="192" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#a14b)"/>
+          <text x="486" y="157" font-size="8" fill="#6d28d9">ClassGroup 1:N Enrollment</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      লক্ষ্য করুন: <b>User</b> আর <b>Workspace</b> সরাসরি জুড়তে হয় না — মাঝখানে Membership, কারণ এক ব্যবহারকারী বহু প্রতিষ্ঠানে ভিন্ন ভূমিকায় থাকতে পারে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> Membership-এর জায়গাটা আঙুল দিয়ে দেখান: "ভূমিকা কোথায় থাকবে? User-এ রাখলে এক ব্যবহারকারীর একটাই ভূমিকা হতো — শিক্ষক আবার অভিভাবক হতে পারতেন না।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>ERD — দ্বিতীয় ভাগ: পাঠ, কাজ ও মূল্যায়ন</h2>
+      <div class="sub">তিনটি চেইন: সিলেবাস · হোমওয়ার্ক · পরীক্ষা — আর একটাই M:N</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 250" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="a14c" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker></defs>
+        <g font-family="NotoBn">
+          <text x="100" y="10" text-anchor="middle" font-size="8.6" fill="#64748b">সিলেবাস</text>
+          <text x="330" y="10" text-anchor="middle" font-size="8.6" fill="#64748b">হোমওয়ার্ক</text>
+          <text x="560" y="10" text-anchor="middle" font-size="8.6" fill="#64748b">পরীক্ষা</text>
+          <text x="800" y="10" text-anchor="middle" font-size="8.6" fill="#64748b">গ্রেডিং</text>
+
+          <rect x="20" y="18" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="105" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Syllabus</text>
+          <text x="105" y="52" text-anchor="middle" font-size="8" fill="#3730a3">শ্রেণি + বিষয়</text>
+          <rect x="20" y="92" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="105" y="110" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Chapter</text>
+          <text x="105" y="126" text-anchor="middle" font-size="8" fill="#3730a3">ক্রম · শিরোনাম</text>
+          <rect x="20" y="166" width="170" height="44" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.4"/>
+          <text x="105" y="184" text-anchor="middle" font-size="9.6" font-weight="700" fill="#4c1d95">Topic</text>
+          <text x="105" y="200" text-anchor="middle" font-size="8" fill="#5b21b6">সম্পন্ন হয়েছে কি না</text>
+          <line x1="105" y1="62" x2="105" y2="88" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14c)"/>
+          <line x1="105" y1="136" x2="105" y2="162" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14c)"/>
+          <text x="118" y="78" font-size="8.2" fill="#4f46e5">1:N</text>
+          <text x="118" y="152" font-size="8.2" fill="#4f46e5">1:N</text>
+
+          <rect x="245" y="18" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="330" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Homework</text>
+          <text x="330" y="52" text-anchor="middle" font-size="8" fill="#3730a3">due_at · is_published</text>
+          <rect x="245" y="92" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="330" y="110" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Submission</text>
+          <text x="330" y="126" text-anchor="middle" font-size="8" fill="#3730a3">student · status · নম্বর</text>
+          <line x1="330" y1="62" x2="330" y2="88" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14c)"/>
+          <text x="343" y="78" font-size="8.2" fill="#4f46e5">1:N</text>
+
+          <rect x="245" y="166" width="170" height="44" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/>
+          <text x="330" y="184" text-anchor="middle" font-size="9.6" font-weight="700" fill="#4c1d95">LessonLog</text>
+          <text x="330" y="200" text-anchor="middle" font-size="8" fill="#5b21b6">তারিখ · শিক্ষক</text>
+          <line x1="190" y1="188" x2="241" y2="188" stroke="#7c3aed" stroke-width="2.2"/>
+          <line x1="190" y1="180" x2="241" y2="180" stroke="#7c3aed" stroke-width="2.2"/>
+          <text x="215" y="172" text-anchor="middle" font-size="8.2" fill="#6d28d9">M:N</text>
+
+          <rect x="475" y="18" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="560" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Exam</text>
+          <text x="560" y="52" text-anchor="middle" font-size="8" fill="#3730a3">full_marks · is_published</text>
+          <rect x="475" y="92" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="560" y="110" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">Mark</text>
+          <text x="560" y="126" text-anchor="middle" font-size="8" fill="#3730a3">exam + student + obtained</text>
+          <line x1="560" y1="62" x2="560" y2="88" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14c)"/>
+          <text x="573" y="78" font-size="8.2" fill="#4f46e5">1:N</text>
+
+          <rect x="715" y="18" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="800" y="36" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">GradeScale</text>
+          <text x="800" y="52" text-anchor="middle" font-size="8" fill="#3730a3">সক্রিয় স্কেল একটাই</text>
+          <rect x="715" y="92" width="170" height="44" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+          <text x="800" y="110" text-anchor="middle" font-size="9.6" font-weight="700" fill="#312e81">GradeBand</text>
+          <text x="800" y="126" text-anchor="middle" font-size="8" fill="#3730a3">A+ ≥ 80 · letter · GPA</text>
+          <line x1="800" y1="62" x2="800" y2="88" stroke="#4f46e5" stroke-width="1.3" marker-end="url(#a14c)"/>
+          <text x="813" y="78" font-size="8.2" fill="#4f46e5">1:N</text>
+
+          <text x="715" y="184" font-size="8.4" fill="#64748b">GradeBand-এ workspace কলাম নেই —</text>
+          <text x="715" y="198" font-size="8.4" fill="#64748b">স্কেল হয়ে উত্তরাধিকার পায়।</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      তিনটি চেইনই <b>1:N</b> — কারণ পিতৃ-টেবিলের একটি সারির অধীনে বহু সন্তান। M:N একমাত্র সিলেবাসে, কারণ এক পাঠে একাধিক টপিক, আর এক টপিক বহু পাঠে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন প্রতিটি চেইনে "পিতা কে, সন্তান কে" মুখে বলতে — মুখে বলতে না পারলে ERD মুখস্থ, বোঝা নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>চারটি 1:1 — কেন আলাদা টেবিল</h2>
+      <div class="sub">1:1 মানে "একটির বেশি হতে পারে না" — সেটাই ডিজাইনের যুক্তি</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:26%">সম্পর্ক</th><th style="width:22%">কেন একটির বেশি নয়</th><th>আলাদা টেবিল না হলে কী হতো</th></tr></thead>
+      <tbody>
+        <tr><td><b>Workspace → Subscription</b></td><td>এক প্রতিষ্ঠানের একটাই চুক্তি</td><td>সাবস্ক্রিপশন ফিল্ড ৭টি প্রতিষ্ঠান-টেবিলে ঢুকে যেত</td></tr>
+        <tr><td><b>Workspace → AttendancePolicy</b></td><td>একটি উপস্থিতি নীতি</td><td>নীতি ছাড়া প্রতিষ্ঠান চলত, NULL-এ ভরা কলাম</td></tr>
+        <tr><td><b>Workspace → WorkspaceBranding</b></td><td>এক সেট ব্র্যান্ডিং</td><td>ব্র্যান্ডিং এডিট করতে প্রতিষ্ঠান-টেবিলে হাত দিতে হতো</td></tr>
+        <tr><td><b>User → StudentProfile</b></td><td>একজন ব্যবহারকারী এক শিক্ষার্থী</td><td>লগইন ছাড়া ছাত্র থাকত না — অথচ অ্যাকাউন্ট ঐচ্ছিক</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:5mm">
+      <div><div class="call" style="font-size:11.4pt;padding:3mm 4.4mm">
+        <b>সাধারণ নিয়ম:</b> 1:1 ব্যবহার করি যখন তথ্য <b>ঐচ্ছিক</b>, <b>ভিন্ন দায়িত্বে</b>, বা <b>বড়</b> (ফাইল/JSON)।
+      </div></div>
+      <div><div class="call warn" style="font-size:11.4pt;padding:3mm 4.4mm">
+        <b>ফাঁদ:</b> 1:1-এ ডেটা দুই টেবিলে ভাগ হলে প্রতিটি কুয়েরিতে join লাগে — অকারণ ভাগ করলে সব ধীর ও জটিল হয়ে যায়।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ সারিটি জোর দিন: "StudentProfile.account ঐচ্ছিক — কারণ ছোট প্রতিষ্ঠানে সব ছাত্রের লগইন থাকে না। ERD-তে ঐচ্ছিকতা দেখা যায় NULL দিয়ে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>M:N একটাই — কিন্তু যৌগিক টেবিল অনেকগুলো</h2>
+      <div class="sub"><code>LessonLog.topics</code> Django নিজেই মাঝের টেবিল বানায়; বাকি জায়গায় হাতে বানানো হয়েছে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.6pt;line-height:1.5">class LessonLog(TimeStamped):
+    topics = models.ManyToManyField(
+        Topic, blank=True, related_name="lesson_logs")
+
+class AttendanceRecord(TimeStamped):
+    class Meta:
+        constraints = [
+          models.UniqueConstraint(
+            fields=["student", "class_group",
+                    "subject", "date"],
+            name="uniq_attendance_student_class_"
+                  "subject_date"),
+        ]
+
+class Mark(TimeStamped):
+    class Meta:
+        constraints = [
+          models.UniqueConstraint(
+            fields=["exam", "student"],
+            name="uniq_mark_exam_student"),
+        ]</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.4mm">
+          <div class="card" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">Django-র M:N কখন যথেষ্ট</b>
+            <p style="font-size:10.4pt">মাঝের টেবিলে <b>অতিরিক্ত তথ্য নেই</b> — শুধু "কোন পাঠে কোন টপিক"।</p></div>
+          <div class="card" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">নিজের টেবিল কখন লাগে</b>
+            <p style="font-size:10.4pt">যখন সম্পর্কের নিজের গুণ আছে — কে রেকর্ড করল, কখন, কোন অবস্থা। AttendanceRecord-এ ৮টি নিজের ফিল্ড।</p></div>
+          <div class="card soft" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">ট্রিক: যৌগিক unique</b>
+            <p style="font-size:10.4pt">M:N টেবিলে ডুপ্লিকেট আটকাতে ৪টি কলামের unique — একই দিনে একই ছাত্রের একই ক্লাসে দ্বিতীয় সারি অসম্ভব।</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call bad" style="margin-top:4mm;font-size:11.4pt;padding:2.8mm 4.6mm">
+      ফাঁদ: M:N ব্যবহার করলে <b>কে কখন যোগ করল</b> তথ্যটি হারায়। উপস্থিতি, নম্বর, জমা — এগুলো কখনোই "শুধু সম্পর্ক" নয়, এগুলো <b>ঘটনা</b>।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "যদি প্রশ্নের উত্তর দিতে হয় 'কে করল, কখন করল' — তাহলে M:N নয়, নিজের টেবিল।" এই এক লাইনেই ছাত্রদের অনেক ভুল বাঁচবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>কী (Primary Key) — কখন অটো, কখন প্রাকৃতিক</h2>
+      <div class="sub">৩১টি টেবিলে অটো <code>id</code>; কিন্তু ৬টি জায়গায় নিজস্ব ইউনিক কী</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.3pt">
+      <thead><tr><th style="width:30%">কী</th><th style="width:18%">ধরন</th><th>কেন এটা</th></tr></thead>
+      <tbody>
+        <tr><td><code>id</code> (সব টেবিলে)</td><td>অটো ইনক্রিমেন্ট</td><td>কখনো বদলায় না, ছোট, ইনডেক্সে হালকা</td></tr>
+        <tr><td><code>User.email</code></td><td>প্রাকৃতিক · unique</td><td>লগইনের পরিচয় — <code>USERNAME_FIELD</code></td></tr>
+        <tr><td><code>Workspace.slug</code></td><td>প্রাকৃতিক · unique</td><td>URL-এ দেখা যায়: <code>/w/springfield/</code></td></tr>
+        <tr><td><code>StudentProfile.admission_no</code></td><td>যৌগিক unique <code>(workspace, admission_no)</code></td><td>প্রতিষ্ঠানভেদে একই নম্বর চলতে পারে</td></tr>
+        <tr><td><code>Invoice.number</code></td><td>প্রাকৃতিক · unique</td><td>হিসাবরক্ষণের নথি — পুনরায় ব্যবহার নিষিদ্ধ</td></tr>
+        <tr><td><code>Plan.code</code></td><td>প্রাকৃতিক · slug unique</td><td>কোডে উল্লেখযোগ্য: <code>starter</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4.5mm">
+      <div><div class="call" style="font-size:11.2pt;padding:3mm 4.4mm">
+        নিয়ম: <b>PK অদৃশ্য থাকুক</b> (id), <b>মানুষের দেখা নম্বরটা unique কলাম হোক</b> (admission_no)।
+      </div></div>
+      <div><div class="call warn" style="font-size:11.2pt;padding:3mm 4.4mm">
+        ভুল: <code>admission_no</code>-কে PK বানানো — প্রতিষ্ঠান বদলালে বা নম্বর সংশোধন হলে পুরো সম্পর্ক ভাঙে।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> জিজ্ঞেস করুন: "ভর্তি নম্বর ভুল ছিল, এখন ঠিক করবেন — PK হলে কী হবে?" উত্তর: সব foreign key ভেঙে যাবে। এজন্যই অটো id।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>ইউনিক — ৬টি পুরোনো, ৮টি নতুন</h2>
+      <div class="sub"><code>unique_together</code> বনাম <code>UniqueConstraint</code> — দ্বিতীয়টি শর্ত দিতে পারে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 48%">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th>unique_together (৬)</th><th>কীসের উপর</th></tr></thead>
+          <tbody>
+            <tr><td>AcademicYear</td><td>workspace + name</td></tr>
+            <tr><td>AcademicTerm</td><td>workspace + year + name</td></tr>
+            <tr><td>Department</td><td>workspace + name</td></tr>
+            <tr><td>ClassGroup</td><td>workspace + term + name + section</td></tr>
+            <tr><td>Subject</td><td>workspace + name</td></tr>
+            <tr><td>TeacherAssignment</td><td>teacher + class + subject + term</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th>UniqueConstraint (৮)</th><th>শর্ত</th></tr></thead>
+          <tbody>
+            <tr><td>uniq_active_term_per_workspace</td><td>একটাই সক্রিয় টার্ম</td></tr>
+            <tr><td>uniq_active_grade_scale_per_workspace</td><td>একটাই সক্রিয় স্কেল</td></tr>
+            <tr><td>uniq_active_enrollment_student_class</td><td>একটাই সক্রিয় ভর্তি</td></tr>
+            <tr><td>unique_custom_domain</td><td>খালি ডোমেইন ছাড়া</td></tr>
+            <tr><td>uniq_membership_user_workspace</td><td>শর্ত নেই</td></tr>
+            <tr><td>uniq_mark_exam_student</td><td>শর্ত নেই</td></tr>
+            <tr><td>uniq_attendance_…date</td><td>শর্ত নেই</td></tr>
+            <tr><td>uniq_submission_homework_student</td><td>শর্ত নেই</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 3.8mm">
+          প্রথম ৪টি <b>শর্তসাপেক্ষ (partial)</b> — শুধু "সক্রিয়" সারিগুলোর মধ্যে ইউনিক।
+        </div>
+      </div>
+    </div>
+    <div class="call bad" style="margin-top:4mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      পুরোনো বছরগুলোর ইতিহাস রাখতে হবে, তাই <code>(workspace, year, name)</code> সাধারণ unique; কিন্তু একসাথে দুইটি <b>সক্রিয়</b> টার্ম চলা যাবে না — সেটি partial। বিস্তারিত ক্লাস ১৫-এ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পার্থক্যটা এক বাক্যে: "সাধারণ unique বলে 'সবসময় একটাই'; partial unique বলে 'একটাই সক্রিয়, বাকিগুলো ইতিহাস'।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>স্কোপ কলাম — ২৩টিতে সরাসরি, ৮টিতে উত্তরাধিকারে</h2>
+      <div class="sub"><code>workspace</code> কলাম আছে কি না — প্রতিটি কুয়েরির নিরাপত্তা এর উপর নির্ভর করে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 46%">
+        <div class="call" style="font-size:11.4pt;padding:3mm 4.4mm">
+          <b>২৩টি টেবিলে সরাসরি</b> <code>workspace</code>:<br>
+          কাঠামো · ছাত্র · উপস্থিতি · পাঠ · পরীক্ষা · অডিট · সাবস্ক্রিপশন…
+        </div>
+        <div class="call warn" style="margin-top:3mm;font-size:11.4pt;padding:3mm 4.4mm">
+          <b>৮টিতে নেই:</b> User · Workspace · Plan · GradeBand · Chapter · Topic · Mark · Submission
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.3pt">
+          <thead><tr><th style="width:30%">টেবিল</th><th>স্কোপ কোথা থেকে আসে</th></tr></thead>
+          <tbody>
+            <tr><td>Chapter · Topic</td><td><code>syllabus.workspace</code> — দুই ধাপ</td></tr>
+            <tr><td>Mark</td><td><code>exam.workspace</code> — এক ধাপ</td></tr>
+            <tr><td>Submission</td><td><code>homework.workspace</code> — এক ধাপ</td></tr>
+            <tr><td>GradeBand</td><td><code>scale.workspace</code> — এক ধাপ</td></tr>
+            <tr><td>Plan · User</td><td>প্ল্যাটফর্ম-স্তরের, স্কোপ নেই</td></tr>
+            <tr><td>Workspace</td><td>নিজেই স্কোপ</td></tr>
+          </tbody>
+        </table>
+        <div class="call bad" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 3.8mm">
+          ঝুঁকি: <code>Mark.objects.all()</code> লিখলে প্রতিষ্ঠান আলাদা হয় না — join করে ফিল্টার করতেই হবে।
+        </div>
+      </div>
+    </div>
+    <div class="call" style="margin-top:4mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      তাই IMS-এ <code>scoping.py</code> নামের একটাই জায়গা — প্রতিটি তালিকা-ভিউ নিজে ফিল্টার লেখে না। স্কোপ ও কোয়েরি ক্লাস ১৫ ও পর্ব ৪-এ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "কলাম না থাকলে নিরাপত্তা হারায় না — কিন্তু ভুলে যাওয়ার সুযোগ বেড়ে যায়।" উত্তরাধিকার-স্কোপ মানে প্রতিটি কুয়েরিতে ভাবতে হবে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>ERD থেকে কোডে — তীরগুলো কোথায় থাকে</h2>
+      <div class="sub"><code>related_name</code> ছাড়া উল্টো দিকের কুয়েরি লেখা কঠিন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 55%">
+        <pre style="font-size:8.6pt;line-height:1.5">class Enrollment(TimeStamped):
+    workspace = models.ForeignKey(
+        Workspace, on_delete=models.CASCADE,
+        related_name="enrollments")
+    student = models.ForeignKey(
+        StudentProfile, on_delete=models.CASCADE,
+        related_name="enrollments")
+    class_group = models.ForeignKey(
+        ClassGroup, on_delete=models.CASCADE,
+        related_name="enrollments")
+    is_active = models.BooleanField(default=True)
+
+# ERD-র 1:N তীর মানে কোডে:
+#   এক ছাত্র  →  student.enrollments.all()
+#   এক শ্রেণি  →  cls.enrollments.filter(is_active=True)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.4mm">
+          <div class="card" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">তীর = ForeignKey</b>
+            <p style="font-size:10.4pt">সন্তান-টেবিলে পিতার id থাকে। ERD-র "N" দিকের টেবিলে কলাম বসে।</p></div>
+          <div class="card" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">উল্টো দিক = related_name</b>
+            <p style="font-size:10.4pt">নাহলে <code>enrollment_set</code> — পড়তে কষ্ট, খুঁজতেও।</p></div>
+          <div class="card soft" style="padding:3.8mm 4.4mm"><b style="font-size:12.4pt">তিনটি FK = একই টেবিলে</b>
+            <p style="font-size:10.4pt">Enrollment-এ workspace, student, class — তিনটাই দরকার, তিনটাই আছে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "workspace কলাম থাকা সত্ত্বেও student আর class_group কেন দরকার?" উত্তর: এক ছাত্র একবার এক শ্রেণিতে — ternary relationship.</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>ERD-তে পাঁচটি সাধারণ ভুল</h2>
+      <div class="sub">প্রতিটির প্রতিকার একটি বাক্যে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:36%">ভুল</th><th>পরিণতি ও প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. ইতিহাস মুছে ফেলা</b> — ছাত্রের টেবিলে একটাই <code>class_id</code></td>
+          <td>শ্রেণি বদলালে গত বছরের রেকর্ড হারায় → Enrollment টেবিল</td></tr>
+        <tr><td><b>২. কার্ডিনালিটি না লেখা</b></td>
+          <td>ছবি পড়া যায় না — "এক শ্রেণিতে কতজন?" প্রশ্নের উত্তর ছবিতেই থাকা দরকার</td></tr>
+        <tr><td><b>৩. ঘটনাকে M:N ভাবা</b></td>
+          <td>উপস্থিতি/নম্বর/জমা = ঘটনা, নিজের টেবিল ও নিজের ফিল্ড চায়</td></tr>
+        <tr><td><b>৪. যৌগিক unique ভুলে যাওয়া</b></td>
+          <td>একই পরীক্ষায় দুইবার নম্বর → <code>uniq_mark_exam_student</code></td></tr>
+        <tr><td><b>৫. স্কোপ কলাম ছাড়া টেবিল যোগ করা</b></td>
+          <td>নতুন টেবিলে <code>workspace</code> না দিলে এক প্রতিষ্ঠানের ডেটা আরেকটিতে দেখা যাবে</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4.5mm;font-size:11.6pt;padding:3mm 4.6mm">
+      পঞ্চম ভুলটাই সবচেয়ে বিপজ্জনক — কারণ এটি এরর দেয় না, <b>চুপচাপ ভুল ডেটা দেখায়</b>।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ লাইনটা বলুন ধীরে: "নিরাপত্তার ভুল কখনো চিৎকার করে না।" তারপর ছাত্রদের নিজের প্রজেক্টে নতুন টেবিলে workspace আছে কি না দেখতে বলুন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন</span>
+    <div><h2>২২ মিনিট — নিজের সিস্টেমের ERD</h2>
+      <div class="sub">IMS-এর কাঠামো নকল নয়, পদ্ধতি কপি করুন</div></div></div>
+  <div class="body">
+    <div class="cards" style="flex-direction:column;gap:3.4mm">
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">১. টেবিলের তালিকা (৫ মিনিট)</b>
+        <p style="font-size:11pt">নিজের সব মডেল লিখুন — পাশে কোনটি "ঘটনা" (উপস্থিতি, পেমেন্ট, জমা) আর কোনটি "তথ্য" (ছাত্র, শ্রেণি)।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">২. সম্পর্ক আঁকুন (৮ মিনিট)</b>
+        <p style="font-size:11pt">প্রতিটি রেখায় 1:N / M:N / 1:1 লিখুন। যে রেখায় সংখ্যা লিখতে পারেন না — সেখানে বোঝাপড়া এখনো হয়নি।</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">৩. পিতৃ-সন্তান যাচাই (৫ মিনিট)</b>
+        <p style="font-size:11pt">প্রতিটি N-দিকের টেবিলে পিতার FK কলাম আছে? উল্টো দিকের <code>related_name</code> লেখা?</p></div>
+      <div class="card soft" style="padding:4mm 5mm"><b style="font-size:13pt">৪. ইতিহাস পরীক্ষা (৪ মিনিট)</b>
+        <p style="font-size:11pt">একটি রেকর্ড বদলালে পুরোনো অবস্থা হারায় কি? হারালে মাঝের টেবিল বা <code>is_active</code> দরকার।</p></div>
+    </div>
+    <div class="call" style="margin-top:4mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      যাচাই: আপনার ERD দেখে কেউ বলতে পারবে "এই ছাত্র গত বছর কোন শ্রেণিতে ছিল"? না পারলে উত্তরটা কোথায় থাকবে ঠিক করুন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ ধাপে ছাত্ররা প্রথমবার বুঝবে কেন IMS-এ <code>is_active</code> আছে — মুছে ফেলা মানে ইতিহাস হারানো।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>ক্লাসে আলোচনার চার প্রশ্ন</h2>
+      <div class="sub">উত্তর এক বাক্যে</div></div></div>
+  <div class="body">
+    <ul class="pts">
+      <li>শিক্ষার্থীর শ্রেণি কেন শিক্ষার্থী-টেবিলে কলাম হিসেবে থাকতে পারে না?</li>
+      <li class="g">Membership না থাকলে একজন শিক্ষক দুই প্রতিষ্ঠানে কাজ করতে পারতেন না — কেন?</li>
+      <li>কোন তথ্য 1:1 টেবিলে রাখা উচিত, আর কোনটা মূল টেবিলেই?</li>
+      <li class="r">একই পরীক্ষায় একই ছাত্রের দুইটি নম্বর ঢুকে গেলে সমস্যাটা কোথায় ধরা পড়বে — কোডে, নাকি ডেটাবেসে?</li>
+    </ul>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> চতুর্থ প্রশ্নের সেরা উত্তর: "ডেটাবেসে — কারণ কোড ভুলে যেতে পারে, constraint ভোলে না।" এটাই ক্লাস ১৫-এর সেতু।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:52%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>ঘটনা আর তথ্য আলাদা টেবিলে</b></td><td>Enrollment · AttendanceRecord · Mark · Submission</td></tr>
+        <tr><td><b>ভূমিকা User-এ নয়, Membership-এ</b></td><td>এক ব্যবহারকারী বহু প্রতিষ্ঠানে, ভিন্ন ভূমিকায়</td></tr>
+        <tr><td><b>1:1 কেবল ঐচ্ছিক বা ভিন্ন দায়িত্বের তথ্যে</b></td><td>Subscription · Policy · Branding · StudentProfile.account</td></tr>
+        <tr><td><b>M:N-এ সম্পর্কের নিজের গুণ থাকলে নিজের টেবিল</b></td><td>একটাই Django M:N (LessonLog ⇄ Topic)</td></tr>
+        <tr><td><b>PK অদৃশ্য, মানুষের নম্বরটি unique কলাম</b></td><td>id + <code>(workspace, admission_no)</code></td></tr>
+        <tr><td><b>নতুন টেবিলে স্কোপ কলাম না থাকলে বিপদ</b></td><td>২৩টি সরাসরি · ৮টি উত্তরাধিকারে</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম ও ষষ্ঠ সারি বোর্ডে আলাদা করে লিখুন — এ দুটোই ছাত্রদের প্রজেক্টে সবচেয়ে বেশি ভুল হয়।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">১৫</div>
+  <h2>পরের ক্লাস — "স্কিমা মাটিতে নামে"</h2>
+  <p>partial unique index · workspace কলাম কোথায় নেই · cascade নিয়ম · ১২ মাইগ্রেশনের ক্রম</p>
+</section>

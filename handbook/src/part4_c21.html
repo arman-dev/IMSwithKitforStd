@@ -1,0 +1,505 @@
+<!-- ===================== CLASS 21 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৪ · কোডিং · ক্লাস ২১ / ৩৭</div>
+  <h1>ফাইল ঢোকে,<br>বিপদ ঢোকে না</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৭ · টপিক ৭.২ (ফাইল আপলোড)<br>২টি ফাইল-ফিল্ড · ৯টি অনুমোদিত এক্সটেনশন · ১০ MB সীমা · ১টি ডাউনলোড ভিউ</div>
+  <div class="pill">MEDIA_ROOT · FileResponse · অনুমতি</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>আপলোড মানে তিনটি প্রশ্ন</h2>
+      <div class="sub">ডিস্কে কোথায় · কে দেখতে পাবে · কোন ফাইল গ্রহণযোগ্য</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:24pt;line-height:1.6">
+      প্রথমটি Django করে দেয়। <span class="hl">দ্বিতীয়টি</span> আপনার কাজ। তৃতীয়টি কেউ করে দেয় না।
+    </div>
+    <div class="mid" style="margin-top:7mm;font-size:13.5pt">
+      IMS-এ ফাইল আপলোড হয় <b>এক জায়গায়</b> — শিক্ষকের লার্নিং ম্যাটেরিয়াল। কিন্তু ওই একটি ফিচারেই
+      স্টোরেজ, অনুমতি, ভাইরাস-সদৃশ ঝুঁকি আর ব্যাকআপ — চারটি ভিন্ন সমস্যা একসাথে আসে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "আপলোড ফিচার মানে শুধু একটা বাটন নয় — এর পেছনে সিদ্ধান্তের সারি।" শিক্ষার্থীর জমা (Submission) শুধু টেক্সট — IMS ইচ্ছাকৃতভাবে ছাত্রদের ফাইল নেয় না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>ফাইল কোথায় থাকে — দুই ধরনের ফাইল</h2>
+      <div class="sub"><code>MEDIA_ROOT = BASE_DIR / "media"</code> · <code>MEDIA_URL = "media/"</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45"># config/settings/base.py
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# config/urls.py — শুধু ডেভেলপমেন্টে
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
+# প্রোডাকশনে nginx এই কাজটি করে, Django নয়
+location /media/ { alias /srv/ims/media/; }</pre>
+        <div class="call warn" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 4mm">
+          <code>DEBUG=False</code> হলে <code>static()</code> কাজ করে না — তাই প্রোডাকশনে "/media/logo.png" ৪০৪।
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:34%">ফাইল</th><th>পথ ও প্রবেশাধিকার</th></tr></thead>
+          <tbody>
+            <tr><td><b>লোগো</b> (<code>ImageField</code>)</td><td><code>media/branding/logos/</code> — <b>সর্বজনীন</b>, লগইন পর্দায় দেখা যায়</td></tr>
+            <tr><td><b>ম্যাটেরিয়াল</b> (<code>FileField</code>)</td><td><code>media/materials/2026/11/</code> — <b>কখনো সরাসরি নয়</b>, শুধু ভিউ দিয়ে</td></tr>
+            <tr><td>স্ট্যাটিক (CSS/JS)</td><td><code>static/</code> → <code>collectstatic</code> — ডিপ্লয়ের অংশ</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          লোগো আর পাঠ্য-ম্যাটেরিয়াল এক নয়: একটি ব্র্যান্ডিং, অন্যটি প্রতিষ্ঠানের গোপন সম্পদ। তাই দুই পথ।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ব্রাউজারে <code>/media/branding/logos/…</code> খুলে দেখান — লগইন ছাড়াই দেখা যায়। তারপর <code>/media/materials/…</code> চেষ্টা করুন: সরাসরি পথ কাজ করে, কিন্তু অ্যাপে সেটি ব্যবহার করাই হয় না।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2><code>upload_to</code> — নামকরণই ভাগ্য নির্ধারণ করে</h2>
+      <div class="sub"><code>materials/%Y/%m/</code> — তারিখ অনুযায়ী ভাঁজ, সংঘর্ষে Django নিজে নাম বদলায়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">class Material(TimeStamped):
+    file = models.FileField(upload_to="materials/%Y/%m/")
+
+# ব্যবহারকারী যা আপলোড করল
+#   "Chapter 3 (final).pdf"
+#
+# ডিস্কে যা জমা হলো
+#   media/materials/2026/11/Chapter 3 (final).pdf
+#
+# একই নাম আবার এলে
+#   media/materials/2026/11/Chapter 3 (final)_aX9k2.pdf
+#
+# ডাউনলোডের সময় আসল নাম ফিরিয়ে দেওয়া হয়
+return FileResponse(material.file.open("rb"),
+                    as_attachment=True,
+                    filename=material.file.name.split("/")[-1])</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">তারিখ-ভাঁজ কেন</b>
+            <p style="font-size:9.8pt">এক ফোল্ডারে ১০,০০০ ফাইল থাকলে <code>ls</code>, ব্যাকআপ আর ডিস্ক-ইনোড দুটোই ভোগে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">সংঘর্ষ নিজেই সমাধান</b>
+            <p style="font-size:9.8pt"><code>get_available_name()</code> — ৫০ জন একই "notes.pdf" দিলেও কিছু হারায় না।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">নাম ব্যবহারকারীর হাতে</b>
+            <p style="font-size:9.8pt">Django ফাইলনেম স্যানিটাইজ করে (<code>get_valid_name</code>), তাই <code>../../etc/passwd</code> লিখেও লাভ নেই।</p></div>
+          <div class="card" style="padding:3mm 3.8mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11.2pt">কিন্তু…</b>
+            <p style="font-size:9.8pt">নাম বদলানো মানে <b>ডাউনলোডে অদ্ভুত নাম</b> — তাই <code>filename=</code> স্পষ্ট দিতে হয় (উপরের কোড)।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভে একই নামে দুইবার আপলোড করুন, তারপর <code>ls media/materials/</code> দেখান। ছাত্ররা অবাক হয় — "নাম তো বদলে গেল!" এই জ্ঞানটাই পরে ডাউনলোড বাগ ধরাতে সাহায্য করে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>কোন ফাইল গ্রহণযোগ্য — মডেলেই লেখা</h2>
+      <div class="sub">৯টি এক্সটেনশন · ১০ MB · <code>clean()</code>-এ যাচাই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.4pt;line-height:1.45">class Material(TimeStamped):
+    ALLOWED_EXTENSIONS = {"pdf", "docx", "xlsx", "pptx", "txt",
+                          "jpg", "jpeg", "png", "zip"}
+    MAX_BYTES = 10 * 1024 * 1024
+
+    def clean(self):
+        ext = (self.file.name.rsplit(".", 1)[-1].lower()
+               if self.file else "")
+        if ext and ext not in self.ALLOWED_EXTENSIONS:
+            raise ValidationError(
+                {"file": f"File type .{ext} is not allowed."})
+        if self.file and hasattr(self.file, "size") \
+                and self.file.size > self.MAX_BYTES:
+            raise ValidationError(
+                {"file": "File is larger than 10 MB."})</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">নিয়ম কোথায় থাকবে</b>
+            <p style="font-size:9.8pt">মডেলে — কারণ সেটাই একমাত্র জায়গা যা <b>সব পথ</b> (ফর্ম, শেল, অ্যাডমিন, ম্যানেজমেন্ট কমান্ড) মানে।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt"><code>dict</code> ফেরানো</b>
+            <p style="font-size:9.8pt"><code>ValidationError({"file": …})</code> — এরর ঠিক ফাইল ঘরে বসে, উপরে নয়।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">সেট কেন</b>
+            <p style="font-size:9.8pt">খোঁজ O(1); নতুন ধরন যোগ করা এক লাইনের কাজ — তালিকা পড়তেও সহজ।</p></div>
+          <div class="card bad" style="padding:3mm 3.8mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:11.2pt">সীমা</b>
+            <p style="font-size:9.8pt">এটি শুধু <b>নামের শেষ অংশ</b> দেখে — ভেতরে কী আছে তা নয় (পরের স্লাইড)।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>.exe</code> বা <code>.html</code> আপলোড করে দেখান — ভদ্র এরর, ক্র্যাশ নয়। তারপর বলুন: "ভদ্র এররও একটি ফিচার।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>যাচাই কে, কখন করে?</h2>
+      <div class="sub"><code>MaterialForm.save(commit=False)</code> → <code>obj.clean()</code> → <code>obj.save()</code></div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45">@workspace_view(*TEACHING)
+def material_create(request, slug):
+    form = MaterialForm(request.POST or None,
+                        request.FILES or None,
+                        workspace=request.workspace)
+    if request.method == "POST" and form.is_valid():
+        obj = form.save(commit=False)
+        obj.workspace = request.workspace       # স্কোপ ভিউ থেকে
+        obj.uploaded_by = request.user
+        obj.clean()                             # আবার যাচাই
+        obj.save()
+        messages.success(request, "Material uploaded.")
+        return redirect("lessons:material_list", slug=slug)</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:36%">স্তর</th><th>কে ডাকে</th></tr></thead>
+          <tbody>
+            <tr><td><code>form.is_valid()</code></td><td>ফিল্ড-ধরন, required, plus মডেলের <code>clean()</code></td></tr>
+            <tr><td><code>obj.clean()</code></td><td>ভিউ নিজে — <b>workspace বসানোর পরে</b></td></tr>
+            <tr><td><code>obj.save()</code></td><td><code>clean()</code> ডাকে না — এটাই ফাঁদ</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:10.2pt;padding:2.4mm 3.8mm">
+          <code>request.FILES</code> না দিলে ফাইল কখনো আসে না — কিন্তু এররও আসে না, শুধু "This field is required"।
+        </div>
+        <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+          দ্বিতীয় <code>clean()</code> এখানে বাড়তি সতর্কতা — কারণ <code>workspace</code> সেট হওয়ার আগে মডেল-যাচাই চলেছিল।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>save()</code> নিজে যাচাই করে না — এটা মুখস্থ করার মতো নিয়ম: "save() বিশ্বাস করে, clean() যাচাই করে।" শেলে <code>Material(...).save()</code> চালিয়ে দেখান: বিশাল ফাইলও ঢুকে যায়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>ডাউনলোড — IMS-এর সবচেয়ে গুরুত্বপূর্ণ ভিউ</h2>
+      <div class="sub">"ফাইল কখনো সর্বজনীন URL থেকে দেওয়া হয় না"</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 56%">
+        <pre style="font-size:7.9pt;line-height:1.4">@workspace_view(*ALL_ROLES)
+def material_download(request, slug, pk):
+    """Files are never served from a public URL."""
+    material = get_object_or_404(Material, pk=pk,
+                                  workspace=request.workspace)
+    allowed = request.membership.role in (
+        "ORG_ADMIN", "COORDINATOR", "TEACHER") or (
+        teacher_can_access_class(request.user, material.class_group))
+    student = getattr(request.user, "student_profile", None)
+    if student:
+        allowed = material.is_published and student.enrollments.filter(
+            class_group=material.class_group, is_active=True).exists()
+    if not allowed:
+        raise PermissionDenied("You cannot download this file.")
+    try:
+        return FileResponse(material.file.open("rb"),
+                            as_attachment=True,
+                            filename=material.file.name.split("/")[-1])
+    except FileNotFoundError:
+        raise Http404("The file is missing on disk.")</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:8.8pt">
+          <thead><tr><th style="width:44%">কে</th><th>নিয়ম</th></tr></thead>
+          <tbody>
+            <tr><td>শিক্ষক/কোঅর্ডিনেটর/অ্যাডমিন</td><td>নিজের স্কোপের ক্লাস হলে হ্যাঁ</td></tr>
+            <tr><td>ছাত্র</td><td><b>প্রকাশিত</b> + নিজের ক্লাসে ভর্তি</td></tr>
+            <tr><td>অন্য প্রতিষ্ঠানের সদস্য</td><td><code>get_object_or_404</code> → 404</td></tr>
+            <tr><td>লগইনহীন</td><td>decorator → লগইনে রিডাইরেক্ট</td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:2.8mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+          <code>as_attachment=True</code> — ব্রাউজারে খোলে না, ডাউনলোড হয়। HTML ফাইল খুলে গেলে XSS-এর দরজা।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্র হিসেবে লগইন করে অপ্রকাশিত ম্যাটেরিয়ালের URL হাতে চেষ্টা করুন — ৪০৩ আসবে। তারপর বলুন: "নিয়মটি UI-তে নয়, এখানে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>দুই পথ, এক প্রশ্ন: কে ঢুকতে পারে?</h2>
+      <div class="sub">সর্বজনীন লোগো বনাম অনুমতিভিত্তিক ম্যাটেরিয়াল</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 190" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <text x="0" y="14" font-size="9" font-weight="700" fill="#0f172a">পথ ১ — লোগো (সর্বজনীন)</text>
+          <rect x="0" y="24" width="200" height="40" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.3"/>
+          <text x="100" y="42" text-anchor="middle" font-size="8.4" fill="#312e81">ব্রাউজার</text>
+          <text x="100" y="56" text-anchor="middle" font-size="7.6" fill="#4338ca">যে কেউ</text>
+
+          <rect x="250" y="24" width="220" height="40" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.3"/>
+          <text x="360" y="42" text-anchor="middle" font-size="8.4" fill="#334155">nginx → /media/</text>
+          <text x="360" y="56" text-anchor="middle" font-size="7.6" fill="#64748b">কোনো যাচাই নেই</text>
+
+          <rect x="520" y="24" width="200" height="40" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.3"/>
+          <text x="620" y="42" text-anchor="middle" font-size="8.4" fill="#334155">branding/logos/x.png</text>
+          <text x="620" y="56" text-anchor="middle" font-size="7.6" fill="#64748b">ডিস্কে ফাইল</text>
+
+          <text x="0" y="98" font-size="9" font-weight="700" fill="#0f172a">পথ ২ — ম্যাটেরিয়াল (অনুমতিভিত্তিক)</text>
+          <rect x="0" y="108" width="200" height="40" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.3"/>
+          <text x="100" y="126" text-anchor="middle" font-size="8.4" fill="#312e81">ব্রাউজার</text>
+          <text x="100" y="140" text-anchor="middle" font-size="7.6" fill="#4338ca">লগইন করা সদস্য</text>
+
+          <rect x="250" y="108" width="220" height="40" rx="6" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.3"/>
+          <text x="360" y="120" text-anchor="middle" font-size="8.2" fill="#115e59">@workspace_view</text>
+          <text x="360" y="132" text-anchor="middle" font-size="7.4" fill="#115e59">+ ভূমিকা ও স্কোপ</text>
+          <text x="360" y="143" text-anchor="middle" font-size="7.4" fill="#0f766e">না হলে ৪০৩ / ৪০৪</text>
+
+          <rect x="520" y="108" width="200" height="40" rx="6" fill="#fffbeb" stroke="#d97706" stroke-width="1.3"/>
+          <text x="620" y="126" text-anchor="middle" font-size="8.4" fill="#7c2d12">FileResponse</text>
+          <text x="620" y="140" text-anchor="middle" font-size="7.6" fill="#b45309">as_attachment</text>
+
+          <rect x="768" y="108" width="200" height="40" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.3"/>
+          <text x="868" y="126" text-anchor="middle" font-size="8.4" fill="#334155">materials/2026/11/</text>
+          <text x="868" y="140" text-anchor="middle" font-size="7.6" fill="#64748b">ডিস্কে ফাইল</text>
+
+          <g stroke="#94a3b8" stroke-width="1.2" fill="none">
+            <path d="M203,44 L247,44" marker-end="url(#a21)"/>
+            <path d="M473,44 L517,44" marker-end="url(#a21)"/>
+            <path d="M203,128 L247,128" marker-end="url(#a21)"/>
+            <path d="M473,128 L517,128" marker-end="url(#a21)"/>
+            <path d="M723,128 L765,128" marker-end="url(#a21)"/>
+          </g>
+          <text x="0" y="178" font-size="8" fill="#dc2626">নিয়ম: ব্যবহারকারীর দেওয়া যেকোনো ফাইল সবসময় পথ ২ দিয়ে যাবে — পথ ১ শুধু ব্র্যান্ডিং ছবির জন্য।</text>
+          <defs><marker id="a21" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#94a3b8"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:11pt;padding:3mm 4.4mm">
+      পরীক্ষা: ছাত্রের অ্যাকাউন্টে <code>/media/materials/…</code> সরাসরি খুললে ফাইল <b>দেখা যাবে</b> (nginx জানে না কে কে)। তাই অ্যাপে ওই URL কখনো তৈরি হয় না — এই সীমাটা জানা থাকা জরুরি।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটা সততার: "এখনো পর্যন্ত সুরক্ষা নির্ভর করে URL গোপন থাকার ওপর, যা নিরাপত্তা নয়।" প্রোডাকশনে করণীয়: media ফোল্ডার nginx-এ <code>internal</code> করে X-Accel-Redirect ব্যবহার।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>এক্সটেনশন যথেষ্ট নয়</h2>
+      <div class="sub">তিন স্তরের যাচাই — নাম · ধরন · বিষয়বস্তু</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:22%">স্তর</th><th style="width:24%">যা দেখা হয়</th><th>প্রতারণা</th></tr></thead>
+      <tbody>
+        <tr><td>এক্সটেনশন (IMS-এ <b>আছে</b>)</td><td><code>.pdf</code> <code>.docx</code> …</td><td><code>report.pdf.exe</code> — শেষ অংশ <code>exe</code>, আটকাবে</td></tr>
+        <tr><td>MIME ধরন</td><td><code>file.content_type</code></td><td>ক্লায়েন্ট যা বলে, সেটাই — মিথ্যা বলা সহজ</td></tr>
+        <tr><td>ম্যাজিক বাইট (অনুপস্থিত)</td><td>ফাইলের প্রথম কয়েক বাইট</td><td><code>%PDF</code> দিয়ে শুরু? — এটাই আসল প্রমাণ</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4.4mm">
+      <div><div class="call bad" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <b>SVG</b> ভেতরে JavaScript ধারণ করতে পারে — IMS-এ SVG অনুমোদিত নয় (<code>ALLOWED_EXTENSIONS</code>-এ নেই), লোগোতেও ঝুঁকি (ক্লাস ১৮)।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        <b>Zip bomb</b>: ১০ MB zip খুললে ১০ GB হতে পারে — <code>.zip</code> অনুমোদিত, কিন্তু সার্ভারে কেউ খোলে না, তাই ঝুঁকি কম।
+      </div></div>
+    </div>
+    <div class="call" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 4mm">
+      ম্যাজিক বাইট যোগ করা যায় ছোটকিছু দিয়ে: প্রথম ৪ বাইট পড়ে <code>%PDF</code> কি না মিলিয়ে দেখা — <code>kind="magic"</code>।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> লাইভ ডেমো: একটি <code>.txt</code> ফাইলের নাম বদলে <code>.pdf</code> করে আপলোড করুন — পাশ করবে। "এক্সটেনশন মিথ্যা বলতে পারে, তাই এর ওপর ভরসা সীমিত।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>পাঁচটি ফাঁদ — আর প্রতিকার</h2>
+      <div class="sub">প্রতিটি বাস্তব প্রজেক্টে দেখা যায়</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.2pt">
+      <thead><tr><th style="width:36%">ফাঁদ</th><th>যা ঘটে / প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. <code>request.FILES</code> না দেওয়া</b></td><td>ফাইল সেভ হয় না, এররও আসে না → <code>MaterialForm(request.POST, request.FILES)</code></td></tr>
+        <tr><td><b>২. ফাইল মুছলে ডিস্কে থেকে যায়</b></td><td>DB সারি গেলে ফাইল অনাথ → <code>delete()</code> override বা পরিষ্কার কমান্ড</td></tr>
+        <tr><td><b>৩. একই ফাইল দুবার আপলোড</b></td><td>ডিস্কে দুই কপি, ব্যাকআপ ফুলে ওঠে → হ্যাশ মিলিয়ে ডিডুপ্লিকেশন</td></tr>
+        <tr><td><b>৪. ওয়েব সার্ভারে <code>MEDIA_ROOT</code> নয়</b></td><td>ডেপ্লয়ে ফাইল যায়, কিন্তু ছবি ভাঙা → মিডিয়া ভলিউম/অবজেক্ট স্টোরেজ</td></tr>
+        <tr><td><b>৫. <code>DEBUG=False</code>-এ <code>static()</code> ভরসা</b></td><td>লোকালে চলে, সার্ভারে ৪০৪ → nginx অ্যালিয়াস বা S3</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4mm;font-size:11pt;padding:2.8mm 4.4mm">
+      পাঁচটি ফাঁদের চারটিই "লোকালে কাজ করে, সার্ভারে ভাঙে" শ্রেণির। ডেপ্লয়ের আগে একবার সত্যিকারের সার্ভারে আপলোড → ডাউনলোড পরীক্ষা করুন।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দ্বিতীয় ফাঁদটা বোর্ডে আঁকুন: DB সারি মুছে গেল, অথচ ৩০০ MB PDF ডিস্কে পড়ে আছে। "ব্যাকআপ নিলে এই ভূতও ব্যাকআপ হয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>ফাইল আপলোডের টেস্ট কীভাবে লিখবেন</h2>
+      <div class="sub"><code>SimpleUploadedFile</code> — ব্রাউজার ছাড়াই</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 54%">
+        <pre style="font-size:8.2pt;line-height:1.42">from django.core.files.uploadedfile import SimpleUploadedFile
+
+def test_rejects_exe_and_accepts_pdf(self):
+    self.client.force_login(self.teacher)
+    url = reverse("lessons:material_create",
+                  kwargs={"slug": self.ws.slug})
+
+    bad = SimpleUploadedFile("notes.exe", b"MZ\x90\x00",
+                             content_type="application/pdf")
+    self.client.post(url, {"title": "X", "class_group": self.cls.pk,
+                           "file": bad})
+    self.assertFalse(Material.objects.exists())
+
+    good = SimpleUploadedFile("notes.pdf", b"%PDF-1.4 ok",
+                              content_type="application/pdf")
+    self.client.post(url, {"title": "X", "class_group": self.cls.pk,
+                           "file": good})
+    self.assertEqual(Material.objects.count(), 1)</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">এখন IMS-এ কয়টি?</b>
+            <p style="font-size:9.8pt"><b>শূন্য</b> — <code>apps/lessons/tests.py</code>-এ ৪টি টেস্ট, সবই হোমওয়ার্ক ও সিলেবাস নিয়ে; আপলোডের একটিও নেই।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">কেন বিপজ্জনক</b>
+            <p style="font-size:9.8pt">ডাউনলোডের অনুমতি-নিয়মটাই সবচেয়ে জটিল কোড, অথচ সেটাই অপরীক্ষিত।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">যা লেখা উচিত</b>
+            <p style="font-size:9.8pt">৩টি: বড় ফাইল প্রত্যাখ্যান · অপ্রকাশিত ফাইলে ছাত্রের ৪০৩ · অন্য প্রতিষ্ঠানের ৪০৪।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">মিডিয়া ফোল্ডার</b>
+            <p style="font-size:9.8pt">টেস্ট চলাকালে <code>MEDIA_ROOT</code> অস্থায়ী ডিরেক্টরিতে দিন — নাহলে টেস্ট ফাইল রিপোতে জমে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "যেটা টেস্ট করা হয়নি, সেটা কাজ করে — এই বিশ্বাসটাই ভাঙে।" ৫ মিনিটে ওই তিনটি টেস্ট নিজে লিখিয়ে নিন; এটাই সবচেয়ে মূল্যবান অনুশীলন।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১০</span>
+    <div><h2>৩০০ MB ভিডিও পাঠালে কী হয়?</h2>
+      <div class="sub">পাঁচটি সীমা, পাঁচটি ভিন্ন এরর — ব্যবহারকারী শুধু "ব্যর্থ" দেখেন</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9pt">
+      <thead><tr><th style="width:34%">স্তর</th><th style="width:22%">ডিফল্ট</th><th>ফলাফল</th></tr></thead>
+      <tbody>
+        <tr><td>nginx <code>client_max_body_size</code></td><td>১ MB</td><td><b>৪১৩</b> — Django পর্যন্ত পৌঁছায়ই না</td></tr>
+        <tr><td><code>DATA_UPLOAD_MAX_MEMORY_SIZE</code></td><td>২.৫ MB</td><td>POST ডেটা বড় হলে <code>RequestDataTooBig</code></td></tr>
+        <tr><td><code>FILE_UPLOAD_MAX_MEMORY_SIZE</code></td><td>২.৫ MB</td><td>এর বেশি হলে RAM-এর বদলে টেম্প ফাইলে</td></tr>
+        <tr><td><code>Material.MAX_BYTES</code></td><td>১০ MB</td><td>ভদ্র এরর: "File is larger than 10 MB."</td></tr>
+        <tr><td>ডিস্ক</td><td>—</td><td>জমা হলে ব্যাকআপ সময় ও জায়গা দুটোই বাড়ে</td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4mm">
+      <div><div class="call bad" style="font-size:10.4pt;padding:2.6mm 4mm">
+        nginx-এর সীমা ডিফল্ট ১ MB — তাই ১০ MB-র নিয়ম থাকলেও ব্যবহারকারী <b>পাঁচ MB PDF-তে ৪১৩</b> পাবেন, যদি <code>client_max_body_size 20m;</code> না লেখা হয়।
+      </div></div>
+      <div><div class="call warn" style="font-size:10.4pt;padding:2.6mm 4mm">
+        সীমাগুলো <b>একই সংখ্যায়</b> মিলিয়ে দিন (nginx ২০ MB ⊃ অ্যাপ ১০ MB) — নাহলে দুটি ভিন্ন বার্তায় ব্যবহারকারী বিভ্রান্ত।
+      </div></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "ভিডিও আপলোড চাইলে উত্তর 'না' — কারণ ৩০০ MB × ৪০০ শিক্ষক = প্রতি মাসে Terra-bytes।" আপলোড নীতি প্রায়ই স্টোরেজ-নীতি, শুধু কোড নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১১</span>
+    <div><h2>মিডিয়া ব্যাকআপের একটি নীরব ফাঁদ</h2>
+      <div class="sub"><code>ops/backup.sh</code> — DB ডাম্প + মিডিয়া টার, ১৪ দিনের রিটেনশন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45">#!/usr/bin/env bash
+set -euo pipefail
+STAMP=$(date +%Y%m%d-%H%M%S)
+DEST="${BACKUP_DIR:-./backups}"
+mkdir -p "$DEST"
+pg_dump -Fc -f "$DEST/ims-$STAMP.dump"
+tar -czf "$DEST/media-$STAMP.tar.gz" media/ 2>/dev/null || true
+find "$DEST" -name '*.dump' -mtime +14 -delete
+find "$DEST" -name '*.tar.gz' -mtime +14 -delete</pre>
+        <div class="call bad" style="margin-top:3mm;font-size:10.2pt;padding:2.6mm 4mm">
+          <code>|| true</code> — মিডিয়া টার ব্যর্থ হলেও স্ক্রিপ্ট <b>সফল</b> দেখায়। ব্যাকআপ আছে ভেবে দিন, অথচ ফাইলগুলো নেই।
+        </div>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">DB + ফাইল একসাথে</b>
+            <p style="font-size:9.8pt">শুধু <code>pg_dump</code> নিলে সারি ফিরে আসে, ফাইল ফেরে না — সব ডাউনলোড ৪০৪।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">১৪ দিন কেন</b>
+            <p style="font-size:9.8pt">দুই সপ্তাহের বেশি পুরোনো ব্যাকআপ কেউ খোলে না — কিন্তু ভুল ধরা পড়ে ৩ দিনে।</p></div>
+          <div class="card soft" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">প্রতিকার</b>
+            <p style="font-size:9.8pt"><code>|| true</code> বাদ → ব্যর্থ হলে স্ক্রিপ্ট <b>থামুক</b>; নাহলে মনিটরিং কখনো জানবে না।</p></div>
+          <div class="card" style="padding:3mm 3.8mm"><b style="font-size:11.2pt">ImageField আলাদা</b>
+            <p style="font-size:9.8pt">Pillow দরকার (requirements-এ আছে); উচ্চতা/প্রস্থ পড়তে চাইলে <code>width_field</code>।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "৫০০ MB মিডিয়া, ১ KB ডেটাবেস — কোনটা বেশি ঝুঁকিতে?" উত্তর: মিডিয়া, কারণ সেটার কোনো ট্রানজ্যাকশন-লগ নেই।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন ও আলোচনা</span>
+    <div><h2>২০ মিনিট — এক ফিচার, চার পরীক্ষা</h2>
+      <div class="sub">নিজের প্রজেক্টে একটি আপলোড যোগ করুন</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:2.8mm">
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">১. মডেল (৫ মিনিট)</b>
+            <p style="font-size:10pt"><code>FileField(upload_to="files/%Y/%m/")</code> + <code>ALLOWED_EXTENSIONS</code> + <code>clean()</code>।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">২. ভিউ (৭ মিনিট)</b>
+            <p style="font-size:10pt">ডাউনলোড ভিউ: <code>get_object_or_404(..., workspace=…)</code> + ভূমিকা যাচাই + <code>FileResponse</code>।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৩. প্রত্যাখ্যান (৫ মিনিট)</b>
+            <p style="font-size:10pt">১১ MB ফাইল ও <code>.exe</code> — দুটোই আটকাচ্ছে কি না দেখুন।</p></div>
+          <div class="card soft" style="padding:3.2mm 4.2mm"><b style="font-size:11.6pt">৪. টেস্ট (৩ মিনিট)</b>
+            <p style="font-size:10pt"><code>SimpleUploadedFile</code> দিয়ে গ্রহণ + প্রত্যাখ্যান, দুটোই।</p></div>
+        </div>
+      </div>
+      <div style="flex:1">
+        <ul class="pts" style="font-size:11.2pt">
+          <li>লোগো ও পাঠ্য-ফাইল — দুই পথ কেন?</li>
+          <li class="g">এক্সটেনশন যাচাই কেন অসম্পূর্ণ?</li>
+          <li><code>save()</code> কেন <code>clean()</code> ডাকে না?</li>
+          <li class="r">ফাইল ডিলিট হলে ডিস্কে কী থাকে?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> তৃতীয় প্রশ্নের উত্তর: "কারণ <code>save()</code> কে ডাকছে তা জানে না — শেল, মাইগ্রেশন, কমান্ডও ডাকে।" তাই যাচাই সবসময় আলাদা স্তরে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.6pt">
+      <thead><tr><th style="width:50%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>ফাইল ডিস্কে, DB-তে শুধু পথ</b></td><td><code>MEDIA_ROOT</code> · <code>FileField</code> নাম রাখে</td></tr>
+        <tr><td><b><code>upload_to</code>-এ তারিখের ভাঁজ</b></td><td><code>materials/%Y/%m/</code> · <code>branding/logos/</code></td></tr>
+        <tr><td><b>নিয়ম মডেলে, বার্তা ফর্মে</b></td><td><code>ALLOWED_EXTENSIONS</code> · <code>MAX_BYTES</code> · <code>clean()</code></td></tr>
+        <tr><td><b>ডাউনলোড সবসময় অনুমতি-যাচাই করা</b></td><td><code>material_download</code> · <code>FileResponse</code></td></tr>
+        <tr><td><b>এক্সটেনশন ≠ প্রমাণ</b></td><td>ম্যাজিক বাইট যাচাই এখনো <b>নেই</b></td></tr>
+        <tr><td><b>অপরীক্ষিত পথ = অজানা পথ</b></td><td>আপলোড টেস্ট <b>০টি</b> · ডাউনলোড নিয়ম অপরীক্ষিত</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ দুই সারিতেই আজকের আসল শিক্ষা: "যা করিনি, তা লিখে রাখুন" — শুধু গর্বের তালিকা নয়, ফাঁকের তালিকাও।</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">২২</div>
+  <h2>পরের ক্লাস — "সংখ্যা থেকে সিদ্ধান্ত"</h2>
+  <p>রিপোর্ট ও এক্সপোর্ট: <code>annotate</code>/<code>aggregate</code> · রেজাল্ট শিট · CSV-তে BOM · pagination · বড় ডেটাসেট</p>
+</section>

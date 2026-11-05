@@ -1,0 +1,276 @@
+<!-- =================== 1 · COVER =================== -->
+<section class="slide cover">
+  <div class="k">ক্লাস উপকরণ · শিক্ষকের জন্য</div>
+  <h1>IMS যেভাবে তৈরি হলো</h1>
+  <div class="sub">সিলেবাসের ধাপ ধরে ধরে — একটি প্রকৃত প্রজেক্টের গল্প<br>ক্লাস ১ · "কী বানাচ্ছি আর কার জন্য"</div>
+  <div class="pill">BTEB 28566 · Web Development Project</div>
+</section>
+
+<!-- =================== 2 · OPENING QUESTION =================== -->
+<section class="slide">
+  <span class="small-tag">শুরু করুন প্রশ্ন দিয়ে</span>
+  <div class="body">
+    <div class="big" style="font-size:34pt;line-height:1.5">
+      আপনার স্কুলে <span class="hl">আজকের উপস্থিতি</span><br>কোথায় লেখা হচ্ছে?
+    </div>
+    <div class="mid" style="margin-top:8mm;color:#475569">
+      খাতায়? রেজিস্টারে? এক্সেলে?<br>
+      আর সেই খাতা থেকে <b>মাসিক রিপোর্ট</b> বানাতে কত সময় লাগে?
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> হাত তুলে উত্তর নিন — ২–৩ জনকে। উত্তর যাই হোক, শেষে বলুন: "এই তিনটে সমস্যা থেকেই আজকের প্রজেক্টের জন্ম।"</div>
+</section>
+
+<!-- =================== 3 · THE PAIN =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">ধাপ ১</span>
+    <div><h2>সমস্যাটা কী</h2><div class="sub">খাতা-ভিত্তিক ব্যবস্থার তিনটি বাস্তব ক্ষতি</div></div>
+  </div>
+  <div class="body">
+    <div class="cards">
+      <div class="card"><div class="ic">📕</div><b>তথ্য হারায়</b><p>খাতা ভিজলে বা হারালে এক বছরের উপস্থিতি ও নম্বর মুছে যায়।</p></div>
+      <div class="card"><div class="ic">⏳</div><b>রিপোর্টে সময়</b><p>"গত মাসে কোন ক্লাসের উপস্থিতি সবচেয়ে খারাপ?" — উত্তর দিতে কয়েক ঘণ্টা হিসাব।</p></div>
+      <div class="card"><div class="ic">🕵️</div><b>দায় থাকে না</b><p>কে নম্বর বদলাল, কখন বদলাল — কোনো রেকর্ড নেই।</p></div>
+    </div>
+    <div class="call" style="margin-top:10mm">
+      সফটওয়্যারের কাজ: <b>তথ্য একবার লেখা হবে, অনেকবার কাজে লাগবে।</b>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "তিনটি সমস্যার একটাও প্রযুক্তির নয় — তিনটিই তথ্য হারানো, সময় নষ্ট, আর জবাবদিহি।"</div>
+</section>
+
+<!-- =================== 4 · THE TWIST =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">সিদ্ধান্ত</span>
+    <div><h2>এক স্কুলের সফটওয়্যার নয়</h2><div class="sub">প্রজেক্টের আকার ঠিক করে দেওয়া প্রথম সিদ্ধান্ত</div></div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div class="card" style="border-color:#fecaca;background:#fef2f2">
+        <b style="color:#991b1b;font-size:15pt">এক স্কুলের জন্য বানালে</b>
+        <p style="font-size:12.5pt;margin-top:2mm">২০টি স্কুলে দিতে হলে ২০টি কপি →<br>২০টি ডেটাবেস · ২০টি আপডেট · ২০টি ব্যাকআপ</p>
+        <p style="font-size:12.5pt;margin-top:3mm;color:#991b1b"><b>একজন ডেভেলপার সামলাতে পারবে না।</b></p>
+      </div>
+      <div class="card" style="border-color:#a7f3d0;background:#ecfdf5">
+        <b style="color:#065f46;font-size:15pt">এক প্ল্যাটফর্ম বানালে</b>
+        <p style="font-size:12.5pt;margin-top:2mm">একই সিস্টেমে অনেক প্রতিষ্ঠান →<br>একটি ডেটাবেস · একটি আপডেট · একটি ব্যাকআপ</p>
+        <p style="font-size:12.5pt;margin-top:3mm;color:#065f46"><b>প্রতিষ্ঠান নিজেই সাইনআপ করে, ট্রায়াল নেয়।</b></p>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "এই একটা সিদ্ধান্তই ঠিক করে দিল ডেটাবেসের নকশা, লগইন, অনুমতি — সব। তাই প্রজেক্টের শুরুতে এটা ভাবা জরুরি।"</div>
+</section>
+
+<!-- =================== 5 · THREE LAYERS =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">ধারণা</span>
+    <div><h2>একটি পণ্য, তিনটি স্তর</h2><div class="sub">প্রতিটির ব্যবহারকারী আলাদা — তাই উন্নয়নেও আলাদা</div></div>
+  </div>
+  <div class="body">
+    <div class="diagram">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+      <rect x="10" y="8" width="880" height="86" rx="14" fill="#eef2ff" stroke="#c7d2fe"/>
+      <rect x="10" y="8" width="12" height="86" rx="6" fill="url(#bg1)"/>
+      <text x="42" y="45" font-family="sans-serif" font-size="22" font-weight="700" fill="#312e81">পাবলিক সাইট</text>
+      <text x="42" y="72" font-family="sans-serif" font-size="16" fill="#475569">দাম দেখানো → সাইনআপ → ১৪ দিনের ফ্রি ট্রায়াল</text>
+      <text x="700" y="58" font-family="sans-serif" font-size="15" font-weight="700" fill="#6366f1">লগইনের আগে</text>
+
+      <rect x="10" y="106" width="880" height="86" rx="14" fill="#f5f3ff" stroke="#ddd6fe"/>
+      <rect x="10" y="106" width="12" height="86" rx="6" fill="#7c3aed"/>
+      <text x="42" y="143" font-family="sans-serif" font-size="22" font-weight="700" fill="#4c1d95">কাজের সফটওয়্যার</text>
+      <text x="42" y="170" font-family="sans-serif" font-size="16" fill="#475569">উপস্থিতি · পাঠ · হোমওয়ার্ক · পরীক্ষা · রিপোর্ট কার্ড</text>
+      <text x="700" y="156" font-family="sans-serif" font-size="15" font-weight="700" fill="#7c3aed">লগইনের পরে</text>
+
+      <rect x="10" y="204" width="880" height="86" rx="14" fill="#ecfdf5" stroke="#a7f3d0"/>
+      <rect x="10" y="204" width="12" height="86" rx="6" fill="#059669"/>
+      <text x="42" y="241" font-family="sans-serif" font-size="22" font-weight="700" fill="#065f46">অপারেটর প্যানেল — /platform/</text>
+      <text x="42" y="268" font-family="sans-serif" font-size="16" fill="#475569">গ্রাহক প্রতিষ্ঠান · প্ল্যান · ট্রায়াল · ইনভয়েস</text>
+      <text x="700" y="254" font-family="sans-serif" font-size="15" font-weight="700" fill="#059669">শুধু আপনার</text>
+    </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "শিক্ষার্থীদের দেখান লগইনের বাইরের সাইট, তারপর ভেতরের সিস্টেম, তারপর আপনার নিজের প্যানেল — তিনটে আলাদা পণ্য, একই কোডে।"</div>
+</section>
+
+<!-- =================== 6 · FIVE ROLES =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">ধারণা</span>
+    <div><h2>পাঁচটি ভূমিকা</h2><div class="sub">প্রতিটি ভূমিকা শুধু নিজের অংশটুকু দেখে — পর্দায় এবং সার্ভারে</div></div>
+  </div>
+  <div class="body">
+    <div class="roles">
+      <div class="role"><div class="top"><div class="dot" style="background:#4f46e5">অ্যা</div><div class="nm">প্রতিষ্ঠান অ্যাডমিন</div></div>
+        <p class="yes">ক্লাস-বিষয়, শিক্ষক, ভর্তি, ফল প্রকাশ, সাবস্ক্রিপশন</p><p class="no">অন্য প্রতিষ্ঠানের তথ্য</p></div>
+      <div class="role"><div class="top"><div class="dot" style="background:#7c3aed">কো</div><div class="nm">কোঅর্ডিনেটর</div></div>
+        <p class="yes">একটি বিভাগ বা ক্লাসের তদারকি</p><p class="no">স্কোপের বাইরে যাওয়া</p></div>
+      <div class="role"><div class="top"><div class="dot" style="background:#0891b2">শি</div><div class="nm">শিক্ষক</div></div>
+        <p class="yes">উপস্থিতি, পাঠ, হোমওয়ার্ক, নম্বর</p><p class="no">ফল প্রকাশ, বিলিং</p></div>
+      <div class="role"><div class="top"><div class="dot" style="background:#059669">ছা</div><div class="nm">শিক্ষার্থী</div></div>
+        <p class="yes">হোমওয়ার্ক জমা, নিজের ফল</p><p class="no">অন্যের ফল, নম্বর বদল</p></div>
+      <div class="role" style="flex:1 1 64%"><div class="top"><div class="dot" style="background:#d97706">প্ল্যা</div><div class="nm">প্ল্যাটফর্ম অ্যাডমিন</div></div>
+        <p class="yes">সব গ্রাহক প্রতিষ্ঠান, প্ল্যান, ইনভয়েস — পুরো ব্যবসা</p>
+        <p class="no">কোনো প্রতিষ্ঠানের ভেতরের পড়াশোনার তথ্য</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "খেয়াল করুন — প্রতিটা ভূমিকার নিচে একটা লাল ✕ আছে। সেই লাল অংশটাই পরে আমরা কোডে আটকাব।"</div>
+</section>
+
+<!-- =================== 7 · TENANCY DIAGRAM =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">কেন্দ্রীয় ধারণা</span>
+    <div><h2>এক ডেটাবেস, আলাদা ঘর</h2><div class="sub">প্রতিটি প্রতিষ্ঠান একটি Workspace — এর বাইরের কোনো আইডি দিলে ৪০৪</div></div>
+  </div>
+  <div class="body">
+    <div class="diagram">
+    <svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="10" width="380" height="290" rx="14" fill="#f8faff" stroke="#c7d2fe"/>
+      <text x="28" y="45" font-family="sans-serif" font-size="17" font-weight="700" fill="#312e81">Workspace A — Sunrise Model School</text>
+      <rect x="28" y="62" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="42" y="85" font-family="sans-serif" font-size="14" fill="#3730a3">শিক্ষার্থী · উপস্থিতি · নম্বর</text>
+      <rect x="28" y="104" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="42" y="127" font-family="sans-serif" font-size="14" fill="#3730a3">ক্লাস · বিষয় · পরীক্ষা</text>
+      <rect x="28" y="146" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="42" y="169" font-family="sans-serif" font-size="14" fill="#3730a3">সাবস্ক্রিপশন · ইনভয়েস</text>
+      <rect x="28" y="188" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="42" y="211" font-family="sans-serif" font-size="14" fill="#3730a3">ব্র্যান্ডিং · লোগো</text>
+
+      <rect x="512" y="10" width="380" height="290" rx="14" fill="#f8faff" stroke="#c7d2fe"/>
+      <text x="532" y="45" font-family="sans-serif" font-size="17" font-weight="700" fill="#312e81">Workspace B — Springfield Coaching</text>
+      <rect x="532" y="62" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="546" y="85" font-family="sans-serif" font-size="14" fill="#3730a3">শিক্ষার্থী · উপস্থিতি · নম্বর</text>
+      <rect x="532" y="104" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="546" y="127" font-family="sans-serif" font-size="14" fill="#3730a3">ক্লাস · বিষয় · পরীক্ষা</text>
+      <rect x="532" y="146" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="546" y="169" font-family="sans-serif" font-size="14" fill="#3730a3">সাবস্ক্রিপশন · ইনভয়েস</text>
+      <rect x="532" y="188" width="340" height="34" rx="7" fill="#e0e7ff"/>
+      <text x="546" y="211" font-family="sans-serif" font-size="14" fill="#3730a3">ব্র্যান্ডিং · লোগো</text>
+
+      <line x1="450" y1="24" x2="450" y2="296" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="8 6"/>
+      <circle cx="450" cy="160" r="56" fill="#fef2f2" stroke="#fca5a5" stroke-width="3"/>
+      <text x="450" y="140" font-family="sans-serif" font-size="15" font-weight="700" fill="#b91c1c" text-anchor="middle">B-এর আইডি</text>
+      <text x="450" y="160" font-family="sans-serif" font-size="15" font-weight="700" fill="#b91c1c" text-anchor="middle">A-তে খুঁজলে</text>
+      <text x="450" y="190" font-family="sans-serif" font-size="24" font-weight="700" fill="#dc2626" text-anchor="middle">৪০৪</text>
+      <text x="450" y="318" font-family="sans-serif" font-size="13" fill="#64748b" text-anchor="middle">"পাওয়া যায়নি" — "নিষেধ" নয়</text>
+    </svg>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "৪০৪ আর ৪০৩-এর পার্থক্যটা জিজ্ঞেস করুন। উত্তর: ৪০৩ বললে বোঝা যায় জিনিসটা আছে, শুধু অনুমতি নেই — সেটাও তথ্য ফাঁস।"</div>
+</section>
+
+<!-- =================== 8 · LIVE DEMO =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">লাইভ</span>
+    <div><h2>চারটি লগইন, চারটি ভিন্ন পর্দা</h2><div class="sub">একই সিস্টেম — শুধু ভূমিকা বদলান, মেনু বদলে যায়</div></div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1.15">
+        <table>
+          <thead><tr><th>লগইন</th><th>ভূমিকা</th><th>মেনু</th></tr></thead>
+          <tbody>
+            <tr><td><code>admin@ims.local</code></td><td>অ্যাডমিন</td><td>সব</td></tr>
+            <tr><td><code>coordinator@ims.local</code></td><td>কোঅর্ডিনেটর</td><td>তদারকি</td></tr>
+            <tr><td><code>teacher@ims.local</code></td><td>শিক্ষক</td><td>৫টি</td></tr>
+            <tr><td><code>student@ims.local</code></td><td>শিক্ষার্থী</td><td>৩টি</td></tr>
+          </tbody>
+        </table>
+        <pre style="font-size:10.5pt">cd ~/Projects/"Web Development Project"/ims
+bash run.sh
+→ http://127.0.0.1:8000/
+
+পাসওয়ার্ড (সবার):  DemoPass!2026</pre>
+      </div>
+      <figure style="flex:1;margin:0">
+        <img src="file:///home/user/ims/docs/screenshots/roles/dashboard_student.png"
+             style="width:100%;border:1px solid #e2e8f0;border-radius:8px" alt="শিক্ষার্থীর ড্যাশবোর্ড">
+        <div style="font-size:10.5pt;color:#64748b;text-align:center;margin-top:2mm">শিক্ষার্থীর পর্দা — মাত্র তিনটি মেনু</div>
+      </figure>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "প্রথমে অ্যাডমিন হিসেবে মেনু গুনুন, তারপর শিক্ষার্থী হয়ে ঢুকুন — ছাত্ররাই বলবে কী কী হারিয়ে গেছে।"</div>
+</section>
+
+<!-- =================== 9 · THE 403 MOMENT =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">ক্লাসের সেরা মুহূর্ত</span>
+    <div><h2>মেনুতে নেই, তবু ঢোকা যায়?</h2><div class="sub">শিক্ষক হিসেবে হাতে এই ঠিকানা লিখুন</div></div>
+  </div>
+  <div class="body">
+    <pre>/w/sunrise-model-school/billing/invoices/</pre>
+    <div class="cols" style="margin-top:6mm">
+      <div class="card" style="border-color:#fecaca;background:#fef2f2">
+        <b style="color:#991b1b">ভুল ধারণা</b>
+        <p>"মেনুতে লিংক নেই, তাই কেউ ঢুকতে পারবে না।" — এটা নিরাপত্তা নয়।</p>
+      </div>
+      <div class="card" style="border-color:#a7f3d0;background:#ecfdf5">
+        <b style="color:#065f46">আসল নিয়ম</b>
+        <p>মেনু লুকানো শুধু <b>সুবিধা</b>। আটকাতে হয় <b>সার্ভারে</b> — তাই ৪০৩ পর্দা।</p>
+      </div>
+    </div>
+    <div class="call" style="margin-top:6mm;font-size:13pt">
+      নিয়ম: <b>একই তালিকা</b> ব্যবহার হয় মেনু আঁকতে এবং অনুমতি যাচাই করতে।
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "এই একটু জায়গাতেই বেশিরভাগ ছাত্রদের প্রজেক্টে ফাঁক থাকে — মেনু লুকিয়ে দেয়, কিন্তু URL দিয়ে ঢোকা আটকায় না।"</div>
+</section>
+
+<!-- =================== 10 · PROOF =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">প্রমাণ</span>
+    <div><h2>"কাজ করছে" বলার আগে স্ক্রিপ্টে দেখান</h2><div class="sub">৫৫ পেজ × ৪ ভূমিকা = ২২০টি স্বয়ংক্রিয় যাচাই</div></div>
+  </div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:1.1">
+        <pre style="font-size:11pt">python smoke_test.py --base http://127.0.0.1:8000
+
+  ORG_ADMIN     55/55 as expected
+  COORDINATOR   55/55 as expected
+  TEACHER       55/55 as expected
+  STUDENT       55/55 as expected
+
+PASS: 0 mismatched expectations</pre>
+      </div>
+      <div style="flex:.9">
+        <div class="cards" style="flex-direction:column;gap:4mm">
+          <div class="card soft"><b>১০৩</b><p>স্বয়ংক্রিয় টেস্ট — <code>apps/*/tests.py</code></p></div>
+          <div class="card soft"><b>২২০</b><p>ভূমিকা × পেজ যাচাই — <code>smoke_test.py</code></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>বলুন:</b> "কেউ যদি ভুল করে শিক্ষার্থীর জন্য বিলিং পেজ খুলে দেয়, এই স্ক্রিপ্ট পরের বার চালানোর সময়েই ধরে ফেলবে — আপনার না দেখেও।"</div>
+</section>
+
+<!-- =================== 11 · DISCUSSION =================== -->
+<section class="slide">
+  <div class="head">
+    <span class="badge">আলোচনা</span>
+    <div><h2>ক্লাসে জিজ্ঞেস করুন</h2><div class="sub">এই চারটি প্রশ্নের উত্তর নিজের প্রজেক্টে খুঁজতে হবে</div></div>
+  </div>
+  <div class="body">
+    <ul class="pts">
+      <li>তোমার সিস্টেমে <b>কে কে</b> ব্যবহার করবে — তিনটি ভূমিকা লিখে ফেলো।</li>
+      <li>প্রতিটি ভূমিকা <b>কোন জিনিসটা দেখতে পাবে না</b>? (এটাই আসল ডিজাইন)</li>
+      <li>"গ্রাহক" আর "ব্যবহারকারী" কি তোমার প্রজেক্টে একই মানুষ?</li>
+      <li class="r">তোমার সিস্টেম <b>কী করবে না</b> — একটা উত্তর এখনই বলো।</li>
+    </ul>
+  </div>
+  <div class="tnote"><b>বলুন:</b> শেষ প্রশ্নটা কঠিন — ২০ সেকেন্ড সময় দিন। যে উত্তর দিতে পারে না, তার স্কোপ এখনো ঠিক হয়নি।</div>
+</section>
+
+<!-- =================== 12 · TAKEAWAY =================== -->
+<section class="slide divider">
+  <div class="n">১</div>
+  <h2>আজকের তিনটি শিক্ষা</h2>
+  <p>① আগে সমস্যা, তারপর কোড &nbsp;·&nbsp; ② ভূমিকা ঠিক মানে পর্দা ঠিক &nbsp;·&nbsp; ③ "দেখায় না" মানে "আটকায় না" নয়</p>
+</section>

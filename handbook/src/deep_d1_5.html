@@ -1,0 +1,19 @@
+<section class="slide">
+  <div class="head"><span class="badge">নামকরণ</span>
+    <div><h2>চারটি নামকরণ-নিয়ম, ৩১ টেবিলে অক্ষরে অক্ষরে</h2>
+      <div class="sub">নাম ভুল হলে পরের ডেভেলপার প্রতিটি কোয়েরিতে ভুল করবে</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:22%">নিয়ম</th><th style="width:26%">উদাহরণ</th><th style="width:52%">কেন এভাবে</th></tr>
+      <tr><td><b>মডেল একবচন, টেবিল বহুবচন</b></td><td><code>ClassGroup</code> → <code>academics_classgroup</code></td><td>কোডে একটি সারি বোঝায়, ডেটাবেজে অনেক সারি — দুই জায়গায় দুই বচন স্বাভাবিক</td></tr>
+      <tr><td><b>কলামে <code>_id</code> থাকে, মডেলে থাকে না</b></td><td><code>class_group</code> লিখি, DB-তে <code>class_group_id</code></td><td><code>obj.class_group</code> = object, <code>obj.class_group_id</code> = সংখ্যা — এক নামে দুই জিনিস নয়</td></tr>
+      <tr><td><b><code>related_name</code> সবসময় দেওয়া</b></td><td><code>related_name="enrollments"</code></td><td>উল্টো দিকের নাম না দিলে Django <code>enrollment_set</code> বানায় — পড়তে খারাপ, দুই অ্যাপে সংঘর্ষও হয়</td></tr>
+      <tr><td><b><code>related_name="+"</code> = উল্টো দিক দরকার নেই</b></td><td><code>recorded_by</code>, <code>entered_by</code>, <code>published_by</code></td><td>ইউজার থেকে "সে কী কী হাজিরা লিখেছে" তালিকা কেউ চায় না; অকারণ রিভার্স-কোয়েরি বন্ধ</td></tr>
+      <tr><td><b>শর্ত বোঝায় এমন নাম</b></td><td><code>is_archived</code> · <code>is_published</code> · <code>is_absent</code></td><td><code>status</code> নামের বুলিয়ানে অর্থ হারায়; <code>is_</code> উপসর্গে সত্য/মিথ্যা স্পষ্ট</td></tr>
+    </table>
+    <div class="call" style="margin-top:3.5mm;font-size:10.6pt;padding:2.8mm 4.2mm">
+      বাস্তব ফল: <code>related_name</code> থাকার কারণে এক কোয়েরিতেই <code>class_group.enrollments.filter(is_active=True)</code> লেখা যায় — তিনটি ভিন্ন ভিউতে একই লাইন, তিনবার ভিন্ন কোয়েরি নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> নামকরণের নিয়ম মুখস্থ করাবেন না — নিজের প্রজেক্টের একটি মডেল দেখিয়ে প্রতিটি নিয়ম কোথায় লঙ্ঘিত হয়েছে খুঁজতে বলুন। এরপর শিক্ষার্থীদের বলুন নিজের প্রজেক্টে একটি মডেলের সব <code>related_name</code> লিখে ফেলতে।
+</section>

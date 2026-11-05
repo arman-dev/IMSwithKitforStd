@@ -1,0 +1,523 @@
+<!-- ===================== CLASS 18 ===================== -->
+<section class="slide cover">
+  <div class="k">পর্ব ৪ · কোডিং · ক্লাস ১৮ / ৩৭</div>
+  <h1>ভুল ইনপুট,<br>ভদ্র উত্তর</h1>
+  <div class="sub">সিলেবাস: প্র্যাকটিক্যাল ৫ · টপিক ৫.৩ (ফর্ম ও ভ্যালিডেশন)<br>৩৫টি ফর্ম · ১০টি clean · ১২টি widget · ৪টি পাসওয়ার্ড নিয়ম</div>
+  <div class="pill">ModelForm · fields whitelist · add_error</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">শুরু করুন প্রশ্ন দিয়ে</span>
+    <div><h2>ভুল ডেটা কোথায় আটকানো উচিত?</h2>
+      <div class="sub">হাত তুলুন: ব্রাউজারে? ভিউতে? ফর্মে? ডেটাবেসে?</div></div></div>
+  <div class="body" style="display:flex;flex-direction:column;justify-content:center">
+    <div class="big" style="font-size:26pt;line-height:1.6">
+      IMS-এ <span class="hl">তিন জায়গায়</span> আটকায় — ফর্ম (ভদ্র বার্তা),<br>
+      মডেল (নিয়ম), ডেটাবেস (শেষ রক্ষা)। আজ প্রথমটির কারিগরি।
+    </div>
+    <div class="mid" style="margin-top:8mm;font-size:14.5pt">
+      ফর্মের কাজ শুধু "ডেটা নেওয়া" নয় — <b>সেই ডেটাকে বিশ্বাসযোগ্য বানানো</b>। ৩৫টি ফর্মে ১০টি জায়গায়
+      নিজস্ব নিয়ম লেখা আছে, আর সেগুলোই ব্যবহারকারীর দেখা প্রথম এরর।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> উত্তর সাধারণত "ব্রাউজারে" আসে। বলুন: "ব্রাউজারের ভ্যালিডেশন বন্ধ করা যায় একটি বাটনে — তাই সেটা ভদ্রতা, নিরাপত্তা নয়।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ১</span>
+    <div><h2>ফর্মের চারটি দায়িত্ব</h2>
+      <div class="sub">এক ক্লাস, চার কাজ — আলাদা করে ভাবলে কোড পরিষ্কার থাকে</div></div></div>
+  <div class="body">
+    <div class="diagram">
+      <svg viewBox="0 0 1000 150" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="NotoBn">
+          <rect x="0" y="16" width="235" height="112" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+          <text x="117" y="40" text-anchor="middle" font-size="11.4" font-weight="700" fill="#312e81">১. সংগ্রহ</text>
+          <text x="117" y="62" text-anchor="middle" font-size="9" fill="#3730a3">POST → cleaned_data</text>
+          <text x="117" y="80" text-anchor="middle" font-size="9" fill="#3730a3">প্রতিটি ফিল্ডের ধরন</text>
+          <text x="117" y="98" text-anchor="middle" font-size="9" fill="#3730a3">"12" → 12 (int)</text>
+          <text x="117" y="118" text-anchor="middle" font-size="8.4" fill="#4338ca">স্ট্রিং নয়, সত্যিকারের মান</text>
+
+          <rect x="255" y="16" width="235" height="112" rx="8" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+          <text x="372" y="40" text-anchor="middle" font-size="11.4" font-weight="700" fill="#115e59">২. যাচাই</text>
+          <text x="372" y="62" text-anchor="middle" font-size="9" fill="#115e59">required · min_length</text>
+          <text x="372" y="80" text-anchor="middle" font-size="9" fill="#115e59">clean_&lt;field&gt;()</text>
+          <text x="372" y="98" text-anchor="middle" font-size="9" fill="#115e59">clean() — দুই ফিল্ডের সম্পর্ক</text>
+          <text x="372" y="118" text-anchor="middle" font-size="8.4" fill="#0f766e">নিয়ম একবার, সব পথে</text>
+
+          <rect x="510" y="16" width="235" height="112" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+          <text x="627" y="40" text-anchor="middle" font-size="11.4" font-weight="700" fill="#7c2d12">৩. ব্যাখ্যা</text>
+          <text x="627" y="62" text-anchor="middle" font-size="9" fill="#92400e">errors[field]</text>
+          <text x="627" y="80" text-anchor="middle" font-size="9" fill="#92400e">non_field_errors</text>
+          <text x="627" y="98" text-anchor="middle" font-size="9" fill="#92400e">help_text</text>
+          <text x="627" y="118" text-anchor="middle" font-size="8.4" fill="#b45309">কোন ঘর, কেন, কী করব</text>
+
+          <rect x="765" y="16" width="235" height="112" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+          <text x="882" y="40" text-anchor="middle" font-size="11.4" font-weight="700" fill="#4c1d95">৪. সংরক্ষণ</text>
+          <text x="882" y="62" text-anchor="middle" font-size="9" fill="#5b21b6">form.save(commit=False)</text>
+          <text x="882" y="80" text-anchor="middle" font-size="9" fill="#5b21b6">workspace বসানো</text>
+          <text x="882" y="98" text-anchor="middle" font-size="9" fill="#5b21b6">তারপর save()</text>
+          <text x="882" y="118" text-anchor="middle" font-size="8.4" fill="#6d28d9">স্কোপ ভিউ থেকে আসে</text>
+        </g>
+      </svg>
+    </div>
+    <div class="call" style="margin-top:5mm;font-size:11.8pt;padding:3mm 4.6mm">
+      চারটি কাজ একই ক্লাসে থাকলে ভিউ ছোট থাকে — আর ব্যবহারকারী সব পর্দায় একই ধরনের বার্তা পান।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "ভিউ যদি ফর্ম আর টেমপ্লেটের মাঝের মধ্যস্থতাকারী হয়, তাহলে তার কাজ কম — এটাই ভালো ডিজাইন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ২</span>
+    <div><h2>ModelForm — <code>fields</code> হলো হোয়াইটলিস্ট</h2>
+      <div class="sub">কোন কলাম ফর্মে আসবে, সেটাই নিরাপত্তার প্রথম সিদ্ধান্ত</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.6pt;line-height:1.5">class StudentForm(BootstrapFormMixin, forms.ModelForm):
+    class Meta:
+        model = StudentProfile
+        fields = ["admission_no", "full_name",
+                  "guardian_name", "guardian_phone",
+                  "date_of_birth", "notes"]
+        widgets = {"date_of_birth": forms.DateInput(
+            attrs={"type": "date"})}
+
+    def __init__(self, *args, workspace=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.workspace = workspace
+
+# ভিউতে:
+obj = form.save(commit=False)
+obj.workspace = request.workspace     # কখনো ফর্ম থেকে নয়
+obj.save()</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">fields কেন দরকার</b>
+            <p style="font-size:10.2pt"><code>"__all__"</code> দিলে ব্যবহারকারী নিজের <code>workspace</code>, <code>status</code> — এমনকি <code>id</code> পর্যন্ত পাঠাতে পারে।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">workspace ফর্মে নেই</b>
+            <p style="font-size:10.2pt">তালিকায় নেই মানে POST-এ পাঠানোও যায় না — mass assignment বন্ধ।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">widgets শুধু চেহারা</b>
+            <p style="font-size:10.2pt"><code>type="date"</code> দিলে ব্রাউজারে তারিখ-নির্বাচক আসে — নিয়ম নয়, সুবিধা।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> আক্রমণটা দেখান: ব্রাউজারের ডেভ-টুলে একটি লুকানো ইনপুট যোগ করে <code>workspace=2</code> পাঠান — <code>fields</code>-এ না থাকলে কিছুই হয় না। এটাই সবচেয়ে বাস্তব নিরাপত্তা-পাঠ।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৩</span>
+    <div><h2>একটি field-level নিয়ম, তিনটি সূক্ষ্মতা</h2>
+      <div class="sub"><code>clean_admission_no()</code> — ইউনিক, কিন্তু সম্পাদনার সময় নিজেকে বাদ দিয়ে</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 55%">
+        <pre style="font-size:8.8pt;line-height:1.5">def clean_admission_no(self):
+    value = self.cleaned_data["admission_no"].strip()
+    qs = StudentProfile.objects.filter(
+        workspace=self.workspace,
+        admission_no__iexact=value)
+    if self.instance.pk:          # সম্পাদনা করছি
+        qs = qs.exclude(pk=self.instance.pk)
+    if qs.exists():
+        raise forms.ValidationError(
+            "Another student in this workspace "
+            "already uses this admission number.")
+    return value</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:34%">সূক্ষ্মতা</th><th>না করলে</th></tr></thead>
+          <tbody>
+            <tr><td><code>workspace=</code> ফিল্টার</td><td>অন্য প্রতিষ্ঠানের নম্বরও "দখল" দেখাবে</td></tr>
+            <tr><td><code>__iexact</code></td><td><code>A-12</code> আর <code>a-12</code> দুইবার ঢুকবে</td></tr>
+            <tr><td><code>.strip()</code></td><td>শেষে স্পেস থাকলে ভিন্ন মান</td></tr>
+            <tr><td><code>exclude(pk=…)</code></td><td>নিজের রেকর্ড সম্পাদনা করতে গেলে "আগেই আছে" এরর</td></tr>
+            <tr><td><code>return value</code></td><td>পরের ধাপে <code>None</code> পাবে — ডেটা হারাবে</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="call bad" style="margin-top:4mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      শেষ সারিটি সবচেয়ে বেশি ভুল হয়: <code>clean_&lt;field&gt;</code> কখনো <code>None</code> ফেরাতেই হবে না — <b>পরিষ্কার করা মান</b> ফেরাতে হয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> "সম্পাদনা করুন" আর "নতুন যোগ করুন" — একই ফর্ম। ছাত্ররা exclude(pk) ভুলে যায়, তারপর বলে "আমার ফর্মটা কাজ করে না।" এখানেই সেই বাগের জন্ম।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৪</span>
+    <div><h2>দুই mixin, একই কাজ — একটি সততার পাঠ</h2>
+      <div class="sub">কোডবেসে সবকিছু নিখুঁত নয়; চেনা ও ঠিক করার ক্ষমতাই আসল দক্ষতা</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.4pt;line-height:1.45"># apps/academics/forms.py
+class BootstrapFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            w = field.widget
+            if isinstance(w, forms.CheckboxInput):
+                w.attrs.setdefault("class", "form-check-input")
+            elif isinstance(w, forms.Select):
+                w.attrs.setdefault("class", "form-select")
+            else:
+                w.attrs.setdefault("class", "form-control")
+
+# apps/billing/forms.py — একই কাজ, ভিন্ন নাম
+class ImsFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            widget = field.widget
+            css = widget.attrs.get("class", "")
+            if widget.__class__.__name__ == "CheckboxInput":
+                widget.attrs["class"] = (css + " form-check-input").strip()
+            ... আরও চারটি শাখা</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">সমস্যাটা কী</b>
+            <p style="font-size:10.2pt">দুটি ফাইল, দুটি নাম, প্রায় একই কাজ — একটি বদলালে অন্যটি পুরোনো হয়ে থাকবে।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">লক্ষণ</b>
+            <p style="font-size:10.2pt">কিছু পর্দায় তারিখ-নির্বাচক বা রঙ-নির্বাচক অন্যভাবে দেখায়।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">সমাধান</b>
+            <p style="font-size:10.2pt">একটি mixin <code>apps/core/</code>-এ সরান, অন্যটি ইমপোর্ট করুন — দুই লাইনেই কাজ।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:12.2pt">শিক্ষা</b>
+            <p style="font-size:10.2pt">প্রতিলিপি কোড নিজে থেকে ভাঙে না — <b>একদিন একটি কপি আপডেট হয়</b>, তখন ভাঙে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এটা স্বীকার করুন: "এই ডেকে আমি IMS-এর ভুলও দেখাই।" ছাত্রদের বলুন নিজের কোডে grep করে দেখতে — <code>Bootstrap</code>, <code>Mixin</code>, <code>mixin</code>।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৫</span>
+    <div><h2>ড্রপডাউনের ভেতরটা — queryset কে ঠিক করে</h2>
+      <div class="sub"><code>__init__</code>-এ queryset বদলানো, আর কখনোই <code>objects.all()</code> নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 55%">
+        <pre style="font-size:8.4pt;line-height:1.45">class EnrolForm(forms.Form):
+    students = forms.ModelMultipleChoiceField(
+        queryset=StudentProfile.objects.none(),   # নিরাপদ শুরু
+        widget=forms.CheckboxSelectMultiple(
+            attrs={"class": "form-check-input"}),
+        help_text="Only active students not already in "
+                  "this class are listed.")
+
+    def __init__(self, *args, workspace=None,
+                 class_group=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        qs = StudentProfile.objects.filter(
+            workspace=workspace,
+            status=StudentProfile.Status.ACTIVE)
+        if class_group is not None:
+            already = Enrollment.objects.filter(
+                class_group=class_group, is_active=True,
+            ).values_list("student_id", flat=True)
+            qs = qs.exclude(pk__in=already)
+        self.fields["students"].queryset = qs.order_by("full_name")</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt"><code>none()</code> দিয়ে শুরু</b>
+            <p style="font-size:10.2pt">কেউ <code>workspace</code> দিতে ভুলে গেলে খালি তালিকা — ফাঁস নয়।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">আগেই ভর্তি কারা</b>
+            <p style="font-size:10.2pt"><code>exclude(pk__in=already)</code> — তালিকায় দেখাবে না, আর জমা দিলে ভ্যালিডেশনেও আটকাবে।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">দুই স্তরে একই নিয়ম</b>
+            <p style="font-size:10.2pt">তালিকা সাজানো = UX · queryset = নিরাপত্তা। দুটোই লাগে।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রশ্ন করুন: "ড্রপডাউনে না দেখালে কি কেউ পাঠাতে পারবে?" উত্তর: হ্যাঁ, হাতে POST বানিয়ে — তাই queryset-ই আসল প্রহরী, তালিকাটি নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৬</span>
+    <div><h2>দুই ফিল্ডের সম্পর্ক — <code>clean()</code> আর <code>add_error()</code></h2>
+      <div class="sub"><code>BrandingForm</code>: ডোমেইন ভেরিফাই করা যাবে, কিন্তু খালি ডোমেইনে নয়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 50%">
+        <pre style="font-size:8.8pt;line-height:1.55">def clean(self):
+    data = super().clean()
+    if data.get("domain_verified") and not data.get("custom_domain"):
+        self.add_error("domain_verified",
+                       "Verify a domain only after entering one.")
+    return data
+
+# কল্পিত খারাপ সংস্করণ
+def clean(self):
+    if self.cleaned_data["domain_verified"]:
+        raise forms.ValidationError("...")
+    return self.cleaned_data</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">add_error(field, …)</b>
+            <p style="font-size:10.2pt">এররটা ঠিক ওই ঘরের নিচে বসে — ব্যবহারকারী এক নজরে দেখেন।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">raise ValidationError</b>
+            <p style="font-size:10.2pt">উপরের সারাংশে যায় — কোন ঘর ঠিক করবেন বোঝা কঠিন।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">super().clean() আগে</b>
+            <p style="font-size:10.2pt">নাহলে <code>cleaned_data</code>-তে ফিল্ড না-ও থাকতে পারে — KeyError।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">একই প্যাটার্ন অন্য জায়গায়</b>
+            <p style="font-size:10.2pt"><code>InstitutionForm.clean_admin_email</code> — ইমেইলের অ্যাকাউন্ট আগেই আছে কি না।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বলুন: "এরর কোথায় দেখাবে, সেটাও ডিজাইনের অংশ। উপরে সারাংশ দেখালে ব্যবহারকারী ২০টি ঘরের মধ্যে খুঁজতে থাকেন।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৭</span>
+    <div><h2>এরর থেকে পর্দা — এক partial, সব ফর্ম</h2>
+      <div class="sub"><code>partials/field.html</code> — লেবেল, সহায়তা ও এরর একই জায়গায়</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 48%">
+        <pre style="font-size:8.6pt;line-height:1.5">{% include "partials/field.html"
+   with field=form.username %}
+
+{# field.html যা করে #}
+&lt;label&gt;{{ field.label }}
+  {% if field.field.required %}*{% endif %}&lt;/label&gt;
+{{ field }}
+{% if field.help_text %}
+  &lt;div class="ims-hint"&gt;{{ field.help_text }}&lt;/div&gt;
+{% endif %}
+{% for error in field.errors %}
+  &lt;div class="ims-error"&gt;{{ error }}&lt;/div&gt;
+{% endfor %}</pre>
+      </div>
+      <div style="flex:1">
+        <table class="tight" style="font-size:9.2pt">
+          <thead><tr><th style="width:38%">কোথায় কী দেখায়</th><th>উৎস</th></tr></thead>
+          <tbody>
+            <tr><td>ফিল্ডের নিচের এরর</td><td><code>field.errors</code></td></tr>
+            <tr><td>ফর্মের সার্বিক এরর</td><td><code>form.non_field_errors</code></td></tr>
+            <tr><td>ধূসর সহায়ক লেখা</td><td><code>help_text</code></td></tr>
+            <tr><td>সবুজ সেভ বার্তা</td><td><code>messages.success</code></td></tr>
+            <tr><td>লাল ফ্ল্যাশ</td><td><code>messages.error</code></td></tr>
+          </tbody>
+        </table>
+        <div class="call" style="margin-top:3mm;font-size:10.4pt;padding:2.6mm 3.8mm">
+          লগইনে <code>non_field_errors</code> উপরে দেখানো হয় — কারণ "ইমেইল" না "পাসওয়ার্ড" ভুল, তা বলা যায় না।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শেষ কথাটা গুরুত্বপূর্ণ: "কোনটা ভুল তা বলা মানে আক্রমণকারীকে বলা 'ইমেইলটা ঠিক আছে'।" তাই লগইনে সবসময় সাধারণ বার্তা।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৮</span>
+    <div><h2>যেখানে প্রতি সারি একটি ফিল্ড — তবু ফর্ম</h2>
+      <div class="sub"><code>AttendanceBulkForm.statuses_for()</code> — ৪০ জন ছাত্র, ৪০টি রেডিও</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.6pt;line-height:1.5">class AttendanceBulkForm(forms.Form):
+    class_group = forms.ModelChoiceField(...)
+    subject = forms.ModelChoiceField(...)
+    date = forms.DateField(widget=forms.DateInput(
+        attrs={"type": "date"}))
+
+    def statuses_for(self):
+        """Read the per-student radio values."""
+        data = {}
+        for key, value in self.data.items():
+            if key.startswith("status_"):
+                data[int(key.split("_")[1])] = value
+        return data
+
+# ভিউতে যাচাই আবার হয়
+if status not in dict(AttendanceRecord.Status.choices):
+    continue</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">কেন ডাইনামিক</b>
+            <p style="font-size:10.2pt">ছাত্রসংখ্যা প্রতি ক্লাসে বদলায় — ফর্ম ক্লাসে ৪০টি ফিল্ড লিখে রাখা অসম্ভব।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">নামকরণই চুক্তি</b>
+            <p style="font-size:10.2pt"><code>status_&lt;student_id&gt;</code> — টেমপ্লেট ও ফর্ম একই নাম মানে।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">ভুলের ঝুঁকি</b>
+            <p style="font-size:10.2pt">কোনো ছাত্রের রেডিও বাদ পড়লে সে "অনুপস্থিত" নয় — <b>রেকর্ডই হয় না</b>। তাই ভিউ সেভের আগে যাচাই করে।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">বিকল্প</b>
+            <p style="font-size:10.2pt">ফর্মset বা প্রতি সারির জন্য আলাদা ফর্ম — জটিল, কিন্তু সব ভ্যালিডেশন স্বয়ংক্রিয়।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এখানে সীমাবদ্ধতাটা পরিষ্কার বলুন: "ডাইনামিক ফিল্ড মানে ভ্যালিডেশনের দায়িত্ব আংশিক আপনার — ফর্ম আর সব জানে না।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">ধাপ ৯</span>
+    <div><h2>পাসওয়ার্ড — একটি ফর্ম নয়, চারটি নিয়ম</h2>
+      <div class="sub"><code>AUTH_PASSWORD_VALIDATORS</code> — Django নিজেই চারটি যাচাই করে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:34%">ভ্যালিডেটর</th><th style="width:22%">নিয়ম</th><th>কী আটকায়</th></tr></thead>
+      <tbody>
+        <tr><td>UserAttributeSimilarity</td><td>নাম/ইমেইলের মতো নয়</td><td><code>admin@ims.local</code> → <code>admin123</code></td></tr>
+        <tr><td>MinimumLengthValidator</td><td><b>কমপক্ষে ১০ অক্ষর</b></td><td>ছোট পাসওয়ার্ড</td></tr>
+        <tr><td>CommonPasswordValidator</td><td>তালিকাভুক্ত সাধারণ নয়</td><td><code>password</code> · <code>qwerty123</code></td></tr>
+        <tr><td>NumericPasswordValidator</td><td>শুধু সংখ্যা নয়</td><td><code>01711111111</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cols" style="margin-top:4.6mm">
+      <div><div class="call" style="font-size:11pt;padding:3mm 4.4mm">
+        ফর্মে: <code>min_length=10</code> · <code>PasswordInput</code> · <code>help_text</code>-এ নিয়ম লেখা।
+      </div></div>
+      <div><div class="call warn" style="font-size:11pt;padding:3mm 4.4mm">
+        ডেমো পাসওয়ার্ড <code>DemoPass!2026</code> — ১১ অক্ষর, তাই চারটি নিয়মই পাশ করে।
+      </div></div>
+    </div>
+    <div class="call bad" style="margin-top:3.6mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      ফর্মের <code>min_length</code> আর ভ্যালিডেটর — দুটোই দরকার: প্রথমটি ভদ্র বার্তা দেয়, দ্বিতীয়টি <b>অন্য সব পথেও</b> কাজ করে (অ্যাডমিন, শেল, রিসেট)।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>python manage.py check --deploy</code> চালিয়ে দেখান — পাসওয়ার্ড ভ্যালিডেটর বাদ দিলে সেটাও সতর্ক করে।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সততার ফাঁক</span>
+    <div><h2>যেটা IMS-এ এখনো নেই: আপলোড যাচাই</h2>
+      <div class="sub">লোগো ফিল্ড শুধু <code>help_text</code>-এ বলে "PNG or SVG" — কোড কিছু যাচাই করে না</div></div></div>
+  <div class="body">
+    <div class="cols">
+      <div style="flex:0 0 52%">
+        <pre style="font-size:8.4pt;line-height:1.45"># যা আছে (মডেলের নির্দেশনা মাত্র)
+logo = models.ImageField(
+    upload_to="branding/logos/", blank=True, null=True,
+    help_text="PNG or SVG, ideally 512x512 or wider.")
+
+# যা যোগ করা উচিত
+def clean_logo(self):
+    logo = self.cleaned_data.get("logo")
+    if logo and hasattr(logo, "size"):
+        if logo.size > 2 * 1024 * 1024:
+            raise forms.ValidationError(
+                "Logo must be under 2 MB.")
+        ext = logo.name.rsplit(".", 1)[-1].lower()
+        if ext not in ("png", "jpg", "jpeg", "svg", "webp"):
+            raise forms.ValidationError(
+                "Use PNG, JPG, SVG or WebP.")
+    return logo</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.2mm">
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">ঝুঁকি ১: আকার</b>
+            <p style="font-size:10.2pt">৫০ MB লোগো আপলোড হলে ডিস্ক ও ব্যাকআপ ফুলে যায়।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">ঝুঁকি ২: ধরন</b>
+            <p style="font-size:10.2pt">HTML/SVG স্ক্রিপ্টসহ আপলোড হলে XSS-এর দরজা খোলে — SVG-তে JS থাকতে পারে।</p></div>
+          <div class="card soft" style="padding:3.6mm 4.2mm"><b style="font-size:12.2pt">ঝুঁকি ৩: নাম</b>
+            <p style="font-size:10.2pt">ব্যবহারকারীর দেওয়া ফাইলনাম সরাসরি ব্যবহার করবেন না — Django নিজেই নাম বদলায়।</p></div>
+          <div class="card" style="padding:3.6mm 4.2mm;background:#fef2f2;border-color:#fecaca"><b style="font-size:12.2pt">পাঠ</b>
+            <p style="font-size:10.2pt">"যা লিখিনি, তা হয়নি।" <code>help_text</code> নিয়ম নয়, অনুরোধ।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই স্লাইডটি ইচ্ছাকৃতভাবে সৎ — বলুন: "বাস্তব প্রজেক্টে এমন ফাঁক থাকে। চেনা, লিখে রাখা, পরে ঠিক করা — এটাই পেশাদারি।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সতর্কতা</span>
+    <div><h2>ফর্মের পাঁচটি সাধারণ ভুল</h2>
+      <div class="sub">প্রতিটির প্রতিকার এক লাইনে</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.4pt">
+      <thead><tr><th style="width:38%">ভুল</th><th>পরিণতি ও প্রতিকার</th></tr></thead>
+      <tbody>
+        <tr><td><b>১. <code>fields = "__all__"</code></b></td>
+          <td>ব্যবহারকারী নিজের স্কোপ/স্ট্যাটাস পাঠাতে পারে → নির্দিষ্ট তালিকা</td></tr>
+        <tr><td><b>২. <code>queryset=Model.objects.all()</code></b></td>
+          <td>অন্য প্রতিষ্ঠানের নাম ড্রপডাউনে → <code>none()</code> + <code>__init__</code>-এ স্কোপ</td></tr>
+        <tr><td><b>৩. <code>clean_&lt;field&gt;</code> মান ফেরাত না দেওয়া</b></td>
+          <td>পরের ধাপে <code>None</code> → <code>return value</code></td></tr>
+        <tr><td><b>৪. সব এরর <code>raise</code> দিয়ে</b></td>
+          <td>ভুল ঘর বোঝা যায় না → <code>add_error("field", …)</code></td></tr>
+        <tr><td><b>৫. ফর্মের ভ্যালিডেশনকে নিরাপত্তা ভাবা</b></td>
+          <td>অন্য পথ (শেল, ইমপোর্ট) খোলা থাকে → মডেল constraint-ও রাখুন</td></tr>
+      </tbody>
+    </table>
+    <div class="call bad" style="margin-top:4.4mm;font-size:11.4pt;padding:2.8mm 4.6mm">
+      সবগুলো এক প্রশ্নে ধরা পড়ে: <b>"এই মানটা কি অন্য কোনো পথে সেভ হতে পারে?"</b> — হ্যাঁ বললে ফর্ম একা যথেষ্ট নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পঞ্চম ভুলটি ক্লাস ১৬-এর সাথে জোড়া লাগান: "ফর্ম ভদ্র প্রহরী, constraint শেষ দেয়াল।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">অনুশীলন</span>
+    <div><h2>২০ মিনিট — নিজের একটি ফর্ম শক্ত করুন</h2>
+      <div class="sub">একই ফর্মে পাঁচটি স্তর</div></div></div>
+  <div class="body">
+    <div class="cards" style="flex-direction:column;gap:3.2mm">
+      <div class="card soft" style="padding:3.8mm 5mm"><b style="font-size:12.8pt">১. হোয়াইটলিস্ট (৩ মিনিট)</b>
+        <p style="font-size:10.8pt">একটি ModelForm-এ <code>fields</code> তালিকা লিখুন — <code>__all__</code> থাকলে বাদ দিন।</p></div>
+      <div class="card soft" style="padding:3.8mm 5mm"><b style="font-size:12.8pt">২. স্কোপড queryset (৫ মিনিট)</b>
+        <p style="font-size:10.8pt">প্রতিটি ModelChoiceField-এ <code>none()</code> + <code>__init__</code>-এ workspace ফিল্টার।</p></div>
+      <div class="card soft" style="padding:3.8mm 5mm"><b style="font-size:12.8pt">৩. একটি field-level নিয়ম (৫ মিনিট)</b>
+        <p style="font-size:10.8pt"><code>clean_&lt;field&gt;</code> — unique চেক, <code>iexact</code>, <code>exclude(pk)</code>, <code>return value</code>।</p></div>
+      <div class="card soft" style="padding:3.8mm 5mm"><b style="font-size:12.8pt">৪. একটি cross-field নিয়ম (৪ মিনিট)</b>
+        <p style="font-size:10.8pt"><code>clean()</code>-এ দুই ফিল্ডের সম্পর্ক, <code>add_error()</code> দিয়ে নির্দিষ্ট ঘরে।</p></div>
+      <div class="card soft" style="padding:3.8mm 5mm"><b style="font-size:12.8pt">৫. যাচাই (৩ মিনিট)</b>
+        <p style="font-size:10.8pt">ব্রাউজারের ভ্যালিডেশন বন্ধ করে ফাঁকা ফর্ম পাঠান — এররগুলো ঠিক ঘরে আসছে?</p></div>
+    </div>
+    <div class="call" style="margin-top:3.4mm;font-size:11.2pt;padding:2.8mm 4.6mm">
+      শেষ ধাপে <code>&lt;form novalidate&gt;</code> দিয়ে দেখুন — IMS-এর লগইন ফর্মেও <code>novalidate</code> আছে, কারণ আসল যাচাই সার্ভারে।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> <code>novalidate</code>-টা লাইভে দেখান — অনেকের কাছে এটাই সবচেয়ে চোখ খোলা মুহূর্ত: "ব্রাউজার যেটা আটকাচ্ছিল, সেটা আটকাচ্ছিল না আসলে।"</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">আলোচনা</span>
+    <div><h2>ক্লাসে আলোচনার চার প্রশ্ন</h2>
+      <div class="sub">উত্তর এক বাক্যে</div></div></div>
+  <div class="body">
+    <ul class="pts">
+      <li>একই ইউনিক-চেক কেন সম্পাদনার সময় নিজেকে বাদ দিতে হয়?</li>
+      <li class="g">ড্রপডাউনে না দেখিয়ে দিলেও কেন কেউ মান পাঠাতে পারে?</li>
+      <li>এরর সব উপরে দেখালে ব্যবহারকারীর কী অসুবিধা?</li>
+      <li class="r">ফর্মের নিয়ম থাকলেও মডেলে নিয়ম রাখতে হয় কেন?</li>
+    </ul>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> দ্বিতীয় প্রশ্নে হাতে POST দেখানোর সুযোগ নিন (curl বা ডেভ-টুল) — বোঝা যায় UI কখনো নিরাপত্তা নয়।</div>
+</section>
+
+<section class="slide">
+  <div class="head"><span class="badge">সারমর্ম</span>
+    <div><h2>ছয়টি কথা সঙ্গে নিন</h2>
+      <div class="sub">প্রতিটির পাশে IMS-এর প্রমাণ</div></div></div>
+  <div class="body">
+    <table class="tight" style="font-size:9.8pt">
+      <thead><tr><th style="width:52%">নীতি</th><th>প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td><b>fields হলো হোয়াইটলিস্ট</b></td><td><code>StudentForm</code>-এ workspace নেই</td></tr>
+        <tr><td><b>queryset <code>none()</code> দিয়ে শুরু</b></td><td><code>EnrolForm</code> · <code>AttendanceBulkForm</code></td></tr>
+        <tr><td><b>clean চেক স্কোপ + iexact + exclude(pk)</b></td><td><code>clean_admission_no</code></td></tr>
+        <tr><td><b>এরর নির্দিষ্ট ঘরে</b></td><td><code>add_error("domain_verified", …)</code></td></tr>
+        <tr><td><b>এক partial, সব ফর্মের চেহারা</b></td><td><code>partials/field.html</code> · ৩৫ ফর্ম</td></tr>
+        <tr><td><b>পাসওয়ার্ড নিয়ম ফর্মে + ভ্যালিডেটরে</b></td><td>৪টি validator · <code>min_length=10</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> প্রথম ও তৃতীয় সারি সবচেয়ে বেশি কাজে লাগে — বলুন: "এই দুটো অভ্যাস থাকলে আপনার ৮০% ফর্ম-বাগ উঠে যাবে।"</div>
+</section>
+
+<section class="slide divider">
+  <div class="n">১৯</div>
+  <h2>পরের ক্লাস — "ডেটা থেকে পর্দা"</h2>
+  <p>টেমপ্লেট: inheritance · context · loop ও empty · custom filter · partial · template-এ লজিকের সীমা</p>
+</section>

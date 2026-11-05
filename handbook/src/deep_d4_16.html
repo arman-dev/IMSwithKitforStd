@@ -1,0 +1,24 @@
+<section class="slide">
+  <div class="head"><span class="badge">সংকট</span>
+    <div><h2>কিছু ভাঙলে — পাঁচটি ধাপ</h2>
+      <div class="sub">ক্রমটাই গুরুত্বপূর্ণ; প্রথম ধাপ কখনো "ঠিক করা" নয়</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:6%">#</th><th style="width:30%">ধাপ</th><th style="width:64%">IMS-এ বাস্তবে</th></tr>
+      <tr><td>১</td><td><b>থামাও</b></td><td>ভুল মাইগ্রেশন চললে ডিপ্লয় থামান; সাইট নামানো দরকার হলে নামান</td></tr>
+      <tr><td>২</td><td><b>মাপো</b></td><td>কত স্কুল, কত সারি, কোন সময় থেকে — <code>AuditLog</code> + gunicorn log</td></tr>
+      <tr><td>৩</td><td><b>আগে ব্যাকআপ</b></td><td><b>যেকোনো সংশোধনের আগে</b> <code>ops/backup.sh</code> — নাহলে ফেরার পথ নেই</td></tr>
+      <tr><td>৪</td><td><b>ছোট করে ঠিক করো</b></td><td>একটি commit, একটি কারণ; বড় রিফ্যাক্টর সংকটের সময় নয়</td></tr>
+      <tr><td>৫</td><td><b>লিখে রাখো</b></td><td>কী ঘটল, কেন, কী বদলাল — নাহলে দ্বিতীয়বার একই ভুল</td></tr>
+    </table>
+    <div class="cols" style="margin-top:3mm;gap:5mm">
+      <div class="call" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>উদাহরণ (কাল্পনিক নয়):</b> কোনো স্কুলের সাবস্ক্রিপশন ভুলে মেয়াদোত্তীর্ণ দেখালে — গেট সব লেখা বন্ধ করবে, কিন্তু ডেটা অটুট। সমাধান বিলিং ডেটা ঠিক করা, রিস্টোর নয়।
+      </div>
+      <div class="call bad" style="font-size:9.8pt;padding:2.4mm 3.6mm">
+        <b>সবচেয়ে খারাপ প্রতিক্রিয়া:</b> আতঙ্কে সেটিং ঢিলা করা (<code>DEBUG=True</code>, গেট বন্ধ)। এটি সমস্যা থামায় না, লুকায়।
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ৩ নম্বর ধাপে থামুন: "সংশোধনের আগে ব্যাকআপ"। শিক্ষার্থীরা উল্টো করে — আগে ঠিক করে, তারপর ভাবে। ভুল ডেটা বদলালে ফেরার পথ আর থাকে না।
+</section>

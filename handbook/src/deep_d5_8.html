@@ -1,0 +1,42 @@
+<section class="slide">
+  <div class="head"><span class="badge">খালি</span>
+    <div><h2><code>ims-empty</code> — ৪১ বার, আর প্রতিটি একটি সিদ্ধান্ত</h2>
+      <div class="sub">"কিছু নেই" লেখা সহজ, কিন্তু ব্যবহারকারী তখন কী করবে?</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:40%">অবস্থা</th><th style="width:60%">ভালো বার্তা কী বলে</th></tr>
+          <tr><td>কোনো ছাত্র নেই</td><td>"এখনো কোনো ছাত্র যোগ করা হয়নি" + <b>Add student</b> বাটন</td></tr>
+          <tr><td>আজ হাজিরা নেওয়া হয়নি</td><td>"আজকের রেজিস্টার খালি" + <b>Take attendance</b></td></tr>
+          <tr><td>ফিল্টারে কিছু মেলেনি</td><td>"এই শর্তে কাউকে পাওয়া যায়নি" + <b>Clear filters</b></td></tr>
+          <tr><td>ভূমিকার জন্য কিছু নেই</td><td>"আপনার দেখার মতো কিছু নেই" — বাটন নেই, কারণ করার কিছু নেই</td></tr>
+        </table>
+        <div class="call" style="margin-top:2.2mm;font-size:9.6pt;padding:2.3mm 3.5mm">
+          পার্থক্য: প্রথম তিনটি <b>খালি</b>, চতুর্থটি <b>শূন্য</b>। একই পর্দা, ভিন্ন অর্থ — ভিন্ন বার্তা দরকার।
+        </div>
+      </div>
+      <div style="flex:1">
+        <pre style="font-size:7.9pt;line-height:1.45;padding:3mm 3.4mm">{% else %}
+  <div class="ims-empty">
+    <i class="bi bi-people"></i>
+    No students match these filters.
+  </div>
+{% endif %}
+
+{% else %}
+  <div class="ims-empty">
+    <i class="bi bi-grid-3x3"></i>
+    No attendance recorded this month
+    for this class.
+  </div>
+{% endif %}</pre>
+        <div style="font-size:9.5pt;color:#334155;margin-top:1.4mm">আসল কোড: বাটন নেই, কেবল ব্যাখ্যা। <b>প্রস্তাব:</b> যেখানে ব্যবহারকারীর অধিকার আছে, সেখানে একটি বাটন যোগ করা — এখনো করা হয়নি।</div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.4mm;font-size:9.8pt;padding:2.4mm 3.8mm">
+      <b>সৎ ফাঁক:</b> ৪১টি <code>ims-empty</code> ব্লক আছে, কিন্তু তাদের বার্তাগুলো একরকম নয় — কেউ স্পষ্ট নির্দেশ, কেউ শুধু বিবরণ — আর কোনোটিতেই পরবর্তী কাজের বাটন নেই।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> খালি পর্দা নিয়ে শিক্ষার্থীরা ভাবে না — অথচ প্রথম দিনেই ব্যবহারকারী ঠিক সেখানেই দাঁড়ায়। জিজ্ঞেস করুন: "নতুন স্কুল প্রথম লগইনে কী দেখবে?"
+</section>

@@ -1,0 +1,22 @@
+<section class="slide">
+  <div class="head"><span class="badge">সততা</span>
+    <div><h2>সংযোগ-স্তরের ৮টি ফাঁক — প্রতিটির একটি সংশোধন</h2>
+      <div class="sub">লুকানো নেই, কারণ এগুলোই পরের কাজের তালিকা</div></div></div>
+  <div class="body">
+    <table class="tight">
+      <tr><th style="width:34%">ফাঁক</th><th style="width:36%">আজকের ঝুঁকি</th><th style="width:30%">সংশোধন</th></tr>
+      <tr><td><code>/healthz</code> এন্ডপয়েন্ট নেই</td><td>গেটে অনুমতি আছে, ঠিকানা নেই — মনিটরিং কী দেখবে?</td><td>একটি ভিউ যোগ, DB-চেক সহ</td></tr>
+      <tr><td><code>DATABASE_URL</code> অপ্রয়োগ</td><td>PaaS-এর ডিফল্ট চলবে না; <code>dj-database-url</code> অচল প্যাকেজ</td><td><code>prod.py</code>-তে URL পার্স করা</td></tr>
+      <tr><td><code>wsgi.py</code> ডিফল্ট <code>dev</code></td><td>env ভুলে গেলে প্রোডাকশন ডেমো-সেটিংসে</td><td>ডিফল্ট <code>prod</code>, ওভাররাইড env দিয়ে</td></tr>
+      <tr><td><code>.env.example</code>-এ <code>DB_*</code> নেই</td><td>নতুন কেউ সেটআপে অনুমান করে</td><td>৫টি কী যোগ</td></tr>
+      <tr><td>ক্যাশ স্তর নেই</td><td>প্রতি রিকোয়েস্টে কনটেক্সট-কোয়েরি</td><td>মেপে দরকার হলে Redis</td></tr>
+      <tr><td>ASGI ঘোষিত, WSGI ব্যবহৃত</td><td>দুই এন্ট্রি পয়েন্ট, একটি অব্যবহৃত</td><td>ASGI সরানো, বা ব্যবহার শুরু</td></tr>
+      <tr><td>prod-এর ২টি গার্ড টেস্টহীন</td><td>গার্ড সরিয়ে দিলে কেউ ধরবে না</td><td>দুটি ছোট টেস্ট</td></tr>
+      <tr><td>vendor ভার্সন অনির্দিষ্ট</td><td>Bootstrap আপডেটে ভাঙার ঝুঁকি অজানা</td><td>ভার্সন ফাইলে লিখে রাখা</td></tr>
+    </table>
+    <div class="call" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      প্রথম চারটি একদিনের কাজ — তবু ডেমো ঠিক চলছে, তাই কেউ করে না। <b>এটাই প্রযুক্তিগত ঋণের আসল চেহারা:</b> ভাঙা নয়, শুধু ঝুঁকিপূর্ণ।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> শিক্ষার্থীদের বলুন এই তালিকা থেকে একটি বেছে নিয়ে ঠিক করতে — ৩০ মিনিটে সম্ভব। যে কাজ নিজে করেছে, সেটাই সত্যিকারের শেখা।
+</section>

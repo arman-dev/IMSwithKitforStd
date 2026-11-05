@@ -1,0 +1,33 @@
+<section class="slide">
+  <div class="head"><span class="badge">কোয়েরি</span>
+    <div><h2>N+1 সমস্যা, আর ৫৭টি <code>select_related</code></h2>
+      <div class="sub">৩১ টেবিল থাকলেই ধীর হয় না — JOIN হারিয়ে গেলেই ধীর হয়</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <div style="font-size:10.6pt;font-weight:700;color:#991b1b;margin-bottom:1.2mm">৪০ ছাত্রের হাজিরা, খারাপ পথ</div>
+        <pre style="font-size:8pt;line-height:1.45;padding:2.8mm 3.4mm">for r in AttendanceRecord.objects.filter(
+        workspace=ws, date=today):
+    print(r.student.full_name)   # প্রতি সারিতে ১ কোয়েরি</pre>
+        <div style="font-size:9.8pt;color:#7f1d1d;margin-top:1.2mm">১ + ৪০ = ৪১ কোয়েরি</div>
+        <div style="font-size:10.6pt;font-weight:700;color:#065f46;margin-top:3mm;margin-bottom:1.2mm">ভালো পথ</div>
+        <pre style="font-size:8pt;line-height:1.45;padding:2.8mm 3.4mm">qs = (AttendanceRecord.objects
+      .filter(workspace=ws, date=today)
+      .select_related("student", "subject"))</pre>
+        <div style="font-size:9.8pt;color:#065f46;margin-top:1.2mm">২ কোয়েরি — ৪১ নয়</div>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="gap:2.6mm">
+          <div class="card soft" style="padding:2.8mm 3.4mm"><b style="font-size:10.6pt">৫৭ · <code>select_related</code></b><p style="font-size:9.4pt">সরাসরি FK — একই SQL-এ JOIN</p></div>
+          <div class="card soft" style="padding:2.8mm 3.4mm"><b style="font-size:10.6pt">২ · <code>prefetch_related</code></b><p style="font-size:9.4pt">উল্টো দিক / many-to-many — আলাদা কোয়েরি, তারপর জোড়া</p></div>
+          <div class="card soft" style="padding:2.8mm 3.4mm"><b style="font-size:10.6pt">৭ · <code>Count()</code></b><p style="font-size:9.4pt">গোনা ডেটাবেজে, পাইথনে নয়</p></div>
+          <div class="card soft" style="padding:2.8mm 3.4mm"><b style="font-size:10.6pt">৩ · <code>aggregate()</code> · ২ · <code>annotate()</code></b><p style="font-size:9.4pt">রিপোর্টের গড়/সর্বোচ্চ</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="call warn" style="margin-top:2.8mm;font-size:10pt;padding:2.4mm 3.8mm">
+      <b>সৎ ফাঁক:</b> কোনো কোয়েরি-সংখ্যা কখনো <b>মাপা হয়নি</b> — django-debug-toolbar নেই, <code>connection.queries</code> কোথাও ব্যবহৃত নয়। ৫৭টি <code>select_related</code> লেখা হয়েছে কোড পড়ে, প্রোফাইল করে নয়।
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> বোর্ডে ১ + ৪০ লিখুন, তারপর প্রশ্ন করুন: "শিক্ষার্থী ৪০০ হলে?" — ৪০১ কোয়েরি। এটাই N+1; নামটাই বলে দেয় কেন: N সারি, প্রতিটির জন্য আরও ১।
+</section>

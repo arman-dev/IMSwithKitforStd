@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"NotoBn";src:url("file:///home/user/.fonts/NotoSansBengali-Regular.ttf");font-weight:400}
+@font-face{font-family:"NotoBn";src:url("file:///home/user/.fonts/NotoSansBengali-Bold.ttf");font-weight:700}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:"NotoBn",sans-serif;color:#0f172a;font-size:10pt;line-height:1.7;
+  font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0}
+@page{size:A4 landscape;margin:0}
+.slide{width:297mm;height:210mm;page-break-after:always;padding:12mm 14mm 16mm;
+  display:flex;flex-direction:column;position:relative;overflow:hidden;background:#fff}
+.slide:last-child{page-break-after:auto}
+
+/* cover */
+.cover{background:radial-gradient(circle at 85% 10%,rgba(124,58,237,.9),transparent 55%),
+  linear-gradient(150deg,#0b1020 0%,#1e1b4b 58%,#312e81 100%);color:#fff;justify-content:center;padding-left:20mm}
+.cover .k{font-size:11pt;letter-spacing:.22em;color:#a5b4fc;font-weight:700}
+.cover h1{font-size:38pt;line-height:1.3;margin:7mm 0 4mm;color:#fff}
+.cover .sub{font-size:14pt;color:#c7d2fe;line-height:1.7}
+.cover .pill{display:inline-block;margin-top:9mm;border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;padding:2mm 6mm;font-size:11pt;color:#e0e7ff}
+
+/* head */
+.head{display:flex;align-items:flex-start;gap:5mm;border-bottom:2px solid #e2e8f0;
+  padding-bottom:3mm;margin-bottom:5mm}
+.badge{background:linear-gradient(140deg,#4f46e5,#7c3aed);color:#fff;font-size:10pt;font-weight:700;
+  border-radius:999px;padding:1.4mm 4.5mm;white-space:nowrap}
+.head h2{font-size:20pt;line-height:1.3}
+.head .sub{font-size:10.5pt;color:#64748b;margin-top:1mm}
+.body{flex:1}
+.tnote{position:absolute;left:14mm;right:14mm;bottom:6mm;background:#fefce8;
+  border-left:4px solid #eab308;border-radius:5px;padding:2mm 3.5mm;font-size:9.5pt;color:#713f12;line-height:1.5}
+.tnote b{color:#a16207}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:9pt;line-height:1.5}
+th{text-align:left;background:#eef2ff;color:#4f46e5;font-weight:700;padding:1.8mm 2.4mm;
+  border-bottom:1.5px solid #c7d2fe}
+td{padding:1.6mm 2.4mm;border-bottom:1px solid #e2e8f0;vertical-align:top}
+tr{page-break-inside:avoid}
+td.n{font-weight:700;color:#4f46e5;text-align:center}
+tr.tot td{background:#f8faff;font-weight:700;border-top:2px solid #c7d2fe;color:#312e81}
+
+/* cards */
+.cards{display:flex;gap:4mm;margin:3mm 0}
+.card{flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:3.5mm;background:#fff}
+.card.soft{background:#f8faff;border-color:#c7d2fe}
+.card>b{display:block;font-size:15pt;color:#4f46e5;margin-bottom:1mm}
+.card p{font-size:9pt;color:#475569;line-height:1.55}
+
+/* part header */
+.part{background:linear-gradient(120deg,#1e1b4b,#312e81);color:#fff;border-radius:8px;
+  padding:3mm 5mm;margin-bottom:4mm;display:flex;justify-content:space-between;align-items:center}
+.part .t{font-size:14pt;font-weight:700}
+.part .m{font-size:9.5pt;color:#c7d2fe}
+
+/* toc */
+.toc .p{font-size:11.5pt;font-weight:700;color:#312e81;margin:3mm 0 1.5mm;
+  border-left:4px solid #4f46e5;padding-left:3mm}
+.toc .c{font-size:9.5pt;margin:.8mm 0;display:flex;gap:2mm}
+.toc .c .n{color:#4f46e5;font-weight:700;width:7mm;flex:0 0 7mm}
+.toc .c .s{color:#94a3b8;margin-left:auto;font-size:8.5pt;white-space:nowrap}
+.toc .c .v{color:#94a3b8;font-size:8.5pt}
+code{font-family:"DejaVu Sans Mono",monospace;background:#f1f5f9;border:1px solid #e2e8f0;
+  border-radius:3px;padding:.1mm 1.2mm;font-size:8.5pt}
+</style></head><body>
+
+<!-- ============ COVER ============ -->
+<section class="slide cover">
+  <div class="k">কোর্স কিট · পূর্ণ সূচিপত্র</div>
+  <h1>IMS যেভাবে তৈরি হলো</h1>
+  <div class="sub">শিক্ষকের ক্লাস উপকরণ — ক্লাস, পর্ব, স্লাইড, ডায়াগ্রাম<br>এবং প্রতিটি বিষয়ের প্রমাণ কোথায়</div>
+  <div class="pill">BTEB 28566 · Web Development Project · ১০ পর্ব · ৩৭ ক্লাস</div>
+</section>
+
+<!-- ============ 1 · AT A GLANCE ============ -->
+<section class="slide">
+  <div class="head"><span class="badge">এক নজরে</span>
+    <div><h2>পুরো কিটের হিসাব</h2><div class="sub">প্রজেক্ট থেকে গোনা সংখ্যা — অনুমান নয়</div></div></div>
+  <div class="body">
+    <div class="cards">
+      <div class="card soft"><b>১৭</b><p>PDF ডেক<br>১১ পর্ব + ৫ গভীরতা + overview</p></div>
+      <div class="card soft"><b>৩৭</b><p>ক্লাস<br>১০ পর্বে ভাগ</p></div>
+      <div class="card soft"><b>৭৮২</b><p>স্লাইড<br>প্রতি স্লাইডে হলুদ পট্টি</p></div>
+      <div class="card soft"><b>১০</b><p>স্লাইডের ধরন<br>ব্যবহার নিয়ম একই</p></div>
+      <div class="card soft"><b>৫</b><p>গভীরতা ডেক<br>DB · stack · security · ops · UI</p></div>
+    </div>
+    <table style="margin-top:4mm">
+      <thead><tr><th style="width:52mm">প্রজেক্টে যা আছে</th><th>সংখ্যা</th><th>কোথায় কাজে লাগবে</th></tr></thead>
+      <tbody>
+        <tr><td>মডেল (ডেটাবেস টেবিল)</td><td><b>৩১</b></td><td>D1 ডেটাবেস ডিক, পর্ব ৩ ক্লাস ১৪–১৫</td></tr>
+        <tr><td>ফিল্ড</td><td><b>২৩২</b></td><td>D1 ডেটা ডিকশনারি (৭ স্লাইড)</td></tr>
+        <tr><td>মাইগ্রেশন</td><td><b>১২</b></td><td>D1 + পর্ব ৪ ক্লাস ১৬</td></tr>
+        <tr><td>টেমপ্লেট</td><td><b>৭৫</b></td><td>পর্ব ৩ ক্লাস ১২, পর্ব ৪ ক্লাস ২১</td></tr>
+        <tr><td>Middleware (৭ Django + ৩ নিজের)</td><td><b>১০</b></td><td>D2 স্ট্যাক ডিক, পর্ব ৪ ক্লাস ১৭</td></tr>
+        <tr><td>Management command</td><td><b>৪</b></td><td>D1 (seed), পর্ব ৬</td></tr>
+        <tr><td>স্বয়ংক্রিয় টেস্ট + smoke যাচাই</td><td><b>১০৩ + ২২০</b></td><td>পর্ব ৫ পুরোটা</td></tr>
+        <tr><td>Git commit</td><td><b>১৯</b></td><td>D4 + পর্ব ২ ক্লাস ১০</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>পাঠানোর আগে:</b> সংখ্যাগুলো যাচাই করা — <code>grep -c "^class " apps/*/models.py</code> ও <code>git log --oneline | wc -l</code></div>
+</section>
+
+<!-- ============ 2 · TOC ============ -->
+<section class="slide">
+  <div class="head"><span class="badge">সূচি</span>
+    <div><h2>৩৭টি ক্লাস — পর্ব অনুযায়ী</h2><div class="sub">প্রতিটি ক্লাস = ডেকে একটি সেকশন</div></div></div>
+  <div class="body toc" style="column-count:2;column-gap:10mm">
+    <div class="p">পর্ব ১ · কনসেপ্ট <span style="font-size:9pt;color:#64748b;font-weight:400">(৪ ক্লাস · ৫৮ স্লাইড)</span></div>
+    <div class="c"><span class="n">১</span>সমস্যা, ব্যবহারকারী, তিন স্তর <span class="s">১৪</span></div>
+    <div class="c"><span class="n">২</span>প্রজেক্ট বাছাই ও স্কোরিং <span class="s">১৪</span></div>
+    <div class="c"><span class="n">৩</span>তিন ফিজিবিলিটি <span class="s">১৬</span></div>
+    <div class="c"><span class="n">৪</span>ঝুঁকি ও কনসেপ্ট পেপার <span class="s">১৪</span></div>
+
+    <div class="p">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান <span style="font-size:9pt;color:#64748b;font-weight:400">(৬ · ১০৮)</span></div>
+    <div class="c"><span class="n">৫</span>ইন্টারভিউ ও সার্ভে <span class="s">১৮</span></div>
+    <div class="c"><span class="n">৬</span>স্কোপ ফ্রিজ — ৫৭ ফাংশন <span class="s">১৬</span></div>
+    <div class="c"><span class="n">৭</span>টেক স্ট্যাক ও ADR <span class="s">২০</span></div>
+    <div class="c"><span class="n">৮</span>আর্কিটেকচার — ১১ অ্যাপ <span class="s">২০</span></div>
+    <div class="c"><span class="n">৯</span>রোল ম্যাট্রিক্স ও রিসোর্স <span class="s">১৬</span></div>
+    <div class="c"><span class="n">১০</span>শিডিউল, নির্ভরতা, বাজেট <span class="s">১৮</span></div>
+
+    <div class="p">পর্ব ৩ · ডিজাইন <span style="font-size:9pt;color:#64748b;font-weight:400">(৫ · ৯৪)</span></div>
+    <div class="c"><span class="n">১১</span>সিস্টেম ডিজাইন ও রিকোয়েস্ট ফ্লো <span class="s">১৮</span></div>
+    <div class="c"><span class="n">১২</span>wireframe ও UI <span class="s">১৬</span></div>
+    <div class="c"><span class="n">১৩</span>DFD Level 0 ও 1 <span class="s">১৮</span></div>
+    <div class="c"><span class="n">১৪</span>ERD পূর্ণ <span class="s">২২</span></div>
+    <div class="c"><span class="n">১৫</span>স্কিমা ও ডেটা স্টোরেজ <span class="s">২০</span></div>
+
+    <div class="p">পর্ব ৪ · কোডিং ★ <span style="font-size:9pt;color:#64748b;font-weight:400">(৮ · ১৫২)</span></div>
+    <div class="c"><span class="n">১৬</span>পরিবেশ ও প্রথম কমিট <span class="s">১৬</span></div>
+    <div class="c"><span class="n">১৭</span>স্লাইস ১ — auth / tenant / রোল <span class="s">২২</span></div>
+    <div class="c"><span class="n">১৮</span>স্লাইস ২ — academics / ভর্তি <span class="s">২২</span></div>
+    <div class="c"><span class="n">১৯</span>স্লাইস ৩ — উপস্থিতি / পাঠ / হোমওয়ার্ক <span class="s">২২</span></div>
+    <div class="c"><span class="n">২০</span>স্লাইস ৪ — পরীক্ষা / নম্বর / PDF <span class="s">২২</span></div>
+    <div class="c"><span class="n">২১</span>ফ্রন্ট-ব্যাক ইন্টিগ্রেশন <span class="s">১৮</span></div>
+    <div class="c"><span class="n">২২</span>SEO ও পাবলিক সাইট <span class="s">১৬</span></div>
+    <div class="c"><span class="n">২৩</span>Git ও PM বোর্ড <span class="s">১৪</span></div>
+
+    <div class="p">পর্ব ৫ · টেস্টিং <span style="font-size:9pt;color:#64748b;font-weight:400">(৪ · ৭০)</span></div>
+    <div class="c"><span class="n">২৪</span>Unit test <span class="s">১৮</span></div>
+    <div class="c"><span class="n">২৫</span>pytest / Selenium / JMeter <span class="s">১৬</span></div>
+    <div class="c"><span class="n">২৬</span>স্কোপিং ও ইন্টিগ্রেশন <span class="s">২০</span></div>
+    <div class="c"><span class="n">২৭</span>UAT ও ফিক্স <span class="s">১৬</span></div>
+
+    <div class="p">পর্ব ৬ · ডিপ্লয় <span style="font-size:9pt;color:#64748b;font-weight:400">(৩ · ৫৬)</span></div>
+    <div class="c"><span class="n">২৮</span>প্রোডাকশন সেটিংস ও সিকিউরিটি <span class="s">২০</span></div>
+    <div class="c"><span class="n">২৯</span>ডোমেইন, হোস্টিং, লাইভ <span class="s">১৮</span></div>
+    <div class="c"><span class="n">৩০</span>মাইগ্রেশন, ব্যাকআপ, মনিটরিং <span class="s">১৮</span></div>
+
+    <div class="p">পর্ব ৭ · মেইনটেন্যান্স <span style="font-size:9pt;color:#64748b;font-weight:400">(২ · ৩৪)</span></div>
+    <div class="c"><span class="n">৩১</span>লগ, অপ্টিমাইজ, N+1 <span class="s">১৬</span></div>
+    <div class="c"><span class="n">৩২</span>বাগের প্রত্নতত্ত্ব <span class="s">১৮</span></div>
+
+    <div class="p">পর্ব ৮ · ডকুমেন্ট <span style="font-size:9pt;color:#64748b;font-weight:400">(৩ · ৪৪)</span></div>
+    <div class="c"><span class="n">৩৩</span>টেক ডক ও ম্যানুয়াল <span class="s">১৪</span></div>
+    <div class="c"><span class="n">৩৪</span>রিভিউ, acceptance, ক্লোজার <span class="s">১৬</span></div>
+    <div class="c"><span class="n">৩৫</span>স্লাইড ও আর্কাইভ <span class="s">১৪</span></div>
+
+    <div class="p">পর্ব ৯ · ভবিষ্যৎ <span style="font-size:9pt;color:#64748b;font-weight:400">(১ · ১৬)</span></div>
+    <div class="c"><span class="n">৩৬</span>৭ ঘাটতি ও অগ্রাধিকার <span class="s">১৬</span></div>
+
+    <div class="p">পর্ব ১০ · উপস্থাপন <span style="font-size:9pt;color:#64748b;font-weight:400">(১ · ১৬)</span></div>
+    <div class="c"><span class="n">৩৭</span>ডেমো স্ক্রিপ্ট + ১০ প্রশ্ন <span class="s">১৬</span></div>
+
+    <div class="p">গভীরতা ডেক</div>
+    <div class="c"><span class="n">D1</span>Database Design Bible <span class="s">৩০</span></div>
+    <div class="c"><span class="n">D2</span>Dev Stack ও Connections <span class="s">২৮</span></div>
+    <div class="c"><span class="n">D3</span>Security Model <span class="s">২২</span></div>
+    <div class="c"><span class="n">D4</span>Lifecycle ও Ops <span class="s">২০</span></div>
+    <div class="c"><span class="n">D5</span>Design System <span class="s">১৮</span></div>
+  </div>
+  <div class="tnote"><b>স্লাইড সংখ্যা:</b> মোট ৭৮২ · সবচেয়ে বড় পর্ব ৪ (১৫২), কারণ কোডিং-ই সবচেয়ে ভারী — ৬ নম্বর, ৮ টপিক।</div>
+</section>
+
+<!-- ============ 3 · PART 1 ============ -->
+<section class="slide">
+  <div class="part"><span class="t">পর্ব ১ · কনসেপ্ট</span><span class="m">৪ ক্লাস · ৫৮ স্লাইড · ২ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:52mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল</th><th style="width:52mm">IMS প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১</td><td>সমস্যা, ব্যবহারকারী, তিন স্তর</td><td class="n">১৪</td><td>৩-স্তরের বার · ৫ রোল কার্ড · টেন্যান্ট ডায়াগ্রাম</td><td><code>navigation.py</code>, ৫ লগইন</td></tr>
+        <tr><td class="n">২</td><td>প্রজেক্ট বাছাই ও স্কোরিং</td><td class="n">১৪</td><td>১২ প্রজেক্ট × ৫ মাপকাঠি স্কোর চার্ট</td><td><code>catalogue_data.py</code> (৫৭ ফাংশন)</td></tr>
+        <tr><td class="n">৩</td><td>তিন ফিজিবিলিটি</td><td class="n">১৬</td><td>খরচ বনাম ভাঙার বিন্দু গ্রাফ</td><td><code>requirements.txt</code>, প্ল্যানের দাম</td></tr>
+        <tr><td class="n">৪</td><td>ঝুঁকি ও কনসেপ্ট পেপার</td><td class="n">১৪</td><td>ঝুঁকি হিট-ম্যাপ (সম্ভাবনা × প্রভাব)</td><td><code>BUILD_STATUS.md</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:4mm">
+      <div class="card"><b style="font-size:11pt">ক্লাস ১-এ যা শেখানো হয়</b><p>খাতা → সফটওয়্যার কেন · ব্যবহারকারী বনাম গ্রাহক · ৫ ভূমিকার পার্থক্য · ৪০৩/৪০৪-এর ধারণা · লাইভ ৪ লগইন</p></div>
+      <div class="card"><b style="font-size:11pt">ক্লাস ২-এ যা</b><p>১২ প্রজেক্টের স্কোর টেবিল · কোনটা শেষ হবে আর কোনটা মরে যাবে · স্কোপ ফ্রিজের ধারণা</p></div>
+      <div class="card"><b style="font-size:11pt">ক্লাস ৩–৪-এ যা</b><p>প্রযুক্তি/পরিচালন/অর্থনৈতিক ফিজিবিলিটি · ভাঙার বিন্দুর হিসাব · ৬ ঝুঁকি + আগাম সংকেত · কনসেপ্ট পেপারের ৬ অংশ</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই পর্বে কোনো কোড খোলা হয় না — শুধু স্ক্রিন, ডায়াগ্রাম আর প্রশ্ন। ছাত্ররা যেন "কী বানাব" ঠিক করে তারপর কোডে যায়।</div>
+</section>
+
+<!-- ============ 4 · PART 2 ============ -->
+<section class="slide">
+  <div class="part"><span class="t">পর্ব ২ · ইঞ্জিনিয়ারিং প্ল্যান</span><span class="m">৬ ক্লাস · ১০৮ স্লাইড · ২ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:52mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল</th><th style="width:52mm">IMS প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">৫</td><td>ইন্টারভিউ ও সার্ভে</td><td class="n">১৮</td><td>৫ রোল × প্রশ্ন-তালিকা ম্যাট্রিক্স</td><td><code>USER_MANUAL.md</code> §0.1</td></tr>
+        <tr><td class="n">৬</td><td>স্কোপ ফ্রিজ — ৫৭ ফাংশন</td><td class="n">১৬</td><td>ফাংশন আইডি ম্যাপ (অ্যাপ × রোল)</td><td>commit <code>5373b59</code></td></tr>
+        <tr><td class="n">৭</td><td>টেক স্ট্যাক ও ADR</td><td class="n">২০</td><td>৩ বিকল্পের তুলনা টেবিল + ভরা ADR</td><td><code>requirements.txt</code></td></tr>
+        <tr><td class="n">৮</td><td>আর্কিটেকচার — ১১ অ্যাপ</td><td class="n">২০</td><td>অ্যাপ নির্ভরতার গ্রাফ</td><td><code>apps/*/</code></td></tr>
+        <tr><td class="n">৯</td><td>রোল ম্যাট্রিক্স ও রিসোর্স</td><td class="n">১৬</td><td>৫×৫ অনুমতি গ্রিড</td><td><code>apps/core/navigation.py</code></td></tr>
+        <tr><td class="n">১০</td><td>শিডিউল, নির্ভরতা, বাজেট</td><td class="n">১৮</td><td>Gantt (১৯ commit থেকে) + নির্ভরতা চেইন</td><td><code>git log</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:4mm">
+      <div class="card soft"><b style="font-size:11pt">সবচেয়ে জরুরি ক্লাস</b><p>ক্লাস ৭ (ADR) আর ৬ (স্কোপ) — এই দুই ক্লাসের জমা ছাড়া পর্ব ৪-এ যাওয়া উচিত নয়।</p></div>
+      <div class="card soft"><b style="font-size:11pt">কেন প্ল্যানে সবচেয়ে বেশি স্লাইড</b><p>১০টি টপিক — সিলেবাসে সর্বোচ্চ। এখানে তাড়াহুড়ো করলে পরের সব পর্ব দুর্বল হয়ে পড়ে।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ছাত্রদের বলুন — "এই পর্বের শেষে তোমার হাতে একটা কাগজ থাকবে, যেখানে লেখা থাকবে তুমি কী বানাবে না।"</div>
+</section>
+
+<!-- ============ 5 · PART 3 ============ -->
+<section class="slide">
+  <div class="part"><span class="t">পর্ব ৩ · ডিজাইন</span><span class="m">৫ ক্লাস · ৯৪ স্লাইড · ৩ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:52mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল</th><th style="width:52mm">IMS প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১১</td><td>সিস্টেম ডিজাইন ও রিকোয়েস্ট ফ্লো</td><td class="n">১৮</td><td>৭-ধাপের যাত্রা ডায়াগ্রাম + middleware ক্রম</td><td>১০ middleware</td></tr>
+        <tr><td class="n">১২</td><td>wireframe ও UI</td><td class="n">১৬</td><td>৬টি মূল স্ক্রিনের কাঠামো + ডিজাইন টোকেন</td><td>৭৭ স্ক্রিনশট, <code>ims.css</code></td></tr>
+        <tr><td class="n">১৩</td><td>DFD Level 0 ও 1</td><td class="n">১৮</td><td>ডেটা প্রবাহ ডায়াগ্রাম (নতুন আঁকা)</td><td>—</td></tr>
+        <tr><td class="n">১৪</td><td><b>ERD পূর্ণ</b></td><td class="n">২২</td><td>৩১ টেবিলের কার্ডিনালিটি ERD</td><td><code>apps/*/models.py</code></td></tr>
+        <tr><td class="n">১৫</td><td>স্কিমা ও ডেটা স্টোরেজ</td><td class="n">২০</td><td>টেবিল বিস্তার + ইনডেক্স মানচিত্র</td><td>১২ মাইগ্রেশন</td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:4mm">
+      <div class="card"><b style="font-size:11pt">ক্লাস ১৪ কেন সবচেয়ে বড়</b><p>৩১ টেবিল, ২৩২ ফিল্ড — ERD ছাড়া কেউ নিজের প্রজেক্টে ভুল করবেই। দুই সেশন ধরুন।</p></div>
+      <div class="card"><b style="font-size:11pt">ক্লাস ১৫-এ যা</b><p>partial unique index · workspace ফিল্ড কোথায় আছে/নেই · cascade নিয়ম · ১২ মাইগ্রেশনের ক্রম</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> D1 ডেটাবেস ডিক এই পর্বের সঙ্গী — ক্লাস ১৪–১৫ চলার সময় D1 খোলা রাখুন।</div>
+</section>
+
+<!-- ============ 6 · PART 4 ============ -->
+<section class="slide">
+  <div class="part" style="background:linear-gradient(120deg,#7c2d12,#ea580c)"><span class="t">পর্ব ৪ · কোডিং ★</span><span class="m">৮ ক্লাস · ১৫২ স্লাইড · ৬ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:52mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল</th><th style="width:52mm">IMS প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১৬</td><td>পরিবেশ ও প্রথম কমিট</td><td class="n">১৬</td><td>venv → migrate → run পাইপলাইন</td><td><code>run.sh</code>, <code>674375b</code></td></tr>
+        <tr><td class="n">১৭</td><td>স্লাইস ১ — auth / tenant / রোল</td><td class="n">২২</td><td>User ⇄ Membership ⇄ Workspace ERD + ডেকোরেটর কোড</td><td><code>05c63dc</code></td></tr>
+        <tr><td class="n">১৮</td><td>স্লাইস ২ — academics / ভর্তি</td><td class="n">২২</td><td>partial unique index ডায়াগ্রাম</td><td><code>6f28a37</code></td></tr>
+        <tr><td class="n">১৯</td><td>স্লাইস ৩ — উপস্থিতি / পাঠ / হোমওয়ার্ক</td><td class="n">২২</td><td>ফর্ম-ভ্যালিডেশন ফ্লো + একদিনে এক রেকর্ড</td><td><code>6f28a37</code></td></tr>
+        <tr><td class="n">২০</td><td>স্লাইস ৪ — পরীক্ষা / নম্বর / PDF</td><td class="n">২২</td><td>গ্রেড ব্যান্ড টেবিল + PDF পাইপলাইন</td><td><code>assessments/pdf.py</code></td></tr>
+        <tr><td class="n">২১</td><td>ফ্রন্ট-ব্যাক ইন্টিগ্রেশন</td><td class="n">১৮</td><td>POST → CSRF → view → message</td><td><code>e1ead8a</code></td></tr>
+        <tr><td class="n">২২</td><td>SEO ও পাবলিক সাইট</td><td class="n">১৬</td><td>meta / sitemap / robots চেকলিস্ট</td><td><b>নেই — ঘাটতি থেকেই শেখা</b></td></tr>
+        <tr><td class="n">২৩</td><td>Git ও PM বোর্ড</td><td class="n">১৪</td><td>১৯ commit-এর টাইমলাইন</td><td><code>git log</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:3mm">
+      <div class="card" style="border-color:#fed7aa;background:#fff7ed"><b style="font-size:11pt;color:#9a3412">চারটি স্লাইস = চারটি মাইলস্টোন</b><p>প্রতিটি স্লাইসের শেষে সিস্টেম চালু থাকতে হবে, টেস্ট পাস করতে হবে। না হলে পরের স্লাইসে যাওয়া নয়।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই পর্বে সবচেয়ে বেশি সময় যাবে ১৭ ও ১৮-এ — auth/tenant আর ডেটাবেস-বাধা। এখানে তাড়াহুড়ো করলে পরের দুই স্লাইস ভেঙে পড়বে।</div>
+</section>
+
+<!-- ============ 7 · PARTS 5-6 ============ -->
+<section class="slide">
+  <div class="part"><span class="t">পর্ব ৫ · টেস্টিং ও পর্ব ৬ · ডিপ্লয়</span><span class="m">৭ ক্লাস · ১২৬ স্লাইড · ৪ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:14mm">পর্ব</th><th style="width:52mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল / প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">২৪</td><td>৫</td><td>Unit test</td><td class="n">১৮</td><td>টেস্ট পিরামিড · ১০৩ টেস্ট</td></tr>
+        <tr><td class="n">২৫</td><td>৫</td><td>pytest / Selenium / JMeter</td><td class="n">১৬</td><td>টুল বাছাই ম্যাট্রিক্স · Django runner</td></tr>
+        <tr><td class="n">২৬</td><td>৫</td><td>স্কোপিং ও ইন্টিগ্রেশন</td><td class="n">২০</td><td>৪০৩/৪০৪ সিদ্ধান্ত ট্রি</td></tr>
+        <tr><td class="n">২৭</td><td>৫</td><td>UAT ও ফিক্স</td><td class="n">১৬</td><td>smoke ম্যাট্রিক্স (২২০ যাচাই)</td></tr>
+        <tr><td class="n">২৮</td><td>৬</td><td>প্রোডাকশন সেটিংস ও সিকিউরিটি</td><td class="n">২০</td><td>dev বনাম prod তুলনা · <code>bd27b41</code></td></tr>
+        <tr><td class="n">২৯</td><td>৬</td><td>ডোমেইন, হোস্টিং, লাইভ</td><td class="n">১৮</td><td>DNS → nginx → gunicorn পথ · <code>Procfile</code></td></tr>
+        <tr><td class="n">৩০</td><td>৬</td><td>মাইগ্রেশন, ব্যাকআপ, মনিটরিং</td><td class="n">১৮</td><td>ব্যাকআপ/রিস্টোর ড্রিল · <code>ops/*.sh</code></td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:4mm">
+      <div class="card"><b style="font-size:11pt">পর্ব ৫-এর মূল কথা</b><p>"যেটা টেস্ট হয়নি, সেটা শেষ হয়নি।" ১০৩ টেস্ট + ২২০ যাচাই — কোনো ভূমিকা কোনো পেজ ভুল করে পেলে সাথে সাথে ধরা পড়বে।</p></div>
+      <div class="card"><b style="font-size:11pt">পর্ব ৬-এর সততা</b><p>লাইভ হোস্টিং এখনো হয়নি — তাই এই পর্বে সেটি ঘাটতি হিসেবেই দেখানো হবে, সম্পূর্ণ হিসেবে নয়।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> পর্ব ৬-এ ছাত্রদের নিজের ডোমেইন কিনতে বলবেন কি না — সেটা আগেই ঠিক করে নিন, কারণ খরচ জড়িত।</div>
+</section>
+
+<!-- ============ 8 · PARTS 7-10 ============ -->
+<section class="slide">
+  <div class="part"><span class="t">পর্ব ৭–১০ · চালানো, ডকুমেন্ট, ভবিষ্যৎ, উপস্থাপন</span><span class="m">৭ ক্লাস · ১১০ স্লাইড · ৮ নম্বর</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:14mm">পর্ব</th><th style="width:56mm">ক্লাস</th><th style="width:12mm">স্লাইড</th><th>মূল ভিজ্যুয়াল / প্রমাণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">৩১</td><td>৭</td><td>লগ, অপ্টিমাইজ, N+1</td><td class="n">১৬</td><td>স্লো কোয়েরি তুলনা · <code>select_related</code></td></tr>
+        <tr><td class="n">৩২</td><td>৭</td><td>বাগের প্রত্নতত্ত্ব</td><td class="n">১৮</td><td>৪টি আসল বাগের রুট-কজ ট্রি</td></tr>
+        <tr><td class="n">৩৩</td><td>৮</td><td>টেক ডক ও ম্যানুয়াল</td><td class="n">১৪</td><td>ডকুমেন্ট মানচিত্র · ৩২ পৃষ্ঠার বাংলা ম্যানুয়াল</td></tr>
+        <tr><td class="n">৩৪</td><td>৮</td><td>রিভিউ, acceptance, ক্লোজার</td><td class="n">১৬</td><td>ক্লোজার রিপোর্টের ছাঁচ · <code>fbf5304</code></td></tr>
+        <tr><td class="n">৩৫</td><td>৮</td><td>স্লাইড ও আর্কাইভ</td><td class="n">১৪</td><td>ডেক কাঠামো · <code>IMS_Project.zip</code></td></tr>
+        <tr><td class="n">৩৬</td><td>৯</td><td>৭ ঘাটতি ও অগ্রাধিকার</td><td class="n">১৬</td><td>গুরুত্ব × কষ্ট ম্যাট্রিক্স</td></tr>
+        <tr><td class="n">৩৭</td><td>১০</td><td>ডেমো স্ক্রিপ্ট + ১০ প্রশ্ন</td><td class="n">১৬</td><td>২৫ মিনিটের রান-শিট</td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:4mm">
+      <div class="card soft"><b style="font-size:11pt">ক্লাস ৩২ সবচেয়ে মজার</b><p>প্রকৃত চারটি ভুল: ভুল প্রতিষ্ঠানে লগইন · ভুল প্রতিষ্ঠানের সাবস্ক্রিপশন · "কে টাকা দেয়" উল্টো · নাম বদলে ইমেইল ক্র্যাশ।</p></div>
+      <div class="card soft"><b style="font-size:11pt">ক্লাস ৩৬-এর সততা</b><p>ইমেইল, CSV ইমপোর্ট, ইনভয়েস PDF, লাইভ হোস্টিং, টার্মস/প্রাইভেসি — যা হয়নি, তার তালিকা ও অগ্রাধিকার।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ক্লাস ৩৭-এ ছাত্ররা নিজেদের ডেমো দেবে — সময় মেপে, ১০ মিনিটে। সময় ছাড়ালে থামিয়ে দেবেন।</div>
+</section>
+
+<!-- ============ 9 · D1 ============ -->
+<section class="slide">
+  <div class="part" style="background:linear-gradient(120deg,#065f46,#059669)"><span class="t">D1 · Database Design Bible</span><span class="m">৩০ স্লাইড · ৩১ টেবিল · ২৩২ ফিল্ড · ১২ মাইগ্রেশন</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:22mm">স্লাইড</th><th style="width:64mm">বিষয়</th><th>ভেতরে যা</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১–৩</td><td>সত্তার মানচিত্র</td><td>৩১ টেবিল ৫ স্তরে: ভিত্তি → কাঠামো → মানুষ → দৈনন্দিন → ফল → নিরাপত্তা ও ব্যবসা</td></tr>
+        <tr><td class="n">৪–১০</td><td><b>ডেটা ডিকশনারি</b></td><td>প্রতি কলামের নাম · ধরন · nullable · ডিফল্ট · বিধি — ২৩২ ফিল্ড, ৭ স্লাইডে</td></tr>
+        <tr><td class="n">১১–১৪</td><td>ERD পূর্ণ</td><td>১:১, ১:N, N:M কোথায় মাঝের টেবিল দিয়ে · কার্ডিনালিটি</td></tr>
+        <tr><td class="n">১৫–১৭</td><td>কী ও বাধা</td><td>unique_together, UniqueConstraint, partial index, ordering — ১২ মাইগ্রেশনের সাথে মিলিয়ে</td></tr>
+        <tr><td class="n">১৮–১৯</td><td>টেন্যান্সি বিধি</td><td>কোন টেবিলে workspace আছে, কোনটায় নেই কেন · cascade · orphan প্রতিরোধ</td></tr>
+        <tr><td class="n">২০–২২</td><td>মাইগ্রেশন</td><td>১২টির ক্রম · data-migration কখন লাগে · rollback · ফাঁদ</td></tr>
+        <tr><td class="n">২৩–২৫</td><td>পারফরম্যান্স</td><td>ইনডেক্স কোথায় কেন · N+1-এর আসল উদাহরণ · pেজিনেশন</td></tr>
+        <tr><td class="n">২৬–২৭</td><td>SQLite বনাম PostgreSQL</td><td>কোন বৈশিষ্ট্য আলাদা · partial unique index · প্রোডাকশনে কেন Postgres</td></tr>
+        <tr><td class="n">২৮–২৯</td><td>সিড ও ফিক্সচার</td><td><code>seed_demo</code> কীভাবে ডেটা বানায় · টেস্ট ficture</td></tr>
+        <tr><td class="n">৩০</td><td>ব্যাকআপ</td><td><code>backup.sh</code> · <code>restore.sh</code> — রিস্টোর লাইভ ডেটাবেসে হাত দেয় না, কেন</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ডেটা ডিকশনারির ৭টি স্লাইড প্রজেক্টরে পড়া কঠিন — সেগুলোর প্রিন্টআউট হ্যান্ডআউট হিসেবে দিন।</div>
+</section>
+
+<!-- ============ 10 · D2 ============ -->
+<section class="slide">
+  <div class="part" style="background:linear-gradient(120deg,#0c4a6e,#0891b2)"><span class="t">D2 · Dev Stack ও Connections</span><span class="m">২৮ স্লাইড · ১০ middleware · ৫টি .env কী</span></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:22mm">স্লাইড</th><th style="width:60mm">বিষয়</th><th>ভেতরে যা</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১–৪</td><td>পুরো স্তরচিত্র</td><td>ব্রাউজার → nginx → gunicorn → WSGI → Django → ORM → PostgreSQL</td></tr>
+        <tr><td class="n">৫–৮</td><td>সেটিংস পিরামিড</td><td><code>base.py</code> → <code>dev</code> / <code>sqlite</code> / <code>prod</code> · <code>.env</code>-এর ৫ কী</td></tr>
+        <tr><td class="n">৯–১২</td><td>সংযোগের যাত্রা</td><td>TCP/HTTP → WSGI <code>application</code> → middleware → URL → view → ORM → SQL → template</td></tr>
+        <tr><td class="n">১৩–১৫</td><td>middleware বিস্তারিত</td><td>Django-র ৭ + নিজের ৩ · ক্রম · আগে/পরে বসালে কী ভাঙে</td></tr>
+        <tr><td class="n">১৬–১৮</td><td>ডেটাবেস সংযোগ</td><td>CONN_MAX_AGE · transaction (atomic) · স্লো কোয়েরি চিহ্নিত করা</td></tr>
+        <tr><td class="n">১৯–২১</td><td>static ও media</td><td><code>static/</code> বনাম <code>media/</code> · <code>collectstatic</code> · WhiteNoise · CDN কেন নয়</td></tr>
+        <tr><td class="n">২২–২৪</td><td>সেশন ও কুকি</td><td>session backend · SESSION_COOKIE_* · CSRF_TOKEN কীভাবে যায়-আসে</td></tr>
+        <tr><td class="n">২৫–২৬</td><td>বাহ্যিক সেবা</td><td>reportlab (PDF) · <code>csv</code> · Pillow · ইমেইল backend (শুধু console — কেন)</td></tr>
+        <tr><td class="n">২৭–২৮</td><td>dev বনাম prod + ট্রাবলশুটিং</td><td>DEBUG, DB, static, worker, log, cookies · পোর্ট ব্যস্ত, static না আসা</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> ১৩–১৫ স্লাইড তিনটি সবচেয়ে গুরুত্বপূর্ণ — middleware ক্রম ভুল হলে সিস্টেম চুপচাপ ভুল ফল দেয়, এরর দেয় না।</div>
+</section>
+
+<!-- ============ 11 · D3 D4 D5 ============ -->
+<section class="slide">
+  <div class="part" style="background:linear-gradient(120deg,#701a75,#db2777)"><span class="t">D3 · নিরাপত্তা &nbsp;·&nbsp; D4 · লাইফসাইকেল &nbsp;·&nbsp; D5 · ডিজাইন সিস্টেম</span><span class="m">৬০ স্লাইড</span></div>
+  <div class="body">
+    <div class="cards" style="flex-direction:column;gap:4mm">
+      <div class="card" style="border-color:#fbcfe8;background:#fdf2f8">
+        <b style="font-size:12pt;color:#9d174d">D3 · Security Model — ২২ স্লাইড</b>
+        <p style="font-size:9.5pt">৪ স্তরের প্রতিরক্ষা (middleware → ডেকোরেটর → queryset → টেমপ্লেট) · ৫×৫ ভূমিকা-পেজ গ্রিড (৫৫ পেজ) · ৪০৩ বনাম ৪০৪ নীতি · ৬টি আক্রমণ দৃশ্য ও প্রতিরোধ · CSRF, clickjacking, cookie · সিক্রেট ব্যবস্থাপনা · <code>check --deploy</code> · <b>এই প্রজেক্টে সত্যি ঘটা ৩টি ভুল</b></p>
+      </div>
+      <div class="card" style="border-color:#bfdbfe;background:#eff6ff">
+        <b style="font-size:12pt;color:#1e40af">D4 · Lifecycle ও Ops — ২০ স্লাইড</b>
+        <p style="font-size:9.5pt">Git ওয়ার্কফ্লো (১৯ commit-এর আসল ক্রম, বার্তার নিয়ম) · ব্রাঞ্চ ও রিভিউ · পরিবেশ আলাদা রাখা · ডিপ্লয় পাইপলাইন (<code>build.sh</code> → migrate → collectstatic → gunicorn) · ব্যাকআপ ও রিস্টোর ড্রিল · মনিটরিং · রিলিজ প্ল্যান</p>
+      </div>
+      <div class="card" style="border-color:#a7f3d0;background:#ecfdf5">
+        <b style="font-size:12pt;color:#065f46">D5 · Design System — ১৮ স্লাইড</b>
+        <p style="font-size:9.5pt">ডিজাইন টোকেন (<code>ims.css</code>) · রঙ/ফন্ট/স্পেসিং স্কেল · ৯টি কম্পোনেন্ট (btn, card, kpi, badge, table, banner, tab, hint) · রোলভিত্তিক সাইডবার · রেসপন্সিভ ব্রেকপয়েন্ট · বাংলা টাইপোগ্রাফি · গ্রাহকের ব্র্যান্ড ওভাররাইড (ডেটাবেস থেকে রঙ)</p>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> D3 আর D5 দুটোই "বাড়তি" নয় — মূল্যায়নে পার্থক্য গড়ে দেয়, কারণ এগুলোই সাধারণ প্রজেক্টে থাকে না।</div>
+</section>
+
+<!-- ============ 12 · SLIDE TYPES ============ -->
+<section class="slide">
+  <div class="head"><span class="badge">নির্মাণ নিয়ম</span>
+    <div><h2>স্লাইডের ১০টি ধরন</h2><div class="sub">সব ডেকে একই ধরন — ছাত্ররা চিনে ফেলবে, তাই মনোযোগ লেখায় থাকবে</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:9mm">#</th><th style="width:44mm">ধরন</th><th style="width:70mm">কখন ব্যবহার</th><th>উদাহরণ</th></tr></thead>
+      <tbody>
+        <tr><td class="n">১</td><td>টাইটেল / ডিভাইডার</td><td>পর্ব ও ক্লাসের শুরু</td><td>"ক্লাস ১৯ · স্লাইস ১"</td></tr>
+        <tr><td class="n">২</td><td>প্রশ্ন</td><td>ক্লাসের শুরুতে শ্রেণিকে জাগাতে</td><td>"আপনার স্কুলে উপস্থিতি কোথায় লেখা হয়?"</td></tr>
+        <tr><td class="n">৩</td><td>ধারণা + ডায়াগ্রাম</td><td>নতুন কাঠামো বোঝাতে</td><td>তিন স্তর · ৭-ধাপের যাত্রা</td></tr>
+        <tr><td class="n">৪</td><td>তুলনা</td><td>দুটি বিকল্পের সিদ্ধান্ত</td><td>সেশন না URL · লাল ✕ সবুজ ✓</td></tr>
+        <tr><td class="n">৫</td><td>ERD / স্কিমা</td><td>ডেটাবেস ডিজাইন</td><td>User ⇄ Membership ⇄ Workspace</td></tr>
+        <tr><td class="n">৬</td><td>কোড</td><td>বাস্তবায়ন দেখাতে</td><td>ডেকোরেটরের ১২ লাইন + ব্যাখ্যা কার্ড</td></tr>
+        <tr><td class="n">৭</td><td>চেকলিস্ট / টেবিল</td><td>প্রান্তিক অবস্থা, টেস্ট তালিকা</td><td>১০টি প্রান্তিক অবস্থা</td></tr>
+        <tr><td class="n">৮</td><td>যাত্রা / ফ্লো</td><td>রিকোয়েস্ট বা ডেটা প্রবাহ</td><td>ব্রাউজার → … → HTML</td></tr>
+        <tr><td class="n">৯</td><td>লাইভ ডেমো</td><td>স্ক্রিনে দেখানো</td><td>স্ক্রিনশট + কমান্ড</td></tr>
+        <tr><td class="n">১০</td><td>সারাংশ</td><td>ক্লাসের শেষে</td><td>৩–৫টি শিক্ষা</td></tr>
+      </tbody>
+    </table>
+    <div class="cards" style="margin-top:3mm">
+      <div class="card soft"><b style="font-size:11pt">প্রতিটি স্লাইডে</b><p>নিচে <b>হলুদ পট্টি</b> — শিক্ষকের বলার কথা, প্রশ্ন, সতর্কতা। প্রজেক্টরে দেখাবেন না, প্রিন্টে পাশে রাখবেন।</p></div>
+      <div class="card soft"><b style="font-size:11pt">ভাষার নিয়ম</b><p>ব্যাখ্যা বাংলায়, টেকনিক্যাল শব্দ ইংরেজিতে (<code>Workspace</code>, <code>403</code>, <code>smoke test</code>) — নাহলে পরে ডকুমেন্টেশন পড়তে পারবে না।</p></div>
+    </div>
+  </div>
+  <div class="tnote"><b>নির্মাণের নিয়ম:</b> প্রতি স্লাইডে একটি মাত্র ধারণা। দুটো ধারণা এক স্লাইডে গেলে ভাগ করে ফেলুন।</div>
+</section>
+
+<!-- ============ 13 · BUILD ORDER ============ -->
+<section class="slide">
+  <div class="head"><span class="badge">নির্মাণ ক্রম</span>
+    <div><h2>কোনটা আগে বানাব</h2><div class="sub">নির্ভরতা মিলিয়ে সাজানো — আগেরটা ছাড়া পরেরটা অসম্ভব</div></div></div>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:12mm">ধাপ</th><th style="width:56mm">ইউনিট</th><th style="width:16mm">স্লাইড</th><th>কেন এই ক্রমে</th><th style="width:22mm">অবস্থা</th></tr></thead>
+      <tbody>
+        <tr><td class="n">—</td><td>ক্লাস ১৯ নমুনা + মানচিত্র</td><td class="n">২৭</td><td>ঢং যাচাই হয়ে গেছে</td><td style="color:#059669"><b>✓ তৈরি</b></td></tr>
+        <tr><td class="n">১</td><td>D1 · Database Design</td><td class="n">৩০</td><td>বাকি সব ডেক এর ওপর দাঁড়ায়</td><td>পরবর্তী</td></tr>
+        <tr><td class="n">২</td><td>D2 · Stack ও Connections</td><td class="n">২৮</td><td>কোডিং শুরুর আগে পরিবেশ বোঝা দরকার</td><td></td></tr>
+        <tr><td class="n">৩</td><td>পর্ব ৪ · কোডিং (৮ ক্লাস)</td><td class="n">১৫২</td><td>সবচেয়ে বড় ও সবচেয়ে দরকারি</td><td></td></tr>
+        <tr><td class="n">৪</td><td>পর্ব ৩ · ডিজাইন</td><td class="n">৯৪</td><td>ERD বোঝা থাকলে ডিজাইন সহজ</td><td></td></tr>
+        <tr><td class="n">৫</td><td>পর্ব ৫ · টেস্টিং</td><td class="n">৭০</td><td>কোড থাকলে টেস্ট দেখানো যায়</td><td></td></tr>
+        <tr><td class="n">৬</td><td>D3 · Security</td><td class="n">২২</td><td>টেস্টিংয়ের পরে — কারণ ফাঁক ধরা পড়ে</td><td></td></tr>
+        <tr><td class="n">৭</td><td>পর্ব ৬ · ডিপ্লয়</td><td class="n">৫৬</td><td>সেটিংস ও সিক্রেট বোঝা দরকার</td><td></td></tr>
+        <tr><td class="n">৮</td><td>পর্ব ১–২ · কনসেপ্ট ও প্ল্যান</td><td class="n">১৬৬</td><td>পরে বানানো, কিন্তু কোর্সে আগে পড়ানো</td><td></td></tr>
+        <tr><td class="n">৯</td><td>পর্ব ৭–১০</td><td class="n">১১০</td><td>শেষ অংশ — রিফ্লেকশন ও উপস্থাপন</td><td></td></tr>
+        <tr><td class="n">১০</td><td>D4 · Ops · D5 · Design System</td><td class="n">৩৮</td><td>সবচেয়ে শেষে, বাড়তি মূল্য</td><td></td></tr>
+        <tr class="tot"><td></td><td>মোট</td><td class="n">৭৮২</td><td>+ নমুনা ২৭</td><td>৮০৯</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tnote"><b>একটা সত্যি কথা:</b> নির্মাণের ক্রম আর পড়ানোর ক্রম আলাদা — কারণ যা আগে বানাতে হয়, সেটা কোর্সে প্রথমে পড়ানো হয় না। এই ছকটা নির্মাণের।</div>
+</section>
+
+<!-- ============ 14 · FILES ============ -->
+<section class="slide">
+  <div class="head"><span class="badge">ফাইল কাঠামো</span>
+    <div><h2>ডেলিভারেবল কীভাবে সাজানো হবে</h2><div class="sub">প্রতিটি পর্ব আলাদা PDF — একটা বদলালে পুরোটা নতুন নয়</div></div></div>
+  <div class="body">
+    <div style="display:flex;gap:6mm">
+      <div style="flex:1">
+        <pre style="background:#0f172a;color:#e2e8f0;border-radius:8px;padding:4mm 5mm;
+             font-family:'DejaVu Sans Mono',monospace;font-size:9pt;line-height:1.7;white-space:pre-wrap">IMS_Class_Kit/
+├── 00_overview.pdf              ← এই সূচিপত্র
+├── part1_concept.pdf            ← ৪ ক্লাস
+├── part2_plan.pdf               ← ৬ ক্লাস
+├── part3_design.pdf             ← ৫ ক্লাস
+├── part4_code.pdf               ← ৮ ক্লাস ★
+├── part5_test.pdf               ← ৪ ক্লাস
+├── part6_deploy.pdf             ← ৩ ক্লাস
+├── part7_maintain.pdf           ← ২ ক্লাস
+├── part8_docs.pdf               ← ৩ ক্লাস
+├── part9_future.pdf             ← ১ ক্লাস
+├── part10_demo.pdf              ← ১ ক্লাস
+└── deep/
+    ├── d1_database_design.pdf   ← ৩০
+    ├── d2_stack_connections.pdf ← ২৮
+    ├── d3_security.pdf          ← ২২
+    ├── d4_lifecycle_ops.pdf     ← ২০
+    └── d5_design_system.pdf     ← ১৮</pre>
+      </div>
+      <div style="flex:1">
+        <div class="cards" style="flex-direction:column;gap:3.5mm">
+          <div class="card soft"><b style="font-size:11pt">নামকরণের নিয়ম</b><p><code>part{N}_{বিষয়}.pdf</code> · <code>deep/d{N}_{বিষয়}.pdf</code> — নম্বর দিয়ে সাজানো থাকলে ফোল্ডারে ক্রম ঠিক থাকে।</p></div>
+          <div class="card soft"><b style="font-size:11pt">প্রতি PDF-এ থাকে</b><p>প্রচ্ছদ · ক্লাস সেকশন · ডায়াগ্রাম · টেবিল · কোড · হলুদ পট্টি · শেষে সারাংশ।</p></div>
+          <div class="card soft"><b style="font-size:11pt">আকার</b><p>ল্যান্ডস্কেপ ১৬:৯ · প্রিন্ট করা যায় A4-এও। টেক্সট-ভারী ডেক ~০.৭ MB, ডায়াগ্রাম-ভারী ~১.৫ MB।</p></div>
+          <div class="card soft"><b style="font-size:11pt">সোর্স</b><p>প্রতিটি ডেকের HTML সোর্স থাকবে — লেখা বদলালে শুধু <code>build.py</code> চালালেই নতুন PDF।</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>বোনাস:</b> পুরো কিট একটা ZIP-এ — <code>IMS_Class_Kit.zip</code> — যাতে সহকর্মীকে এক ক্লিকে পাঠানো যায়।</div>
+</section>
+
+</body></html>

@@ -1,0 +1,30 @@
+<section class="slide">
+  <div class="head"><span class="badge">ইমেইল</span>
+    <div><h2>একই কোড, দুই ব্যাকএন্ড — কনসোল নাকি SMTP</h2>
+      <div class="sub">ডেমোতে ইমেইল টার্মিনালে, প্রোডাকশনে আসল সার্ভারে</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:34%">পরিবেশ</th><th style="width:66%">ব্যাকএন্ড ও ফল</th></tr>
+          <tr><td>dev · sqlite</td><td><code>console.EmailBackend</code> — চিঠি টার্মিনালে ছাপা হয়, কেউ পায় না</td></tr>
+          <tr><td>prod</td><td><code>smtp.EmailBackend</code> · পোর্ট ৫৮৭ · STARTTLS</td></tr>
+          <tr><td>প্রেরক</td><td><code>DEFAULT_FROM_EMAIL</code> — পণ্যের নাম থেকে, হার্ডকোড নয়</td></tr>
+        </table>
+        <div style="font-size:9.9pt;color:#334155;margin-top:2mm">কোন পথে ইমেইল যায়: পাসওয়ার্ড রিসেট · স্কুল-অনুরোধের স্বীকৃতি · আমন্ত্রণ।</div>
+      </div>
+      <div style="flex:1">
+        <div class="call" style="font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>প্রমাণ:</b> <code>test_email_is_sent_and_link_sets_a_new_password</code> — মেইল বেরোয়, লিংকের টোকেন কাজ করে, পাসওয়ার্ড বদলায়। তিন ধাপ এক টেস্টে।
+        </div>
+        <div class="call warn" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>সৎ ফাঁক:</b> SMTP পাঠানোর কোনো রিট্রাই নেই — পাঠানো ব্যর্থ হলে ইমেইল হারায়, ব্যবহারকারী শুধু "লিংক আসেনি" বলেন। Celery/কিউ ছাড়া এটাই সীমা।
+        </div>
+        <div class="call" style="margin-top:2.2mm;font-size:9.9pt;padding:2.4mm 3.8mm">
+          <b>টেস্টে আসল মেইল যায় না:</b> Django-র <code>mail.outbox</code> ব্যবহার হয় — ইন্টারনেট ছাড়াই টেস্ট চলে।
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> কনসোল ব্যাকএন্ড শিক্ষার্থীদের প্রিয় — কারণ লিংকটা সরাসরি দেখতে পান। বলুন: "ডেমোতে ইমেইল মানে টার্মিনাল; প্রোডাকশনে ইমেইল মানে দায়িত্ব।"
+</section>

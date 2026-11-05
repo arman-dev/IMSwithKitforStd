@@ -1,0 +1,32 @@
+<section class="slide">
+  <div class="head"><span class="badge">সিদ্ধান্ত ২</span>
+    <div><h2>প্রথম মাইগ্রেশনের আগেই নিজের ইউজার মডেল</h2>
+      <div class="sub">একবার ভুল করলে সারাজীবন বয়ে বেড়াতে হয় — তাই একবারেই ঠিক</div></div></div>
+  <div class="body">
+    <div class="cols" style="gap:5mm">
+      <div style="flex:1.1">
+        <pre style="font-size:8.4pt;line-height:1.55;padding:3.4mm 4mm"># apps/accounts/models.py
+class User(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True, db_index=True)
+    full_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=16, blank=True,
+                             validators=[phone_validator])
+    is_active = models.BooleanField(default=True)
+    USERNAME_FIELD = "email"</pre>
+        <div class="call bad" style="margin-top:2.5mm;font-size:10pt;padding:2.4mm 3.6mm">
+          <code>USERNAME_FIELD = "email"</code> — লগইন আইডি ইমেইল। নাম বদলালে লগইন বদলায় না; <code>@ims.local</code> দিয়ে ডেমো চলে, বাস্তবে আসল ইমেইল।
+        </div>
+      </div>
+      <div style="flex:1">
+        <table class="tight">
+          <tr><th style="width:46%">যদি ডিফল্ট <code>User</code> দিয়ে শুরু করতাম</th><th style="width:54%">পরিণতি</th></tr>
+          <tr><td>পরে নিজের মডেল দরকার হলে</td><td>সব FK ভাঙে — <code>AUTH_USER_MODEL</code> বদলানো মানে ৭০টি সম্পর্ক আবার</td></tr>
+          <tr><td>ইউজারনেম রাখতে হতো</td><td>স্কুলে সবাই ইমেইলেই চেনে; ইউজারনেম বানানো বাড়তি কাজ, ভুলের উৎস</td></tr>
+          <tr><td>ফোন নম্বর আলাদা প্রোফাইলে</td><td>আরও একটি টেবিল, আরও একটি JOIN — প্রতিটি SMS-এ</td></tr>
+        </table>
+        <div style="font-size:10.2pt;color:#334155;margin-top:2.5mm">প্রমাণ: <code>apps/accounts/migrations/0001_initial.py</code> — প্রজেক্টের প্রথম মাইগ্রেশন, আর সেটিই নিজের মডেল।</div>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>শিক্ষকের নোট:</b> এই সিদ্ধান্তটি ডেটাবেজের নয়, শৃঙ্খলার। বলুন: "শেষে ঠিক করা যায়" — ডেটাবেজে এই বাক্যটি প্রায়ই মিথ্যা। যা পরে বদলাতে অসাধ্য, তা প্রথম দিনেই ঠিক করতে হয়।
+</section>
